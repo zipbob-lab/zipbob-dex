@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import { useScrap } from "@/hooks/useScrap";
+import { Recipe } from "@/types/Recipe";
 import { Bookmark } from "lucide-react";
 import { redirect } from "next/navigation";
 
-const BookmarkButton = ({ recipeId }: { recipeId: string }) => {
+const BookmarkButton = ({ recipe }: { recipe: Recipe }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { folderName, setFolderName, isSaving, saveScrap, existingFolders } = useScrap();
 
@@ -17,11 +18,11 @@ const BookmarkButton = ({ recipeId }: { recipeId: string }) => {
     setIsModalOpen(false);
   };
 
-  const handleFolderClick = (folder: string) => {
+  const handleFolderClick = async (folder: string) => {
     setFolderName(folder);
-    saveScrap(recipeId);
+    await saveScrap(recipe);
     setIsModalOpen(false); //저장되면 사라짐
-    redirect("/scraps");
+    redirect("scraps");
   };
 
   return (
@@ -48,7 +49,7 @@ const BookmarkButton = ({ recipeId }: { recipeId: string }) => {
             />
             <button
               onClick={() => {
-                saveScrap(recipeId);
+                saveScrap(recipe);
                 setIsModalOpen(false);
               }}
               disabled={isSaving}

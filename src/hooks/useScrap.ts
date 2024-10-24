@@ -1,7 +1,8 @@
 import { supabase } from "@/supabase/supabase";
 import { useEffect, useState } from "react";
+import { Recipe } from "@/types/Recipe";
 
-const MOCK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
+const MOCK_USER_ID = "12fc1c2d-f564-4510-9aac-635b1345b3ca";
 
 export const useScrap = () => {
   const [folderName, setFolderName] = useState("");
@@ -9,7 +10,7 @@ export const useScrap = () => {
   const [existingFolders, setExistingFolders] = useState<string[]>([]);
 
   // 레시피 스크랩 함수
-  const saveScrap = async (recipeId: string) => {
+  const saveScrap = async (recipe: Recipe) => {
     setIsSaving(true);
 
     // 새 폴더와 레시피를 저장
@@ -17,7 +18,7 @@ export const useScrap = () => {
       user_id: MOCK_USER_ID,
       scrap_id: crypto.randomUUID(),
       folder_name: folderName,
-      scraped_recipe: recipeId,
+      scraped_recipe: JSON.stringify(recipe),
       created_at: new Date(),
       updated_at: new Date()
     });

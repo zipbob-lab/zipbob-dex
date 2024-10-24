@@ -18,7 +18,7 @@ const ScrapPage = () => {
       const { data, error } = await supabase
         .from("SCRAP_TABLE")
         .select("*")
-        .eq("user_id", "123e4567-e89b-12d3-a456-426614174000"); // 나중에 로그인된 user_id로 대체
+        .eq("user_id", "12fc1c2d-f564-4510-9aac-635b1345b3ca"); // 나중에 로그인된 user_id로 대체
 
       if (error) {
         console.error("스크랩 데이터를 불러오는 중 오류:", error.message);
