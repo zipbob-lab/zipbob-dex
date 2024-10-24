@@ -13,6 +13,9 @@ type Scrap = {
 
 const ScrapPage = () => {
   const [scraps, setScraps] = useState<Scrap[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
+  const [folders, setFolders] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchScraps = async () => {
       const { data, error } = await supabase
@@ -24,25 +27,72 @@ const ScrapPage = () => {
         console.error("스크랩 데이터를 불러오는 중 오류:", error.message);
       } else {
         setScraps(data);
+
+        const uniqueFolders = Array.from(new Set(data.map((scrap: Scrap) => scrap.folder_name)));
+        setFolders(uniqueFolders);
       }
     };
 
     fetchScraps();
   }, []);
 
+  const handleFolderClick = (folder: string | null) => {
+    setSelectedFolder(folder);
+  };
+
   return (
     <>
       <div className="p-6 bg-gray-100 min-h-screen">
         <h2 className="text-2xl font-bold mt-8 mb-4">스크랩한 레시피</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {scraps.map((scrap) => (
-            <div key={scrap.scrap_id} className="bg-white shadow-md rounded-lg p-4">
-              <h3 className="text-lg font-bold">{scrap.scraped_recipe}</h3>
-              <p className="text-gray-600">폴더: {scrap.folder_name}</p>
-              <p className="text-gray-500 text-sm">저장일: {new Date(scrap.created_at).toLocaleDateString()}</p>
-            </div>
+        {/* 폴더명 리스트*/}
+
+        <div className="mb-6">
+          <button
+            onClick={() => handleFolderClick(null)}
+            className={`px-4 py-2 mr-2 mb-2 bg-yellow-500 text-white rounded-full ${
+              selectedFolder === null ? "bg-yellow-500" : ""
+            }`}
+          >
+            전체
+          </button>
+          {folders.map((folder) => (
+            <button
+              key={folder}
+              onClick={() => handleFolderClick(folder)}
+              className={`px-4 py-2 mr-2 mb-2 bg-orange-500 text-white rounded-full ${
+                selectedFolder === folder ? "bg-orange-700" : ""
+              }`}
+            >
+              {folder}
+            </button>
           ))}
+
+          {/* 해당 폴더의 레시피 리스트*/}
+
+          <div className="">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {scraps
+                .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
+                .map((scrap) => {
+                  const recipeDetail = JSON.parse(scrap.scraped_recipe);
+
+                  return (
+                    <div key={scrap.scrap_id}>
+                      {recipeDetail.ATT_FILE_NO_MAIN && (
+                        <img
+                          src={recipeDetail.ATT_FILE_NO_MAIN}
+                          alt={recipeDetail.RCP_NM}
+                          className="w-1/2 h-48 object-cover rounded-md mb-4"
+                        />
+                      )}
+                      <h4>{recipeDetail.RCP_NM}</h4>
+                      <p>만든사람 닉네임 들어갑니다</p>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
       </div>
     </>
