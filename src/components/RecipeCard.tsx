@@ -1,21 +1,15 @@
-import React from "react";
+import { Recipe } from "@/types/Recipe";
 import BookmarkButton from "./common/BookmarkButton";
-
-// 사용예시
-
-type Recipe = {
-  id: string;
-  title: string;
-  description: string;
-};
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 max-w-sm mx-auto mb-4 relative">
-      <h3 className="text-xl font-bold mb-2">{recipe.title}</h3>
-      <p className="text-gray-600 mb-4">{recipe.description}</p>
+    <div>
+      {recipe.ATT_FILE_NO_MK && (
+        <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} className="w-1/2 h-48 object-cover rounded-md mb-4" />
+      )}
 
-      <BookmarkButton recipeId={recipe.id} />
+      <h3>{recipe.RCP_NM}</h3>
+      <BookmarkButton recipe={recipe} />
     </div>
   );
 };
