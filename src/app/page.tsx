@@ -1,12 +1,18 @@
-import BookmarkButton from "@/components/common/BookmarkButton";
+"use client";
+
+import browserClient from "@/supabase/client";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Home 페이지 입니다..</h1>
+  useEffect(() => {
+    browserClient.auth.getSession().then(console.log);
+  }, []);
 
-      {/* 북마크 버튼 컴포넌트 사용 */}
-      <BookmarkButton recipeId="recipe_1" />
-    </div>
+  return (
+    <>
+      <div>Home 페이지 입니다..</div>
+      <Link href="/login">로그인페이지</Link>
+    </>
   );
 }
