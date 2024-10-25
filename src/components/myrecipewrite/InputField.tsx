@@ -3,7 +3,7 @@
 import { supabase } from "@/supabase/supabase";
 import Image from "next/image";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 enum RecipeMethodEnum {
   boil = "끓이기",
@@ -24,10 +24,14 @@ interface IFormInput {
   recipeType: RecipeTypeEnum;
   recipeTitle: string;
   recipeDescription: string;
-  ingredient: string;
-  amount: number;
-  unit: string;
+  // ingredient: string;
+  // amount: number;
+  // unit: string;
   recipeManual: string;
+}
+
+interface RecipeForm {
+  ingredients: { ingredient: string; amount: number; unit: string }[];
 }
 
 const InputField = () => {
@@ -36,10 +40,23 @@ const InputField = () => {
 
   const {
     register,
+    control,
     handleSubmit
     // watch,
     // formState: { errors }
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    defaultValues: { ingredients: [{ ingredient: "", amount: "", unit: "" }] }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "ingredients"
+  });
+
+  const handleAddIngredients = () => {
+    append({ ingredient: "", amount: "", unit: "" }, { shouldFocus: false });
+  };
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     // 이미지 업로드
     let recipeDoingImgUrl = null;
@@ -51,7 +68,7 @@ const InputField = () => {
       const uniqueImgName = new Date().getTime();
       const imgFileName = `${uniqueImgName}_${newFileName}`;
 
-      const { imgData, imgError } = await supabase.storage
+      const { imgError } = await supabase.storage
         .from("zipbob_storage")
         .upload(`recipeDoingImgFolder/${imgFileName}.${fileExtension}`, recipeDoingImgFile);
 
@@ -64,10 +81,6 @@ const InputField = () => {
     }
     console.log("제출된 데이터:", data);
     console.log("업로드된 이미지 URL:", recipeDoingImgUrl);
-  };
-
-  const handleAddIngredients = () => {
-    alert("재료추가버튼누름");
   };
 
   // 이미지 선택
@@ -126,11 +139,17 @@ const InputField = () => {
         <div className="flex flex-col bg-pink-200 p-5 gap-1">
           <label className="font-bold">재료 정보</label>
           <span>레시피를 보고 요리하는 사용자들을 위해 계량정보를 정확하게 입력해주세요.</span>
-          <div className="flex gap-5">
-            <input placeholder="예)양상추" {...register("ingredient", { required: true })} />
-            <input placeholder="수량" {...register("amount", { required: true })} />
-            <input placeholder="단위" {...register("unit", { required: true })} />
-          </div>
+
+          <div className="flex gap-5"></div>
+
+          {fields.map((field, i) => (
+            <div className="flex gap-5" key={field.id}>
+              <input placeholder="예)양상추" {...register(`ingredients.${i}.ingredient`, { required: true })} />
+              <input placeholder="수량" {...register(`ingredients.${i}.amount`, { required: true })} />
+              <input placeholder="단위" {...register(`ingredients.${i}.unit`, { required: true })} />
+            </div>
+          ))}
+
           <div>
             <button
               type="button"
@@ -148,18 +167,36 @@ const InputField = () => {
             <label className="font-bold">단계별 레시피 입력</label>
             <span>레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!</span>
           </div>
-          <div>
+          <div className="flex">
             <div>
               {recipeDoingImgView ? (
                 <Image src={recipeDoingImgView} alt="이미지" width={200} height={200} objectFit="cover" />
               ) : (
                 <p>선택된 이미지가 없습니다.</p>
               )}
-              <input type="file" id="recipeImgDoing" name="recipeImgDoing" onChange={handleFileSelect} />
+              <input
+                type="file"
+                id="recipeImgDoing"
+                {...register("recipeManual", {
+                  onChange: (e) => handleFileSelect(e)
+                })}
+              />
             </div>
             <textarea placeholder="상세하게 적을 수록 도움이 돼요!" {...register("recipeManual", { required: true })} />
           </div>
+
+          <div>
+            <button
+              type="button"
+              className="bg-slate-100 p-3 flex justify-center items-center"
+              onClick={handleAddIngredients}
+            >
+              재료추가하기
+            </button>
+          </div>
         </div>
+
+        {/* 제출 버튼 */}
         <input type="submit" />
       </form>
     </div>
