@@ -1,30 +1,47 @@
-import React from "react";
+"use client";
 
-export default function searchResultsPage() {
+import React, { useState } from "react";
+import SearchBar from "@/components/common/searchbar";
+import { fetchRecipeData } from "@/app/api/fetchRecipeData";
 
-    
+const SearchResultsPage = () => {
+  const [recipes, setRecipes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSearch = async (query: string) => {
+    setLoading(true);
+    setError("");
+    setRecipes([]);
+
+    try {
+      const data = await fetchRecipeData(query);
+      setRecipes(data.COOKRCP01.row);
+    } catch (err) {
+      setError("데이터를 가져오는데 실패했습니다.");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div>
-      <header />
-      <div>검색결과, 캐러셀</div>
+      <SearchBar onSearch={handleSearch} />
       <div>
-        <ul>
-          <li>
-            <div>
-              <img />
-            </div>
-            <div>
-              <p>제목</p>
-            </div>
-            <div>
-              <p>닉네임</p>
-              <p>좋아요</p>
-              <p>스크랩</p>
-            </div>
-          </li>
-        </ul>
+        {recipes.length > 0 ? (
+          <ul>
+            {recipes.map((recipe, index) => (
+              <li key={index}>
+                <h3>{recipe.RCP_NM}</h3>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          !loading && <p>검색 결과가 없습니다.</p>
+        )}
       </div>
-      <footer />
     </div>
   );
-}
+};
+
+export default SearchResultsPage;
