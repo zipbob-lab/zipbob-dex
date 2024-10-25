@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabase/supabase";
+import { getUserId } from "@/serverActions/profileAction";
 
 type Scrap = {
   scrap_id: string;
@@ -15,13 +16,21 @@ const ScrapPage = () => {
   const [scraps, setScraps] = useState<Scrap[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
   const [folders, setFolders] = useState<string[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchScraps = async () => {
-      const { data, error } = await supabase
-        .from("SCRAP_TABLE")
-        .select("*")
-        .eq("user_id", "12fc1c2d-f564-4510-9aac-635b1345b3ca"); // 나중에 로그인된 user_id로 대체
+    const fetchUserId = async () => {
+      const user_id = await getUserId();
+      if (user_id) {
+        setUserId(user_id);
+        fetchScraps(user_id);
+      } else {
+        console.log("로그인 된 사용자가 없습니다.");
+      }
+    };
+
+    const fetchScraps = async (user_id: string) => {
+      const { data, error } = await supabase.from("SCRAP_TABLE").select("*").eq("user_id", user_id);
 
       if (error) {
         console.error("스크랩 데이터를 불러오는 중 오류:", error.message);
@@ -33,7 +42,7 @@ const ScrapPage = () => {
       }
     };
 
-    fetchScraps();
+    fetchUserId();
   }, []);
 
   const handleFolderClick = (folder: string | null) => {

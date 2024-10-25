@@ -15,7 +15,5 @@ export const fetchRecipeData = async () => {
   }
 
   const data = await response.json();
-  // console.log("데이터 불러오기 성공 / data 확인", data);
-  // console.log("데이터 불러오기 성공 / 조리법 확인", data.COOKRCP01.row);
   return data;
 };

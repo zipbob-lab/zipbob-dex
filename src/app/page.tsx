@@ -1,6 +1,7 @@
 import { fetchRecipeData } from "@/app/api/fetchRecipeData";
 import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/Recipe";
+import { Link } from "lucide-react";
 
 export default async function Home() {
   const data = await fetchRecipeData();
@@ -8,6 +9,7 @@ export default async function Home() {
 
   return (
     <div className="p-6">
+      <Link href="/login">로그인페이지</Link>
       <h1 className="text-2xl font-bold mb-4">요리 5개만 불러와보자</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -26,21 +28,3 @@ export default async function Home() {
     </div>
   );
 }
-
-// "use client";
-
-// import browserClient from "@/supabase/client";
-// import Link from "next/link";
-// import { useEffect } from "react";
-
-// export default function Home() {
-//   useEffect(() => {
-//     browserClient.auth.getSession().then(console.log);
-//   }, []);
-
-//   return (
-//     <>
-//       <div>Home 페이지 입니다..</div>
-//       <Link href="/login">로그인페이지</Link>
-//     </>
-//   );
