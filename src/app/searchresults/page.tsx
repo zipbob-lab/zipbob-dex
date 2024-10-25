@@ -2,46 +2,31 @@
 
 import React, { useState } from "react";
 import SearchBar from "@/components/common/searchbar";
-import { fetchRecipeData } from "@/app/api/fetchRecipeData";
 
-const SearchResultsPage = () => {
-  const [recipes, setRecipes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+const SearchPage = () => {
+  const [results, setResults] = useState<string[]>([]);
 
-  const handleSearch = async (query: string) => {
-    setLoading(true);
-    setError("");
-    setRecipes([]);
-
-    try {
-      const data = await fetchRecipeData(query);
-      setRecipes(data.COOKRCP01.row);
-    } catch (err) {
-      setError("데이터를 가져오는데 실패했습니다.");
-    }
-
-    setLoading(false);
+  const handleSearch = (query: string) => {
+    // 실제 검색 로직을 여기에 추가하거나 API를 호출해 검색 결과를 가져올 수 있음
+    // 예시로, 입력된 검색어를 단순히 결과 목록에 추가
+    setResults((prevResults) => [...prevResults, query]);
   };
 
   return (
     <div>
+      <h1>레시피 검색</h1>
       <SearchBar onSearch={handleSearch} />
+
       <div>
-        {recipes.length > 0 ? (
-          <ul>
-            {recipes.map((recipe, index) => (
-              <li key={index}>
-                <h3>{recipe.RCP_NM}</h3>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          !loading && <p>검색 결과가 없습니다.</p>
-        )}
+        <h2>검색 결과</h2>
+        <ul>
+          {results.map((result, index) => (
+            <li key={index}>{result}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 };
 
-export default SearchResultsPage;
+export default SearchPage;
