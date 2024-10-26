@@ -1,6 +1,5 @@
 import { supabase } from "@/supabase/supabase";
 import { useEffect, useState } from "react";
-import { Recipe } from "@/types/Recipe";
 import { getUserId } from "@/serverActions/profileAction";
 
 export const useScrap = () => {
@@ -26,19 +25,31 @@ export const useScrap = () => {
   }, []);
 
   // 레시피 스크랩 함수
-  const saveScrap = async (recipe: Recipe, folderName: string) => {
+  const saveScrap = async (recipeId: string, folderName: string) => {
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
       return;
     }
     setIsSaving(true);
 
+    const { data: recipeData, error: fetchError } = await supabase
+      .from("TEST_TABLE")
+      .select("*")
+      .eq("post_id", recipeId)
+      .single();
+
+    if (fetchError) {
+      console.error("레시피 데이터 가져오기 실패", fetchError.message);
+      setIsSaving(false);
+      return;
+    }
+
     // 새 폴더와 레시피를 저장
     const { error } = await supabase.from("SCRAP_TABLE").insert({
       user_id: userId,
-      scrap_id: crypto.randomUUID(),
+      scrap_id: recipeId, //test_table 속성과 동일하게 설정
       folder_name: folderName,
-      scraped_recipe: recipe.post_id,
+      scraped_recipe: JSON.stringify(recipeData),
       created_at: new Date(),
       updated_at: new Date()
     });
@@ -69,7 +80,7 @@ export const useScrap = () => {
         .eq("scraped_recipe", recipeId);
 
       if (error) {
-        console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message); //여기서 종종 문제 발생
+        console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message);
       } else {
         setScrapCounts((prev) => ({
           ...prev,

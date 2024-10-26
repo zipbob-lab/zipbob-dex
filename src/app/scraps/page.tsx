@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/supabase/supabase";
 import { getUserId } from "@/serverActions/profileAction";
 import { UUID } from "crypto";
+
 type Scrap = {
   scrap_id: UUID;
   folder_name: string;
@@ -80,17 +81,15 @@ const ScrapPage = () => {
 
               return (
                 <div key={scrap.scrap_id}>
-                  {recipeDetail.ATT_FILE_NO_MAIN && (
+                  {recipeDetail.recipe_img_done && (
                     <img
-                      src={recipeDetail.ATT_FILE_NO_MAIN}
-                      alt={recipeDetail.RCP_NM}
+                      src={recipeDetail.recipe_img_done}
+                      alt={recipeDetail.recipe_title}
                       className="w-full h-48 object-cover rounded-md mb-4"
                     />
                   )}
-                  <h4 className="text-lg font-bold">{recipeDetail.RCP_NM}</h4>
-                  <p className="text-sm text-gray-600">
-                    만든 사람 닉네임: {recipeDetail.creator_nickname || "집밥도감 마스터"}
-                  </p>
+                  <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
+                  <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
                 </div>
               );
             })}
