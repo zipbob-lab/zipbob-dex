@@ -1,15 +1,23 @@
 import { Recipe } from "@/types/Recipe";
-import BookmarkButton from "./common/BookmarkButton";
+import ScrapButton from "./common/button/ScrapButton";
+import Image from "next/image";
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
     <div>
-      {recipe.ATT_FILE_NO_MK && (
-        <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} className="w-1/2 h-48 object-cover rounded-md mb-4" />
+      {recipe.recipe_img_done && (
+        <Image
+          src={recipe.recipe_img_done}
+          alt={recipe.recipe_title}
+          className="w-full h-48 object-cover rounded-md mb-4"
+          unoptimized
+        />
       )}
 
-      <h3>{recipe.RCP_NM}</h3>
-      <BookmarkButton recipe={recipe} />
+      <h3 className="text-lg font-semibold mb-2">{recipe.recipe_title}</h3>
+
+      {/* post_id를 ScrapButton에 전달하여 각 레시피별 스크랩 가능 */}
+      <ScrapButton postId={recipe.post_id} />
     </div>
   );
 };

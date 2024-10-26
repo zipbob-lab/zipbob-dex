@@ -8,7 +8,9 @@ export const useScrap = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [existingFolders, setExistingFolders] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [scrapCounts, setScrapCounts] = useState<Record<string, number>>({});
 
+  // supabase에서 로그인한 user 데이터 가져오기
   useEffect(() => {
     const fetchUserId = async () => {
       const user_id = await getUserId();
@@ -24,7 +26,7 @@ export const useScrap = () => {
   }, []);
 
   // 레시피 스크랩 함수
-  const saveScrap = async (recipe: Recipe) => {
+  const saveScrap = async (recipe: Recipe, folderName: string) => {
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
       return;
@@ -36,17 +38,14 @@ export const useScrap = () => {
       user_id: userId,
       scrap_id: crypto.randomUUID(),
       folder_name: folderName,
-      scraped_recipe: JSON.stringify(recipe),
+      scraped_recipe: recipe.post_id,
       created_at: new Date(),
       updated_at: new Date()
     });
 
     if (error) {
       console.error("스크랩 저장 오류:", error.message);
-    } else {
-      alert("스크랩이 저장되었습니다.");
     }
-
     setIsSaving(false);
   };
 
@@ -62,11 +61,33 @@ export const useScrap = () => {
     }
   };
 
+  const fetchRecipeScrapCount = async (recipeId: string) => {
+    try {
+      const { count, error } = await supabase
+        .from("SCRAP_TABLE")
+        .select("scraped_recipe", { count: "exact" })
+        .eq("scraped_recipe", recipeId);
+
+      if (error) {
+        console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message); //여기서 종종 문제 발생
+      } else {
+        setScrapCounts((prev) => ({
+          ...prev,
+          [recipeId]: count ?? 0
+        }));
+      }
+    } catch (error) {
+      console.error("스크랩 개수 조회 중 에러 발생:", error);
+    }
+  };
+
   return {
     folderName,
     setFolderName,
     isSaving,
     saveScrap,
-    existingFolders
+    existingFolders,
+    scrapCounts,
+    fetchRecipeScrapCount
   };
 };
