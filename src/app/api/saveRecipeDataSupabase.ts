@@ -1,6 +1,6 @@
 import { createClient } from "@/supabase/server";
 import { fetchRecipeData } from "./fetchRecipeData";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export const saveRecipeDataSupabase = async () => {
   const recipeData = await fetchRecipeData();
@@ -8,7 +8,8 @@ export const saveRecipeDataSupabase = async () => {
 
   const saveData = recipeData.COOKRCP01.row.map((recipeData: any) => ({
     user_id: "12fc1c2d-f564-4510-9aac-635b1345b3ca",
-    post_id: recipeData.RCP_SEQ,
+    post_id: uuidv4(),
+    recipe_seq: recipeData.RCP_SEQ,
     recipe_title: recipeData.RCP_NM,
     recipe_ingredients: recipeData.RCP_PARTS_DTLS,
     recipe_img_doing: Array.from(
@@ -29,11 +30,11 @@ export const saveRecipeDataSupabase = async () => {
     recipe_method: recipeData.RCP_WAY2,
     // recipe_level:,
     recipe_kcal: recipeData.INFO_ENG,
-    recipe_tip: recipeData.RCP_NA_TIP
+    recipe_description: recipeData.RCP_NA_TIP
   }));
   const serverClient = createClient();
 
-  const { error } = await serverClient.from("MY_RECIPE_TABLE_duplicate").insert(saveData);
+  const { error } = await serverClient.from("TEST_TABLE").insert(saveData);
 
   if (error) {
     console.error("저장오류:", error.message);
@@ -41,5 +42,4 @@ export const saveRecipeDataSupabase = async () => {
     console.log("저장완");
   }
 };
-
-saveRecipeDataSupabase();
+// saveRecipeDataSupabase();
