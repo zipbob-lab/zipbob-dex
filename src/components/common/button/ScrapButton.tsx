@@ -24,15 +24,22 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const handleFolderClick = async (folder: string) => {
     setFolderName(folder);
     await handleSaveComplete(folder);
-
-    alert("저장완료");
+    // alert("저장완료");
   };
 
   const handleSaveComplete = async (folder: string) => {
-    // console.log("저장할 postId 확인", postId);
-    await saveScrap(postId, folder);
+    // // console.log("저장할 postId 확인", postId);
+    // await saveScrap(postId, folder);
+    // // await incrementScrapCount(postId);
+    // await fetchRecipeScrapCount(postId);
+    // setIsModalOpen(false);
+    const savedSuccessfully = await saveScrap(postId, folder);
+    if (savedSuccessfully) {
+      // 중복이 아닌 경우에만 "저장완료" 경고 표시
+      alert("저장완료");
+      await fetchRecipeScrapCount(postId); // 최신 카운트 업데이트
+    }
     setIsModalOpen(false);
-    fetchRecipeScrapCount(postId);
   };
 
   return (

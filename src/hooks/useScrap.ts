@@ -24,25 +24,66 @@ export const useScrap = () => {
     fetchUserId();
   }, []);
 
-  const incrementScrapCount = async (recipeId: string) => {
-    const { error } = await supabase
-      .from("TEST_TABLE")
-      .update({ scrap_count: supabase.raw("scrap_count + 1") })
-      .eq("post_id", recipeId);
+  //중복 스크랩 막기 함수
+  const isAlreadyScrapped = async (recipeId: string) => {
+    const { data, error } = await supabase
+      .from("SCRAP_TABLE")
+      .select("scrap_id")
+      .eq("scrap_id", recipeId)
+      .eq("user_id", userId);
 
     if (error) {
-      console.log("스크랩 카운트 오류", error.message);
+      console.log("스크랩 확인 오류 발생", error.message);
+      return false;
+    }
+    return data && data.length > 0;
+  };
+
+  // 북마크 개수 증가 함수
+  const incrementScrapCount = async (recipeId: string) => {
+    const { data, error: fetchError } = await supabase
+      .from("TEST_TABLE")
+      .select("scrap_count")
+      .eq("post_id", recipeId)
+      .single();
+
+    if (fetchError) {
+      console.error("스크랩 카운트 오류", fetchError.message);
+      return;
+    }
+
+    // 1 count up!!
+    const currentCount = data?.scrap_count || 0;
+    const newCount = currentCount + 1;
+
+    const { error: scrapCountUpdateError } = await supabase
+      .from("TEST_TABLE")
+      .update({ scrap_count: newCount })
+      .eq("post_id", recipeId);
+
+    if (scrapCountUpdateError) {
+      console.error("스크랩 카운트 증가 오류:", scrapCountUpdateError.message);
+    } else {
+      // console.log("스크랩 카운트가 정상적으로 증가되었습니다:", newCount);
+      setScrapCounts((prev) => ({ ...prev, [recipeId]: newCount }));
     }
   };
 
   // 레시피 스크랩 함수
-  const saveScrap = async (recipeId: string, folderName: string) => {
+  const saveScrap = async (recipeId: string, folderName: string): Promise<boolean> => {
     // console.log("saveScrap에 전달된 recipeId:", recipeId); //uuid인지 확인
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
-      return;
+      return false;
     }
     setIsSaving(true);
+
+    const alreadyScrraped = await isAlreadyScrapped(recipeId);
+    if (alreadyScrraped) {
+      alert("이미 스크랩 한 레시피 입니다.");
+      setIsSaving(false);
+      return false;
+    }
 
     const { data: recipeData, error: fetchError } = await supabase
       .from("TEST_TABLE")
@@ -55,7 +96,7 @@ export const useScrap = () => {
     if (fetchError) {
       console.error("레시피 데이터 가져오기 실패", fetchError.message);
       setIsSaving(false);
-      return;
+      return false;
     }
 
     // 새 폴더와 레시피를 저장
@@ -70,9 +111,11 @@ export const useScrap = () => {
 
     if (error) {
       console.error("스크랩 저장 오류:", error.message);
+      return false;
     } else {
       await incrementScrapCount(recipeId);
       fetchRecipeScrapCount(recipeId);
+      return true;
     }
     setIsSaving(false);
   };
@@ -91,17 +134,16 @@ export const useScrap = () => {
 
   const fetchRecipeScrapCount = async (recipeId: string) => {
     try {
-      const { count, error } = await supabase
-        .from("SCRAP_TABLE")
-        .select("scraped_recipe", { count: "exact" })
-        .eq("scraped_recipe", recipeId);
+      const { data, error } = await supabase.from("TEST_TABLE").select("scrap_count").eq("post_id", recipeId).single();
 
       if (error) {
         console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message);
-      } else {
+      } else if (data) {
+        // scrap_count가 bigint라면 숫자로 변환
+        const count = parseInt(data.scrap_count as string, 10);
         setScrapCounts((prev) => ({
           ...prev,
-          [recipeId]: count ?? 0
+          [recipeId]: isNaN(count) ? 0 : count
         }));
       }
     } catch (error) {
