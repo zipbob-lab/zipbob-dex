@@ -30,7 +30,9 @@ export const saveRecipeDataSupabase = async () => {
     recipe_method: recipeData.RCP_WAY2,
     // recipe_level:,
     recipe_kcal: recipeData.INFO_ENG,
-    recipe_description: recipeData.RCP_NA_TIP
+    recipe_description: recipeData.RCP_NA_TIP,
+    created_at: new Date(),
+    updated_at: new Date()
   }));
   const serverClient = createClient();
 

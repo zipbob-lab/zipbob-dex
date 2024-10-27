@@ -1,9 +1,8 @@
 import InputField from "@/components/myrecipewrite/InputField";
-import { saveRecipeDataSupabase } from "../api/saveRecipeDataSupabase";
 
 const MyRecipeWrite = () => {
   // fetchRecipeData();
-  saveRecipeDataSupabase();
+  // saveRecipeDataSupabase();
   return (
     <div>
       <InputField />

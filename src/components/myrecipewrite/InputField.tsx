@@ -2,7 +2,8 @@
 
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useRef, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -45,12 +46,21 @@ const InputField = () => {
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<File[]>([]);
   const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
+  const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File>(undefined);
+  const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
+
+  // ref 관리
+  const recipeDoneImgRef = useRef<HTMLInputElement | null>(null);
+  const recipeDoingImgRefs = useRef<HTMLInputElement[]>([]);
+
+  // route
+  const router = useRouter();
 
   const {
     register,
     control,
-    handleSubmit,
-    watch
+    handleSubmit
+    // watch
     // formState: { errors }
   } = useForm<IFormInput>({
     defaultValues: {
@@ -111,88 +121,140 @@ const InputField = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("현재 이미지 URL 배열:", recipeDoingImgViewArray);
-  }, [recipeDoingImgViewArray]);
-
-  const handleModalClose = () => {
-    alert("모달닫기");
+  const handleImgDoneFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedImgFile = event.target.files?.[0];
+    if (selectedImgFile) {
+      setRecipeDoneImgFile(selectedImgFile);
+      setRecipeDoneImgView(URL.createObjectURL(selectedImgFile));
+    }
   };
 
+  const handleModalClose = () => {
+    alert("모달 닫기");
+  };
+
+  // 폼 제출
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const supabase = createClient();
-    //이미지 업로드
 
-    const recipeDoingImgUrls: string[] = [];
+    try {
+      // 로그인 세션
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error(sessionError.message);
+        return sessionError;
+      }
+      const loginSessionId = session?.user?.id;
 
-    for (let i = 0; i < recipeDoingImgFileArray.length; i++) {
-      const recipeDoingImgFile = recipeDoingImgFileArray[i];
-
-      if (recipeDoingImgFile) {
-        //한글파일명 업로드를 위해 파일명 변경
-        const lastDot = recipeDoingImgFile.name.lastIndexOf(".");
-        const fileExtension = recipeDoingImgFile.name.substring(lastDot + 1);
-        const newFileName = Math.random().toString(36).substr(2, 11);
+      // 이미지파일 유니크 파일명 만들어주는 함수
+      const makeUniqueFileName = (file: File) => {
+        const lastDot = file.name.lastIndexOf(".");
+        const fileExtension = file.name.substring(lastDot + 1);
+        const newFileName = Math.random().toString(36).slice(2, 13);
         const uniqueImgName = new Date().getTime();
-        const imgFileName = `${uniqueImgName}_${newFileName}`;
+        const imgFileName = `${uniqueImgName}_${newFileName}.${fileExtension}`;
+        return imgFileName;
+      };
 
-        const { error: imgError } = await supabase.storage
-          .from("zipbob_storage")
-          .upload(`recipeDoingImgFolder/${imgFileName}.${fileExtension}`, recipeDoingImgFile);
-        if (imgError) {
-          alert("업로드 실패");
-          console.error(imgError.message);
-          return;
-        } else {
-          const recipeDoingImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgFileName}.${fileExtension}`;
-          recipeDoingImgUrls.push(recipeDoingImgUrl); // push도 괜찮은가? 그게 아니면 일부 let을 사용해야하는데 ㄱㅊ은가?어차피 for문에서도 썼고..?
-          console.log("업로드된 이미지 URL:", recipeDoingImgUrl);
+      // 매뉴얼 이미지 업로드
+      const recipeDoingImgUrls: string[] = [];
+      for (let i = 0; i < recipeDoingImgFileArray.length; i++) {
+        const recipeDoingImgFile = recipeDoingImgFileArray[i];
+        if (recipeDoingImgFile) {
+          const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+          const { error: imgError } = await supabase.storage
+            .from("zipbob_storage")
+            .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+          if (imgError) {
+            alert("매뉴얼 이미지 업로드 실패");
+            console.error(imgError.message);
+            return;
+          } else {
+            const recipeDoingImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
+            recipeDoingImgUrls.push(recipeDoingImgUrl); // push도 괜찮은가? 그게 아니면 일부 let을 사용해야하는데 ㄱㅊ은가?어차피 for문에서도 썼고..?
+          }
         }
       }
-    }
 
-    // 난이도 설정
+      // 완료 이미지 업로드
+      let recipeDoneImgUrl = "";
+      if (recipeDoneImgFile) {
+        const imgDoneName = makeUniqueFileName(recipeDoneImgFile);
+        const { error: doneImgError } = await supabase.storage
+          .from("zipbob_storage")
+          .upload(`recipeDoneImgFolder/${imgDoneName}`, recipeDoneImgFile);
+        if (doneImgError) {
+          alert("완성 이미지 업로드 실패");
+          console.error(doneImgError.message);
+          return;
+        } else {
+          recipeDoneImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/${imgDoneName}`;
+        }
+      }
 
-    let recipeLevel = "";
-    if (data.ingredients.length > 0 && data.ingredients.length <= 3) {
-      recipeLevel = "하";
-    } else if (data.ingredients.length >= 4 && data.ingredients.length <= 6) {
-      recipeLevel = "중";
-    } else if (data.ingredients.length >= 7) {
-      recipeLevel = "상";
-    }
+      // 난이도 설정
+      let recipeLevel = "";
+      if (data.ingredients.length > 0 && data.ingredients.length <= 3) {
+        recipeLevel = "하";
+      } else if (data.ingredients.length >= 4 && data.ingredients.length <= 6) {
+        recipeLevel = "중";
+      } else if (data.ingredients.length >= 7) {
+        recipeLevel = "상";
+      }
 
-    // supabase에 데이터 INSERT
-    const { error } = await supabase.from("TEST_TABLE").insert({
-      user_id: "6bb0d30d-de0a-4d90-8ba8-6ff96bb5d203",
-      post_id: uuidv4(),
-      recipe_title: data.recipeTitle,
-      recipe_type: RecipeTypeEnum[data.recipeType as unknown as keyof typeof RecipeTypeEnum],
-      recipe_method: RecipeMethodEnum[data.recipeMethod as unknown as keyof typeof RecipeMethodEnum],
-      recipe_ingredients: data.ingredients,
-      recipe_img_doing: recipeDoingImgUrls,
-      // recipe_img_done: ,
-      recipe_manual: data.recipeDoingTexts || [],
-      recipe_description: data.recipeDescription,
-      recipe_level: recipeLevel
-    });
+      // supabase에 데이터 INSERT
+      const { error } = await supabase.from("TEST_TABLE").insert({
+        user_id: loginSessionId,
+        post_id: uuidv4(),
+        recipe_title: data.recipeTitle,
+        recipe_type: RecipeTypeEnum[data.recipeType as unknown as keyof typeof RecipeTypeEnum],
+        recipe_method: RecipeMethodEnum[data.recipeMethod as unknown as keyof typeof RecipeMethodEnum],
+        recipe_ingredients: data.ingredients,
+        recipe_img_doing: recipeDoingImgUrls,
+        recipe_img_done: recipeDoneImgUrl,
+        recipe_manual: data.recipeDoingTexts || [],
+        recipe_description: data.recipeDescription,
+        recipe_level: recipeLevel,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
 
-    console.log("업로드 데이터:", {
-      user_id: "6bb0d30d-de0a-4d90-8ba8-6ff96bb5d203",
-      post_id: uuidv4(),
-      repipe_title: data.recipeTitle,
-      recipe_type: data.recipeType,
-      recipe_method: data.recipeMethod,
-      recipe_ingredients: data.ingredients,
-      recipe_img_doing: data.recipeDoingImgs,
-      recipe_manual: data.recipeDoingTexts,
-      recipe_description: data.recipeDescription,
-      recipe_level: recipeLevel
-    });
+      if (error) {
+        console.error("나만의 레시피 INSERT 에러 : ", error);
+        return error;
+      }
 
-    if (error) {
-      console.error(error.message);
-      return error;
+      // 유저 테이블 경험치 가져오기
+      const { data: userData, error: userError } = await supabase
+        .from("USER_TABLE")
+        .select("user_exp")
+        .eq("user_id", loginSessionId)
+        .single();
+
+      if (userError) {
+        console.error("유저 테이블 SELECT 에러 : ", userError);
+      } else {
+        const userExp = userData.user_exp || 0;
+        const updatedExp = userExp + 10;
+
+        // 유저 테이블 경험치 추가
+        const { error: updateUserError } = await supabase
+          .from("USER_TABLE")
+          .update({ user_exp: updatedExp })
+          .eq("user_id", loginSessionId);
+
+        if (updateUserError) {
+          console.error("경험치 UPDATE 에러 : ", updateUserError);
+        }
+      }
+      router.push("/RecipeAll");
+      alert("레시피 작성이 완료되었습니다!");
+    } catch (error) {
+      console.error("레시피 작성 오류", error);
+      alert("레시피 작성 중 문제가 발생했습니다.");
     }
   };
 
@@ -206,43 +268,54 @@ const InputField = () => {
         </div>
 
         {/* 요리정보 */}
-        <div className=" bg-slate-200 p-5">
-          <div className="flex mb-5 gap-10">
-            <label className="font-bold">카테고리</label>
-            <select {...register("recipeMethod", { required: true })}>
-              <option value="boil">끓이기</option>
-              <option value="roast">굽기</option>
-              <option value="frying">튀기기</option>
-              <option value="steaming">찌기</option>
-              <option value="stirfry">볶기</option>
-              <option value="other">기타</option>
-            </select>
-            <select {...register("recipeType", { required: true })}>
-              <option value="bob">밥</option>
-              <option value="soup">국&찌개</option>
-              <option value="banchan">반찬</option>
-              <option value="onefood">일품</option>
-              <option value="desert">후식</option>
-              <option value="other">기타</option>
-            </select>
+        <div className=" bg-slate-200 p-5 flex justify-between">
+          <div>
+            <div className="flex mb-5 gap-10">
+              <label className="font-bold">카테고리</label>
+              <select {...register("recipeMethod", { required: true })}>
+                <option value="boil">끓이기</option>
+                <option value="roast">굽기</option>
+                <option value="frying">튀기기</option>
+                <option value="steaming">찌기</option>
+                <option value="stirfry">볶기</option>
+                <option value="other">기타</option>
+              </select>
+              <select {...register("recipeType", { required: true })}>
+                <option value="bob">밥</option>
+                <option value="soup">국&찌개</option>
+                <option value="banchan">반찬</option>
+                <option value="onefood">일품</option>
+                <option value="desert">후식</option>
+                <option value="other">기타</option>
+              </select>
+            </div>
+            <div className="flex mb-5 gap-10">
+              <label className="font-bold">레시피 제목</label>
+              <input
+                placeholder="예)10분이면 완성하는 바질 로제 파스타"
+                {...register("recipeTitle", { required: true })}
+              />
+            </div>
+            <div className="flex mb-5 gap-10">
+              <label className="font-bold">요리 소개</label>
+              <textarea
+                placeholder="레시피의 탄생배경, 특징을 적어주세요."
+                {...register("recipeDescription", { required: true })}
+              />
+            </div>
           </div>
-          <div className="flex mb-5 gap-10">
-            <label className="font-bold">레시피 제목</label>
-            <input
-              placeholder="예)10분이면 완성하는 바질 로제 파스타"
-              {...register("recipeTitle", { required: true })}
-            />
-          </div>
-          <div className="flex mb-5 gap-10">
-            <label className="font-bold">요리 소개</label>
-            <textarea
-              placeholder="레시피의 탄생배경, 특징을 적어주세요."
-              {...register("recipeDescription", { required: true })}
-            />
+          {/* 레시피 완성 이미지 */}
+          <div className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden">
+            {recipeDoneImgView ? (
+              <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} objectFit="cover" />
+            ) : (
+              <p>선택된 이미지가 없습니다.</p>
+            )}
+            <input type="file" onChange={handleImgDoneFileSelect} />
           </div>
         </div>
 
-        {/* 재료정보 */}
+        {/* 재료 정보 */}
         <div className="flex flex-col bg-pink-200 p-5 gap-1">
           <label className="font-bold">재료 정보</label>
           <span>정보를 정확하게 입력하면 재료를 남기지 않을 수 있어요!</span>
@@ -271,18 +344,19 @@ const InputField = () => {
           </div>
         </div>
 
-        {/* 단게별 레시피 */}
+        {/* 단계별 레시피 */}
         <div className="flex flex-col bg-yellow-50 p-5 gap-10">
           <div className="flex flex-col mb-5">
             <label className="font-bold">단계별 레시피 입력</label>
             <span>레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!</span>
           </div>
 
+          {/* 단계별 레시피 이미지 */}
           {recipeDoingsImgFields.map((_, i) => (
             <div className="flex bg-green-200" key={i}>
-              <div>
+              <div className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden">
                 {recipeDoingImgViewArray[i] ? (
-                  <Image src={recipeDoingImgViewArray[i]} alt="이미지" width={200} height={200} objectFit="cover" />
+                  <Image src={recipeDoingImgViewArray[i]} alt="매뉴얼 이미지" fill={true} objectFit="cover" />
                 ) : (
                   <p>선택된 이미지가 없습니다.</p>
                 )}
@@ -294,12 +368,14 @@ const InputField = () => {
                   })}
                 />
               </div>
+
               <textarea
                 placeholder="자세하게 적을수록 더욱 도움이 돼요!"
                 {...register(`recipeDoingTexts.${i}`, { required: true })}
               />
             </div>
           ))}
+
           <div>
             <button
               type="button"
