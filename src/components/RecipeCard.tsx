@@ -1,21 +1,22 @@
-import React from "react";
-import BookmarkButton from "./common/BookmarkButton";
-
-// 사용예시
-
-type Recipe = {
-  id: string;
-  title: string;
-  description: string;
-};
+import { Recipe } from "@/types/Recipe";
+import ScrapButton from "./common/button/ScrapButton";
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 max-w-sm mx-auto mb-4 relative">
-      <h3 className="text-xl font-bold mb-2">{recipe.title}</h3>
-      <p className="text-gray-600 mb-4">{recipe.description}</p>
+    <div>
+      {recipe.recipe_img_done && (
+        <img
+          src={recipe.recipe_img_done}
+          alt={recipe.recipe_title}
+          className="w-full h-48 object-cover rounded-md mb-4"
+        />
+      )}
 
-      <BookmarkButton recipeId={recipe.id} />
+      <h3 className="text-lg font-semibold mb-2">{recipe.recipe_title}</h3>
+      {recipe.creator_nickname || "집밥도감 마스터"}
+      <div className="flex justify-end">
+        <ScrapButton postId={recipe.post_id} />
+      </div>
     </div>
   );
 };
