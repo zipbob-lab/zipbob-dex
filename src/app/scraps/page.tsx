@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/supabase/supabase";
 import { getUserId } from "@/serverActions/profileAction";
-import { UUID } from "crypto";
+// import { UUID } from "crypto";
 
 type Scrap = {
-  scrap_id: UUID;
+  scrap_id: string;
   folder_name: string;
   scraped_recipe: string;
   created_at: string;

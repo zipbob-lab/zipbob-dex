@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useScrap } from "@/hooks/useScrap";
 import { Bookmark } from "lucide-react";
 
@@ -8,6 +8,12 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { folderName, setFolderName, isSaving, saveScrap, existingFolders, scrapCounts, fetchRecipeScrapCount } =
     useScrap();
+
+  // postId 확인
+  useEffect(() => {
+    console.log("스크랩 버튼에 전달된 postId:", postId);
+    fetchRecipeScrapCount(postId);
+  }, [postId]);
 
   // 북마크 버튼 클릭 시 모달 창 표시
   const handleMarkClick = () => {
@@ -23,7 +29,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   };
 
   const handleSaveComplete = async (folder: string) => {
-    console.log("ScrapButton에서 saveScrap 호출");
+    console.log("저장할 postId 확인", postId);
     await saveScrap(postId, folder);
     setIsModalOpen(false);
     fetchRecipeScrapCount(postId);

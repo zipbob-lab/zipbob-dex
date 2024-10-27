@@ -26,6 +26,7 @@ export const useScrap = () => {
 
   // 레시피 스크랩 함수
   const saveScrap = async (recipeId: string, folderName: string) => {
+    console.log("saveScrap에 전달된 recipeId:", recipeId); //uuid인지 확인
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
       return;
@@ -37,6 +38,8 @@ export const useScrap = () => {
       .select("*")
       .eq("post_id", recipeId)
       .single();
+
+    console.log("recipeData 확인", recipeData);
 
     if (fetchError) {
       console.error("레시피 데이터 가져오기 실패", fetchError.message);
