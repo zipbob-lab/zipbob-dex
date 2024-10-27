@@ -1,18 +1,11 @@
-import { fetchRecipeDbData } from "@/serverActions/fetchRecipeDataFromSupabase";
-import RecipeCard from "@/components/RecipeCard";
-import { Recipe } from "@/types/Recipe";
+import Link from "next/link";
 
 export default async function Home() {
-  const data = await fetchRecipeDbData();
-  const recipes = data;
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">요리 레시피</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recipes?.map((recipe: Recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)}
-      </div>
+    <div className="flex flex-col">
+      <h1>Home 입니다...</h1>
+      <Link href={"/login"}>로그인 페이지로 이동</Link>
+      <Link href={"/RecipeAll"}>전체 레시피 화면으로 이동</Link>
     </div>
   );
 }
