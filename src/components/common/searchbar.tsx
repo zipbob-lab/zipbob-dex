@@ -11,9 +11,10 @@ interface KeyInterface {
 const SearchBar = () => {
   const [keywords, setKeywords] = useState<KeyInterface[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const router = useRouter();
 
-  // 로컬 스토리지에서 검색어 불러오기
+  // 로컬 스토리지 검색어 불러오기
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedKeywords = localStorage.getItem("keywords");
@@ -23,17 +24,20 @@ const SearchBar = () => {
     }
   }, []);
 
-  // keywords가 변경될 때마다 로컬 스토리지에 저장
+  // keywords가 변경시 로컬 스토리지 저장
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("keywords", JSON.stringify(keywords));
     }
   }, [keywords]);
 
-  // 검색어 추가
+  // 검색어 추가 (최대 5개 유지)
   const addKeyword = (text: string) => {
     const newKeyword = { id: Date.now(), text };
-    setKeywords([newKeyword, ...keywords]);
+    setKeywords((prevKeywords) => {
+      const updatedKeywords = [newKeyword, ...prevKeywords];
+      return updatedKeywords.slice(0, 5);
+    });
   };
 
   // 검색어 삭제
@@ -42,22 +46,21 @@ const SearchBar = () => {
   };
 
   // 모든 검색어 삭제
-  const clearKeywords = () => {
+  const deleteKeywords = () => {
     setKeywords([]);
   };
 
-  // 검색어 입력 처리
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
-  // 검색 제출 시 페이지 이동 및 검색어 추가
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim() === "") return;
     router.push(`/search_result/${searchValue}`);
     addKeyword(searchValue);
     setSearchValue("");
+    setIsDropdownVisible(false);
   };
 
   // 저장된 검색어 클릭 시 페이지 이동
@@ -65,37 +68,49 @@ const SearchBar = () => {
     router.push(`/search_result/${text}`);
   };
 
+  const handleFocus = () => setIsDropdownVisible(true);
+  const handleBlur = () => setIsDropdownVisible(false);
+
   return (
     <div>
       <header>
         <form onSubmit={handleSearchSubmit}>
-          <input type="search" value={searchValue} onChange={handleSearchChange} placeholder="레시피를 검색해보세요" />
+          <input
+            type="search"
+            value={searchValue}
+            onChange={handleSearchChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            placeholder="레시피를 검색해보세요"
+          />
+          <button type="submit">검색</button>
         </form>
       </header>
 
-      <div>
-        <h2>최근 검색어</h2>
-        {keywords.length > 0 && (
-          <button type="button" onClick={clearKeywords}>
-            전체 삭제
-          </button>
-        )}
-      </div>
-
-      <ul>
-        {keywords.length > 0 ? (
-          keywords.map((k) => (
-            <li key={k.id}>
-              <p onClick={() => handleKeywordClick(k.text)}>{k.text}</p>
-              <button type="button" onClick={() => removeKeyword(k.id)}>
-                삭제
+      {isDropdownVisible && (
+        <div onMouseDown={(e) => e.preventDefault()}>
+          <h2>최근 검색어</h2>
+          {keywords.length > 0 ? (
+            <>
+              <button type="button" onClick={deleteKeywords}>
+                전체 검색어 삭제
               </button>
-            </li>
-          ))
-        ) : (
-          <div>최근 검색어가 없습니다</div>
-        )}
-      </ul>
+              <ul>
+                {keywords.map((k) => (
+                  <li key={k.id}>
+                    <p onClick={() => handleKeywordClick(k.text)}>{k.text}</p>
+                    <button type="button" onClick={() => removeKeyword(k.id)}>
+                      삭제
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div>최근 검색어가 없습니다</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
