@@ -13,8 +13,10 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       )}
 
       <h3 className="text-lg font-semibold mb-2">{recipe.recipe_title}</h3>
-
-      <ScrapButton postId={recipe.post_id} />
+      {recipe.creator_nickname || "집밥도감 마스터"}
+      <div className="flex justify-end">
+        <ScrapButton postId={recipe.post_id} />
+      </div>
     </div>
   );
 };

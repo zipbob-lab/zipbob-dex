@@ -24,9 +24,20 @@ export const useScrap = () => {
     fetchUserId();
   }, []);
 
+  const incrementScrapCount = async (recipeId: string) => {
+    const { error } = await supabase
+      .from("TEST_TABLE")
+      .update({ scrap_count: supabase.raw("scrap_count + 1") })
+      .eq("post_id", recipeId);
+
+    if (error) {
+      console.log("스크랩 카운트 오류", error.message);
+    }
+  };
+
   // 레시피 스크랩 함수
   const saveScrap = async (recipeId: string, folderName: string) => {
-    console.log("saveScrap에 전달된 recipeId:", recipeId); //uuid인지 확인
+    // console.log("saveScrap에 전달된 recipeId:", recipeId); //uuid인지 확인
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
       return;
@@ -39,7 +50,7 @@ export const useScrap = () => {
       .eq("post_id", recipeId)
       .single();
 
-    console.log("recipeData 확인", recipeData);
+    // console.log("recipeData 확인", recipeData);
 
     if (fetchError) {
       console.error("레시피 데이터 가져오기 실패", fetchError.message);
@@ -59,6 +70,9 @@ export const useScrap = () => {
 
     if (error) {
       console.error("스크랩 저장 오류:", error.message);
+    } else {
+      await incrementScrapCount(recipeId);
+      fetchRecipeScrapCount(recipeId);
     }
     setIsSaving(false);
   };
