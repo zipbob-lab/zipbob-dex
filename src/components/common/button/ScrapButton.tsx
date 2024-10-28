@@ -6,6 +6,8 @@ import { X } from "lucide-react";
 
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
+import { toast } from "react-toastify";
+import CustomToast from "@/components/CustomToast";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +34,11 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     try {
       const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
       if (savedSuccessfully) {
-        alert("저장 완료");
+        // alert("저장 완료");
+        toast(<CustomToast closeToast={() => toast.dismiss()} />, {
+          theme: "dark",
+          closeButton: false
+        });
       }
     } catch (error) {
       console.error("스크랩 저장 오류:", error);
