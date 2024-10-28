@@ -22,9 +22,8 @@ export const saveRecipeDataSupabase = async () => {
         ]
     ).filter(Boolean),
     recipe_img_done: recipeData.ATT_FILE_NO_MK?.replace(/"/g, ""),
-    recipe_manual: Array.from(
-      { length: 20 },
-      (_, index) => recipeData[`MANUAL${String(index + 1).padStart(2, "0")}`]
+    recipe_manual: Array.from({ length: 20 }, (_, index) =>
+      recipeData[`MANUAL${String(index + 1).padStart(2, "0")}`].replace(/\d\.\s/, "")
     ).filter(Boolean),
     recipe_type: recipeData.RCP_PAT2,
     recipe_method: recipeData.RCP_WAY2,
