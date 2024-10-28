@@ -3,7 +3,7 @@
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -30,7 +30,7 @@ interface IFormInput {
   recipeType: RecipeTypeEnum;
   recipeTitle: string;
   recipeDescription: string;
-  recipeDoingImgs: File | undefined[];
+  recipeDoingImgs: (File | undefined)[];
   recipeDoingTexts: string[];
   ingredients: RecipeForm[];
   recipeManual: string;
@@ -46,12 +46,12 @@ const InputField = () => {
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<File[]>([]);
   const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
-  const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File>(undefined);
+  const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File | undefined>(undefined);
   const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
 
   // ref 관리
-  const recipeDoneImgRef = useRef<HTMLInputElement | null>(null);
-  const recipeDoingImgRefs = useRef<HTMLInputElement[]>([]);
+  // const recipeDoneImgRef = useRef<HTMLInputElement | null>(null);
+  // const recipeDoingImgRefs = useRef<HTMLInputElement[]>([]);
 
   // route
   const router = useRouter();
@@ -93,13 +93,21 @@ const InputField = () => {
     append({ ingredient: "", amount: "", unit: "" }, { shouldFocus: false });
   };
 
-  const handleAddRecipeDoing = () => {
+  const handleAddRecipeDoingForm = () => {
     appendRecipeDoingImg(undefined);
     appendRecipeDoingText("");
-
     setRecipeDoingImgFileArray((prev) => [...prev, undefined]);
     setRecipeDoingImgViewArray((prev) => [...prev, ""]);
   };
+
+  useEffect(() => {
+    if (recipeDoingsImgFields.length === 0) {
+      appendRecipeDoingImg(undefined);
+    }
+    if (recipeDoingsTextFields.length === 0) {
+      appendRecipeDoingText("");
+    }
+  }, []);
 
   // 이미지 선택
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -132,6 +140,15 @@ const InputField = () => {
   const handleModalClose = () => {
     alert("모달 닫기");
   };
+
+  // useEffect(() => {
+  //   if (recipeDoingsImgFields.length === 0) {
+  //     appendRecipeDoingImg(undefined);
+  //   }
+  //   if (recipeDoingsTextFields.length === 0) {
+  //     appendRecipeDoingText("");
+  //   }
+  // }, []);
 
   // 폼 제출
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -217,13 +234,11 @@ const InputField = () => {
         recipe_img_done: recipeDoneImgUrl,
         recipe_manual: data.recipeDoingTexts || [],
         recipe_description: data.recipeDescription,
-        recipe_level: recipeLevel,
-        created_at: new Date(),
-        updated_at: new Date()
+        recipe_level: recipeLevel
       });
 
       if (error) {
-        console.error("나만의 레시피 INSERT 에러 : ", error);
+        console.error("나만의 레시피 INSERT 에러 : ", error.message);
         return error;
       }
 
@@ -235,7 +250,7 @@ const InputField = () => {
         .single();
 
       if (userError) {
-        console.error("유저 테이블 SELECT 에러 : ", userError);
+        console.error("유저 테이블 SELECT 에러 : ", userError.message);
       } else {
         const userExp = userData.user_exp || 0;
         const updatedExp = userExp + 10;
@@ -247,13 +262,13 @@ const InputField = () => {
           .eq("user_id", loginSessionId);
 
         if (updateUserError) {
-          console.error("경험치 UPDATE 에러 : ", updateUserError);
+          console.error("경험치 UPDATE 에러 : ", updateUserError.message);
         }
       }
       router.push("/RecipeAll");
       alert("레시피 작성이 완료되었습니다!");
     } catch (error) {
-      console.error("레시피 작성 오류", error);
+      console.error("레시피 작성 오류", error.message);
       alert("레시피 작성 중 문제가 발생했습니다.");
     }
   };
@@ -380,7 +395,7 @@ const InputField = () => {
             <button
               type="button"
               className="bg-slate-100 p-3 flex justify-center items-center"
-              onClick={handleAddRecipeDoing}
+              onClick={handleAddRecipeDoingForm}
             >
               레시피 추가하기
             </button>

@@ -7,7 +7,7 @@ export const saveRecipeDataSupabase = async () => {
   console.log("레시피 데이터:", recipeData);
 
   const saveData = recipeData.COOKRCP01.row.map((recipeData: any) => ({
-    user_id: "12fc1c2d-f564-4510-9aac-635b1345b3ca",
+    user_id: "b8d5e70b-c868-43fc-ac7d-e0601de00d0b",
     post_id: uuidv4(),
     recipe_seq: recipeData.RCP_SEQ,
     recipe_title: recipeData.RCP_NM,
@@ -36,7 +36,7 @@ export const saveRecipeDataSupabase = async () => {
   }));
   const serverClient = createClient();
 
-  const { error } = await serverClient.from("TEST_TABLE").insert(saveData);
+  const { error } = await serverClient.from("TEST2_TABLE").insert(saveData);
 
   if (error) {
     console.error("저장오류:", error.message);
