@@ -36,7 +36,7 @@ interface IFormInput {
   recipeManual: string;
 }
 
-interface RecipeForm {
+export interface RecipeForm {
   ingredient: string;
   amount: string;
   unit: string;
@@ -223,7 +223,7 @@ const InputField = () => {
       }
 
       // supabase에 데이터 INSERT
-      const { error } = await supabase.from("TEST_TABLE").insert({
+      const { error } = await supabase.from("TEST2_TABLE").insert({
         user_id: loginSessionId,
         post_id: uuidv4(),
         recipe_title: data.recipeTitle,
@@ -268,7 +268,7 @@ const InputField = () => {
       router.push("/RecipeAll");
       alert("레시피 작성이 완료되었습니다!");
     } catch (error) {
-      console.error("레시피 작성 오류", error.message);
+      console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
     }
   };
