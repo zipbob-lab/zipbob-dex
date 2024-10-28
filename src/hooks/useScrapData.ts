@@ -41,6 +41,13 @@ const fetchScraps = async (userId: string): Promise<Scrap[]> => {
   return data || [];
 };
 
+// 스크랩 데이터 삭제 함수
+const deleteScrapDB = async (recipeId: string, userId: string): Promise<void> => {
+  const { error } = await supabase.from("SCRAP_TABLE").delete().eq("scrap_id", recipeId).eq("user_id", userId);
+
+  if (error) throw new Error(error.message);
+};
+
 interface Scrap {
   scrap_id: string;
   folder_name: string;
@@ -56,6 +63,7 @@ interface UseScrapData {
   refetchScraps: () => void;
   incrementScrapCount: (recipeId: string) => Promise<boolean>;
   saveScrap: (params: { recipeId: string; folderName: string }) => Promise<boolean>;
+  deleteScrap: (recipeId: string) => Promise<boolean>;
   useFetchScrapCount: (recipeId: string) => UseQueryResult<number>;
 }
 
@@ -78,7 +86,7 @@ export const useScrapData = (): UseScrapData => {
     queryKey: ["folders", userId],
     queryFn: () => fetchFolders(userId as string),
     enabled: !!userId,
-    staleTime: 5 * 60 * 1000 // 5분 동안 캐싱
+    staleTime: 5 * 60 * 1000
   });
 
   // 스크랩 데이터 쿼리
@@ -106,6 +114,24 @@ export const useScrapData = (): UseScrapData => {
 
       if (error) throw new Error(error.message);
 
+      queryClient.setQueryData(["scrapCount", recipeId], newCount);
+      return true;
+    }
+  });
+
+  // 스크랩 삭제 mutation
+  const { mutateAsync: deleteScrap } = useMutation({
+    mutationFn: async (recipeId: string) => {
+      if (!userId) throw new Error("로그인 된 사용자가 없습니다.");
+      await deleteScrapDB(recipeId, userId);
+
+      const currentCount = await fetchRecipeScrapCount(recipeId);
+      const newCount = currentCount > 0 ? currentCount - 1 : 0;
+
+      const { error } = await supabase.from("TEST_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
+      if (error) throw new Error(error.message);
+
+      queryClient.setQueryData(["scraps", userId], newCount);
       queryClient.setQueryData(["scrapCount", recipeId], newCount);
       return true;
     }
@@ -154,6 +180,7 @@ export const useScrapData = (): UseScrapData => {
     refetchScraps,
     incrementScrapCount,
     saveScrap,
+    deleteScrap,
     useFetchScrapCount
   };
 };

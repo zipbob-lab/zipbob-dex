@@ -11,7 +11,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
-  const { existingFolders, saveScrap, useFetchScrapCount } = useScrapData();
+  const { existingFolders, saveScrap, useFetchScrapCount, deleteScrap } = useScrapData();
 
   // 포스트 스크랩 개수
   const { data: scrapCount } = useFetchScrapCount(postId);
@@ -21,7 +21,6 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     setIsModalOpen((prev) => !prev);
   };
 
-  // 기존 폴더에 저장
   const handleFolderClick = async (folder: string) => {
     setFolderName(folder);
     await handleSaveComplete();
@@ -30,7 +29,6 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   // 저장 과정
   const handleSaveComplete = async () => {
     setIsSaving(true);
-
     try {
       const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
       if (savedSuccessfully) {
