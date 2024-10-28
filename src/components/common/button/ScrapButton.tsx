@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { Bookmark } from "lucide-react";
+import { X } from "lucide-react";
+
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 
@@ -11,21 +13,21 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
   const { existingFolders, saveScrap, useFetchScrapCount } = useScrapData();
 
-  // Fetch current scrap count for the post
+  // 포스트 스크랩 개수
   const { data: scrapCount } = useFetchScrapCount(postId);
 
-  // Show modal on bookmark click
+  // 북마크 클릭하면 모달 등장
   const handleMarkClick = () => {
     setIsModalOpen((prev) => !prev);
   };
 
-  // Save to an existing folder
+  // 기존 폴더에 저장
   const handleFolderClick = async (folder: string) => {
     setFolderName(folder);
     await handleSaveComplete();
   };
 
-  // Complete save process
+  // 저장 과정
   const handleSaveComplete = async () => {
     setIsSaving(true);
 
@@ -52,39 +54,35 @@ const ScrapButton = ({ postId }: { postId: string }) => {
       {/* 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full relative">
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
               onClick={() => setIsModalOpen(false)}
             >
-              ✕
+              <X />
             </button>
 
             {/* 새 폴더 이름 입력 */}
-            <input
-              type="text"
-              placeholder="새 폴더 이름 입력"
-              value={folderName}
-              onChange={(e) => setFolderName(e.target.value)}
-              className="border border-gray-300 p-2 w-full rounded-lg mb-2"
-            />
-            <button
-              onClick={handleSaveComplete}
-              disabled={isSaving}
-              className="bg-blue-500 text-white p-2 w-full rounded-lg"
-            >
-              {isSaving ? "저장 중..." : "스크랩 저장"}
-            </button>
+            <div className="flex justify-between align-middle">
+              <input
+                type="text"
+                placeholder="폴더 이름을 적어주세요"
+                value={folderName}
+                onChange={(e) => setFolderName(e.target.value)}
+                className="relative border-[1px] border-gray-300 p-2 w-full mb-2 rounded-sm"
+              />
+              <button onClick={handleSaveComplete} disabled={isSaving} className="absolute text-orange-500 p-2 right-8">
+                {isSaving ? "저장 중..." : "만들기"}
+              </button>
+            </div>
 
             {/* 기존 폴더 목록 */}
             <div className="mt-4">
-              <h3 className="text-sm font-bold mb-2">기존 폴더:</h3>
-
               {existingFolders?.map((folder) => (
                 <button
                   key={folder}
                   onClick={() => handleFolderClick(folder)}
-                  className="block text-left w-full p-2 rounded-lg mb-1 border-b-2"
+                  className="block text-left w-full p-2  mb-1 border-b"
                 >
                   {folder}
                 </button>

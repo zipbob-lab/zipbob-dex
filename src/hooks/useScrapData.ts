@@ -5,17 +5,17 @@ import { getUserId } from "@/serverActions/profileAction";
 import { useEffect } from "react";
 
 // 폴더 목록을 가져오는 함수
-async function fetchFolders(userId: string): Promise<string[]> {
+const fetchFolders = async (userId: string): Promise<string[]> => {
   const { data, error } = await supabase.from("SCRAP_TABLE").select("folder_name").eq("user_id", userId);
 
   if (error) throw new Error(error.message);
 
   // 중복 폴더 이름 제거
   return Array.from(new Set(data.map((item) => item.folder_name)));
-}
+};
 
 // 특정 레시피가 이미 스크랩되었는지 확인하는 함수
-async function isAlreadyScrapped(recipeId: string, userId: string): Promise<boolean> {
+const isAlreadyScrapped = async (recipeId: string, userId: string): Promise<boolean> => {
   const { data, error } = await supabase
     .from("SCRAP_TABLE")
     .select("scrap_id")
@@ -24,22 +24,22 @@ async function isAlreadyScrapped(recipeId: string, userId: string): Promise<bool
 
   if (error) throw new Error(error.message);
   return data && data.length > 0;
-}
+};
 
 // 레시피의 스크랩 수를 가져오는 함수
-async function fetchRecipeScrapCount(recipeId: string): Promise<number> {
+const fetchRecipeScrapCount = async (recipeId: string): Promise<number> => {
   const { data, error } = await supabase.from("TEST_TABLE").select("scrap_count").eq("post_id", recipeId).single();
 
   if (error) throw new Error(error.message);
   return data?.scrap_count || 0;
-}
+};
 
 // 스크랩 데이터 가져오기 함수
-async function fetchScraps(userId: string): Promise<Scrap[]> {
+const fetchScraps = async (userId: string): Promise<Scrap[]> => {
   const { data, error } = await supabase.from("SCRAP_TABLE").select("*").eq("user_id", userId);
   if (error) throw new Error(error.message);
   return data || [];
-}
+};
 
 interface Scrap {
   scrap_id: string;

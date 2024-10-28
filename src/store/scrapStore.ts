@@ -22,6 +22,6 @@ export const useScrapStore = create<ScrapStore>((set) => ({
   setIsSaving: (saving) => set({ isSaving: saving }),
   existingFolders: [],
   setExistingFolders: (folders) => set({ existingFolders: folders }),
-  selectedFolder: null, // 초기값을 null로 설정
+  selectedFolder: null,
   setSelectedFolder: (folder) => set({ selectedFolder: folder })
 }));
