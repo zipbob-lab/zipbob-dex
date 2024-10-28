@@ -64,14 +64,12 @@ export const useScrap = () => {
     if (scrapCountUpdateError) {
       console.error("스크랩 카운트 증가 오류:", scrapCountUpdateError.message);
     } else {
-      // console.log("스크랩 카운트가 정상적으로 증가되었습니다:", newCount);
       setScrapCounts((prev) => ({ ...prev, [recipeId]: newCount }));
     }
   };
 
   // 레시피 스크랩 함수
   const saveScrap = async (recipeId: string, folderName: string): Promise<boolean> => {
-    // console.log("saveScrap에 전달된 recipeId:", recipeId); //uuid인지 확인
     if (!userId) {
       console.error("로그인 된 사용자가 없습니다.");
       return false;
@@ -90,8 +88,6 @@ export const useScrap = () => {
       .select("*")
       .eq("post_id", recipeId)
       .single();
-
-    // console.log("recipeData 확인", recipeData);
 
     if (fetchError) {
       console.error("레시피 데이터 가져오기 실패", fetchError.message);
@@ -117,7 +113,7 @@ export const useScrap = () => {
       fetchRecipeScrapCount(recipeId);
       return true;
     }
-    setIsSaving(false);
+    // setIsSaving(false);
   };
 
   const fetchFolders = async (user_id: string) => {
@@ -139,7 +135,6 @@ export const useScrap = () => {
       if (error) {
         console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message);
       } else if (data) {
-        // scrap_count가 bigint라면 숫자로 변환
         const count = parseInt(data.scrap_count as string, 10);
         setScrapCounts((prev) => ({
           ...prev,

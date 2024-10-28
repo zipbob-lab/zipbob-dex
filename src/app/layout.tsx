@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "./providers";
 import "@/styles/reset.css";
 import "./globals.css";
 // import { ToastContainer } from "react-toastify";
@@ -17,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <Providers>{children}</Providers>
         {/* <ToastContainer
           position="bottom-center"
           autoClose={3000}

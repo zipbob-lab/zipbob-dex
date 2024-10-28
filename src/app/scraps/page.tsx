@@ -1,50 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/supabase/supabase";
-import { getUserId } from "@/serverActions/profileAction";
-// import { UUID } from "crypto";
-
-type Scrap = {
-  scrap_id: string;
-  folder_name: string;
-  scraped_recipe: string;
-  created_at: string;
-  updated_at: string;
-};
+import { useScrapStore } from "@/store/scrapStore";
+import { useScrapData } from "@/hooks/useScrapData";
+import ScrapButton from "@/components/common/button/ScrapButton";
 
 const ScrapPage = () => {
-  const [scraps, setScraps] = useState<Scrap[]>([]);
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
-  const [folders, setFolders] = useState<string[]>([]);
-  const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const user_id = await getUserId();
-      if (user_id) {
-        setUserId(user_id);
-        fetchScraps(user_id);
-      } else {
-        console.log("로그인 된 사용자가 없습니다.");
-      }
-    };
-
-    const fetchScraps = async (user_id: string) => {
-      const { data, error } = await supabase.from("SCRAP_TABLE").select("*").eq("user_id", user_id);
-
-      if (error) {
-        console.error("스크랩 데이터를 불러오는 중 오류:", error.message);
-      } else {
-        setScraps(data);
-
-        const uniqueFolders = Array.from(new Set(data.map((scrap: Scrap) => scrap.folder_name)));
-        setFolders(uniqueFolders);
-      }
-    };
-
-    fetchUserId();
-  }, []);
+  const { selectedFolder, setSelectedFolder } = useScrapStore();
+  const { existingFolders, scraps } = useScrapData();
 
   const handleFolderClick = (folder: string | null) => {
     setSelectedFolder(folder);
@@ -58,7 +20,7 @@ const ScrapPage = () => {
       <div className="mb-6">
         <div className="flex gap-2 border-b-2 py-2">
           <button onClick={() => handleFolderClick(null)}>전체</button>
-          {folders.map((folder) => (
+          {existingFolders?.map((folder) => (
             <button key={folder} onClick={() => handleFolderClick(folder)}>
               {folder}
             </button>
@@ -68,9 +30,8 @@ const ScrapPage = () => {
         {/* 해당 폴더의 레시피 리스트 */}
         <div className="grid grid-cols-1 mt-8 md:grid-cols-2 gap-4">
           {scraps
-            .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
+            ?.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
             .map((scrap) => {
-              // scraped_recipe를 JSON으로 파싱
               let recipeDetail;
               try {
                 recipeDetail = JSON.parse(scrap.scraped_recipe);
@@ -90,6 +51,9 @@ const ScrapPage = () => {
                   )}
                   <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
                   <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
+                  <div className="flex justify-end">
+                    <ScrapButton postId={recipeDetail.post_id} />
+                  </div>
                 </div>
               );
             })}

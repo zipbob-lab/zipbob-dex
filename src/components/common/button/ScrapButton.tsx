@@ -1,52 +1,52 @@
 "use client";
 
 import React, { useState } from "react";
-import { useScrap } from "@/hooks/useScrap";
 import { Bookmark } from "lucide-react";
+import { useScrapStore } from "@/store/scrapStore";
+import { useScrapData } from "@/hooks/useScrapData";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { folderName, setFolderName, isSaving, saveScrap, existingFolders, scrapCounts, fetchRecipeScrapCount } =
-    useScrap();
 
-  // postId 확인
-  // useEffect(() => {
-  //   console.log("스크랩 버튼에 전달된 postId:", postId);
-  //   fetchRecipeScrapCount(postId);
-  // }, [postId]);
+  const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
+  const { existingFolders, saveScrap, useFetchScrapCount } = useScrapData();
 
-  // 북마크 버튼 클릭 시 모달 창 표시
+  // Fetch current scrap count for the post
+  const { data: scrapCount } = useFetchScrapCount(postId);
+
+  // Show modal on bookmark click
   const handleMarkClick = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen((prev) => !prev);
   };
 
-  // 기존 폴더 클릭하면 저장
+  // Save to an existing folder
   const handleFolderClick = async (folder: string) => {
     setFolderName(folder);
-    await handleSaveComplete(folder);
-    // alert("저장완료");
+    await handleSaveComplete();
   };
 
-  const handleSaveComplete = async (folder: string) => {
-    // // console.log("저장할 postId 확인", postId);
-    // await saveScrap(postId, folder);
-    // // await incrementScrapCount(postId);
-    // await fetchRecipeScrapCount(postId);
-    // setIsModalOpen(false);
-    const savedSuccessfully = await saveScrap(postId, folder);
-    if (savedSuccessfully) {
-      // 중복이 아닌 경우에만 "저장완료" 경고 표시
-      alert("저장완료");
-      await fetchRecipeScrapCount(postId); // 최신 카운트 업데이트
+  // Complete save process
+  const handleSaveComplete = async () => {
+    setIsSaving(true);
+
+    try {
+      const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
+      if (savedSuccessfully) {
+        alert("저장 완료");
+      }
+    } catch (error) {
+      console.error("스크랩 저장 오류:", error);
+    } finally {
+      setIsSaving(false);
+      setIsModalOpen(false);
     }
-    setIsModalOpen(false);
   };
 
   return (
     <div>
       <div className="flex" onClick={handleMarkClick}>
         <Bookmark />
-        <span className="ml-2 text-sm font-medium text-gray-700">{scrapCounts[postId] || 0}</span>
+        <span className="ml-2 text-sm font-medium text-gray-700">{scrapCount || 0}</span>
       </div>
 
       {/* 모달 */}
@@ -69,7 +69,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
               className="border border-gray-300 p-2 w-full rounded-lg mb-2"
             />
             <button
-              onClick={() => handleSaveComplete(folderName)}
+              onClick={handleSaveComplete}
               disabled={isSaving}
               className="bg-blue-500 text-white p-2 w-full rounded-lg"
             >
@@ -80,7 +80,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
             <div className="mt-4">
               <h3 className="text-sm font-bold mb-2">기존 폴더:</h3>
 
-              {existingFolders.map((folder) => (
+              {existingFolders?.map((folder) => (
                 <button
                   key={folder}
                   onClick={() => handleFolderClick(folder)}
