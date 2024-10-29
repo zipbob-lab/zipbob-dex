@@ -1,19 +1,23 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
+import { useParams } from "next/navigation";
 
 const SearchResultPage = () => {
-  const router = useRouter();
-  const { query } = router.query;
+  const { query } = useParams();
+  console.log("query : ", query);
+  const searchText = decodeURI(query as string);
+
+  console.log("searchText: ", searchText);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
-        const { data } = await browserClient.from("TEST2_TABLE").select("*").ilike("recipe_title", `%${query}%`);
+        const { data } = await browserClient.from("TEST2_TABLE").select("*").like("recipe_title", `%${searchText}%`);
+        console.log("검색결과 => ", data);
         setRecipes(data || []);
       };
       fetchResults();
@@ -24,7 +28,7 @@ const SearchResultPage = () => {
     <div>
       <header>
         <h1>검색 결과</h1>
-        <p>검색어: {query}</p>
+        <p>검색 결과 {recipes.length}개</p>
       </header>
 
       <section>
@@ -47,5 +51,6 @@ const SearchResultPage = () => {
 
 export default SearchResultPage;
 
+// 디코딩 오류 의문
 // 디테일 페이지 이동
 // 유형 기능 업데이트

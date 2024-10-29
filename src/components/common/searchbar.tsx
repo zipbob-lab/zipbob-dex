@@ -58,7 +58,7 @@ const SearchBar = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim() === "") return;
-    router.push(`/searchresults/${searchValue}`);
+    router.push(`/searchResults/${searchValue}`);
     addKeyword(searchValue);
     setSearchValue("");
     setIsDropdownVisible(false);
@@ -66,7 +66,7 @@ const SearchBar = () => {
 
   // 저장된 검색어 클릭 시 페이지 이동
   const handleKeywordClick = (text: string) => {
-    router.push(`/searchresults/${text}`);
+    router.push(`/searchResults/${text}`);
   };
 
   const handleFocus = () => setIsDropdownVisible(true);
