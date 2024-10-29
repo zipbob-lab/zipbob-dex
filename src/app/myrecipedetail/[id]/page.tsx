@@ -1,4 +1,4 @@
-import RecipeDetailView from "@/components/myrecipedetail/RecipeDetailView";
+import RecipeDetailView from "@/components/myRecipeDetail/RecipeDetailView";
 import React from "react";
 
 const MyRecipeDetail = () => {
