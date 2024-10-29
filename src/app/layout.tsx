@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Providers from "./providers";
 import "@/styles/reset.css";
 import "./globals.css";
-import Header from "@/components/common/header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +19,6 @@ export default function RootLayout({
     // <ReactQueryClientProvider>
     <html lang="en">
       <body>
-        <Header />
         <Providers>{children}</Providers>
         <ToastContainer
           position="bottom-center"
