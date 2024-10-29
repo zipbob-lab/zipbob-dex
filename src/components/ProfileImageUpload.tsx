@@ -52,7 +52,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, onImage
       return;
     }
 
-    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder4/${userId}`;
+    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/${userId}`;
     console.log("이미지 업로드 성공:", profileImageUrl);
 
     const { error: updateError } = await supabase
