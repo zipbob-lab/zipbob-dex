@@ -13,7 +13,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
-  const { existingFolders, saveScrap, useFetchScrapCount, deleteScrap } = useScrapData();
+  const { existingFolders, saveScrap, useFetchScrapCount } = useScrapData();
 
   // 포스트 스크랩 개수
   const { data: scrapCount } = useFetchScrapCount(postId);
