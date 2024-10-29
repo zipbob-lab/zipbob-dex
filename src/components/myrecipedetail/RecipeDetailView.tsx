@@ -1,7 +1,8 @@
 import { supabase } from "@/supabase/supabase";
 import Image from "next/image";
 import React from "react";
-import { RecipeForm } from "./../myrecipewrite/InputField";
+import { RecipeForm } from "../myRecipeWrite/InputField";
+import Comments from "../comments/Comments";
 
 const RecipeDetailView = async () => {
   const { data, error } = await supabase
@@ -21,7 +22,7 @@ const RecipeDetailView = async () => {
   // console.log("유저인포", userInfo);
 
   return (
-    <div className="bg-gray-400 flex flex-col justify-center items-center gap-5">
+    <div className="bg-gray-400 flex flex-col justify-center items-center gap-5 p-5">
       {/* 요리 완성 사진 & 설명 */}
       <div className="bg-pink-400 flex justify-between w-1/3 p-5 gap-5">
         <div className="w-52 h-52 rounded-lg bg-gray-500 relative overflow-hidden">
@@ -33,6 +34,7 @@ const RecipeDetailView = async () => {
             <span>{data.recipe_description}</span>
           </div>
           <div className="flex justify-between">
+            {/* 유저 사진 */}
             <div className="flex bg-purple-300 gap-3">
               <div className="flex justify-center items-center w-12 h-12 rounded-full bg-gray-500 relative overflow-hidden">
                 <Image
@@ -43,6 +45,7 @@ const RecipeDetailView = async () => {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
+              {/* 유저 정보 */}
               <div className="flex flex-col">
                 <div>
                   <span className="font-bold">아이콘자리</span>
@@ -81,7 +84,7 @@ const RecipeDetailView = async () => {
       </div>
 
       {/* 조리 순서 */}
-      <div className="flex flex-col  bg-cyan-400  w-1/3 p-5 gap-5">
+      <div className="flex flex-col bg-cyan-400 w-1/3 p-5 gap-5">
         <div>
           <h1 className="text-2xl font-bold">조리 순서</h1>
         </div>
@@ -100,6 +103,9 @@ const RecipeDetailView = async () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="w-1/3 gap-5">
+        <Comments />
       </div>
     </div>
   );
