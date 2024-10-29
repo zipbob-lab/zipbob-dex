@@ -1,4 +1,6 @@
 import browserClient from "@/supabase/client";
+import { supabase } from "@/supabase/supabase";
+
 export const getUserId = async (): Promise<string | null> => {
   const { data, error } = await browserClient.auth.getUser();
 
@@ -18,20 +20,26 @@ export const fetchUserProfile = async (): Promise<{
   user_email: string;
   user_exp: number;
   user_rank: number;
+  user_introduce: string;
 } | null> => {
-  const userId = await getUserId();
-  if (!userId) return null;
+  const {
+    data: { session },
+    error: sessionError
+  } = await supabase.auth.getSession();
 
-  const { data, error } = await browserClient
-    .from("USER_TABLE")
-    .select("user_id,user_nickname,user_img,user_email,user_exp,user_rank")
-    .eq("user_id", userId)
-    .single();
-
-  if (error) {
-    console.log("user 프로필 불러오기 실패", error.message);
+  if (sessionError || !session) {
+    console.error("세션을 가져올 수 없거나 로그인 상태가 아닙니다:", sessionError?.message);
     return null;
   }
-  console.log("user_id 값 확인:", data.user_id);
+
+  const userId = session.user.id;
+
+  const { data, error } = await supabase.from("USER_TABLE").select("*").eq("user_id", userId).single();
+
+  if (error) {
+    console.log("user 프로필 불러오기 실패:", error.message);
+    return null;
+  }
+
   return data;
 };
