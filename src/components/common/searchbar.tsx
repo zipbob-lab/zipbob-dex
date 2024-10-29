@@ -8,6 +8,7 @@ interface KeyInterface {
   text: string;
 }
 
+// 상태 설정
 const SearchBar = () => {
   const [keywords, setKeywords] = useState<KeyInterface[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
@@ -57,7 +58,7 @@ const SearchBar = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim() === "") return;
-    router.push(`/search_result/${searchValue}`);
+    router.push(`/searchresults/${searchValue}`);
     addKeyword(searchValue);
     setSearchValue("");
     setIsDropdownVisible(false);
@@ -65,7 +66,7 @@ const SearchBar = () => {
 
   // 저장된 검색어 클릭 시 페이지 이동
   const handleKeywordClick = (text: string) => {
-    router.push(`/search_result/${text}`);
+    router.push(`/searchresults/${text}`);
   };
 
   const handleFocus = () => setIsDropdownVisible(true);
