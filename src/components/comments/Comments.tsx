@@ -1,7 +1,8 @@
 "use client";
 import { createClient } from "@/supabase/client";
+import { supabase } from "@/supabase/supabase";
 import Image from "next/image";
-import React, { useEffect, useState, FormEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -69,6 +70,18 @@ const Comments = () => {
   useEffect(() => {
     FetchCommentInfo();
   }, []);
+
+  const handleDeleteComment = async (commentId: string) => {
+    const { error: deleteError } = await supabase.from("COMMENT_TABLE").delete().eq("comment_id", commentId);
+    if (deleteError) {
+      console.error(deleteError.message);
+      alert("댓글 삭제 실패");
+      return;
+    }
+
+    alert("댓글 삭제 성공!");
+    FetchCommentInfo();
+  };
 
   const onSubmit: SubmitHandler<CommentFormInput> = async (data) => {
     const supabase = createClient();
@@ -162,15 +175,26 @@ const Comments = () => {
               <span>{comment.comment}</span>
             </div>
             <div className="flex justify-end">
-            {comment.user_id === sessionId && (
-              <div className="flex gap-1">           
-                <button type="button" className="p-1 rounded-xl
-           justify-center items-center text-sm text-white w-14 bg-orange-400">수정</button>
-                <button type="button" className="p-1 rounded-xl
-           justify-center items-center text-sm text-white w-14 bg-orange-400">삭제</button>
-              </div>
-            )}
-           </div>
+              {comment.user_id === sessionId && (
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                  >
+                    수정
+                  </button>
+                  <button
+                    type="button"
+                    className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                    onClick={() => {
+                      handleDeleteComment(comment.comment_id);
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ))}
