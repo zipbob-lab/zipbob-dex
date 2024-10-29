@@ -17,6 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // <ReactQueryClientProvider>
     <html lang="en">
       <body>
         <Header />
@@ -34,5 +35,6 @@ export default function RootLayout({
         />
       </body>
     </html>
+    // </ReactQueryClientProvider>
   );
 }
