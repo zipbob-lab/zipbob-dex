@@ -8,7 +8,63 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {}
+      colors: {
+        Primary: {
+          50: "#FFF6F0",
+          100: "#FFD8BD",
+          200: "#FFBB8A",
+          300: "#FF9C56",
+          400: "#FF7F24",
+          500: "#F06400",
+          600: "#BD4B00",
+          700: "#8A3500",
+          800: "#572100",
+          900: "#240F00"
+        },
+        Secondary: {
+          50: "#FFF4D1",
+          100: "#FFE79E",
+          200: "#FFDA6A",
+          300: "#FFCD38",
+          400: "#FFC105",
+          500: "#D19600",
+          600: "#9E6F00",
+          700: "#6B4B00",
+          800: "#423100",
+          900: "#1A1300"
+        },
+        gray: {
+          50: "#F6F5F4",
+          100: "#DEDCD7",
+          200: "#C4C3BE",
+          300: "#ABA9A5",
+          400: "#91908D",
+          500: "#787774",
+          600: "#5E5E5B",
+          700: "#454443",
+          800: "#2B2B2A",
+          900: "#121211"
+        }
+      },
+      fontSize: {
+        "heading-28": ["28px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.14px" }],
+        "heading-24": ["24px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.12px" }],
+        "heading-20": ["20px", { lineHeight: "125%", fontWeight: "700", letterSpacing: "-0.1px" }],
+        "heading-18": ["18px", { lineHeight: "125%", fontWeight: "700", letterSpacing: "-0.1px" }],
+        "title-20": ["20px", { lineHeight: "125%", fontWeight: "600" }],
+        "title-18": ["18px", { lineHeight: "125%", fontWeight: "600" }],
+        "title-16": ["16px", { lineHeight: "135%", fontWeight: "600" }],
+        "title-14": ["14px", { lineHeight: "125%", fontWeight: "600" }],
+        "body-18": ["18px", { lineHeight: "125%", fontWeight: "500" }],
+        "body-16": ["16px", { lineHeight: "135%", fontWeight: "500" }],
+        "body-14": ["14px", { lineHeight: "135%", fontWeight: "500" }],
+        "body-13": ["13px", { lineHeight: "135%", fontWeight: "500" }],
+        "body-12": ["12px", { lineHeight: "140%", fontWeight: "500" }],
+        "caption-14": ["14px", { lineHeight: "135%", fontWeight: "300" }],
+        "caption-12": ["12px", { lineHeight: "140%", fontWeight: "300" }],
+        "caption-11": ["11px", { lineHeight: "135%", fontWeight: "300" }],
+        "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }]
+      }
     }
   },
   plugins: []
