@@ -6,7 +6,7 @@ export const fetchRecipeData = async () => {
     throw new Error("API key 또는 url을 불러오지 못했습니다.");
   }
 
-  const response = await fetch(`${API_URL}/api/${API_KEY}/COOKRCP01/json/1/10`, {
+  const response = await fetch(`${API_URL}/api/${API_KEY}/COOKRCP01/json/51/100`, {
     method: "GET"
   });
 
@@ -15,5 +15,8 @@ export const fetchRecipeData = async () => {
   }
 
   const data = await response.json();
+
+  // console.log("데이터 불러오기 성공 / data 확인", data);
+  // console.log("데이터 불러오기 성공 / 조리법 확인", data.COOKRCP01.row);
   return data;
 };
