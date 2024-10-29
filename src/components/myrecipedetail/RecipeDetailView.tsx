@@ -24,7 +24,7 @@ const RecipeDetailView = async () => {
     <div className="bg-gray-400 flex flex-col justify-center items-center gap-5">
       {/* 요리 완성 사진 & 설명 */}
       <div className="bg-pink-400 flex justify-between w-1/3 p-5 gap-5">
-        <div className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden">
+        <div className="w-52 h-52 rounded-lg bg-gray-500 relative overflow-hidden">
           <Image src={data.recipe_img_done} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
         </div>
         <div className="flex flex-col justify-between">
@@ -43,9 +43,12 @@ const RecipeDetailView = async () => {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
-              <div>
-                <div>{userInfo.user_nickname}</div>
-                <div>{userInfo.user_introduce}</div>
+              <div className="flex flex-col">
+                <div>
+                  <span className="font-bold">아이콘자리</span>
+                  <span className="font-bold">{userInfo.user_nickname}</span>
+                </div>
+                <span>{userInfo.user_introduce}</span>
               </div>
             </div>
             <div className="flex flex-row justify-end items-end bg-lime-600">
