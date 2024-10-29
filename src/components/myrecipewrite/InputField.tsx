@@ -314,6 +314,7 @@ const InputField = () => {
             <div className="flex mb-5 gap-10">
               <label className="font-bold">요리 소개</label>
               <textarea
+                className="resize-none"
                 placeholder="레시피의 탄생배경, 특징을 적어주세요."
                 {...register("recipeDescription", { required: true })}
               />
@@ -385,6 +386,7 @@ const InputField = () => {
               </div>
 
               <textarea
+                className="resize-none"
                 placeholder="자세하게 적을수록 더욱 도움이 돼요!"
                 {...register(`recipeDoingTexts.${i}.text`, { required: true })}
               />
