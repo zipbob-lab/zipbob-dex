@@ -4,6 +4,7 @@ import "@/styles/reset.css";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SearchBar from "@/components/common/Searchbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
     // <ReactQueryClientProvider>
     <html lang="en">
       <body>
+        <SearchBar />
         <Providers>{children}</Providers>
         <ToastContainer
           position="bottom-center"

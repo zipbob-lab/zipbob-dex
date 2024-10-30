@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className="flex flex-col">
       <h1>Home 입니다...</h1>

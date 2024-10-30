@@ -1,7 +1,14 @@
+"use client";
+
+import Categore from "@/components/fridgeList/ImputFilter";
 import React from "react";
 
-const fridgPage = () => {
-  return <div>page</div>;
+const page = () => {
+  return (
+    <div>
+      <Categore />
+    </div>
+  );
 };
 
-export default fridgPage;
+export default page;
