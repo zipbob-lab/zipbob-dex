@@ -63,6 +63,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, onImage
     }
     onImageUpload(profileImageUrl);
     console.log("USER_TABLE 업데이트 성공!", profileImageUrl);
+    alert("프로필사진이 변경되었습니다.");
   };
 
   return (

@@ -1,4 +1,4 @@
-import MyPageProfile from "@/components/MyPageProfile";
+import MyPageProfile from "@/components/mypage/MyPageProfile";
 import React from "react";
 
 const Mypage = () => {

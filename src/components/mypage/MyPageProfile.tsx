@@ -1,4 +1,3 @@
-// MyPageProfile.tsx
 "use client";
 import Link from "next/link";
 import { fetchUserProfile } from "@/serverActions/profileAction";
