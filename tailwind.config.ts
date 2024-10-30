@@ -33,7 +33,7 @@ const config: Config = {
           800: "#423100",
           900: "#1A1300"
         },
-        gray: {
+        Gray: {
           50: "#F6F5F4",
           100: "#DEDCD7",
           200: "#C4C3BE",
@@ -64,6 +64,9 @@ const config: Config = {
         "caption-12": ["12px", { lineHeight: "140%", fontWeight: "300" }],
         "caption-11": ["11px", { lineHeight: "135%", fontWeight: "300" }],
         "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }]
+      },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)", "sans-serif"]
       }
     }
   },

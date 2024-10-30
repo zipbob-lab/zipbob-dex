@@ -1,11 +1,14 @@
+import { useAuthStore } from "@/store/authStore";
 import browserClient from "@/supabase/client";
 import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
+import { useStore } from "zustand";
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm({ mode: "onChange" });
   const router = useRouter();
+  const { setIsLoggedIn } = useStore(useAuthStore);
 
   const handleLogin = async (value: FieldValues) => {
     try {
@@ -16,6 +19,7 @@ const LoginForm = () => {
 
       if (error) throw error;
       alert("로그인 되었습니다.");
+      setIsLoggedIn(true);
       browserClient.auth.setSession(data.session);
       router.push("/");
     } catch (error) {
