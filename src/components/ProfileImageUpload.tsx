@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { supabase } from "@/supabase/supabase";
+import { CircleCheckBig } from "lucide-react";
 
 const profileSchema = z.object({
   profileImage: z
@@ -40,7 +41,6 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, onImage
       console.log("파일이 없습니다.");
       return;
     }
-
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("zipbob_storage")
       .upload(`userProfileFolder/${userId}`, file, { upsert: true });
@@ -61,7 +61,6 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, onImage
       console.log("USER_TABLE 업데이트 오류 발생", updateError.message);
       return;
     }
-
     onImageUpload(profileImageUrl);
     console.log("USER_TABLE 업데이트 성공!", profileImageUrl);
   };
@@ -81,9 +80,9 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, onImage
         }}
       />
       {errors.profileImage && <p className="text-red-500 text-sm mt-1">{String(errors.profileImage.message)}</p>}
-
-      <button type="submit" className="mt-3 p-2 bg-blue-500 text-white rounded-sm">
+      <button type="submit" className="flex gap-2 align-middle">
         이미지 수정
+        <CircleCheckBig size={16} className="hover:text-green-500 mt-1" />
       </button>
     </form>
   );
