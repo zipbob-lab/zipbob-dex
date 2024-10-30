@@ -28,7 +28,11 @@ interface CommentData {
   USER_TABLE: UserInfo;
 }
 
-const Comments = () => {
+interface PostDataProps {
+  postId: string;
+}
+
+const Comments = ({ postId }: PostDataProps) => {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
   // 댓글 수정 관련
@@ -89,7 +93,7 @@ const Comments = () => {
     } = await supabase
       .from("COMMENT_TABLE")
       .select(`*, USER_TABLE(user_id,user_nickname, user_introduce,user_img,user_rank)`, { count: "exact" })
-      .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29")
+      .eq("post_id", postId)
       .order("created_at", { ascending: false })
       .range(startRange, endRange);
 
@@ -121,7 +125,7 @@ const Comments = () => {
     // supabase에 코멘트 INSERT
     const { error } = await supabase.from("COMMENT_TABLE").insert({
       user_id: sessionId,
-      post_id: "69376e49-365c-4a86-b99f-6f32d4607d29",
+      post_id: postId,
       comment_id: uuidv4(),
       comment: data.commentText
     });

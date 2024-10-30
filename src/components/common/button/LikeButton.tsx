@@ -14,11 +14,7 @@ const Likebutton = ({ postId, userId }: LikeButton) => {
 
   useEffect(() => {
     const fetchLikeCountAll = async () => {
-      const { data, error } = await supabase
-        .from("TEST2_TABLE")
-        .select("like_count")
-        .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29")
-        .single();
+      const { data, error } = await supabase.from("TEST2_TABLE").select("like_count").eq("post_id", postId).single();
 
       if (error) {
         console.error("좋아요 가져오기 오류", error.message);
@@ -27,7 +23,7 @@ const Likebutton = ({ postId, userId }: LikeButton) => {
       }
     };
     fetchLikeCountAll();
-  }, [setLikeCount]);
+  }, [postId, setLikeCount]);
 
   const handleToggleLikeButton = async () => {
     if (!userId) {
@@ -39,21 +35,17 @@ const Likebutton = ({ postId, userId }: LikeButton) => {
       await supabase
         .from("TEST2_TABLE")
         .update({ like_count: likeCount - 1 })
-        .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29");
+        .eq("post_id", postId);
 
-      await supabase
-        .from("LIKE_TABLE")
-        .delete()
-        .match({ post_id: "69376e49-365c-4a86-b99f-6f32d4607d29", user_id: userId });
+      await supabase.from("LIKE_TABLE").delete().match({ post_id: postId, user_id: userId });
     } else {
+      // 좋아요
       await supabase
         .from("TEST2_TABLE")
         .update({ like_count: likeCount + 1 })
-        .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29");
+        .eq("post_id", postId);
 
-      await supabase
-        .from("LIKE_TABLE")
-        .insert({ post_id: "69376e49-365c-4a86-b99f-6f32d4607d29", user_id: userId, like_id: uuidv4() });
+      await supabase.from("LIKE_TABLE").insert({ post_id: postId, user_id: userId, like_id: uuidv4() });
     }
 
     toggleLike();
@@ -62,7 +54,7 @@ const Likebutton = ({ postId, userId }: LikeButton) => {
   return (
     <div>
       <button onClick={handleToggleLikeButton}>
-        {isLike ? "💛" : "🤍"} 좋아요 {likeCount} 개
+        {isLike ? "💛" : "🤍"} 좋아요 {likeCount ?? 0} 개
       </button>
     </div>
   );

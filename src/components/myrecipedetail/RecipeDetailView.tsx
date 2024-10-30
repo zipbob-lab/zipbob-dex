@@ -4,13 +4,16 @@ import React from "react";
 import { RecipeForm } from "../myRecipeWrite/InputField";
 import Comments from "../comments/Comments";
 import Likebutton from "../common/button/LikeButton";
-import ScrapButton from "../common/button/ScrapButton";
 
-const RecipeDetailView = async () => {
+interface RecipeDetailViewProps {
+  postId: string;
+}
+
+const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
   const { data, error } = await supabase
     .from("TEST2_TABLE")
     .select(`*, USER_TABLE(user_id,user_nickname, user_introduce, user_img)`)
-    .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29")
+    .eq("post_id", postId)
     .single();
 
   const userInfo = data.USER_TABLE;
@@ -58,7 +61,7 @@ const RecipeDetailView = async () => {
             </div>
             <div className="flex flex-row justify-end items-end bg-lime-600">
               <div>
-                <Likebutton postId="69376e49-365c-4a86-b99f-6f32d4607d29" userId={userInfo.user_id} />
+                <Likebutton postId={postId} userId={userInfo.user_id} />
               </div>
               <div>스크랩</div>
               <div>공유 버튼</div>
@@ -109,7 +112,7 @@ const RecipeDetailView = async () => {
         </div>
       </div>
       <div className="w-1/3 gap-5">
-        <Comments />
+        <Comments postId={postId} />
       </div>
     </div>
   );
