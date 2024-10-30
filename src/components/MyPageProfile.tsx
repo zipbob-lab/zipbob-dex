@@ -3,6 +3,7 @@ import Link from "next/link";
 import { fetchUserProfile } from "@/serverActions/profileAction";
 import { useEffect, useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
+import { updateUserRank } from "@/utils/updateUserRank";
 import { supabase } from "@/supabase/supabase";
 
 interface UserProfile {
@@ -25,8 +26,11 @@ const MyPageProfile = () => {
     const loadUserProfile = async () => {
       const profileData = await fetchUserProfile();
       if (profileData) {
-        setUserData(profileData);
         setEditedIntroduce(profileData.user_introduce);
+
+        await updateUserRank(profileData.user_id); //사용자의 경험치와 업데이트 확인
+        const updatedProfileData = await fetchUserProfile();
+        setUserData(updatedProfileData);
       }
       setLoading(false);
     };
@@ -65,7 +69,9 @@ const MyPageProfile = () => {
           </div>
 
           <div className="flex justify-center items-center">
-            <p>Lv.{userData.user_exp}</p>
+            <p>
+              Lv.{userData.user_rank} (Exp: {userData.user_exp})
+            </p>
             <h3 className="my-2">{userData.user_nickname}</h3>
           </div>
 
