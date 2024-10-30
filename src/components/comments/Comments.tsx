@@ -33,7 +33,10 @@ const Comments = () => {
   const [comments, setComments] = useState<CommentData[]>([]);
   // 댓글 수정 관련
   const [modifyCommentId, setModifyCommentId] = useState<string | null>(null);
-  // const [modifyCommentText, setModifyCommentText] = useState<string | null>("");
+  // 페이지 네이션
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const commentsPerPage = 10; // 페이지 당 댓글 수
+  const [totalComments, setTotalComments] = useState(0); // 전체 댓글 수
 
   const {
     register,
@@ -62,6 +65,10 @@ const Comments = () => {
   const FetchCommentInfo = async () => {
     const supabase = createClient();
 
+    // 페이지 네이션
+    const startRange = (currentPage - 1) * commentsPerPage;
+    const endRange = startRange + commentsPerPage - 1;
+
     // 로그인 세션
     const {
       data: { session },
@@ -75,16 +82,22 @@ const Comments = () => {
     setSessionId(loginSessionId || null);
 
     // 코멘트 정보 가져오기
-    const { data: commentData, error: commnetError } = await supabase
+    const {
+      data: commentData,
+      error: commnetError,
+      count
+    } = await supabase
       .from("COMMENT_TABLE")
-      .select(`*, USER_TABLE(user_id,user_nickname, user_introduce,user_img,user_rank)`)
+      .select(`*, USER_TABLE(user_id,user_nickname, user_introduce,user_img,user_rank)`, { count: "exact" })
       .eq("post_id", "69376e49-365c-4a86-b99f-6f32d4607d29")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(startRange, endRange);
 
     if (commnetError) {
       console.error("코멘트 데이터 불러오기 실패  ", commnetError.message);
     } else {
       setComments(commentData || []);
+      setTotalComments(count || 0); // 페이지 네이션
       console.log("코멘트 데이터 불러오기 성공", commentData);
     }
   };
@@ -132,7 +145,6 @@ const Comments = () => {
   };
 
   // 댓글 수정 제출 핸들러
-
   const onSubmitModify: SubmitHandler<ModifyCommentFormInput> = async (data) => {
     // const modifyCommentText = watch("modifyCommentText") || "";
 
@@ -151,6 +163,18 @@ const Comments = () => {
     alert("댓글 수정 성공!");
     setModifyCommentId(null);
     FetchCommentInfo();
+  };
+
+  useEffect(() => {
+    FetchCommentInfo();
+  }, [currentPage]);
+
+  // 총 페이지 수 계산
+  const totalPages = Math.ceil(totalComments / commentsPerPage);
+
+  // 페이지 번호 변경 함수
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -280,7 +304,17 @@ const Comments = () => {
           </div>
         </div>
       ))}
-      <div className="flex justify-center items-center">페이지네이션</div>
+      <div className="flex justify-center items-center">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={currentPage === index + 1 ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </form>
   );
 };

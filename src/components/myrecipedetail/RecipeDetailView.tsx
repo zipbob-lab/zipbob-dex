@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import { RecipeForm } from "../myRecipeWrite/InputField";
 import Comments from "../comments/Comments";
+import Likebutton from "../common/button/LikeButton";
+import ScrapButton from "../common/button/ScrapButton";
 
 const RecipeDetailView = async () => {
   const { data, error } = await supabase
@@ -55,8 +57,10 @@ const RecipeDetailView = async () => {
               </div>
             </div>
             <div className="flex flex-row justify-end items-end bg-lime-600">
-              <div>좋아요 버튼</div>
-              <div>스크랩 버튼</div>
+              <div>
+                <Likebutton postId="69376e49-365c-4a86-b99f-6f32d4607d29" userId={userInfo.user_id} />
+              </div>
+              <div>스크랩</div>
               <div>공유 버튼</div>
             </div>
           </div>
