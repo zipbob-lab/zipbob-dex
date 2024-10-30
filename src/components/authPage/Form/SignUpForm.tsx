@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
-import AccountSet from "../SignUp/AccountSet";
-import UserInfoSet from "../SignUp/UserInfoSet";
+import AccountSet from "../signUp/AccountSet";
+import UserInfoSet from "../signUp/UserInfoSet";
 import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5000000; // 5MB

@@ -43,3 +43,9 @@ export const fetchUserProfile = async (): Promise<{
 
   return data;
 };
+export const getUserProfile = async () => {
+  const { data } = await browserClient.auth.getUser();
+
+  const userProfile = data.user?.user_metadata.avatar_url ?? null;
+  return userProfile;
+};
