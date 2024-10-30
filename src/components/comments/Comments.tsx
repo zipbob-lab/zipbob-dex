@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 interface CommentFormInput {
   commentText: string;
+  modifyCommentText: string;
 }
 
 interface UserInfo {
@@ -27,15 +28,25 @@ interface CommentData {
 const Comments = () => {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentData[]>([]);
+  // 댓글 수정 관련
+  const [modifyCommentId, setModifyCommentId] = useState<string | null>(null);
+  // const [modifyCommentText, setModifyCommentText] = useState<string | null>("");
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors }
-  } = useForm<CommentFormInput>();
+  } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { modifyCommentText: "" } });
+
   const commentMaxLength = 250;
   const commentCurrentLength = watch("commentText")?.length;
+  const modifyCommentCurrentLength = watch("modifyCommentText")?.length;
+
+  useEffect(() => {
+    FetchCommentInfo();
+  }, []);
 
   const FetchCommentInfo = async () => {
     const supabase = createClient();
@@ -67,10 +78,34 @@ const Comments = () => {
     }
   };
 
-  useEffect(() => {
-    FetchCommentInfo();
-  }, []);
+  // 댓글 수정 시작
+  const handleMotifyCommentDoing = async (commentId: string, modifyText: string) => {
+    setModifyCommentId(commentId);
+    reset({ modifyCommentText: modifyText });
+    // setModifyCommentText(modifyText);
+  };
+  // 댓글 수정 완료
+  const handleModifyCommentDone = async (commentId: string) => {
+    const modifyCommentText = watch("modifyCommentText") || "";
 
+    const { error: modifyError } = await supabase
+      .from("COMMENT_TABLE")
+      .update({ comment: modifyCommentText })
+      .eq("comment_id", commentId);
+
+    if (modifyError) {
+      alert("댓글 수정 실패");
+      return;
+    }
+    alert("댓글 수정 성공!");
+
+    setModifyCommentId(null);
+    // setModifyCommentText("");
+
+    FetchCommentInfo();
+  };
+
+  // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
     const { error: deleteError } = await supabase.from("COMMENT_TABLE").delete().eq("comment_id", commentId);
     if (deleteError) {
@@ -102,6 +137,7 @@ const Comments = () => {
       console.log("댓글 INSERT 성공 : ", data);
       FetchCommentInfo();
       alert("댓글 등록 완료!");
+      reset({ commentText: "" });
     }
   };
 
@@ -171,30 +207,64 @@ const Comments = () => {
               </div>
             </div>
 
-            <div className="mb-5">
-              <span>{comment.comment}</span>
-            </div>
-            <div className="flex justify-end">
-              {comment.user_id === sessionId && (
-                <div className="flex gap-1">
+            {/* 수정 모드일 때 textarea 표시 */}
+            {modifyCommentId === comment.comment_id ? (
+              <div className="bg-white p-5 rounded-xl flex flex-col gap-4 border border-gray-500">
+                <div className="border-b-gray-800 border-solid flex flex-col gap-2">
+                  <textarea
+                    className="resize-none w-full h-20"
+                    placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
+                    {...register(`modifyCommentText`, {
+                      maxLength: {
+                        value: commentMaxLength,
+                        message: `${commentMaxLength}자 이상 작성할 수 없습니다.`
+                      },
+                      required: {
+                        value: true,
+                        message: "후기를 입력해주세요."
+                      }
+                    })}
+                  />
+                  {errors?.modifyCommentText?.message && <span>{errors.modifyCommentText.message}</span>}
+                </div>
+                <div className="flex flex-row justify-between text-gray-300">
+                  <span>
+                    {modifyCommentCurrentLength}/{commentMaxLength}
+                  </span>
                   <button
                     type="button"
                     className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                    onClick={() => handleModifyCommentDone(comment.comment_id)}
                   >
-                    수정
-                  </button>
-                  <button
-                    type="button"
-                    className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
-                    onClick={() => {
-                      handleDeleteComment(comment.comment_id);
-                    }}
-                  >
-                    삭제
+                    수정 완료
                   </button>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <>
+                <span className="mb-5">{comment.comment}</span>
+                {comment.user_id === sessionId && (
+                  <div className="flex gap-1 justify-end">
+                    <button
+                      type="button"
+                      className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                      onClick={() => {
+                        handleMotifyCommentDoing(comment.comment_id, comment.comment);
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                      onClick={() => handleDeleteComment(comment.comment_id)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       ))}
