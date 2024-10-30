@@ -28,6 +28,7 @@ export default function RootLayout({
 
     <html lang="ko" className={pretendard.variable}>
       <body className="font-pretendard">
+        <SearchBar />
         <Providers>{children}</Providers>
         <ToastContainer
           position="bottom-center"

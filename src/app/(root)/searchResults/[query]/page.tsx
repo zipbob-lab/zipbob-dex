@@ -7,8 +7,7 @@ import { useParams } from "next/navigation";
 
 const SearchResultPage = () => {
   const { query } = useParams();
-  console.log("query : ", query);
-  // 디코딩 오류 부분
+  console.log("query : ", query as string);
   const searchText = decodeURI(query as string);
 
   console.log("searchText: ", searchText);
