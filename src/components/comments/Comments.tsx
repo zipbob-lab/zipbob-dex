@@ -8,6 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 
 interface CommentFormInput {
   commentText: string;
+}
+
+interface ModifyCommentFormInput {
   modifyCommentText: string;
 }
 
@@ -38,11 +41,19 @@ const Comments = () => {
     watch,
     reset,
     formState: { errors }
-  } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { modifyCommentText: "" } });
+  } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { commentText: "" } });
+
+  const {
+    register: modifyRegister,
+    handleSubmit: modifyHandleSubmit,
+    watch: modifyWatch,
+    reset: modifyReset,
+    formState: { errors: modifyErrors }
+  } = useForm<ModifyCommentFormInput>({ mode: "onChange", defaultValues: { modifyCommentText: "" } });
 
   const commentMaxLength = 250;
   const commentCurrentLength = watch("commentText")?.length;
-  const modifyCommentCurrentLength = watch("modifyCommentText")?.length;
+  const modifyCommentCurrentLength = modifyWatch("modifyCommentText")?.length;
 
   useEffect(() => {
     FetchCommentInfo();
@@ -78,33 +89,6 @@ const Comments = () => {
     }
   };
 
-  // 댓글 수정 시작
-  const handleMotifyCommentDoing = async (commentId: string, modifyText: string) => {
-    setModifyCommentId(commentId);
-    reset({ modifyCommentText: modifyText });
-    // setModifyCommentText(modifyText);
-  };
-  // 댓글 수정 완료
-  const handleModifyCommentDone = async (commentId: string) => {
-    const modifyCommentText = watch("modifyCommentText") || "";
-
-    const { error: modifyError } = await supabase
-      .from("COMMENT_TABLE")
-      .update({ comment: modifyCommentText })
-      .eq("comment_id", commentId);
-
-    if (modifyError) {
-      alert("댓글 수정 실패");
-      return;
-    }
-    alert("댓글 수정 성공!");
-
-    setModifyCommentId(null);
-    // setModifyCommentText("");
-
-    FetchCommentInfo();
-  };
-
   // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
     const { error: deleteError } = await supabase.from("COMMENT_TABLE").delete().eq("comment_id", commentId);
@@ -118,9 +102,9 @@ const Comments = () => {
     FetchCommentInfo();
   };
 
+  // 댓글 제출 핸들러
   const onSubmit: SubmitHandler<CommentFormInput> = async (data) => {
     const supabase = createClient();
-
     // supabase에 코멘트 INSERT
     const { error } = await supabase.from("COMMENT_TABLE").insert({
       user_id: sessionId,
@@ -139,6 +123,34 @@ const Comments = () => {
       alert("댓글 등록 완료!");
       reset({ commentText: "" });
     }
+  };
+
+  // 댓글 수정 버튼 눌렀을 때
+  const handleMotifyCommentDoing = async (commentId: string, modifyText: string) => {
+    setModifyCommentId(commentId);
+    modifyReset({ modifyCommentText: modifyText });
+  };
+
+  // 댓글 수정 제출 핸들러
+
+  const onSubmitModify: SubmitHandler<ModifyCommentFormInput> = async (data) => {
+    // const modifyCommentText = watch("modifyCommentText") || "";
+
+    if (!modifyCommentId) return;
+
+    const { error: modifyError } = await supabase
+      .from("COMMENT_TABLE")
+      .update({ comment: data.modifyCommentText })
+      .eq("comment_id", modifyCommentId);
+
+    if (modifyError) {
+      alert("댓글 수정 실패");
+      return;
+    }
+
+    alert("댓글 수정 성공!");
+    setModifyCommentId(null);
+    FetchCommentInfo();
   };
 
   return (
@@ -207,14 +219,14 @@ const Comments = () => {
               </div>
             </div>
 
-            {/* 수정 모드일 때 textarea 표시 */}
+            {/* 수정 눌렀을 때 댓글 폼 표시*/}
             {modifyCommentId === comment.comment_id ? (
               <div className="bg-white p-5 rounded-xl flex flex-col gap-4 border border-gray-500">
                 <div className="border-b-gray-800 border-solid flex flex-col gap-2">
                   <textarea
                     className="resize-none w-full h-20"
                     placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
-                    {...register(`modifyCommentText`, {
+                    {...modifyRegister(`modifyCommentText`, {
                       maxLength: {
                         value: commentMaxLength,
                         message: `${commentMaxLength}자 이상 작성할 수 없습니다.`
@@ -225,7 +237,7 @@ const Comments = () => {
                       }
                     })}
                   />
-                  {errors?.modifyCommentText?.message && <span>{errors.modifyCommentText.message}</span>}
+                  {modifyErrors?.modifyCommentText?.message && <span>{modifyErrors.modifyCommentText.message}</span>}
                 </div>
                 <div className="flex flex-row justify-between text-gray-300">
                   <span>
@@ -234,7 +246,7 @@ const Comments = () => {
                   <button
                     type="button"
                     className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
-                    onClick={() => handleModifyCommentDone(comment.comment_id)}
+                    onClick={modifyHandleSubmit(onSubmitModify)}
                   >
                     수정 완료
                   </button>
