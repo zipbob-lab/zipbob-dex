@@ -34,13 +34,13 @@ const MyPageProfile = () => {
   }, []);
 
   // 저장하기 버튼 -> 이미지, 자기소개 모두 저장
-  const handleSave = async (introduce: string, file: File | null) => {
+  const handleSave = async (nickname: string, introduce: string, file: File | null) => {
     if (!userData) return;
 
     // 자기소개 업데이트
     const { error: introError } = await supabase
       .from("USER_TABLE")
-      .update({ user_introduce: introduce })
+      .update({ user_nickname: nickname, user_introduce: introduce })
       .eq("user_id", userData.user_id);
 
     if (introError) {
@@ -69,7 +69,7 @@ const MyPageProfile = () => {
     }
 
     // 새로운 자기소개 반영
-    setUserData((prev) => (prev ? { ...prev, user_introduce: introduce } : null));
+    setUserData((prev) => (prev ? { ...prev, user_nickname: nickname, user_introduce: introduce } : null));
     setIsModalOpen(false);
   };
 
