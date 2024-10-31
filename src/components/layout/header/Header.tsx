@@ -16,7 +16,7 @@ const Header = async () => {
         <Link href="/" className="text-body-16 px-3 py-2 text-Gray-900">
           냉장고 탐험
         </Link>
-        <Link href="/" className="text-body-16 px-3 py-2 text-Gray-900">
+        <Link href="/scraps" className="text-body-16 px-3 py-2 text-Gray-900">
           스크랩한 레시피
         </Link>
         <Link href="/RecipeAll" className="text-body-16 px-3 py-2 text-Gray-900">
