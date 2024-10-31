@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ProfileImageUpload from "../ProfileImageUpload";
+import ProfileImageUpload from "./ProfileImageUpload";
 
 interface EditProfileModalProps {
   isOpen: boolean;
