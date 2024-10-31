@@ -24,8 +24,6 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
     console.log("데이터 불러오기 성공");
   }
 
-  // console.log("유저인포", userInfo);
-
   return (
     <div className="bg-gray-400 flex flex-col justify-center items-center gap-5 p-5">
       {/* 요리 완성 사진 & 설명 */}
@@ -61,7 +59,7 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
             </div>
             <div className="flex flex-row justify-end items-end bg-lime-600">
               <div>
-                <Likebutton postId={postId} userId={userInfo.user_id} />
+                <Likebutton postId={postId} />
               </div>
               <div>스크랩</div>
               <div>공유 버튼</div>
