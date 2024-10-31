@@ -8,6 +8,59 @@ export const fetchRecipeDbData = async () => {
     return;
   }
 
-  // console.log("레시피 데이터", data);
   return data;
+};
+
+// 유저 후기 글 불러오기
+export const fetchUserPosts = async (userId: string) => {
+  const { data, error } = await supabase
+    .from("TEST2_TABLE")
+    .select(
+      `
+      *,
+      user:USER_TABLE (
+        user_id,
+        user_nickname,
+        user_img,
+        user_introduce,
+        user_rank
+      )
+    `
+    )
+    .eq("user_id", userId);
+
+  if (error) {
+    console.log("게시물 불러오기 실패", error.message);
+    return null;
+  }
+  return data;
+};
+
+// 사용자 댓글 가져오기 함수
+export const fetchUserComments = async (userId: string) => {
+  const { data: comments, error } = await supabase
+    .from("COMMENT_TABLE")
+    .select("comment, created_at, post_id")
+    .eq("user_id", userId);
+
+  if (error) {
+    console.log("댓글 데이터 불러오기 실패", error.message);
+    return null;
+  }
+  return comments;
+};
+
+// 단일 레시피 데이터 가져오기 함수
+export const fetchRecipeByPostId = async (postId: string) => {
+  const { data: recipe, error } = await supabase
+    .from("TEST2_TABLE")
+    .select("recipe_title, recipe_img_done")
+    .eq("post_id", postId)
+    .single();
+
+  if (error) {
+    console.log("레시피 데이터 불러오기 실패", error.message);
+    return null;
+  }
+  return recipe;
 };
