@@ -4,6 +4,7 @@ import React from "react";
 import { RecipeForm } from "../myRecipeWrite/InputField";
 import Comments from "../comments/Comments";
 import Likebutton from "../common/button/LikeButton";
+import ModifyDeletePost from "./ModifyDeletePost";
 
 interface RecipeDetailViewProps {
   postId: string;
@@ -15,7 +16,6 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
     .select(`*, USER_TABLE(user_id,user_nickname, user_introduce, user_img)`)
     .eq("post_id", postId)
     .single();
-
   const userInfo = data.USER_TABLE;
 
   if (error) {
@@ -64,6 +64,7 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
               <div>스크랩</div>
               <div>공유 버튼</div>
             </div>
+            <ModifyDeletePost postId={postId} userId={userInfo.user_id} />
           </div>
         </div>
       </div>
