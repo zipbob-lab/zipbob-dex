@@ -30,8 +30,8 @@ interface IFormInput {
   recipeType: RecipeTypeEnum;
   recipeTitle: string;
   recipeDescription: string;
-  recipeDoingImgs: (File | undefined)[];
-  recipeDoingTexts: string[];
+  recipeDoingImgs?: { file: File | undefined }[];
+  recipeDoingTexts?: { text: string }[];
   ingredients: RecipeForm[];
   recipeManual: string;
 }
@@ -44,7 +44,7 @@ export interface RecipeForm {
 
 const InputField = () => {
   // 상태관리
-  const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<File[]>([]);
+  const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<{ file: File | undefined }[]>([]);
   const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
   const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File | undefined>(undefined);
   const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
@@ -64,9 +64,9 @@ const InputField = () => {
     // formState: { errors }
   } = useForm<IFormInput>({
     defaultValues: {
-      ingredients: [{ ingredient: "", amount: "", unit: "" }],
-      recipeDoingImgs: [undefined],
-      recipeDoingTexts: [""]
+      recipeDoingImgs: [{ file: undefined }],
+      recipeDoingTexts: [{ text: "" }],
+      ingredients: [{ ingredient: "", amount: "", unit: "" }]
     }
   });
 
@@ -94,18 +94,18 @@ const InputField = () => {
   };
 
   const handleAddRecipeDoingForm = () => {
-    appendRecipeDoingImg(undefined);
-    appendRecipeDoingText("");
-    setRecipeDoingImgFileArray((prev) => [...prev, undefined]);
+    appendRecipeDoingImg({ file: undefined });
+    appendRecipeDoingText({ text: "" });
+    setRecipeDoingImgFileArray((prev) => [...prev, { file: undefined }]);
     setRecipeDoingImgViewArray((prev) => [...prev, ""]);
   };
 
   useEffect(() => {
     if (recipeDoingsImgFields.length === 0) {
-      appendRecipeDoingImg(undefined);
+      appendRecipeDoingImg({ file: undefined });
     }
     if (recipeDoingsTextFields.length === 0) {
-      appendRecipeDoingText("");
+      appendRecipeDoingText({ text: "" });
     }
   }, []);
 
@@ -117,7 +117,7 @@ const InputField = () => {
 
     setRecipeDoingImgFileArray((prev) => {
       const updateImgFiles = [...prev];
-      updateImgFiles[index] = selectedImgFile || null;
+      updateImgFiles[index] = { file: selectedImgFile || undefined };
       return updateImgFiles;
     });
     const imgViewUrl = URL.createObjectURL(selectedImgFile);
@@ -138,7 +138,7 @@ const InputField = () => {
   };
 
   const handleModalClose = () => {
-    alert("모달 닫기");
+    router.back();
   };
 
   // useEffect(() => {
@@ -179,7 +179,7 @@ const InputField = () => {
       // 매뉴얼 이미지 업로드
       const recipeDoingImgUrls: string[] = [];
       for (let i = 0; i < recipeDoingImgFileArray.length; i++) {
-        const recipeDoingImgFile = recipeDoingImgFileArray[i];
+        const recipeDoingImgFile = recipeDoingImgFileArray[i].file;
         if (recipeDoingImgFile) {
           const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
           const { error: imgError } = await supabase.storage
@@ -191,7 +191,7 @@ const InputField = () => {
             return;
           } else {
             const recipeDoingImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
-            recipeDoingImgUrls.push(recipeDoingImgUrl); // push도 괜찮은가? 그게 아니면 일부 let을 사용해야하는데 ㄱㅊ은가?어차피 for문에서도 썼고..?
+            recipeDoingImgUrls.push(recipeDoingImgUrl);
           }
         }
       }
@@ -232,7 +232,7 @@ const InputField = () => {
         recipe_ingredients: data.ingredients,
         recipe_img_doing: recipeDoingImgUrls,
         recipe_img_done: recipeDoneImgUrl,
-        recipe_manual: data.recipeDoingTexts || [],
+        recipe_manual: data.recipeDoingTexts?.map((item) => item.text) || [], // 객체배열을 일반 배열로 바꿔서 저장
         recipe_description: data.recipeDescription,
         recipe_level: recipeLevel
       });
@@ -265,8 +265,8 @@ const InputField = () => {
           console.error("경험치 UPDATE 에러 : ", updateUserError.message);
         }
       }
-      router.push("/RecipeAll");
       alert("레시피 작성이 완료되었습니다!");
+      router.back();
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
@@ -314,6 +314,7 @@ const InputField = () => {
             <div className="flex mb-5 gap-10">
               <label className="font-bold">요리 소개</label>
               <textarea
+                className="resize-none"
                 placeholder="레시피의 탄생배경, 특징을 적어주세요."
                 {...register("recipeDescription", { required: true })}
               />
@@ -385,8 +386,9 @@ const InputField = () => {
               </div>
 
               <textarea
+                className="resize-none"
                 placeholder="자세하게 적을수록 더욱 도움이 돼요!"
-                {...register(`recipeDoingTexts.${i}`, { required: true })}
+                {...register(`recipeDoingTexts.${i}.text`, { required: true })}
               />
             </div>
           ))}
