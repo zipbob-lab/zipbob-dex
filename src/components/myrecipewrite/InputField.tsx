@@ -138,7 +138,7 @@ const InputField = () => {
   };
 
   const handleModalClose = () => {
-    alert("모달 닫기");
+    router.back();
   };
 
   // useEffect(() => {
@@ -265,8 +265,8 @@ const InputField = () => {
           console.error("경험치 UPDATE 에러 : ", updateUserError.message);
         }
       }
-      router.push("/RecipeAll");
       alert("레시피 작성이 완료되었습니다!");
+      router.back();
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
