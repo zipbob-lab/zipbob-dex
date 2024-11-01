@@ -41,3 +41,5 @@ const CategoreFilter = () => {
 };
 
 export default CategoreFilter;
+
+// 필터 기능 페이지화 하기

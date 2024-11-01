@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
@@ -17,22 +19,23 @@ const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, de
         let query = browserClient.from("TEST2_TABLE").select("*");
 
         if (addKeywords.length > 0) {
-          query = query.contains("recipe_title", addKeywords);
+          query = query.contains("recipe_ingredients", addKeywords);
         }
 
         if (deleteKeywords.length > 0) {
           deleteKeywords.forEach((keyword) => {
-            query = query.not("recipe_title", "cs", [keyword]);
+            query = query.not("recipe_ingredients", "cs", [keyword]);
           });
         }
+
         const { data, error } = await query;
 
         if (error) {
-          console.error("Error fetching recipes:", error);
+          console.error("에러", error);
           return;
         }
 
-        setFilteredRecipes(data || []);
+        setFilteredRecipes(data as Recipe[]);
       }
     };
 
@@ -43,7 +46,11 @@ const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, de
     <div>
       <h2>검색 결과</h2>
       {filteredRecipes.length > 0 ? (
-        filteredRecipes.map((recipe) => <div key={recipe.post_id}>{recipe.recipe_title}</div>)
+        filteredRecipes.map((recipe) => (
+          <div key={recipe.post_id}>
+            <div>{recipe.recipe_title}</div>
+          </div>
+        ))
       ) : (
         <p>검색 결과가 없습니다.</p>
       )}

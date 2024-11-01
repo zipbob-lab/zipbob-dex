@@ -77,7 +77,6 @@
 // // 3. Enter !== 처리
 // // 4. 디바운싱 주석 처리와 컴포지션 처리 시도후 해결완료
 
-
 import React, { useState } from "react";
 
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {
@@ -86,28 +85,24 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   const [isComposing, setIsComposing] = useState(false);
 
   const handleComposition = (e: React.CompositionEvent<HTMLInputElement>) => {
-    if (e.type === "compositionstart") {
-      setIsComposing(true);
-    }
-    if (e.type === "compositionend") {
-      setIsComposing(false);
-    }
+    setIsComposing(e.type !== "compositionend");
   };
 
-  const addcategore = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const addCategory = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (isComposing) {
       return;
     }
     if (e.key === "Enter") {
       e.preventDefault();
-      e.stopPropagation();
-      if (categoryInput.length === 0 || categoryInput.trim() === "") {
+      if (categoryInput.trim() === "") {
         setCategoryInput("");
-        return alert("빈 태그는 입력할수 없습니다.");
+        alert("빈 태그는 입력할 수 없습니다.");
+        return;
       }
-      if (category.some((prevTag) => prevTag === categoryInput.trim())) {
+      if (category.includes(categoryInput.trim())) {
         setCategoryInput("");
-        return alert("이미 입력된 태그입니다");
+        alert("이미 입력된 태그입니다.");
+        return;
       }
       const newCategory = [...category, categoryInput.trim()];
       setCategory(newCategory);
@@ -116,7 +111,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
     }
   };
 
-  const deletetag = (tag: string) => {
+  const deleteTag = (tag: string) => {
     const updatedCategory = category.filter((c) => c !== tag);
     setCategory(updatedCategory);
     onAddCategory(updatedCategory);
@@ -125,20 +120,21 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   return (
     <form>
       <input
-        type=""
+        type="text"
         name="categore"
         value={categoryInput}
         onChange={(e) => setCategoryInput(e.target.value)}
-        onKeyDown={(e) => addcategore(e)}
+        onKeyDown={addCategory}
         onCompositionStart={handleComposition}
-        onCompositionUpdate={handleComposition}
         onCompositionEnd={handleComposition}
-        className=" border p-1"
+        className="border p-1"
       />
       {category.map((tag) => (
         <div key={tag}>
           <div>{tag}</div>
-          <button type="button" onClick={() => deletetag(tag)}>삭제</button>
+          <button type="button" onClick={() => deleteTag(tag)}>
+            삭제
+          </button>
         </div>
       ))}
     </form>
