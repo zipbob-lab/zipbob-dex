@@ -29,17 +29,18 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, initial
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
+  const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profile.png`;
 
   return (
     <div>
       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
       <Image
-        src={previewUrl || "/default-profile.png"}
+        src={previewUrl || profileImageUrl}
         alt="프로필 미리보기"
         width={120}
         height={120}
         onClick={handleImageClick}
-        className="w-40 h-40 rounded-full mt-4 object-cover cursor-pointer"
+        className="w-40 h-40 rounded-full object-cover cursor-pointer"
       />
     </div>
   );

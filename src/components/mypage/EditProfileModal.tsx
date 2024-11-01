@@ -38,12 +38,11 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
             onImageUpload={setSelectedFile}
           />
 
-          {/* 호버 시 표시되는 편집 텍스트 */}
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <ImageIcon className="text-white " />
-          </div>
+          {/* 프로필 사진 위에 아이콘 표시 */}
         </div>
-
+        <div className="absolute top-36 left-60 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center z-10 border border-white">
+          <ImageIcon className="text-white w-5 h-5 z-40" />
+        </div>
         {/* 닉네임 및 자기소개 입력 */}
         <input
           type="text"

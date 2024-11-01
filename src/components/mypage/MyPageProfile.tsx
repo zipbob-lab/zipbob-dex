@@ -78,7 +78,7 @@ const MyPageProfile = () => {
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
-    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profille.png`;
+    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profile.png`;
     if (!userData) return;
 
     const { error } = await supabase
