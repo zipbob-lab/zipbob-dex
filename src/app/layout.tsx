@@ -6,6 +6,7 @@ import "./globals.css";
 // import "react-toastify/dist/ReactToastify.css";
 
 import localFont from "next/font/local";
+import SearchBar from "@/components/common/searchbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,6 +28,7 @@ export default function RootLayout({
     // <ReactQueryClientProvider>
     <html lang="ko" className={pretendard.variable}>
       <body className="font-pretendard">
+        <SearchBar />
         <Providers>{children}</Providers>
         {/* <ToastContainer
           position="bottom-center"
