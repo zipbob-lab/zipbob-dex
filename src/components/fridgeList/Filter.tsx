@@ -19,7 +19,7 @@ const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, de
         let query = browserClient.from("TEST2_TABLE").select("*");
 
         if (addKeywords.length > 0) {
-          query = query.contains("recipe_ingredients", addKeywords);
+          query = query.contains("recipe_ingredients", JSON.stringify(addKeywords));
         }
 
         if (deleteKeywords.length > 0) {

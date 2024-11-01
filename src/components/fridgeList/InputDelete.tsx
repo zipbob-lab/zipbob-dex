@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {

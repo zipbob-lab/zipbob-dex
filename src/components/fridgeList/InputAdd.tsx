@@ -56,7 +56,6 @@
 //         onCompositionStart={handleComposition}
 //         onCompositionUpdate={handleComposition}
 //         onCompositionEnd={handleComposition}
-//         className=" border p-1"
 //       />
 //       {category.map((tag) => (
 //         <div key={tag}>
@@ -76,6 +75,8 @@
 // // 2. 컴포지션 처리 시도
 // // 3. Enter !== 처리
 // // 4. 디바운싱 주석 처리와 컴포지션 처리 시도후 해결완료
+
+"use client";
 
 import React, { useState } from "react";
 
@@ -116,6 +117,11 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
     setCategory(updatedCategory);
     onAddCategory(updatedCategory);
   };
+
+  // const InputJsonChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   setCategory(e.target.value );
+  //   console.log(JSON.stringify([...category, e.target.value.trim()]));
+  // };
 
   return (
     <form>
