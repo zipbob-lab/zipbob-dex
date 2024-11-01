@@ -136,6 +136,7 @@ const Comments = ({ postId }: PostDataProps) => {
       return error;
     } else {
       console.log("댓글 INSERT 성공 : ", data);
+      setCurrentPage(1);
       FetchCommentInfo();
       alert("댓글 등록 완료!");
       reset({ commentText: "" });
@@ -173,10 +174,10 @@ const Comments = ({ postId }: PostDataProps) => {
     FetchCommentInfo();
   }, [currentPage]);
 
-  // 총 페이지 수 계산
+  // 페이지 수 계산
   const totalPages = Math.ceil(totalComments / commentsPerPage);
 
-  // 페이지 번호 변경 함수
+  // 페이지 번호 변경
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -186,7 +187,7 @@ const Comments = ({ postId }: PostDataProps) => {
       {/* 댓글 제목 */}
       <div className="p-5 flex flex-row gap-3">
         <h1 className="flex items-end justify-center text-2xl font-bold">요리 후기</h1>
-        <span className="flex items-end justify-center">{comments.length} 개</span>
+        <span className="flex items-end justify-center">{totalComments} 개</span>
       </div>
       {/* 댓글 작성창 */}
       <div className="bg-white p-5 rounded-xl flex flex-col gap-4 border  border-gray-500">
@@ -308,12 +309,12 @@ const Comments = ({ postId }: PostDataProps) => {
           </div>
         </div>
       ))}
-      <div className="flex justify-center items-center">
-        {[...Array(totalPages)].map((_, index) => (
+      <div className="flex justify-center items-center gap-2">
+        {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
+            className="text-lg hover:text-orange-500 transition-colors duration-300"
           >
             {index + 1}
           </button>
