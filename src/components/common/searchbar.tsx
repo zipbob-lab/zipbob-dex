@@ -51,6 +51,7 @@ const SearchBar = () => {
     setKeywords([]);
   };
 
+  // 검색어 클릭시 이동
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
