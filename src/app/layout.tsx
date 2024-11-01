@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Providers from "./providers";
 import "@/styles/reset.css";
 import "./globals.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
 import localFont from "next/font/local";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import SearchBar from "@/components/common/searchbar";
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
       <body className="font-pretendard">
         <SearchBar />
         <Providers>{children}</Providers>
-        <ToastContainer
+        {/* <ToastContainer
           position="bottom-center"
           autoClose={3000}
           hideProgressBar={true}
@@ -39,7 +40,7 @@ export default function RootLayout({
           pauseOnFocusLoss
           draggable
           pauseOnHover
-        />
+        /> */}
       </body>
     </html>
     // </ReactQueryClientProvider>

@@ -12,6 +12,37 @@ export const getUserId = async (): Promise<string | null> => {
   return userId;
 };
 
+// 유저 정보를 불러오는 함수
+export const fetchUserProfile = async (): Promise<{
+  user_id: string;
+  user_nickname: string;
+  user_img: string;
+  user_email: string;
+  user_exp: number;
+  user_rank: number;
+  user_introduce: string;
+} | null> => {
+  const {
+    data: { session },
+    error: sessionError
+  } = await supabase.auth.getSession();
+
+  if (sessionError || !session) {
+    console.error("세션을 가져올 수 없거나 로그인 상태가 아닙니다:", sessionError?.message);
+    return null;
+  }
+
+  const userId = session.user.id;
+
+  const { data, error } = await supabase.from("USER_TABLE").select("*").eq("user_id", userId).single();
+
+  if (error) {
+    console.log("user 프로필 불러오기 실패:", error.message);
+    return null;
+  }
+
+  return data;
+};
 export const getUserProfile = async () => {
   const userId = await getUserId();
   const { data, error } = await supabase.from("USER_TABLE").select("user_img").eq("user_id", userId);
