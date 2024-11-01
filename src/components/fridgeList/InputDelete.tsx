@@ -1,17 +1,10 @@
-// import { debounce } from "lodash";
 import React, { useState } from "react";
 
-const Categore = () => {
+const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
   const [categoryInput, setCategoryInput] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
 
-  //   const debouncedSetCategory = debounce(
-  //     (newCategory: string, currentCategories: string[], setCategory: React.Dispatch<React.SetStateAction<string[]>>) => {
-  //       setCategory([...currentCategories, newCategory.trim()]);
-  //     },
-  //     300
-  //   );
   const handleComposition = (e: React.CompositionEvent<HTMLInputElement>) => {
     if (e.type === "compositionstart") {
       setIsComposing(true);
@@ -36,13 +29,18 @@ const Categore = () => {
         setCategoryInput("");
         return alert("이미 입력된 태그입니다");
       }
-      setCategory([...category, categoryInput.trim()]);
-      //   debouncedSetCategory(categoryInput, category, setCategory);
+      const newCategory = [...category, categoryInput.trim()];
+      setCategory(newCategory);
+      onDeleteCategory(newCategory);
       setCategoryInput("");
     }
   };
-  console.log(category);
-  console.log(categoryInput);
+
+  const deletetag = (tag: string) => {
+    const updatedCategory = category.filter((c) => c !== tag);
+    setCategory(updatedCategory);
+    onDeleteCategory(updatedCategory);
+  };
 
   return (
     <form>
@@ -55,18 +53,18 @@ const Categore = () => {
         onCompositionStart={handleComposition}
         onCompositionUpdate={handleComposition}
         onCompositionEnd={handleComposition}
-        className=" border"
+        className=" border p-1"
       />
-      {category.map((c) => (
-        <div key={c}>{c}</div>
+      {category.map((tag) => (
+        <div key={tag}>
+          <div>{tag}</div>
+          <button type="button" onClick={() => deletetag(tag)}>
+            삭제
+          </button>
+        </div>
       ))}
     </form>
   );
 };
 
-export default Categore;
-
-// 1. 디바운싱 처리 시도
-// 2. 컴포지션 처리 시도
-// 3. Enter !== 처리
-// 4. 디바운싱 주석 처리와 컴포지션 처리 시도후 해결완료
+export default CategoreDelete;

@@ -1,14 +1,43 @@
 "use client";
 
-import Categore from "@/components/fridgeList/ImputFilter";
-import React from "react";
+import React, { useState } from "react";
+import CategoreAdd from "@/components/fridgeList/InputAdd";
+import CategoreDelete from "@/components/fridgeList/InputDelete";
+import FilteredRecipeList from "@/components/fridgeList/Filter";
 
-const page = () => {
+const CategoreFilter = () => {
+  const [addKeywords, setAddKeywords] = useState<string[]>([]);
+  const [deleteKeywords, setDeleteKeywords] = useState<string[]>([]);
+  const [isSearchTriggered, setIsSearchTriggered] = useState(false);
+
+  const handleAddKeywords = (keywords: string[]) => {
+    setAddKeywords(keywords);
+  };
+
+  const handleDeleteKeywords = (keywords: string[]) => {
+    setDeleteKeywords(keywords);
+  };
+
+  const handleSearch = () => {
+    setIsSearchTriggered(true);
+  };
+
   return (
     <div>
-      <Categore />
+      <h2>필터링 조건 입력</h2>
+
+      <CategoreAdd onAddCategory={handleAddKeywords} />
+      <CategoreDelete onDeleteCategory={handleDeleteKeywords} />
+
+      <button onClick={handleSearch} className="search-button">
+        검색
+      </button>
+
+      {isSearchTriggered && (
+        <FilteredRecipeList addKeywords={addKeywords} deleteKeywords={deleteKeywords} isSearching={isSearchTriggered} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default CategoreFilter;

@@ -5,14 +5,13 @@ import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
 
+// 검색 결과 함수
 const SearchResultPage = () => {
   const { query } = useParams();
-  console.log("query : ", query as string);
   const searchText = decodeURI(query as string);
-
-  console.log("searchText: ", searchText);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
+  // supabase에서 데이터 불러오기 (user table에만 불러옴)
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
@@ -51,6 +50,5 @@ const SearchResultPage = () => {
 
 export default SearchResultPage;
 
-// 디코딩 오류 의문
 // 디테일 페이지 이동
 // 유형 기능 업데이트
