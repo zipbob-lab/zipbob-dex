@@ -1,4 +1,5 @@
 import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 interface UserComment {
@@ -39,9 +40,11 @@ const UserComment = ({ userId }: { userId: string }) => {
       {comments.map((comment) => (
         <div key={comment.post_id} className="flex p-4 border-b border-gray-200 ">
           {comment.recipe ? (
-            <img
+            <Image
               src={comment.recipe.recipe_img_done}
               alt={comment.recipe.recipe_title}
+              width={100}
+              height={100}
               className="w-24 h-24 rounded-md mr-4"
             />
           ) : (

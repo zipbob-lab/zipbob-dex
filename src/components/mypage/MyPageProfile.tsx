@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { supabase } from "@/supabase/supabase";
-import { fetchUserProfile } from "@/serverActions/profileAction"; // 유저 정보 받아오기
-import { uploadProfileImage } from "@/utils/uploadProfileImage"; // 이미지 업로드 함수 (수파베이스 로직)
+import { fetchUserProfile } from "@/serverActions/profileAction";
+import { uploadProfileImage } from "@/utils/uploadProfileImage";
 import { useEffect, useState } from "react";
-import EditProfileModal from "./EditProfileModal"; // 모달창
+import EditProfileModal from "./EditProfileModal";
 import { Pencil } from "lucide-react";
 import UserRank from "../UserRank";
+import Image from "next/image";
 
 interface UserProfile {
   user_id: string;
@@ -26,7 +27,7 @@ const MyPageProfile = () => {
     const loadUserProfile = async () => {
       const profileData = await fetchUserProfile();
       if (profileData) {
-        setUserData(profileData); // 업데이트된 사용자 정보 설정
+        setUserData(profileData);
       }
       setLoading(false);
     };
@@ -73,6 +74,26 @@ const MyPageProfile = () => {
     setIsModalOpen(false);
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profille.png`;
+    if (!userData) return;
+
+    const { error } = await supabase
+      .from("USER_TABLE")
+      .update({ user_img: profileImageUrl, user_introduce: "" })
+      .eq("user_id", userData.user_id);
+
+    if (error) {
+      console.error("데이터 초기화 오류:", error.message);
+      return;
+    }
+    setUserData((prev) => (prev ? { ...prev, user_img: profileImageUrl, user_introduce: "" } : null));
+    setIsModalOpen(false);
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -80,9 +101,11 @@ const MyPageProfile = () => {
       {userData ? (
         <>
           <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-gray-300 shadow-sm">
-            <img
+            <Image
               src={userData.user_img}
               alt={userData.user_nickname}
+              width={160}
+              height={160}
               className="object-cover object-center w-full h-full"
             />
           </div>
@@ -101,7 +124,7 @@ const MyPageProfile = () => {
           <UserRank userId={userData.user_id} />
 
           <Link
-            href="/myrecipewrite"
+            href="/myrecipewirte"
             className="mt-5 p-3 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
           >
             나만의 레시피 올리기
@@ -113,6 +136,7 @@ const MyPageProfile = () => {
             onClose={() => setIsModalOpen(false)}
             userData={userData}
             onSave={handleSave}
+            onDelete={handleDelete}
           />
         </>
       ) : (
