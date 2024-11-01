@@ -14,4 +14,8 @@ export type Recipe = {
   created_at: string; // 생성 날짜
   updated_at: string; // 업데이트 날짜
   creator_nickname?: string; // 생성한 사람 닉네임 필드 추가
+
+  // junggol 작업자 임시 추가
+  like_count: number; // 누적 좋아요 기능 카운트
+  scrap_count: number; //  누적 스크랩 횟수 카운트
 };

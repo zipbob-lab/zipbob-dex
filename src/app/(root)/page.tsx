@@ -1,4 +1,4 @@
-import SearchBar from "@/components/common/searchbar";
+import SearchBar from "@/components/common/Searchbar";
 import Ranking from "@/components/mainPage/rank/Ranking";
 
 export default async function Home() {
