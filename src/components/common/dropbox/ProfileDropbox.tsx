@@ -34,7 +34,7 @@ const ProfileDropbox = () => {
     >
       <ul className="flex flex-col gap-2">
         <li className="px-2 py-3 hover:bg-Secondary-50 rounded-2xl transition">
-          <Link href="/">마이페이지</Link>
+          <Link href="/mypages">마이페이지</Link>
         </li>
         <li className="px-2 py-3 hover:bg-Secondary-50 rounded-2xl transition cursor-pointer" onClick={logout}>
           <button>로그아웃</button>
