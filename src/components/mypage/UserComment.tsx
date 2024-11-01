@@ -18,10 +18,10 @@ const UserComment = ({ userId }: { userId: string }) => {
   useEffect(() => {
     const loadCommentsWithRecipes = async () => {
       const commentsData = await fetchUserComments(userId);
-      if (commentsData) {
+      if (commentsData?.comments?.length) {
         // 댓글의 post_id를 이용해 레시피 정보 추가
         const commentsWithRecipes = await Promise.all(
-          commentsData.map(async (comment) => {
+          commentsData.comments.map(async (comment) => {
             const recipeData = await fetchRecipeByPostId(comment.post_id);
             return { ...comment, recipe: recipeData };
           })
