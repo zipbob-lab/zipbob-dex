@@ -10,9 +10,9 @@ interface FilteredRecipeListProps {
   isSearching: boolean;
 }
 
-const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, deleteKeywords, isSearching }) => {
+const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, isSearching }) => {
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
-
+  //   deleteKeywords,
   useEffect(() => {
     const fetchFilteredRecipes = async () => {
       if (isSearching) {
@@ -22,11 +22,11 @@ const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, de
           query = query.contains("recipe_ingredients", JSON.stringify(addKeywords));
         }
 
-        if (deleteKeywords.length > 0) {
-          deleteKeywords.forEach((keyword) => {
-            query = query.not("recipe_ingredients", "cs", [keyword]);
-          });
-        }
+        // if (deleteKeywords.length > 0) {
+        //   deleteKeywords.forEach((keyword) => {
+        //     query = query.not("recipe_ingredients", "cs", [keyword]);
+        //   });
+        // }
 
         const { data, error } = await query;
 
@@ -40,16 +40,22 @@ const FilteredRecipeList: React.FC<FilteredRecipeListProps> = ({ addKeywords, de
     };
 
     fetchFilteredRecipes();
-  }, [addKeywords, deleteKeywords, isSearching]);
-
+  }, [addKeywords, isSearching]);
+  //   deleteKeywords,
   return (
     <div>
       <h2>검색 결과</h2>
       {filteredRecipes.length > 0 ? (
         filteredRecipes.map((recipe) => (
-          <div key={recipe.post_id}>
-            <div>{recipe.recipe_title}</div>
-          </div>
+          <li key={recipe.post_id}>
+            <div>
+              <div>{recipe.recipe_title}</div>
+              <img src={recipe.recipe_img_done} alt="없음" />
+              <p>난이도: {recipe.recipe_level}</p>
+              <p>좋아요: {recipe.like_count}</p>
+              <p>스크랩: {recipe.scrap_count}</p>
+            </div>
+          </li>
         ))
       ) : (
         <p>검색 결과가 없습니다.</p>
