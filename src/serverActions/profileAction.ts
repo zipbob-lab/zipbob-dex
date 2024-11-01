@@ -1,4 +1,5 @@
 import browserClient from "@/supabase/client";
+import { supabase } from "@/supabase/supabase";
 
 export const getUserId = async (): Promise<string | null> => {
   const { data, error } = await browserClient.auth.getUser();
@@ -12,8 +13,22 @@ export const getUserId = async (): Promise<string | null> => {
 };
 
 export const getUserProfile = async () => {
-  const { data } = await browserClient.auth.getUser();
+  const userId = await getUserId();
+  const { data, error } = await supabase.from("USER_TABLE").select("user_img").eq("user_id", userId);
 
-  const userProfile = data.user?.user_metadata.avatar_url ?? null;
-  return userProfile;
+  if (error) {
+    throw error;
+  }
+
+  return data[0].user_img;
+};
+
+export const getUserNickname = async (id: string) => {
+  const { data, error } = await supabase.from("USER_TABLE").select("user_nickname").eq("user_id", id);
+
+  if (error) {
+    throw error;
+  }
+
+  return data[0].user_nickname;
 };
