@@ -19,7 +19,6 @@ const SearchResultPage = () => {
           .select("post_id, recipe_title, recipe_img_done, recipe_level, like_count, scrap_count")
           .like("recipe_title", `%${searchText}%`);
 
-        // 정렬 옵션에 따라 데이터 정렬
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "scraps") {
@@ -45,11 +44,10 @@ const SearchResultPage = () => {
         <p>검색 결과 {recipes.length}개</p>
 
         <div>
-          <label htmlFor="sort-option">정렬 기준: </label>
           <select id="sort-option" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-            <option value="default">기본</option>
-            <option value="likes">좋아요 순</option>
-            <option value="scraps">스크랩 순</option>
+            <option value="default">전체</option>
+            <option value="likes">좋아요 높은 순</option>
+            <option value="scraps">스크랩 많은 순</option>
           </select>
         </div>
       </header>
