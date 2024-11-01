@@ -67,7 +67,9 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
   };
 
-  const handleToggleLikeButton = async () => {
+  const handleToggleLikeButton: React.MouseEventHandler<HTMLButtonElement> = async (e): Promise<void> => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!loginSessionId) {
       alert("로그인 해주세요.");
       return;
@@ -119,8 +121,8 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   };
 
   return (
-    <button onClick={handleToggleLikeButton}>
-      {isLike ? "💛" : "🤍"} 좋아요 {likeCount} 개
+    <button onClick={(e) => handleToggleLikeButton(e)}>
+      {isLike ? "💛" : "🤍"} {likeCount}
     </button>
   );
 };

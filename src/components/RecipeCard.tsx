@@ -1,5 +1,6 @@
 import { Recipe } from "@/types/Recipe";
 import ScrapButton from "./common/button/ScrapButton";
+import LikeButton from "./common/button/LikeButton";
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
@@ -16,6 +17,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       {recipe.creator_nickname || "집밥도감 마스터"}
       <div className="flex justify-end">
         <ScrapButton postId={recipe.post_id} />
+        <LikeButton postId={recipe.post_id} />
       </div>
     </div>
   );
