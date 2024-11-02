@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-// import ScrapButton from "@/components/common/button/ScrapButton";
 import { Trash2 } from "lucide-react";
+import Image from "next/image";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
-  const { existingFolders, scraps, deleteScrap } = useScrapData();
+  const { existingFolders, scraps, deleteScrap, refetchFolders } = useScrapData();
   const [isEditMode, setIsEditMode] = useState(false);
 
   const handleFolderClick = (folder: string | null) => {
@@ -18,6 +18,12 @@ const ScrapPage = () => {
   // 편집 모드 토글 함수
   const toggleEditMode = () => {
     setIsEditMode((prev) => !prev);
+  };
+
+  // 게시글이 전부 삭제되면 폴더도 바로 안 보여지기
+  const handleDeleteScrap = async (scrapId: string) => {
+    await deleteScrap(scrapId);
+    refetchFolders();
   };
 
   return (
@@ -40,7 +46,7 @@ const ScrapPage = () => {
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="grid grid-cols-1 mt-8 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 mt-8 md:grid-cols-4 gap-4">
           {Array.isArray(scraps) &&
             scraps
               .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
@@ -56,26 +62,24 @@ const ScrapPage = () => {
                 return (
                   <div key={scrap.scrap_id} className="relative p-4 bg-white rounded-lg shadow">
                     {recipeDetail.recipe_img_done && (
-                      <img
+                      <Image
                         src={recipeDetail.recipe_img_done}
                         alt={recipeDetail.recipe_title}
+                        width={244}
+                        height={244}
                         className="w-full h-48 object-cover rounded-md mb-4"
                       />
                     )}
                     <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
                     <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
 
-                    {/* <div className="flex justify-end">
-                      <ScrapButton postId={recipeDetail.post_id} />
-                    </div> */}
-
                     {/* 편집 모드일 때만 삭제 아이콘 표시 */}
                     {isEditMode && (
                       <button
-                        onClick={() => deleteScrap(scrap.scrap_id)}
+                        onClick={() => handleDeleteScrap(scrap.scrap_id)}
                         className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
                       >
-                        <Trash2 />
+                        <Trash2 size={16} />
                       </button>
                     )}
                   </div>
