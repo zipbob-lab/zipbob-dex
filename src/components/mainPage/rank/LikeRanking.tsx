@@ -1,11 +1,11 @@
-import { supabase } from "@/supabase/supabase";
 import { UserRankingProps } from "@/types/main";
 import { useQuery } from "@tanstack/react-query";
-import RecipeCard from "./RecipeCard";
+import RecipeCard from "../RecipeCard";
+import browserClient from "@/supabase/client";
 
 const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   const fetchPosts = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await browserClient
       .from("TEST2_TABLE")
       .select("*")
       .order("like_count", { ascending: false })
@@ -36,9 +36,8 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   if (isPostError) {
     return <div>좋아요 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
   }
-  console.log(posts);
 
-  return <div className="flex gap-5">{posts?.map((post) => <RecipeCard key={post.id} post={post} />)}</div>;
+  return <div className="flex gap-20">{posts?.map((post) => <RecipeCard key={post.id} post={post} />)}</div>;
 };
 
 export default LikeRanking;
