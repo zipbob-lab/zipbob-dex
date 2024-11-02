@@ -124,7 +124,7 @@ const MyPageProfile = () => {
           <UserRank userId={userData.user_id} />
 
           <Link
-            href="/myrecipewirte"
+            href="/myrecipewrite"
             className="mt-5 p-3 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
           >
             나만의 레시피 올리기
