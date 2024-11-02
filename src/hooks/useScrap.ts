@@ -42,7 +42,7 @@ export const useScrap = () => {
   // 북마크 개수 증가 함수
   const incrementScrapCount = async (recipeId: string) => {
     const { data, error: fetchError } = await supabase
-      .from("TEST_TABLE")
+      .from("TEST2_TABLE")
       .select("scrap_count")
       .eq("post_id", recipeId)
       .single();
@@ -57,7 +57,7 @@ export const useScrap = () => {
     const newCount = currentCount + 1;
 
     const { error: scrapCountUpdateError } = await supabase
-      .from("TEST_TABLE")
+      .from("TEST2_TABLE")
       .update({ scrap_count: newCount })
       .eq("post_id", recipeId);
 
@@ -84,7 +84,7 @@ export const useScrap = () => {
     }
 
     const { data: recipeData, error: fetchError } = await supabase
-      .from("TEST_TABLE")
+      .from("TEST2_TABLE")
       .select("*")
       .eq("post_id", recipeId)
       .single();
@@ -98,7 +98,7 @@ export const useScrap = () => {
     // 새 폴더와 레시피를 저장
     const { error } = await supabase.from("SCRAP_TABLE").insert({
       user_id: userId,
-      scrap_id: recipeId, //test_table 속성과 동일하게 설정
+      scrap_id: recipeId, //test2_table 속성과 동일하게 설정
       folder_name: folderName,
       scraped_recipe: JSON.stringify(recipeData),
       created_at: new Date(),
@@ -130,7 +130,7 @@ export const useScrap = () => {
 
   const fetchRecipeScrapCount = async (recipeId: string) => {
     try {
-      const { data, error } = await supabase.from("TEST_TABLE").select("scrap_count").eq("post_id", recipeId).single();
+      const { data, error } = await supabase.from("TEST2_TABLE").select("scrap_count").eq("post_id", recipeId).single();
 
       if (error) {
         console.log("총 스크랩 개수를 가져오던 중 오류 발생:", error.message);
