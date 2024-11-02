@@ -78,7 +78,10 @@ const ScrapPage = () => {
                       {/* 편집 모드일 때만 삭제 아이콘 표시 */}
                       {isEditMode && (
                         <button
-                          onClick={() => handleDeleteScrap(scrap.scrap_id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleDeleteScrap(scrap.scrap_id);
+                          }}
                           className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
                         >
                           <Trash2 size={16} />
