@@ -2,7 +2,7 @@
 import { useFormContext } from "react-hook-form";
 
 const RecipeInfoFields = () => {
-  const { register,control } = useFormContext();
+  const { register } = useFormContext();
   return (
     <div>
       <div className="flex mb-5 gap-10">
