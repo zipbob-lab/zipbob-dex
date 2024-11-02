@@ -1,5 +1,6 @@
 import { fetchUserPosts } from "@/serverActions/fetchRecipeDataFromSupabase";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface UserPost {
@@ -36,20 +37,22 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   return (
     <div className="overflow-y-auto max-h-[560px]">
       {posts.map((post) => (
-        <div key={post.post_id} className="flex p-4 border-b border-gray-200">
-          <Image
-            src={post.recipe_img_done}
-            alt={post.recipe_title}
-            width={100}
-            height={100}
-            className="w-24 h-24 rounded-md mr-4"
-          />
-          <div>
-            <h3 className="text-lg font-bold">{post.recipe_title}</h3>
-            <p className="text-sm text-gray-500">작성자: {post.user.user_nickname}</p>
-            <p className="text-sm text-gray-500">소개: {post.user.user_introduce}</p>
+        <Link key={post.post_id} href={`/myrecipedetail/${post.post_id}`}>
+          <div key={post.post_id} className="flex p-4 border-b border-gray-200">
+            <Image
+              src={post.recipe_img_done}
+              alt={post.recipe_title}
+              width={100}
+              height={100}
+              className="w-24 h-24 rounded-md mr-4"
+            />
+            <div>
+              <h3 className="text-lg font-bold">{post.recipe_title}</h3>
+              <p className="text-sm text-gray-500">작성자: {post.user.user_nickname}</p>
+              <p className="text-sm text-gray-500">소개: {post.user.user_introduce}</p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

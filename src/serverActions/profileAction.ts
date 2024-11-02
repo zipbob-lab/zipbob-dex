@@ -23,16 +23,16 @@ export const fetchUserProfile = async (): Promise<{
   user_introduce: string;
 } | null> => {
   const {
-    data: { session },
-    error: sessionError
-  } = await supabase.auth.getSession();
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
 
-  if (sessionError || !session) {
-    console.error("세션을 가져올 수 없거나 로그인 상태가 아닙니다:", sessionError?.message);
+  if (userError || !user) {
+    console.error("사용자 정보를 가져올 수 없거나 로그인 상태가 아닙니다:", userError?.message);
     return null;
   }
 
-  const userId = session.user.id;
+  const userId = user.id;
 
   const { data, error } = await supabase.from("USER_TABLE").select("*").eq("user_id", userId).single();
 
@@ -43,6 +43,7 @@ export const fetchUserProfile = async (): Promise<{
 
   return data;
 };
+
 export const getUserProfile = async () => {
   const userId = await getUserId();
   const { data, error } = await supabase.from("USER_TABLE").select("user_img").eq("user_id", userId);
