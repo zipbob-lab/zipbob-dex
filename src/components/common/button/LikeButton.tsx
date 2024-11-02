@@ -43,7 +43,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
       .eq("post_id", postId)
       .eq("user_id", userId)
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (likeStatusError) {
       console.error("좋아요 상태 오류:", likeStatusError.message);
@@ -58,7 +58,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
 
     // 좋아요 총 개수 가져오기
-    const { data, error } = await supabase.from("TEST2_TABLE").select("like_count").eq("post_id", postId).single();
+    const { data, error } = await supabase.from("TEST2_TABLE").select("like_count").eq("post_id", postId).maybeSingle();
 
     if (error) {
       console.error("좋아요 개수 가져오기 오류:", error.message);
