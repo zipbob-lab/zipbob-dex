@@ -5,6 +5,7 @@ import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -60,29 +61,31 @@ const ScrapPage = () => {
                 }
 
                 return (
-                  <div key={scrap.scrap_id} className="relative p-4 bg-white rounded-lg shadow">
-                    {recipeDetail.recipe_img_done && (
-                      <Image
-                        src={recipeDetail.recipe_img_done}
-                        alt={recipeDetail.recipe_title}
-                        width={244}
-                        height={244}
-                        className="w-full h-48 object-cover rounded-md mb-4"
-                      />
-                    )}
-                    <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
-                    <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
+                  <Link href={`/myrecipedetail/${recipeDetail.post_id}`} key={scrap.scrap_id}>
+                    <div key={scrap.scrap_id} className="relative p-4 bg-white rounded-lg shadow">
+                      {recipeDetail.recipe_img_done && (
+                        <Image
+                          src={recipeDetail.recipe_img_done}
+                          alt={recipeDetail.recipe_title}
+                          width={244}
+                          height={244}
+                          className="w-full h-48 object-cover rounded-md mb-4"
+                        />
+                      )}
+                      <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
+                      <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
 
-                    {/* 편집 모드일 때만 삭제 아이콘 표시 */}
-                    {isEditMode && (
-                      <button
-                        onClick={() => handleDeleteScrap(scrap.scrap_id)}
-                        className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    )}
-                  </div>
+                      {/* 편집 모드일 때만 삭제 아이콘 표시 */}
+                      {isEditMode && (
+                        <button
+                          onClick={() => handleDeleteScrap(scrap.scrap_id)}
+                          className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </Link>
                 );
               })}
         </div>
