@@ -11,26 +11,27 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
     setIsComposing(e.type !== "compositionend");
   };
 
-  const addCategory = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isComposing) {
+  const addCategory = () => {
+    if (categoryInput.trim() === "") {
+      alert("빈 태그는 입력할 수 없습니다.");
       return;
     }
+    if (category.includes(categoryInput.trim())) {
+      alert("이미 입력된 태그입니다.");
+      return;
+    }
+
+    const newCategory = [...category, categoryInput.trim()];
+    setCategory(newCategory);
+    onDeleteCategory(newCategory);
+    setCategoryInput("");
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (isComposing) return;
     if (e.key === "Enter") {
       e.preventDefault();
-      if (categoryInput.trim() === "") {
-        setCategoryInput("");
-        alert("빈 태그는 입력할 수 없습니다.");
-        return;
-      }
-      if (category.includes(categoryInput.trim())) {
-        setCategoryInput("");
-        alert("이미 입력된 태그입니다.");
-        return;
-      }
-      const newCategory = [...category, categoryInput.trim()];
-      setCategory(newCategory);
-      onDeleteCategory(newCategory);
-      setCategoryInput("");
+      addCategory();
     }
   };
 
@@ -41,26 +42,30 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
   };
 
   return (
-    <form>
+    <form onSubmit={(e) => e.preventDefault()}>
       <input
         type="text"
-        name="categore"
         value={categoryInput}
         onChange={(e) => setCategoryInput(e.target.value)}
-        onKeyDown={addCategory}
+        onKeyDown={handleKeyDown}
         onCompositionStart={handleComposition}
         onCompositionEnd={handleComposition}
         placeholder="빼고 싶은 재료를 입력하세요 XD"
         className="border p-1"
       />
-      {category.map((tag) => (
-        <div key={tag}>
-          <div>{tag}</div>
-          <button type="button" onClick={() => deleteTag(tag)}>
-            삭제
-          </button>
-        </div>
-      ))}
+      <button type="button" onClick={addCategory} className="ml-2 p-1 border">
+        추가
+      </button>
+      <div>
+        {category.map((tag) => (
+          <div key={tag} className="inline-block mr-2">
+            <span>{tag}</span>
+            <button type="button" onClick={() => deleteTag(tag)} className="ml-1">
+              x
+            </button>
+          </div>
+        ))}
+      </div>
     </form>
   );
 };

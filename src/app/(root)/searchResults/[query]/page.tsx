@@ -14,11 +14,7 @@ const SearchResultPage = () => {
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
-        let request = browserClient
-          .from("TEST2_TABLE")
-          .select("post_id, recipe_title, recipe_img_done, recipe_level, like_count, scrap_count")
-          .like("recipe_title", `%${searchText}%`);
-
+        let request = browserClient.from("TEST2_TABLE").select("*").like("recipe_title", `%${searchText}%`);
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "scraps") {
@@ -28,7 +24,7 @@ const SearchResultPage = () => {
         const { data, error } = await request;
 
         if (error) {
-          console.error("데이터 가져오기 오류:", error);
+          console.error("에러", error);
         } else {
           setRecipes(data as Recipe[]);
         }
@@ -78,14 +74,13 @@ const SearchResultPage = () => {
 
 export default SearchResultPage;
 // todos
-// 1. 테이블 변경시 테이블 위치와 컬럼 수정하기
+// 1. 테이블 변경시 테이블 위치와 컬럼 수정하기 (필요시 이중 처리)
 // 2. css 작업시 냉장고 페이지와 css 동일하게 하기 (카드 컴포넌트화 고려해볼것)
 // 3. 유형 기능 업데이트
 // 4. 링크 기능 업데이트
 // 번외. 타이머 기능 만들기
 
-
 // 2024.11.02
 // 재료검색 불러오기
 // 타이머 기능 만들기
-// 
+//
