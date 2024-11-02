@@ -3,6 +3,7 @@ import MainLogo from "../../../../public/images/headerLogo.svg";
 import Link from "next/link";
 import { getIsLogin } from "@/supabase/server";
 import AuthStatusBar from "./AuthStatusBar";
+import SearchBar from "@/components/common/searchbar";
 
 const Header = async () => {
   const isUser = await getIsLogin();
@@ -23,6 +24,7 @@ const Header = async () => {
           전체 레시피
         </Link>
       </nav>
+      <SearchBar />
       <AuthStatusBar isUser={isUser} />
     </header>
   );
