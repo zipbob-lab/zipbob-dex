@@ -133,6 +133,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
         onKeyDown={addCategory}
         onCompositionStart={handleComposition}
         onCompositionEnd={handleComposition}
+        placeholder="넣고 싶은 재료를 입력해보세요 :)"
         className="border p-1"
       />
       {category.map((tag) => (

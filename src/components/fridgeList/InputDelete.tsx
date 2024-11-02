@@ -50,6 +50,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
         onKeyDown={addCategory}
         onCompositionStart={handleComposition}
         onCompositionEnd={handleComposition}
+        placeholder="빼고 싶은 재료를 입력하세요 XD"
         className="border p-1"
       />
       {category.map((tag) => (
