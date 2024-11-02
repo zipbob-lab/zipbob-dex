@@ -5,7 +5,7 @@ import { Recipe } from "@/types/Recipe";
 
 const RecipeAll = async () => {
   const data = await fetchRecipeDbData();
-  const recipes = data?.slice(0, 30);
+  const recipes = data;
 
   return (
     <div className="p-6">
