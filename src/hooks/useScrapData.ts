@@ -28,7 +28,7 @@ const isAlreadyScrapped = async (recipeId: string, userId: string): Promise<bool
 
 // 레시피의 스크랩 수를 가져오는 함수
 const fetchRecipeScrapCount = async (recipeId: string): Promise<number> => {
-  const { data, error } = await supabase.from("TEST_TABLE").select("scrap_count").eq("post_id", recipeId).single();
+  const { data, error } = await supabase.from("TEST2_TABLE").select("scrap_count").eq("post_id", recipeId).single();
 
   if (error) throw new Error(error.message);
   return data?.scrap_count || 0;
@@ -110,7 +110,7 @@ export const useScrapData = (): UseScrapData => {
       const currentCount = await fetchRecipeScrapCount(recipeId);
       const newCount = currentCount + 1;
 
-      const { error } = await supabase.from("TEST_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
+      const { error } = await supabase.from("TEST2_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
 
       if (error) throw new Error(error.message);
 
@@ -128,7 +128,7 @@ export const useScrapData = (): UseScrapData => {
       const currentCount = await fetchRecipeScrapCount(recipeId);
       const newCount = currentCount > 0 ? currentCount - 1 : 0;
 
-      const { error } = await supabase.from("TEST_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
+      const { error } = await supabase.from("TEST2_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
       if (error) throw new Error(error.message);
 
       queryClient.setQueryData(["scraps", userId], newCount);
@@ -149,7 +149,7 @@ export const useScrapData = (): UseScrapData => {
       }
 
       const { data: recipeData, error: fetchError } = await supabase
-        .from("TEST_TABLE")
+        .from("TEST2_TABLE")
         .select("*")
         .eq("post_id", recipeId)
         .single();

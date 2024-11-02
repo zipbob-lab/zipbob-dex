@@ -30,8 +30,8 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     } else {
       console.log("로그인 필요");
     }
-    console.log("세션아이디", loginSessionId);
-    console.log("포스트아이디", postId);
+    // console.log("세션아이디", loginSessionId);
+    // console.log("포스트아이디", postId);
   }, [loginSessionId]);
 
   // 좋아요 상태 받아오기
