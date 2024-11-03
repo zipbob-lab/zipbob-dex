@@ -1,7 +1,6 @@
 // ScrapModal.tsx
 "use client";
 
-import { MouseEvent } from "react";
 import Image from "next/image";
 import closeX from "../../../public/images/closeX.svg";
 
@@ -9,10 +8,10 @@ interface ScrapModalProps {
   isSaving: boolean;
   folderName: string;
   existingFolders: string[];
-  onFolderNameChange: (name: string) => void;
-  onSave: (e: MouseEvent) => Promise<void>;
+  onFolderNameChange: (folder: string) => void;
+  onSave: () => Promise<void>;
   onClose: () => void;
-  onFolderClick: (e: MouseEvent<HTMLButtonElement>, folder: string) => Promise<void>;
+  onFolderClick: (folder: string) => void;
 }
 
 const ScrapModal: React.FC<ScrapModalProps> = ({
@@ -50,7 +49,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
           {existingFolders?.map((folder) => (
             <button
               key={folder}
-              onClick={(e) => onFolderClick(e, folder)}
+              onClick={() => onFolderClick(folder)}
               className="block text-left w-full p-2 mb-1 border-b"
             >
               {folder}

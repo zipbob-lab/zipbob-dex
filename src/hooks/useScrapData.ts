@@ -179,11 +179,13 @@ export const useScrapData = (): UseScrapData => {
         created_at: new Date(),
         updated_at: new Date()
       });
+      console.log("폴더명 확인", folderName);
 
       if (insertError) throw new Error(insertError.message);
 
       await incrementScrapCount(recipeId);
-      refetchFolders();
+      queryClient.invalidateQueries({ queryKey: ["folders", userId] });
+      queryClient.invalidateQueries({ queryKey: ["scraps", userId] });
       return true;
     }
   });

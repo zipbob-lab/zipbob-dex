@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, MouseEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
@@ -29,20 +29,16 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   }, [postId, isAlreadyScrapped]);
 
   // 북마크 클릭 시 페이지 이동 방지 및 모달 열기
-  const handleMarkClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleMarkClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleFolderClick = async (e: MouseEvent<HTMLButtonElement>, folder: string) => {
-    e.preventDefault();
+  const handleFolderClick = (folder: string) => {
     setFolderName(folder);
-    await handleSaveComplete(e);
   };
 
   // 저장 과정
-  const handleSaveComplete = async (e: MouseEvent) => {
-    e.preventDefault();
+  const handleSaveComplete = async () => {
     setIsSaving(true);
     try {
       const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
