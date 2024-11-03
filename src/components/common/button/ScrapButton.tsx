@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Bookmark } from "lucide-react";
-import { X } from "lucide-react";
-
+import { useState, MouseEvent } from "react";
+import { Bookmark, X } from "lucide-react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import { toast } from "react-toastify";
@@ -11,30 +9,31 @@ import CustomToast from "@/components/CustomToast";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
   const { existingFolders, saveScrap, useFetchScrapCount } = useScrapData();
 
   // 포스트 스크랩 개수
   const { data: scrapCount } = useFetchScrapCount(postId);
 
-  // 북마크 클릭하면 모달 등장
-  const handleMarkClick = () => {
+  // 북마크 클릭 시 페이지 이동 방지 및 모달 열기
+  const handleMarkClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     setIsModalOpen((prev) => !prev);
   };
 
-  const handleFolderClick = async (folder: string) => {
+  const handleFolderClick = async (e: MouseEvent<HTMLButtonElement>, folder: string) => {
+    e.preventDefault();
     setFolderName(folder);
-    await handleSaveComplete();
+    await handleSaveComplete(e);
   };
 
   // 저장 과정
-  const handleSaveComplete = async () => {
+  const handleSaveComplete = async (e: MouseEvent) => {
+    e.preventDefault();
     setIsSaving(true);
     try {
       const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
       if (savedSuccessfully) {
-        // alert("저장 완료");
         toast(<CustomToast closeToast={() => toast.dismiss()} />, {
           theme: "dark",
           closeButton: false
@@ -85,7 +84,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
               {existingFolders?.map((folder) => (
                 <button
                   key={folder}
-                  onClick={() => handleFolderClick(folder)}
+                  onClick={(e) => handleFolderClick(e, folder)}
                   className="block text-left w-full p-2  mb-1 border-b"
                 >
                   {folder}
