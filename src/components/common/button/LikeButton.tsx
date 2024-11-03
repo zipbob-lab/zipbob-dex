@@ -20,6 +20,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     const getSessionId = async () => {
       const userId = await getUserId();
       setLoginSessionId(userId);
+      fetchLikeStatus(userId);
     };
     getSessionId();
   }, []);
@@ -34,27 +35,28 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     // console.log("포스트아이디", postId);
   }, [loginSessionId]);
 
-  // 좋아요 상태 받아오기
-  const fetchLikeStatus = async (userId: string) => {
-    // 내 좋아요 상태 가져오기
-    const { data: likeStatusData, error: likeStatusError } = await supabase
-      .from("LIKE_TABLE")
-      .select("like_id")
-      .eq("post_id", postId)
-      .eq("user_id", userId)
-      .limit(1)
-      .maybeSingle();
+  const fetchLikeStatus = async (userId: string | null) => {
+    // 로그인 시 내 좋아요 상태 가져오기
+    if (userId) {
+      const { data: likeStatusData, error: likeStatusError } = await supabase
+        .from("LIKE_TABLE")
+        .select("like_id")
+        .eq("post_id", postId)
+        .eq("user_id", userId)
+        .limit(1)
+        .maybeSingle();
 
-    if (likeStatusError) {
-      console.error("좋아요 상태 오류:", likeStatusError.message);
-    }
+      if (likeStatusError) {
+        console.error("좋아요 상태 오류:", likeStatusError.message);
+      }
 
-    if (likeStatusData?.like_id) {
-      setLikeStatusDb(likeStatusData.like_id);
-      setIsLike(true);
-    } else {
-      setLikeStatusDb(null);
-      setIsLike(false);
+      if (likeStatusData?.like_id) {
+        setLikeStatusDb(likeStatusData.like_id);
+        setIsLike(true);
+      } else {
+        setLikeStatusDb(null);
+        setIsLike(false);
+      }
     }
 
     // 좋아요 총 개수 가져오기
