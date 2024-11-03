@@ -50,7 +50,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
         onKeyDown={handleKeyDown}
         onCompositionStart={handleComposition}
         onCompositionEnd={handleComposition}
-        placeholder="넣고 싶은 재료를 입력해보세요 :)"
+        placeholder="넣고 싶은 재료를 입력해보세요!"
         className="border p-1"
       />
       <button type="button" onClick={addCategory} className="ml-2 p-1 border">
