@@ -25,7 +25,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
 
   // 수정
   const handleModifyPost = () => {
-    alert("수정");
+    router.push(`/myrecipewrite?postId=${postId}`);
   };
 
   // 삭제

@@ -2,8 +2,8 @@
 
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import ImageEditModal from "./ImageEditModal";
@@ -11,6 +11,8 @@ import RecipeInfoFields from "./RecipeInfoFields";
 import IngredientsFields from "./IngredientsFields";
 import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
 import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
+import { supabase } from "@/supabase/supabase";
+import { Recipe } from "@/types/Recipe";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
@@ -31,18 +33,23 @@ export interface RecipeForm {
 }
 
 const InputField = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const postId = searchParams.get("postId");
+  const isModifyMode = !!postId;
+  // const queryClient = useQueryClient();
+
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<{ file: File | undefined }[]>([]);
   const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
   const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File | undefined>(undefined);
   const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
+  const [fetchData, setFetchData] = useState<Recipe | null>(null);
 
   // 모달 관리
   const [imgModalIndex, setImgModalIndex] = useState<number | null>(null);
   const doneImgRef = useRef<HTMLInputElement | null>(null);
   const doingImgRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  const router = useRouter();
 
   const methods = useForm<IFormInput>({
     defaultValues: {
@@ -53,16 +60,29 @@ const InputField = () => {
     }
   });
 
+  useEffect(() => {
+    console.log("이미지배열", recipeDoingImgViewArray);
+  }, [recipeDoingImgViewArray]);
+
+  useEffect(() => {
+    console.log("파일 배열", recipeDoingImgFileArray);
+  }, [recipeDoingImgFileArray]);
+
   const { ref, onChange, ...rest } = methods.register("recipeDoneImg");
 
   // 매뉴얼 이미지 배열 관리
-  const { fields: recipeDoingsImgFields, append: appendRecipeDoingImg } = useFieldArray({
+  const {
+    fields: recipeDoingsImgFields,
+    append: appendRecipeDoingImg,
+    replace: replaceRecipeDoingImgs
+    // remove: removeRecipeDoingImgs
+  } = useFieldArray({
     control: methods.control,
     name: "recipeDoingImgs"
   });
 
   // 매뉴얼 텍스트 배열 관리
-  const { append: appendRecipeDoingText } = useFieldArray({
+  const { append: appendRecipeDoingText, replace: replaceRecipeDoingTexts } = useFieldArray({
     control: methods.control,
     name: "recipeDoingTexts"
   });
@@ -70,11 +90,47 @@ const InputField = () => {
   const handleAddRecipeDoingForm = () => {
     appendRecipeDoingImg({ file: undefined });
     appendRecipeDoingText({ text: "" });
+
     setRecipeDoingImgFileArray((prev) => [...prev, { file: undefined }]);
     setRecipeDoingImgViewArray((prev) => [...prev, ""]);
   };
 
-  //
+  // 수정 모드일 경우 데이터 가져오기
+  useEffect(() => {
+    if (isModifyMode && postId) {
+      fetchOriginRecipeData(postId);
+    }
+  }, [isModifyMode, postId]);
+
+  const fetchOriginRecipeData = async (postId: string) => {
+    const { data, error } = await supabase.from("TEST2_TABLE").select("*").eq("post_id", postId).single();
+
+    console.log("데이터", data);
+    if (error) {
+      console.error("레시피 불러오기 에러", error.message);
+    } else {
+      setFetchData(data as Recipe);
+      // 기존 이미지 뷰에 넣어주기(초기화)
+      setRecipeDoneImgView(data?.recipe_img_done ?? "");
+      const existingImgViews = data?.recipe_img_doing ?? [];
+      setRecipeDoingImgViewArray(existingImgViews);
+      setRecipeDoingImgFileArray(existingImgViews.map(() => ({ file: undefined })));
+
+      methods.reset({
+        recipeTitle: data.recipe_title,
+        recipeDescription: data.recipe_description,
+        ingredients: data.recipe_ingredients,
+        recipeManual: data.recipe_manual
+      });
+      // 기존 동적 폼 길이 맞추기 (배열 초기화)
+      replaceRecipeDoingImgs(existingImgViews.map(() => ({ file: undefined })));
+      replaceRecipeDoingTexts(data.recipe_manual.map((text: string) => ({ text })));
+    }
+  };
+
+  useEffect(() => {
+    console.log("페치데이타", fetchData);
+  }, [fetchData]);
   const handleDoingImgFileSelect = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImgFile = event.target.files?.[0];
     if (!selectedImgFile) return;
@@ -84,14 +140,15 @@ const InputField = () => {
       updateImgFiles[index] = { file: selectedImgFile || undefined };
       return updateImgFiles;
     });
+
     const imgViewUrl = URL.createObjectURL(selectedImgFile);
     setRecipeDoingImgViewArray((prev) => {
       const updatedImgViews = [...prev];
       updatedImgViews[index] = imgViewUrl;
       return updatedImgViews;
     });
-
-    setImgModalIndex(null); // 파일 업로드 후 모달 닫기
+    // 파일 업로드 후 모달 닫기
+    setImgModalIndex(null);
   };
 
   const handleDoneImgFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,8 +185,22 @@ const InputField = () => {
   };
 
   const handleDeleteImage = (index: number) => {
-    setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
-    setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
+    if (index === -1) {
+      setRecipeDoneImgFile(undefined);
+      setRecipeDoneImgView("");
+    } else {
+      // setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
+      // setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
+      const updatedFileArray = [...recipeDoingImgFileArray];
+      updatedFileArray[index] = { file: undefined };
+      setRecipeDoingImgFileArray(updatedFileArray);
+
+      const updatedViewArray = [...recipeDoingImgViewArray];
+      updatedViewArray[index] =
+        "https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/images%20(4).jfif";
+      // 여기다가 기본 이미지 넣어야됨
+      setRecipeDoingImgViewArray(updatedViewArray);
+    }
     setImgModalIndex(null);
   };
 
@@ -154,25 +225,52 @@ const InputField = () => {
       };
 
       const recipeDoingImgUrls: string[] = [];
-      for (let i = 0; i < recipeDoingImgFileArray.length; i++) {
-        const recipeDoingImgFile = recipeDoingImgFileArray[i].file;
-        if (recipeDoingImgFile) {
-          const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
-          const { error: imgError } = await supabase.storage
-            .from("zipbob_storage")
-            .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
-          if (imgError) {
-            alert("매뉴얼 이미지 업로드 실패");
-            console.error(imgError.message);
-            return;
-          } else {
+      for (let i = 0; i < recipeDoingImgViewArray.length; i++) {
+        if (isModifyMode) {
+          // 수정 모드일 때
+
+          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+          if (recipeDoingImgFile instanceof File) {
+            // 새로 업로드된 파일이 있는 경우
+            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+            const { error: imgError } = await supabase.storage
+              .from("zipbob_storage")
+              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+
+            if (imgError) {
+              alert("매뉴얼 이미지 업로드 실패");
+              console.error(imgError.message);
+              return;
+            }
+
+            const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
+            recipeDoingImgUrls.push(recipeDoingImgUrl);
+          } else if (recipeDoingImgViewArray[i]) {
+            // 기존 이미지 URL이 있는 경우
+            recipeDoingImgUrls.push(recipeDoingImgViewArray[i] || "");
+          }
+        } else {
+          // 작성 모드일 때
+          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+          if (recipeDoingImgFile instanceof File) {
+            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+            const { error: imgError } = await supabase.storage
+              .from("zipbob_storage")
+              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+
+            if (imgError) {
+              alert("매뉴얼 이미지 업로드 실패");
+              console.error(imgError.message);
+              return;
+            }
+
             const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
             recipeDoingImgUrls.push(recipeDoingImgUrl);
           }
         }
       }
 
-      let recipeDoneImgUrl = "";
+      let recipeDoneImgUrl = fetchData?.recipe_img_done;
       if (recipeDoneImgFile) {
         const imgDoneName = makeUniqueFileName(recipeDoneImgFile);
         const { error: doneImgError } = await supabase.storage
@@ -196,9 +294,8 @@ const InputField = () => {
         recipeLevel = "상";
       }
 
-      const { error } = await supabase.from("TEST2_TABLE").insert({
+      const recipeData = {
         user_id: loginSessionId,
-        post_id: uuidv4(),
         recipe_title: data.recipeTitle,
         recipe_type: RecipeTypeEnum[data.recipeType as unknown as keyof typeof RecipeTypeEnum],
         recipe_method: RecipeMethodEnum[data.recipeMethod as unknown as keyof typeof RecipeMethodEnum],
@@ -208,35 +305,50 @@ const InputField = () => {
         recipe_manual: data.recipeDoingTexts?.map((item) => item.text) || [],
         recipe_description: data.recipeDescription,
         recipe_level: recipeLevel
-      });
+      };
 
-      if (error) {
-        console.error("나만의 레시피 INSERT 에러 : ", error.message);
-        return error;
-      }
-
-      const { data: userData, error: userError } = await supabase
-        .from("USER_TABLE")
-        .select("user_exp")
-        .eq("user_id", loginSessionId)
-        .single();
-
-      if (userError) {
-        console.error("유저 테이블 SELECT 에러 : ", userError.message);
-      } else {
-        const userExp = userData.user_exp || 0;
-        const updatedExp = userExp + 10;
-
-        const { error: updateUserError } = await supabase
-          .from("USER_TABLE")
-          .update({ user_exp: updatedExp })
-          .eq("user_id", loginSessionId);
-
-        if (updateUserError) {
-          console.error("경험치 UPDATE 에러 : ", updateUserError.message);
+      if (isModifyMode) {
+        // 수정 모드
+        const { error: updateError } = await supabase.from("TEST2_TABLE").update(recipeData).eq("post_id", postId);
+        if (updateError) {
+          console.error("업데이트 오류", updateError.message);
+          return;
         }
+
+        console.log("업데이트 완료!");
+      } else {
+        // 작성 모드
+
+        const { error } = await supabase.from("TEST2_TABLE").insert({ ...recipeData, post_id: uuidv4() });
+
+        if (error) {
+          console.error("나만의 레시피 INSERT 에러 : ", error.message);
+          return error;
+        }
+
+        const { data: userData, error: userError } = await supabase
+          .from("USER_TABLE")
+          .select("user_exp")
+          .eq("user_id", loginSessionId)
+          .single();
+
+        if (userError) {
+          console.error("유저 테이블 SELECT 에러 : ", userError.message);
+        } else {
+          const userExp = userData.user_exp || 0;
+          const updatedExp = userExp + 10;
+          const { error: updateUserError } = await supabase
+            .from("USER_TABLE")
+            .update({ user_exp: updatedExp })
+            .eq("user_id", loginSessionId);
+
+          if (updateUserError) {
+            console.error("경험치 UPDATE 에러 : ", updateUserError.message);
+          }
+        }
+        alert("레시피 작성이 완료되었습니다!");
       }
-      alert("레시피 작성이 완료되었습니다!");
+
       router.back();
     } catch (error) {
       console.error("레시피 작성 오류", error);
