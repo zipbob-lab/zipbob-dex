@@ -7,7 +7,7 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 import "react-toastify/dist/ReactToastify.css";
-import SearchBar from "@/components/common/searchbar";
+import SearchBar from "@/components/common/Searchbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 const SearchResultPage = () => {
   const { query } = useParams();
@@ -41,6 +42,7 @@ const SearchResultPage = () => {
 
         <div>
           <select id="sort-option" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+            {/* 테이블 변경시 후기 많은 순 넣어서 수정 */}
             <option value="default">전체</option>
             <option value="likes">좋아요 높은 순</option>
             <option value="scraps">스크랩 많은 순</option>
@@ -53,14 +55,14 @@ const SearchResultPage = () => {
           <ul>
             {recipes.map((recipe) => (
               <li key={recipe.post_id}>
-                {/* 디테일 페이지 pr시 링크 기능 넣기 */}
-                <div>
+                {/* 테이블 변경시 링크 수정 */}
+                <Link key={recipe.post_id} href={`/myrecipedetail/${recipe.post_id}`}>
                   <h2>{recipe.recipe_title}</h2>
                   <img src={recipe.recipe_img_done} alt="이미지 없음" />
                   <p>난이도: {recipe.recipe_level}</p>
                   <p>좋아요: {recipe.like_count}</p>
                   <p>스크랩: {recipe.scrap_count}</p>
-                </div>
+                </Link>
               </li>
             ))}
           </ul>
@@ -74,10 +76,10 @@ const SearchResultPage = () => {
 
 export default SearchResultPage;
 // todos
-// 1. 테이블 변경시 테이블 위치와 컬럼 수정하기 (필요시 이중 처리)
-// 2. 유형 기능 업데이트
-// 3. 링크 기능 업데이트
+// 1. json {} 형태 불러오기
+// 2. 테이블 변경시 주석부분 구현
+// 3. 유형 기능 업데이트
 
 
-// 2. css 작업시 냉장고 페이지와 css 동일하게 하기 (카드 컴포넌트화 고려해볼것)
+// 번외. 카드 컴포넌트화 하기
 // 번외. 타이머 기능 만들기

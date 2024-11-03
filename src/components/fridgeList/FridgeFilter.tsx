@@ -5,6 +5,7 @@ import browserClient from "@/supabase/client";
 import CategoreAdd from "@/components/fridgeList/InputAdd";
 import CategoreDelete from "@/components/fridgeList/InputDelete";
 import { Recipe } from "@/types/Recipe";
+import Link from "next/link";
 
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
@@ -15,11 +16,12 @@ const TagFilter: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: testData, error } = await browserClient.from("TEST2_TABLE").select("*");
+      const { data: Data, error } = await browserClient.from("TEST2_TABLE").select("*");
+
       if (error) {
         console.error("TEST2_TABLE 에러", error);
       } else {
-        setData(testData as Recipe[]);
+        setData(Data as Recipe[]);
       }
     };
 
@@ -76,7 +78,18 @@ const TagFilter: React.FC = () => {
         <div>
           <h3>검색 결과</h3>
           {filteredData.length > 0 ? (
-            filteredData.map((recipe) => <div key={recipe.post_id}>{recipe.recipe_title}</div>)
+            filteredData.map((recipe) => (
+              <li key={recipe.post_id}>
+                {/* 테이블 변경시 링크 수정 */}
+                <Link key={recipe.post_id} href={`/myrecipedetail/${recipe.post_id}`}>
+                  <h2>{recipe.recipe_title}</h2>
+                  <img src={recipe.recipe_img_done} alt="이미지 없음" />
+                  <p>난이도: {recipe.recipe_level}</p>
+                  <p>좋아요: {recipe.like_count}</p>
+                  <p>스크랩: {recipe.scrap_count}</p>
+                </Link>
+              </li>
+            ))
           ) : (
             <p>결과가 없습니다.</p>
           )}
@@ -89,6 +102,5 @@ const TagFilter: React.FC = () => {
 export default TagFilter;
 
 // todos
-// 1. 테이블 변경시 테이블 위치와 컬럼 수정하기 (필요시 이중 처리)
-// 2. 유형 기능 업데이트
-// 3. 링크 기능 업데이트
+// 1. json {} 형태 불러오기
+// 2. 테이블 변경시 주석부분 구현
