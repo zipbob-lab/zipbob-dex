@@ -75,11 +75,10 @@ const SearchResultPage = () => {
 };
 
 export default SearchResultPage;
+
 // todos
 // 1. json {} 형태 불러오기
 // 2. 테이블 변경시 주석부분 구현
-// 3. 유형 기능 업데이트
-
 
 // 번외. 카드 컴포넌트화 하기
 // 번외. 타이머 기능 만들기
