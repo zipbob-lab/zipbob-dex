@@ -7,21 +7,17 @@ import { useEffect } from "react";
 // 폴더 목록을 가져오는 함수
 const fetchFolders = async (userId: string): Promise<string[]> => {
   const { data, error } = await supabase.from("SCRAP_TABLE").select("folder_name").eq("user_id", userId);
-
   if (error) throw new Error(error.message);
-
-  // 중복 폴더 이름 제거
   return Array.from(new Set(data.map((item) => item.folder_name)));
 };
 
-// 특정 레시피가 이미 스크랩되었는지 확인하는 함수
-const isAlreadyScrapped = async (recipeId: string, userId: string): Promise<boolean> => {
+// 레시피가 이미 스크랩되었는지 확인하는 함수
+const isAlreadyScrappedDB = async (recipeId: string, userId: string): Promise<boolean> => {
   const { data, error } = await supabase
     .from("SCRAP_TABLE")
     .select("scrap_id")
     .eq("scrap_id", recipeId)
     .eq("user_id", userId);
-
   if (error) throw new Error(error.message);
   return data && data.length > 0;
 };
@@ -29,7 +25,6 @@ const isAlreadyScrapped = async (recipeId: string, userId: string): Promise<bool
 // 레시피의 스크랩 수를 가져오는 함수
 const fetchRecipeScrapCount = async (recipeId: string): Promise<number> => {
   const { data, error } = await supabase.from("TEST2_TABLE").select("scrap_count").eq("post_id", recipeId).single();
-
   if (error) throw new Error(error.message);
   return data?.scrap_count || 0;
 };
@@ -44,7 +39,6 @@ const fetchScraps = async (userId: string): Promise<Scrap[]> => {
 // 스크랩 데이터 삭제 함수
 const deleteScrapDB = async (recipeId: string, userId: string): Promise<void> => {
   const { error } = await supabase.from("SCRAP_TABLE").delete().eq("scrap_id", recipeId).eq("user_id", userId);
-
   if (error) throw new Error(error.message);
 };
 
@@ -64,6 +58,7 @@ interface UseScrapData {
   incrementScrapCount: (recipeId: string) => Promise<boolean>;
   saveScrap: (params: { recipeId: string; folderName: string }) => Promise<boolean>;
   deleteScrap: (recipeId: string) => Promise<boolean>;
+  isAlreadyScrapped: (recipeId: string) => Promise<boolean>;
   useFetchScrapCount: (recipeId: string) => UseQueryResult<number>;
 }
 
@@ -72,13 +67,19 @@ export const useScrapData = (): UseScrapData => {
   const { userId, setUserId } = useScrapStore();
   const queryClient = useQueryClient();
 
-  // userId 초기화
   useEffect(() => {
-    if (!userId) {
-      getUserId()
-        .then((id) => setUserId(id))
-        .catch((error) => console.error("사용자 ID 설정 오류:", error));
-    }
+    const fetchUserId = async () => {
+      if (!userId) {
+        try {
+          const id = await getUserId();
+          setUserId(id);
+        } catch (error) {
+          console.error("사용자 ID 설정 오류:", error);
+        }
+      }
+    };
+
+    fetchUserId();
   }, [userId, setUserId]);
 
   // 폴더 목록 쿼리
@@ -104,6 +105,15 @@ export const useScrapData = (): UseScrapData => {
       enabled: !!recipeId
     });
 
+  // 스크랩 확인 함수
+  const isAlreadyScrapped = async (recipeId: string): Promise<boolean> => {
+    if (!userId) {
+      console.warn("로그인 된 사용자가 없습니다.");
+      return false;
+    }
+    return await isAlreadyScrappedDB(recipeId, userId);
+  };
+
   // 스크랩 수 증가를 위한 mutation
   const { mutateAsync: incrementScrapCount } = useMutation({
     mutationFn: async (recipeId: string) => {
@@ -111,7 +121,6 @@ export const useScrapData = (): UseScrapData => {
       const newCount = currentCount + 1;
 
       const { error } = await supabase.from("TEST2_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
-
       if (error) throw new Error(error.message);
 
       queryClient.setQueryData(["scrapCount", recipeId], newCount);
@@ -125,39 +134,19 @@ export const useScrapData = (): UseScrapData => {
       if (!userId) throw new Error("로그인 된 사용자가 없습니다.");
       await deleteScrapDB(recipeId, userId);
 
-      // 스크랩 수 감소
       const currentCount = await fetchRecipeScrapCount(recipeId);
       const newCount = currentCount > 0 ? currentCount - 1 : 0;
 
       const { error } = await supabase.from("TEST2_TABLE").update({ scrap_count: newCount }).eq("post_id", recipeId);
       if (error) throw new Error(error.message);
 
-      // 스크랩 , 폴더 갱신하기
       queryClient.setQueryData(["scraps", userId], (oldData: Scrap[] | undefined) =>
         oldData ? oldData.filter((scrap) => scrap.scrap_id !== recipeId) : []
       );
       queryClient.setQueryData(["scrapCount", recipeId], newCount);
 
       alert("삭제되었습니다.");
-
-      // 빈 폴더 체크하고 제거
-      const updatedScraps = await fetchScraps(userId);
-      const updatedFolders = await fetchFolders(userId);
-
-      const emptyFolders = updatedFolders.filter(
-        (folder) => !updatedScraps.some((scrap) => scrap.folder_name === folder)
-      );
-
-      if (emptyFolders.length > 0) {
-        emptyFolders.forEach(async (folder) => {
-          // 폴더를 실제로 삭제하는 로직을 추가
-          await supabase.from("SCRAP_TABLE").delete().eq("folder_name", folder).eq("user_id", userId);
-        });
-        // 빈 폴더가 제거된 폴더 목록 갱신
-        refetchFolders();
-      }
-
-      // 전체 스크랩 갱신
+      refetchFolders();
       refetchScraps();
       return true;
     }
@@ -168,7 +157,7 @@ export const useScrapData = (): UseScrapData => {
     mutationFn: async ({ recipeId, folderName }: { recipeId: string; folderName: string }) => {
       if (!userId) throw new Error("로그인 된 사용자가 없습니다.");
 
-      const alreadyScrapped = await isAlreadyScrapped(recipeId, userId);
+      const alreadyScrapped = await isAlreadyScrapped(recipeId);
       if (alreadyScrapped) {
         alert("이미 스크랩 한 레시피입니다.");
         return false;
@@ -178,7 +167,7 @@ export const useScrapData = (): UseScrapData => {
         .from("TEST2_TABLE")
         .select("*")
         .eq("post_id", recipeId)
-        .single();
+        .maybeSingle();
 
       if (fetchError) throw new Error(fetchError.message);
 
@@ -207,6 +196,7 @@ export const useScrapData = (): UseScrapData => {
     incrementScrapCount,
     saveScrap,
     deleteScrap,
+    isAlreadyScrapped,
     useFetchScrapCount
   };
 };
