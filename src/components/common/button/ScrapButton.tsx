@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import { toast } from "react-toastify";
-import CustomToast from "@/components/CustomToast";
 import ScrapModal from "../ScrapModal";
+import CustomToast from "@/components/CustomToast";
 import scrapEmpty from "../../../../public/images/scrapEmpty.svg";
 import scrapFill from "../../../../public/images/scrapFill.svg";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isScrapped, setIsScrapped] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
   const { existingFolders, saveScrap, useFetchScrapCount, isAlreadyScrapped } = useScrapData();
 
@@ -28,7 +28,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     checkScrapStatus();
   }, [postId, isAlreadyScrapped]);
 
-  // 북마크 클릭 시 페이지 이동 방지 및 모달 열기
+  // 북마크 클릭 시 모달 열기
   const handleMarkClick = () => {
     setIsModalOpen(true);
   };
@@ -37,23 +37,21 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     setFolderName(folder);
   };
 
-  // 저장 과정
+  // 저장 성공 시 토스트 표시
   const handleSaveComplete = async () => {
     setIsSaving(true);
     try {
       const savedSuccessfully = await saveScrap({ recipeId: postId, folderName });
       if (savedSuccessfully) {
-        toast(<CustomToast closeToast={() => toast.dismiss()} />, {
-          theme: "dark",
-          closeButton: false
-        });
         setIsScrapped(true);
+        setShowToast(true);
       }
     } catch (error) {
       console.error("스크랩 저장 오류:", error);
     } finally {
       setIsSaving(false);
       setIsModalOpen(false);
+      setTimeout(() => setShowToast(false), 3000);
     }
   };
 
@@ -76,6 +74,9 @@ const ScrapButton = ({ postId }: { postId: string }) => {
           onFolderClick={handleFolderClick}
         />
       )}
+
+      {/* 스크랩 성공 시에만 커스텀 토스트 표시 */}
+      {showToast && <CustomToast message="스크랩 되었습니다." onMove={() => setShowToast(false)} />}
     </div>
   );
 };
