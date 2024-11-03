@@ -25,7 +25,7 @@ export const fetchUserProfile = async (): Promise<{
   const {
     data: { user },
     error: userError
-  } = await supabase.auth.getUser();
+  } = await browserClient.auth.getUser();
 
   if (userError || !user) {
     console.error("사용자 정보를 가져올 수 없거나 로그인 상태가 아닙니다:", userError?.message);
@@ -34,7 +34,7 @@ export const fetchUserProfile = async (): Promise<{
 
   const userId = user.id;
 
-  const { data, error } = await supabase.from("USER_TABLE").select("*").eq("user_id", userId).single();
+  const { data, error } = await browserClient.from("USER_TABLE").select("*").eq("user_id", userId).single();
 
   if (error) {
     console.log("user 프로필 불러오기 실패:", error.message);
