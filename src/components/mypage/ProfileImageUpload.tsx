@@ -7,8 +7,7 @@ interface ProfileImageUploadProps {
   initialImageUrl: string;
   onImageUpload: (file: File | null) => void;
 }
-
-const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, initialImageUrl, onImageUpload }) => {
+const ProfileImageUpload: React.FC<Omit<ProfileImageUploadProps, "userId">> = ({ initialImageUrl, onImageUpload }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
