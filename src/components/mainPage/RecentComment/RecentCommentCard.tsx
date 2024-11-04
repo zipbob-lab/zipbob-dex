@@ -15,41 +15,32 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
     const { data, error } = await browserClient.from("TEST2_TABLE").select("*").eq("post_id", comment.post_id).limit(6);
 
     if (error) {
-      console.error("최근 후기를 불러오는 과정에서 에러 발생" + error);
+      console.error("게시글을 불러오는 과정에서 에러 발생" + error);
     }
 
     return data;
   };
 
-  const {
-    data: post,
-    isPending: isPostPending,
-    isError: isPostError
-  } = useQuery({
+  const { data: post, isError: isPostError } = useQuery({
     queryKey: ["commentPosts"],
     queryFn: fetchPosts,
-    staleTime: 60
+    staleTime: 60,
+    enabled: !!comment
   });
 
   useEffect(() => {
     const fetchUserNickname = async () => {
-      if (post) {
-        const userNickname = await getUserNickname(post[0].user_id);
-        setNickname(userNickname);
-      }
+      const userNickname = await getUserNickname(post?.[0].user_id);
+      setNickname(userNickname);
     };
     fetchUserNickname();
   }, [post]);
 
-  if (isPostPending) {
-    return <div>최근 후기를 가져오는중입니다</div>;
-  }
-
   if (isPostError) {
-    return <div>최근 후기를 가져오는 도중 에러가 발생했습니다</div>;
+    return <div>게시글을 가져오는 도중 에러가 발생했습니다</div>;
   }
 
-  if (post) {
+  if (post?.[0]) {
     return (
       <div className="p-3 flex gap-3 w-[500px]">
         <div className="w-[8rem] h-[8rem] relative">
