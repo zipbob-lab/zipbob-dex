@@ -32,11 +32,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   useEffect(() => {
     if (loginSessionId) {
       fetchLikeStatus(loginSessionId);
-    } else {
-      console.log("로그인 필요");
     }
-    // console.log("세션아이디", loginSessionId);
-    // console.log("포스트아이디", postId);
   }, [loginSessionId]);
 
   const fetchLikeStatus = async (userId: string | null) => {
@@ -77,7 +73,6 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     e.preventDefault();
     e.stopPropagation();
     if (!loginSessionId) {
-      console.log("로그인필요");
       setIsLoginModal(true);
       return;
     }
@@ -131,7 +126,6 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   const handleCloseModal: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("닫기누름");
     setIsLoginModal(false);
   };
 
