@@ -1,14 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TagFilter from "@/components/fridgeList/FridgeFilter";
-import Stopwatch from "@/components/StopWatch";
+import Timer from "@/components/Timer";
 
 const FridgeListPage = () => {
+  const [modal, setModal] = useState(false);
+
+  const handleTimerOpen = () => {
+    setModal(true);
+  };
+
+  const handleTimerClose = () => {
+    setModal(false);
+  };
+
   return (
     <div>
       <TagFilter />
-      <Stopwatch />
+      <button onClick={handleTimerOpen}>시계</button>
+      {modal && <Timer onClose={handleTimerClose} />}
     </div>
   );
 };

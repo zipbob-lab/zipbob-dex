@@ -26,7 +26,6 @@ export default function RootLayout({
 }>) {
   return (
     // <ReactQueryClientProvider>
-
     <html lang="ko" className={pretendard.variable}>
       <body className="font-pretendard">
         <Providers>{children}</Providers>
