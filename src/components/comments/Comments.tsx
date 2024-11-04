@@ -37,11 +37,14 @@ const Comments = ({ postId }: PostDataProps) => {
   const [comments, setComments] = useState<CommentData[]>([]);
   // 댓글 수정 관련
   const [modifyCommentId, setModifyCommentId] = useState<string | null>(null);
+  const [dropDownId, setDropDownId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
   // const [commentCount, setCommentCount] = useState<number>(0);
   const commentsPerPage = 10; // 페이지 당 댓글 수
+
   const {
     register,
     handleSubmit,
@@ -102,6 +105,12 @@ const Comments = ({ postId }: PostDataProps) => {
       setComments(commentData || []);
       setTotalComments(count || 0); // 페이지 네이션
     }
+  };
+
+  // 댓글 더보기
+  const handleDropDown = (commentId: string) => {
+    console.log(`드롭다운 ${commentId}`);
+    setDropDownId((prev) => (prev === commentId ? null : commentId));
   };
 
   // 댓글 삭제
@@ -165,6 +174,7 @@ const Comments = ({ postId }: PostDataProps) => {
   const handleMotifyCommentDoing = async (commentId: string, modifyText: string) => {
     setModifyCommentId(commentId);
     modifyReset({ modifyCommentText: modifyText });
+    setDropDownId(null);
   };
 
   // 댓글 수정 제출 핸들러
@@ -232,7 +242,7 @@ const Comments = ({ postId }: PostDataProps) => {
           </span>
           <button
             type="submit"
-            className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
+            className="w-14 items-center justify-center rounded-xl bg-orange-200 p-1 text-sm text-white"
           >
             입력
           </button>
@@ -241,27 +251,83 @@ const Comments = ({ postId }: PostDataProps) => {
       {comments.map((comment) => (
         <div key={comment.comment_id} className="flex flex-col border-b border-gray-200">
           {/* 댓글 목록 */}
-          <div className="flex flex-col gap-3 p-1">
-            <div className="flex gap-1">
-              <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-500">
-                <Image
-                  src={comment.USER_TABLE.user_img}
-                  alt="완성 이미지"
-                  fill={true}
-                  style={{ objectFit: "cover" }}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              {/* 유저 정보 */}
-              <div className="flex flex-col justify-center gap-2">
-                <div className="flex gap-2">
-                  <span className="mt-1 font-bold">Lv.{comment.USER_TABLE.user_rank}</span>
-                  <span className="mt-1 font-bold">{comment.USER_TABLE.user_nickname}</span>
-                  {comment.user_id === sessionId && (
-                    <span className="rounded-lg bg-yellow-300 p-1">내가 작성한 댓글이에욤.</span>
-                  )}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-row">
+              <div className="flex gap-1">
+                <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-500">
+                  <Image
+                    src={comment.USER_TABLE.user_img}
+                    alt="프로필 이미지"
+                    fill={true}
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
                 </div>
-                <span className="text-gray-300">{comment.USER_TABLE.user_introduce || "유저 소개가 없습니다."}</span>
+                {/* 유저 정보 */}
+                <div className="flex flex-col justify-center gap-2">
+                  <div className="flex gap-2">
+                    <span className="mt-1 font-bold">Lv.{comment.USER_TABLE.user_rank}</span>
+                    <span className="mt-1 font-bold">{comment.USER_TABLE.user_nickname}</span>
+                    {comment.user_id === sessionId && (
+                      <span className="rounded-lg bg-yellow-300 p-1">내가 작성한 댓글이에욤.</span>
+                    )}
+                  </div>
+                  <span className="text-gray-300">{comment.USER_TABLE.user_introduce || "유저 소개가 없습니다."}</span>
+                </div>
+              </div>
+
+              <div className="ml-auto">
+                {comment.user_id === sessionId && (
+                  <div className="flex justify-end gap-1">
+                    <button type="button" onClick={() => handleDropDown(comment.comment_id)} className="relative">
+                      더보기
+                    </button>
+                    {dropDownId === comment.comment_id && (
+                      <div className="absolute mt-2 flex w-20 flex-col justify-items-center gap-2 rounded-md border bg-white p-2 shadow-lg">
+                        <button
+                          type="button"
+                          className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
+                          onClick={() => {
+                            handleMotifyCommentDoing(comment.comment_id, comment.comment);
+                          }}
+                        >
+                          수정
+                        </button>
+                        <button
+                          type="button"
+                          className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
+                          onClick={() => setIsDeleteModalOpen(true)}
+                        >
+                          삭제
+                        </button>
+                        {isDeleteModalOpen && (
+                          <div className="fixed inset-0 items-center justify-center bg-black bg-opacity-45">
+                            <div className="rounded-lg bg-white p-5">
+                              <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-lg font-bold">댓글을 정말로 삭제하시겠어요?</h1>
+                                <span>삭제된 댓글은 복구할 수 없어요!</span>
+                                <div className="flex flex-row gap-3">
+                                  <button
+                                    className="rounded-lg bg-orange-400 p-2 text-white"
+                                    onClick={() => setIsDeleteModalOpen(false)}
+                                  >
+                                    취소하기
+                                  </button>
+                                  <button
+                                    className="rounded-lg bg-orange-400 p-2 text-white"
+                                    onClick={() => handleDeleteComment(comment.comment_id)}
+                                  >
+                                    삭제하기
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -299,33 +365,12 @@ const Comments = ({ postId }: PostDataProps) => {
                 </div>
               </div>
             ) : (
-              <>
-                <span className="mb-5">{comment.comment}</span>
-                {comment.user_id === sessionId && (
-                  <div className="flex justify-end gap-1">
-                    <button
-                      type="button"
-                      className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
-                      onClick={() => {
-                        handleMotifyCommentDoing(comment.comment_id, comment.comment);
-                      }}
-                    >
-                      수정
-                    </button>
-                    <button
-                      type="button"
-                      className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
-                      onClick={() => handleDeleteComment(comment.comment_id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </>
+              <span className="mb-5">{comment.comment}</span>
             )}
           </div>
         </div>
       ))}
+
       <div className="flex items-center justify-center gap-2">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
