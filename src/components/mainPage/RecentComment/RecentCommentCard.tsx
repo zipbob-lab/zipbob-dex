@@ -3,8 +3,8 @@
 import browserClient from "@/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import FireFilledIcon from "../../../../public/images/fireFilled.svg";
-import FireEmptyIcon from "../../../../public/images/fireEmpty.svg";
+import FireFilledIcon from "@images/fireFilled.svg";
+import FireEmptyIcon from "@images/fireEmpty.svg";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import { RecentCommentCardProps } from "@/types/main";

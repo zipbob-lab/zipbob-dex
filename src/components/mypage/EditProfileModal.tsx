@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import { Image as ImageIcon, X } from "lucide-react";
-import Pencil from "../../../public/images/pen.svg";
+import Pencil from "@images/pen.svg";
 import Image from "next/image";
 
 interface EditProfileModalProps {

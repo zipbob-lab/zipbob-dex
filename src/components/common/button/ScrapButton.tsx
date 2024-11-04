@@ -6,8 +6,8 @@ import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import ScrapModal from "../ScrapModal";
 import CustomToast from "@/components/CustomToast";
-import scrapEmpty from "../../../../public/images/scrapEmpty.svg";
-import scrapFill from "../../../../public/images/scrapFill.svg";
+import scrapEmpty from "@images/scrapEmpty.svg";
+import scrapFill from "@images/scrapFill.svg";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

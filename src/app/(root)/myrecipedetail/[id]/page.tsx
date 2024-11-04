@@ -1,4 +1,4 @@
-import RecipeDetailView from "@/components/myRecipeDetail/RecipeDetailView";
+import RecipeDetailView from "@/components/myrecipedetail/RecipeDetailView";
 import { supabase } from "@/supabase/supabase";
 import { Metadata } from "next";
 import React from "react";

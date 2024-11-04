@@ -4,8 +4,8 @@ import RecipeCard from "@/components/RecipeCard";
 import { Recipe } from "@/types/Recipe";
 import Link from "next/link";
 import RecipeWriteButton from "@/components/common/button/RecipeWriteButton";
-import ScrapButton from "../../../components/common/button/ScrapButton";
 import LikeButton from "@/components/common/button/LikeButton";
+import ScrapButton from "@/components/common/button/ScrapButton";
 const RecipeAll = async () => {
   const data = await fetchRecipeDbData();
   const recipes = data?.slice(0, 30);

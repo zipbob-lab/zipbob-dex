@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import closeX from "../../../public/images/closeX.svg";
+import closeX from "@images/closeX.svg";
 
 interface ScrapModalProps {
   isSaving: boolean;

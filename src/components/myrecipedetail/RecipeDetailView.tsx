@@ -1,10 +1,11 @@
 import { supabase } from "@/supabase/supabase";
 import Image from "next/image";
 import React from "react";
-import { RecipeForm } from "../myRecipeWrite/InputField";
+
 import Comments from "../comments/Comments";
 import Likebutton from "../common/button/LikeButton";
 import ModifyDeletePost from "./ModifyDeletePost";
+import { RecipeForm } from "../myrecipewrite/InputField";
 
 interface RecipeDetailViewProps {
   postId: string;

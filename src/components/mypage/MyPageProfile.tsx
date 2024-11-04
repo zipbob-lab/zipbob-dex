@@ -6,10 +6,10 @@ import { fetchUserProfile } from "@/serverActions/profileAction";
 import { uploadProfileImage } from "@/utils/uploadProfileImage";
 import { useEffect, useState } from "react";
 import EditProfileModal from "./EditProfileModal";
-import Pencil from "../../../public/images/pen.svg";
+import Pencil from "@images/pen.svg";
 import UserRank from "../UserRank";
 import Image from "next/image";
-import DefaultImage from "../../../public/images/default-profile.svg";
+import DefaultImage from "@images/default-profile.svg";
 
 interface UserProfile {
   user_id: string;

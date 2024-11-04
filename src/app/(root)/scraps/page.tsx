@@ -6,8 +6,8 @@ import { useScrapData } from "@/hooks/useScrapData";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import FireFilledIcon from "../../../../public/images/fireFilled.svg";
-import FireEmptyIcon from "../../../../public/images/fireEmpty.svg";
+import FireFilledIcon from "@images/fireFilled.svg";
+import FireEmptyIcon from "@images/fireEmpty.svg";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();

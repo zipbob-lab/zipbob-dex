@@ -3,11 +3,11 @@
 import { getUserId, getUserNickname } from "@/serverActions/profileAction";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import FireFilledIcon from "../../../public/images/fireFilled.svg";
-import FireEmptyIcon from "../../../public/images/fireEmpty.svg";
-import LikeFilledIcon from "../../../public/images/likeFilled.svg";
-import LikeEmptyIcon from "../../../public/images/likeEmpty.svg";
-import ScrapEmptyIcon from "../../../public/images/scrapEmpty.svg";
+import FireFilledIcon from "@images/fireFilled.svg";
+import FireEmptyIcon from "@images/fireEmpty.svg";
+import LikeFilledIcon from "@images/likeFilled.svg";
+import LikeEmptyIcon from "@images/likeEmpty.svg";
+import ScrapEmptyIcon from "@images/scrapEmpty.svg";
 import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
 
@@ -17,8 +17,10 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const userProfile = await getUserNickname(post.user_id);
-      setNickname(userProfile);
+      if (post.user_id) {
+        const userProfile = await getUserNickname(post.user_id);
+        setNickname(userProfile);
+      }
     };
     const fetchIsUserLiked = async () => {
       const userId = await getUserId();

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MainLogo from "../../../public/images/mainLogo.svg";
+import MainLogo from "@images/mainLogo.svg";
 import Link from "next/link";
 import { getIsLogin } from "@/supabase/server";
 import AuthStatusBar from "./AuthStatusBar";
@@ -19,9 +19,6 @@ const Header = async () => {
         </Link>
         <Link href="/scraps" className="text-body-16 px-3 py-2 text-Gray-900">
           스크랩한 레시피
-        </Link>
-        <Link href="/RecipeAll" className="text-body-16 px-3 py-2 text-Gray-900">
-          전체 레시피
         </Link>
       </nav>
       <SearchBar />

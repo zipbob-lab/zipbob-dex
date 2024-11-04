@@ -1,13 +1,14 @@
 "use client";
 
-import { getUserProfile } from "@/serverActions/profileAction";
+import { fetchUserProfile } from "@/serverActions/profileAction";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import DivideIcon from "../../../public/images/divide.svg";
+import DivideIcon from "@images/divide.svg";
 import Link from "next/link";
 import { useStore } from "zustand";
 import { useDropboxStore } from "@/store/dropboxStore";
 import { useAuthStore } from "@/store/authStore";
+import DefaultProfile from "@images/default-profile.svg";
 
 type AuthStatusBarProps = {
   isUser: boolean;
@@ -22,11 +23,11 @@ const AuthStatusBar = ({ isUser }: AuthStatusBarProps) => {
     if (isUser) {
       setIsLoggedIn(true);
     }
-    const fetchUserProfile = async () => {
-      const profileUrl = await getUserProfile();
-      setUserProfile(profileUrl);
+    const getUserProfile = async () => {
+      const profileUrl = await fetchUserProfile();
+      setUserProfile(profileUrl?.user_img || DefaultProfile);
     };
-    fetchUserProfile();
+    getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUser]);
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import MAinLogo from "../../../public/images/mainLogo.svg";
-import GithubIcon from "../../../public/images/github.svg";
+import MAinLogo from "@images/mainLogo.svg";
+import GithubIcon from "@images/github.svg";
 import Link from "next/link";
 
 const Footer = () => {

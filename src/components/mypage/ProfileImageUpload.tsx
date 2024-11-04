@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import DefaultImage from "../../../public/images/default-profile.svg";
+import DefaultImage from "@images/default-profile.svg";
 import { useState, useRef, useEffect } from "react";
 
 interface ProfileImageUploadProps {
