@@ -14,7 +14,7 @@ const Header = async () => {
         <Link href="/">
           <Image src={MainLogo} width={164} height={80} alt="메인 로고" />
         </Link>
-        <Link href="/" className="text-body-16 px-3 py-2 text-Gray-900">
+        <Link href="/fridgeList" className="text-body-16 px-3 py-2 text-Gray-900">
           냉장고 탐험
         </Link>
         <Link href="/scraps" className="text-body-16 px-3 py-2 text-Gray-900">
