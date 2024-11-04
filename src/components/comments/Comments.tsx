@@ -38,10 +38,10 @@ const Comments = ({ postId }: PostDataProps) => {
   // 댓글 수정 관련
   const [modifyCommentId, setModifyCommentId] = useState<string | null>(null);
   // 페이지 네이션
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
+  const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
+  // const [commentCount, setCommentCount] = useState<number>(0);
   const commentsPerPage = 10; // 페이지 당 댓글 수
-  const [totalComments, setTotalComments] = useState(0); // 전체 댓글 수
-
   const {
     register,
     handleSubmit,
@@ -84,7 +84,6 @@ const Comments = ({ postId }: PostDataProps) => {
     }
     const loginSessionId = session?.user?.id;
     setSessionId(loginSessionId || null);
-
     // 코멘트 정보 가져오기
     const {
       data: commentData,
@@ -102,7 +101,6 @@ const Comments = ({ postId }: PostDataProps) => {
     } else {
       setComments(commentData || []);
       setTotalComments(count || 0); // 페이지 네이션
-      console.log("코멘트 데이터 불러오기 성공", commentData);
     }
   };
 
@@ -116,6 +114,17 @@ const Comments = ({ postId }: PostDataProps) => {
     }
 
     alert("댓글 삭제 성공!");
+
+    const { error: countError } = await supabase
+      .from("TEST2_TABLE")
+      .update({ comment_count: totalComments - 1 })
+      .eq("post_id", postId);
+
+    if (countError) {
+      console.error("카운트 업데이트 에러", countError.message);
+    } else {
+      setTotalComments((prev) => prev - 1);
+    }
     FetchCommentInfo();
   };
 
@@ -135,7 +144,16 @@ const Comments = ({ postId }: PostDataProps) => {
       alert("댓글 등록 실패");
       return error;
     } else {
-      console.log("댓글 INSERT 성공 : ", data);
+      const { error: countError } = await supabase
+        .from("TEST2_TABLE")
+        .update({ comment_count: totalComments + 1 })
+        .eq("post_id", postId);
+      if (countError) {
+        console.error("업데이트 에러", countError.message);
+      } else {
+        setTotalComments((prev) => prev + 1);
+      }
+
       setCurrentPage(1);
       FetchCommentInfo();
       alert("댓글 등록 완료!");
