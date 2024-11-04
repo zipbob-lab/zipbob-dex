@@ -27,6 +27,14 @@ const ScrapPage = () => {
     refetchFolders();
   };
 
+  // 폴더별 스크랩 개수를 즉시 계산
+  const folderScrapCounts = scraps?.reduce((counts: { [key: string]: number }, scrap) => {
+    const folder = scrap.folder_name || "전체";
+    counts[folder] = (counts[folder] || 0) + 1;
+    counts["전체"] = (counts["전체"] || 0) + 1;
+    return counts;
+  }, {});
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold mt-8 mb-4">스크랩한 레시피</h2>
@@ -35,13 +43,11 @@ const ScrapPage = () => {
       <div className="mb-6">
         <div className="flex gap-2 border-b-2 py-2">
           <button onClick={() => handleFolderClick(null)}>
-            전체
-            <span className="ml-1 text-sm text-gray-500">({scraps?.length})</span>
+            전체 ({folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0})
           </button>
           {existingFolders?.map((folder) => (
             <button key={folder} onClick={() => handleFolderClick(folder)}>
-              {folder}
-              <span className="m-1 ">{folder.length}</span>
+              {folder} ({folderScrapCounts ? folderScrapCounts[folder] || 0 : 0})
             </button>
           ))}
           {/* 편집 버튼 */}
