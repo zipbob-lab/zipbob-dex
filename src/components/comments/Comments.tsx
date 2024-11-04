@@ -231,7 +231,7 @@ const Comments = ({ postId }: PostDataProps) => {
                   src={comment.USER_TABLE.user_img}
                   alt="완성 이미지"
                   fill={true}
-                  objectFit="cover"
+                  style={{ objectFit: "cover" }}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
