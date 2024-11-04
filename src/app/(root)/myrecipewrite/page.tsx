@@ -1,9 +1,12 @@
 import InputField from "@/components/myrecipewrite/InputField";
+import { Suspense } from "react";
 
 const MyRecipeWrite = () => {
   return (
     <div>
-      <InputField />
+      <Suspense>
+        <InputField />
+      </Suspense>
     </div>
   );
 };
