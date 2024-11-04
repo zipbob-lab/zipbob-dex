@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import ScrapModal from "../ScrapModal";
-import CustomToast from "@/components/CustomToast";
+import CustomToast from "@/components/scraps/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
 import LoginCheckModal from "../LoginCheckModal";
