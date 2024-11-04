@@ -39,8 +39,8 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   return (
     <div className="max-h-[560px] overflow-y-auto">
       {posts.map((post) => (
-        <Link key={post.post_id} href={`/myrecipedetail/${post.post_id}`}>
-          <div key={post.post_id} className="flex border-b border-gray-200 p-4">
+        <div key={post.post_id} className="flex border-b border-gray-200 p-4">
+          <Link href={`/myrecipedetail/${post.post_id}`} className="flex">
             <Image
               src={post.recipe_img_done}
               alt={post.recipe_title}
@@ -48,19 +48,23 @@ const UserPostLists = ({ userId }: { userId: string }) => {
               height={100}
               className="mr-4 h-24 w-24 rounded-md"
             />
-            <div className="flex">
-              <div>
-                <h3 className="text-lg font-bold">{post.recipe_title}</h3>
-                <p className="text-sm text-gray-500">작성자: {post.user.user_nickname}</p>
-                <p className="text-sm text-gray-500">소개: {post.user.user_introduce}</p>
-              </div>
-              <div>
-                <LikeButton postId={post.post_id} />
-                <ScrapButton postId={post.post_id} />
+
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold">{post.recipe_title}</h3>
+              <div className="mt-2 flex gap-2">
+                <Image src={post.user.user_img} alt={post.user.user_nickname} width={36} height={36} />
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-500">작성자: {post.user.user_nickname}</span>
+                  <span className="text-sm text-gray-500">소개: {post.user.user_introduce}</span>
+                </div>
               </div>
             </div>
+          </Link>
+          <div className="flex items-center justify-end gap-2">
+            <LikeButton postId={post.post_id} />
+            <ScrapButton postId={post.post_id} />
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
