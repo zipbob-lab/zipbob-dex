@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TagFilter from "@/components/fridgeList/FridgeFilter";
 import Timer from "@/components/Timer";
 

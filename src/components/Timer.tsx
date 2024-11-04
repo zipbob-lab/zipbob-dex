@@ -91,4 +91,6 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
   );
 });
 
+Timer.displayName = "Timer";
+
 export default Timer;
