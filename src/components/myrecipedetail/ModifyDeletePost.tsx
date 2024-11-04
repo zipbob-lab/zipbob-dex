@@ -11,29 +11,24 @@ interface ModiDeleButtonProps {
 
 const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
     const getSessionId = async () => {
       const sessionId = await getUserId();
       setLoginSessionId(sessionId || null);
-      console.log("세션", sessionId);
     };
     getSessionId();
   }, []);
 
   // 수정
   const handleModifyPost = () => {
-    alert("수정");
+    router.push(`/myrecipewrite?postId=${postId}`);
   };
 
   // 삭제
-  const handleDeletePost = async (postId: string) => {
-    if (!loginSessionId) {
-      alert("로그인 해주세요.");
-      return;
-    }
-
+  const handleDeletePost = async () => {
     const { error: deleteError, count } = await supabase
       .from("TEST2_TABLE")
       .delete({ count: "exact" }) // 실제 삭제가 된 행의 개수를 반환
@@ -42,11 +37,11 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
 
     if (deleteError || count === 0) {
       console.error(deleteError?.message);
-      alert("레시피 삭제 실패");
+      console.log("레시피 삭제 실패");
       return;
     }
 
-    alert("레시피 삭제 성공!");
+    console.log("레시피 삭제 성공");
     router.push("/myrecipedetail");
     router.refresh();
   };
@@ -58,9 +53,28 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
           <button className="bg-orange-400 p-2 rounded text-white" onClick={handleModifyPost}>
             수정
           </button>
-          <button className="bg-red-500 p-2 rounded text-white" onClick={() => handleDeletePost(postId)}>
+          <button className="bg-red-500 p-2 rounded text-white" onClick={() => setIsDeleteModalOpen(true)}>
             삭제
           </button>
+        </div>
+      )}
+      {/* 삭제 확인 모달 */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 items-center justify-center bg-black bg-opacity-45">
+          <div className="bg-white p-5 rounded-lg">
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="font-bold text-lg">레시피를 정말로 삭제하시겠어요?</h1>
+              <span>삭제된 레시피는 복구할 수 없어요!</span>
+              <div className="flex flex-row gap-3">
+                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={() => setIsDeleteModalOpen(false)}>
+                  취소하기
+                </button>
+                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={handleDeletePost}>
+                  삭제하기
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>

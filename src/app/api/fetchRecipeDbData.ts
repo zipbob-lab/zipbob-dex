@@ -8,8 +8,8 @@ export const fetchRecipeDbData = async () => {
     return;
   }
 
-  console.log("레시피 데이터", data);
-  console.log("레시피 데이터 갯수", data.length);
+  // console.log("레시피 데이터", data);
+  // console.log("레시피 데이터 갯수", data.length);
   return data;
 };
 

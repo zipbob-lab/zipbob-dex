@@ -30,8 +30,10 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
 
   useEffect(() => {
     const fetchUserNickname = async () => {
-      const userNickname = await getUserNickname(post?.[0].user_id);
-      setNickname(userNickname);
+      if (post && post[0].user_id) {
+        const userNickname = await getUserNickname(post[0].user_id);
+        setNickname(userNickname);
+      }
     };
     fetchUserNickname();
   }, [post]);

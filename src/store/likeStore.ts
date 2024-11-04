@@ -1,8 +1,6 @@
 import { create } from "zustand";
 
 type LikeStore = {
-  userId: string | null;
-  setUserId: (id: string | null) => void;
   likeCount: number;
   setLikeCount: (count: number) => void;
   isLike: boolean;
@@ -10,8 +8,6 @@ type LikeStore = {
 };
 
 export const useLikeStore = create<LikeStore>((set) => ({
-  userId: null,
-  setUserId: (id) => set({ userId: id }),
   likeCount: 0,
   isLike: false,
   toggleLike: () =>
