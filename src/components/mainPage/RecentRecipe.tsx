@@ -37,8 +37,6 @@ const RecentRecipe = () => {
     return <div>좋아요 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
   }
 
-  console.log(posts);
-
   return (
     <div className="mt-10 bg-[#FFE8D8] rounded-[64px] max-w-[1000px]">
       <div className="px-[5rem] py-[2.5rem]">
