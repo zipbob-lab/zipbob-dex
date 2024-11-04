@@ -1,6 +1,6 @@
 import ProfileDropbox from "@/components/common/dropbox/ProfileDropbox";
-
-import Header from "@/components/layout/header/Header";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 
 export default function RootLayout({
   children,
@@ -15,6 +15,7 @@ export default function RootLayout({
       <ProfileDropbox />
       {children}
       {modal}
+      <Footer />
     </>
   );
 }

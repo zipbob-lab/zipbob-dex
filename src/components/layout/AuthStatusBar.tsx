@@ -3,7 +3,7 @@
 import { getUserProfile } from "@/serverActions/profileAction";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import DivideIcon from "../../../../public/images/divide.svg";
+import DivideIcon from "../../../public/images/divide.svg";
 import Link from "next/link";
 import { useStore } from "zustand";
 import { useDropboxStore } from "@/store/dropboxStore";
