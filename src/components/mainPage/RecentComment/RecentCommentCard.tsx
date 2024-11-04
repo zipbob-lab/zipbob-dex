@@ -8,11 +8,13 @@ import FireEmptyIcon from "@images/fireEmpty.svg";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import { RecentCommentCardProps } from "@/types/main";
+import { useRouter } from "next/navigation";
 
 const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   const [nickname, setNickname] = useState("");
+  const router = useRouter();
   const fetchPosts = async () => {
-    const { data, error } = await browserClient.from("TEST2_TABLE").select("*").eq("post_id", comment.post_id).limit(6);
+    const { data, error } = await browserClient.from("TEST2_TABLE").select("*").eq("post_id", comment.post_id).single();
 
     if (error) {
       console.error("게시글을 불러오는 과정에서 에러 발생" + error);
@@ -22,16 +24,15 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   };
 
   const { data: post, isError: isPostError } = useQuery({
-    queryKey: ["commentPosts"],
+    queryKey: ["commentPosts", comment.post_id],
     queryFn: fetchPosts,
-    staleTime: 60,
-    enabled: !!comment
+    staleTime: 60
   });
 
   useEffect(() => {
     const fetchUserNickname = async () => {
-      if (post && post[0].user_id) {
-        const userNickname = await getUserNickname(post[0].user_id);
+      if (post) {
+        const userNickname = await getUserNickname(post.user_id);
         setNickname(userNickname);
       }
     };
@@ -42,21 +43,27 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
     return <div>게시글을 가져오는 도중 에러가 발생했습니다</div>;
   }
 
-  if (post?.[0]) {
+  if (post) {
     return (
-      <div className="p-3 flex gap-3 w-[500px]">
-        <div className="w-[8rem] h-[8rem] relative">
-          <Image src={post[0].recipe_img_done} alt="레시피 사진" fill className="object-cover" />
+      <div className="flex w-[500px] gap-3 p-3">
+        <div className="relative h-[8rem] w-[8rem]">
+          <Image
+            src={post.recipe_img_done}
+            alt="레시피 사진"
+            fill
+            className="object-cover cursor-pointer"
+            onClick={() => router.push(`myrecipedetail/${post.post_id}`)}
+          />
         </div>
-        <div className="flex flex-col justify-between w-[calc(100%-12rem-3rem)]">
+        <div className="flex w-[calc(100%-12rem-3rem)] flex-col justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="flex">
                 <Image src={FireFilledIcon} alt="레시피 난이도" />
-                <Image src={post[0].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-                <Image src={post[0].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
               </div>
-              <p>{post[0].recipe_title}</p>
+              <p>{post.recipe_title}</p>
             </div>
             <p className="text-Gray-500">{comment.comment}</p>
           </div>
