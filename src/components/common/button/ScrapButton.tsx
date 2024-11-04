@@ -8,9 +8,11 @@ import ScrapModal from "../ScrapModal";
 import CustomToast from "@/components/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
+import LoginCheckModal from "../LoginCheckModal";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginModal, setIsLoginModal] = useState(false);
   const [isScrapped, setIsScrapped] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const { userId, folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
@@ -35,7 +37,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   // 북마크 클릭 시 모달 열기
   const handleMarkClick = () => {
     if (!isLoggedIn) {
-      alert("로그인이 필요합니다.");
+      setIsLoginModal(true);
       return;
     }
     setIsModalOpen(true);
@@ -83,7 +85,8 @@ const ScrapButton = ({ postId }: { postId: string }) => {
         />
       )}
 
-      {/* 스크랩 성공 시에만 커스텀 토스트 표시 */}
+      {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
+
       {showToast && <CustomToast message="스크랩 되었습니다." onMove={() => setShowToast(false)} />}
     </div>
   );

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/supabase/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { getUserId } from "@/serverActions/profileAction";
-import { useRouter } from "next/navigation";
+import LoginCheckModal from "../LoginCheckModal";
 
 interface LikeButtonProps {
   postId: string;
@@ -16,8 +16,6 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   const [likeStatusDb, setLikeStatusDb] = useState<string | null>(null);
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
-
-  const router = useRouter();
 
   // 세션 아이디 가져오고 좋아요 상태 확인
   useEffect(() => {
@@ -122,43 +120,13 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
   };
 
-  // 로그인 모달 닫기
-  const handleCloseModal: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsLoginModal(false);
-  };
-
   return (
     <>
       <button onClick={(e) => handleToggleLikeButton(e)}>
         {isLike ? "💛" : "🤍"} {likeCount}
       </button>
-      {/* 삭제 확인 모달 */}
-      {isLoginModal && (
-        <div
-          className="fixed inset-0 items-center justify-center bg-black bg-opacity-45"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <div className="rounded-lg bg-white p-5" onClick={(e) => e.stopPropagation()}>
-            <div className="flex flex-col items-center justify-center">
-              <h1 className="text-lg font-bold">로그인이 필요한 서비스예요!</h1>
-              <span>간편하게 로그인하고 좀 더 다양한 기능을 즐겨요</span>
-              <div className="flex flex-row gap-3">
-                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={handleCloseModal}>
-                  닫기
-                </button>
-                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={() => router.push("/login")}>
-                  로그인 하러 가기
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 로그인 안 했을 때 나오는 모달*/}
+      {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
     </>
   );
 };
