@@ -37,16 +37,16 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   if (posts.length === 0) return <p>데이터를 불러오고 있어요!</p>;
 
   return (
-    <div className="overflow-y-auto max-h-[560px]">
+    <div className="max-h-[560px] overflow-y-auto">
       {posts.map((post) => (
         <Link key={post.post_id} href={`/myrecipedetail/${post.post_id}`}>
-          <div key={post.post_id} className="flex p-4 border-b border-gray-200">
+          <div key={post.post_id} className="flex border-b border-gray-200 p-4">
             <Image
               src={post.recipe_img_done}
               alt={post.recipe_title}
               width={100}
               height={100}
-              className="w-24 h-24 rounded-md mr-4"
+              className="mr-4 h-24 w-24 rounded-md"
             />
             <div className="flex">
               <div>

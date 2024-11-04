@@ -34,10 +34,10 @@ const HealthyRecipe = () => {
   }
 
   return (
-    <div className="mt-10 bg-[#FFF6DC] rounded-[64px] max-w-[1000px]">
+    <div className="mt-10 max-w-[1000px] rounded-[64px] bg-[#FFF6DC]">
       <div className="px-[5rem] py-[2.5rem]">
         <h1 className="text-[1.6rem] text-Secondary-400">건강하고 맛있는 저칼로리 레시피</h1>
-        <div className="flex gap-[3rem] mt-8 overflow-x-auto">
+        <div className="mt-8 flex gap-[3rem] overflow-x-auto">
           {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
       </div>

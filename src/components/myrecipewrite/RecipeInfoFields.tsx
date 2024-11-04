@@ -5,7 +5,7 @@ const RecipeInfoFields = () => {
   const { register } = useFormContext();
   return (
     <div>
-      <div className="flex mb-5 gap-10">
+      <div className="mb-5 flex gap-10">
         <label className="font-bold">카테고리</label>
         <select {...register("recipeMethod", { required: true })}>
           <option value="boil">끓이기</option>
@@ -24,11 +24,11 @@ const RecipeInfoFields = () => {
           <option value="other">기타</option>
         </select>
       </div>
-      <div className="flex mb-5 gap-10">
+      <div className="mb-5 flex gap-10">
         <label className="font-bold">레시피 제목</label>
         <input placeholder="예)10분이면 완성하는 바질 로제 파스타" {...register("recipeTitle", { required: true })} />
       </div>
-      <div className="flex mb-5 gap-10">
+      <div className="mb-5 flex gap-10">
         <label className="font-bold">요리 소개</label>
         <textarea
           className="resize-none"

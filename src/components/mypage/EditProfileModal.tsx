@@ -25,15 +25,15 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="relative bg-white p-5 rounded-lg w-[400px] flex flex-col items-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="relative flex w-[400px] flex-col items-center rounded-lg bg-white p-5">
         {/* 모달 닫기 버튼 */}
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+        <button onClick={onClose} className="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
           <X size={24} />
         </button>
 
         {/* 프로필 이미지 업로드 */}
-        <div className="relative w-40 h-40 rounded-full overflow-hidden cursor-pointer group">
+        <div className="group relative h-40 w-40 cursor-pointer overflow-hidden rounded-full">
           <ProfileImageUpload
             userId={userData.user_id}
             initialImageUrl={userData.user_img}
@@ -42,37 +42,37 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
 
           {/* 프로필 사진 위에 아이콘 표시 */}
         </div>
-        <div className="absolute top-36 left-60 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center z-10 border border-white">
-          <ImageIcon className="text-white w-5 h-5 z-40" />
+        <div className="absolute left-60 top-36 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white bg-yellow-400">
+          <ImageIcon className="z-40 h-5 w-5 text-white" />
         </div>
         {/* 닉네임 및 자기소개 입력 */}
         <input
           type="text"
           value={editedNickname}
           onChange={(e) => setEditedNickname(e.target.value)}
-          className="w-full p-2 border rounded mt-3"
+          className="mt-3 w-full rounded border p-2"
           placeholder="닉네임을 입력하세요"
         />
         <textarea
           value={editedIntroduce}
           onChange={(e) => setEditedIntroduce(e.target.value)}
-          className="w-full p-2 border rounded mt-3 resize-none min-h-[100px]"
+          className="mt-3 min-h-[100px] w-full resize-none rounded border p-2"
           placeholder="자기소개를 입력하세요"
         />
 
         {/* 저장 및 취소 버튼 */}
-        <div className="flex gap-4 mt-4">
+        <div className="mt-4 flex gap-4">
           <button
             onClick={() => {
               onSave(editedNickname, editedIntroduce, selectedFile);
               onClose();
             }}
-            className="px-4 py-2 bg-orange-500 text-white rounded flex"
+            className="flex rounded bg-orange-500 px-4 py-2 text-white"
           >
             변경
             <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
           </button>
-          <button onClick={onDelete} className="px-4 py-3 border-orange-500 text-orange-500 border-[1px] rounded">
+          <button onClick={onDelete} className="rounded border-[1px] border-orange-500 px-4 py-3 text-orange-500">
             삭제
           </button>
         </div>

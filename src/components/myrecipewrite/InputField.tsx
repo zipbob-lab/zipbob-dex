@@ -346,7 +346,7 @@ const InputField = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className="p-5 flex flex-col gap-5">
+      <div className="flex flex-col gap-5 p-5">
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="mb-5 flex flex-col">
             <h1 className="text-2xl">나만의 레시피 등록하기</h1>
@@ -355,11 +355,11 @@ const InputField = () => {
           </div>
 
           {/* 요리정보 */}
-          <div className=" bg-slate-200 p-5 flex justify-between">
+          <div className="flex justify-between bg-slate-200 p-5">
             <RecipeInfoFields />
             {/* 레시피 완성 이미지 */}
             <div
-              className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden flex items-center justify-center"
+              className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
               onClick={() => {
                 if (recipeDoneImgView) {
                   setImgModalIndex(-1);
@@ -382,7 +382,7 @@ const InputField = () => {
                   onChange(e);
                   handleDoneImgFileSelect(e);
                 }}
-                className={`absolute inset-0 opacity-0 cursor-pointer ${recipeDoneImgView ? "pointer-events-none" : ""}`}
+                className={`absolute inset-0 cursor-pointer opacity-0 ${recipeDoneImgView ? "pointer-events-none" : ""}`}
               />
             </div>
           </div>
@@ -391,8 +391,8 @@ const InputField = () => {
           <IngredientsFields />
 
           {/* 단계별 레시피 */}
-          <div className="flex flex-col bg-yellow-50 p-5 gap-10">
-            <div className="flex flex-col mb-5">
+          <div className="flex flex-col gap-10 bg-yellow-50 p-5">
+            <div className="mb-5 flex flex-col">
               <label className="font-bold">단계별 레시피 입력</label>
               <span>레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!</span>
             </div>
@@ -400,7 +400,7 @@ const InputField = () => {
             {recipeDoingsImgFields.map((_, i) => (
               <div className="flex bg-green-200" key={i}>
                 <div
-                  className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden flex items-center justify-center"
+                  className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
                   onClick={() => toggleImgModal(i)}
                 >
                   {recipeDoingImgViewArray[i] ? (
@@ -438,7 +438,7 @@ const InputField = () => {
             <div>
               <button
                 type="button"
-                className="bg-slate-100 p-3 flex justify-center items-center"
+                className="flex items-center justify-center bg-slate-100 p-3"
                 onClick={handleAddRecipeDoingForm}
               >
                 레시피 추가하기

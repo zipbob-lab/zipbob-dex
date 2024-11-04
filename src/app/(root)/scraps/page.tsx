@@ -38,8 +38,8 @@ const ScrapPage = () => {
   }, {});
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mt-8 mb-4">스크랩한 레시피</h2>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h2 className="mb-4 mt-8 text-2xl font-bold">스크랩한 레시피</h2>
 
       {/* 폴더명 리스트 */}
       <div className="mb-6">
@@ -55,14 +55,14 @@ const ScrapPage = () => {
           {/* 편집 버튼 */}
           <button
             onClick={toggleEditMode}
-            className={`ml-auto ${isEditMode ? "text-Primary-300 font-bold" : "text-gray-700"}`}
+            className={`ml-auto ${isEditMode ? "font-bold text-Primary-300" : "text-gray-700"}`}
           >
             편집
           </button>
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="grid grid-cols-1 mt-8 md:grid-cols-4 gap-4">
+        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-4">
           {Array.isArray(scraps) &&
             scraps
               .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
@@ -77,14 +77,14 @@ const ScrapPage = () => {
 
                 return (
                   <Link href={`/myrecipedetail/${recipeDetail.post_id}`} key={scrap.scrap_id}>
-                    <div key={scrap.scrap_id} className="relative p-4 bg-white rounded-lg shadow">
+                    <div key={scrap.scrap_id} className="relative rounded-lg bg-white p-4 shadow">
                       {recipeDetail.recipe_img_done && (
                         <Image
                           src={recipeDetail.recipe_img_done}
                           alt={recipeDetail.recipe_title}
                           width={244}
                           height={244}
-                          className="w-full h-48 object-cover rounded-md mb-4"
+                          className="mb-4 h-48 w-full rounded-md object-cover"
                         />
                       )}
                       <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>

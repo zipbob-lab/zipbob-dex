@@ -10,10 +10,12 @@ import LikeEmptyIcon from "@images/likeEmpty.svg";
 import ScrapEmptyIcon from "@images/scrapEmpty.svg";
 import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
+import { useRouter } from "next/navigation";
 
 const RecipeCard = ({ post }: RecipeCardProps) => {
   const [nickname, setNickname] = useState("");
   const [isUserLiked, setIsUserLiked] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -41,8 +43,16 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="w-[12rem] h-[12rem] relative">
-        {post.recipe_img_done && <Image src={post.recipe_img_done} alt="레시피 사진" fill className="object-cover" />}
+      <div className="relative h-[12rem] w-[12rem]">
+        {post.recipe_img_done && (
+          <Image
+            src={post.recipe_img_done}
+            alt="레시피 사진"
+            fill
+            className="cursor-pointer object-cover"
+            onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
+          />
+        )}
       </div>
       <p>{post.recipe_title}</p>
       <p className="text-gray-500">{nickname}</p>

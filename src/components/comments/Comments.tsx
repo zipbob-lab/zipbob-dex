@@ -201,17 +201,17 @@ const Comments = ({ postId }: PostDataProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full bg-white p-5 flex flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5 bg-white p-5">
       {/* 댓글 제목 */}
-      <div className="p-5 flex flex-row gap-3">
+      <div className="flex flex-row gap-3 p-5">
         <h1 className="flex items-end justify-center text-2xl font-bold">요리 후기</h1>
         <span className="flex items-end justify-center">{totalComments} 개</span>
       </div>
       {/* 댓글 작성창 */}
-      <div className="bg-white p-5 rounded-xl flex flex-col gap-4 border  border-gray-500">
-        <div className="border-b-gray-800 border-solid flex flex-col gap-2">
+      <div className="flex flex-col gap-4 rounded-xl border border-gray-500 bg-white p-5">
+        <div className="flex flex-col gap-2 border-solid border-b-gray-800">
           <textarea
-            className="resize-none w-full h-20"
+            className="h-20 w-full resize-none"
             placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
             {...register(`commentText`, {
               maxLength: {
@@ -232,8 +232,7 @@ const Comments = ({ postId }: PostDataProps) => {
           </span>
           <button
             type="submit"
-            className="p-1 rounded-xl
-           justify-center items-center text-sm text-white w-14 bg-orange-400"
+            className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
           >
             입력
           </button>
@@ -244,7 +243,7 @@ const Comments = ({ postId }: PostDataProps) => {
           {/* 댓글 목록 */}
           <div className="flex flex-col gap-3 p-1">
             <div className="flex gap-1">
-              <div className="flex justify-center items-center w-12 h-12 rounded-full bg-gray-500 relative overflow-hidden">
+              <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-500">
                 <Image
                   src={comment.USER_TABLE.user_img}
                   alt="완성 이미지"
@@ -254,12 +253,12 @@ const Comments = ({ postId }: PostDataProps) => {
                 />
               </div>
               {/* 유저 정보 */}
-              <div className="flex flex-col gap-2 justify-center">
+              <div className="flex flex-col justify-center gap-2">
                 <div className="flex gap-2">
-                  <span className="font-bold mt-1">Lv.{comment.USER_TABLE.user_rank}</span>
-                  <span className="font-bold mt-1">{comment.USER_TABLE.user_nickname}</span>
+                  <span className="mt-1 font-bold">Lv.{comment.USER_TABLE.user_rank}</span>
+                  <span className="mt-1 font-bold">{comment.USER_TABLE.user_nickname}</span>
                   {comment.user_id === sessionId && (
-                    <span className="bg-yellow-300 p-1 rounded-lg">내가 작성한 댓글이에욤.</span>
+                    <span className="rounded-lg bg-yellow-300 p-1">내가 작성한 댓글이에욤.</span>
                   )}
                 </div>
                 <span className="text-gray-300">{comment.USER_TABLE.user_introduce || "유저 소개가 없습니다."}</span>
@@ -268,10 +267,10 @@ const Comments = ({ postId }: PostDataProps) => {
 
             {/* 수정 눌렀을 때 댓글 폼 표시*/}
             {modifyCommentId === comment.comment_id ? (
-              <div className="bg-white p-5 rounded-xl flex flex-col gap-4 border border-gray-500">
-                <div className="border-b-gray-800 border-solid flex flex-col gap-2">
+              <div className="flex flex-col gap-4 rounded-xl border border-gray-500 bg-white p-5">
+                <div className="flex flex-col gap-2 border-solid border-b-gray-800">
                   <textarea
-                    className="resize-none w-full h-20"
+                    className="h-20 w-full resize-none"
                     placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
                     {...modifyRegister(`modifyCommentText`, {
                       maxLength: {
@@ -292,7 +291,7 @@ const Comments = ({ postId }: PostDataProps) => {
                   </span>
                   <button
                     type="button"
-                    className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                    className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
                     onClick={modifyHandleSubmit(onSubmitModify)}
                   >
                     수정 완료
@@ -303,10 +302,10 @@ const Comments = ({ postId }: PostDataProps) => {
               <>
                 <span className="mb-5">{comment.comment}</span>
                 {comment.user_id === sessionId && (
-                  <div className="flex gap-1 justify-end">
+                  <div className="flex justify-end gap-1">
                     <button
                       type="button"
-                      className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                      className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
                       onClick={() => {
                         handleMotifyCommentDoing(comment.comment_id, comment.comment);
                       }}
@@ -315,7 +314,7 @@ const Comments = ({ postId }: PostDataProps) => {
                     </button>
                     <button
                       type="button"
-                      className="p-1 rounded-xl justify-center items-center text-sm text-white w-14 bg-orange-400"
+                      className="w-14 items-center justify-center rounded-xl bg-orange-400 p-1 text-sm text-white"
                       onClick={() => handleDeleteComment(comment.comment_id)}
                     >
                       삭제
@@ -327,12 +326,12 @@ const Comments = ({ postId }: PostDataProps) => {
           </div>
         </div>
       ))}
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className="text-lg hover:text-orange-500 transition-colors duration-300"
+            className="text-lg transition-colors duration-300 hover:text-orange-500"
           >
             {index + 1}
           </button>
