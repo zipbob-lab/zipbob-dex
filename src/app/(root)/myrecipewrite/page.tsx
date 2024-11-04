@@ -1,4 +1,4 @@
-import InputField from "@/components/myrecipewrite/InputField";
+import InputField from "@/components/myRecipeWrite/InputField";
 
 const MyRecipeWrite = () => {
   return (

@@ -6,13 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import ImageEditModal from "./ImageEditModal";
-import RecipeInfoFields from "./RecipeInfoFields";
-import IngredientsFields from "./IngredientsFields";
+
 import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
 import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
 import { supabase } from "@/supabase/supabase";
 import { Recipe } from "@/types/Recipe";
+import RecipeInfoFields from "./RecipeInfoFields";
+import IngredientsFields from "./IngredientsFields";
+import ImageEditModal from "./ImageEditModal";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
