@@ -143,15 +143,15 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
             e.stopPropagation();
           }}
         >
-          <div className="bg-white p-5 rounded-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="rounded-lg bg-white p-5" onClick={(e) => e.stopPropagation()}>
             <div className="flex flex-col items-center justify-center">
-              <h1 className="font-bold text-lg">로그인이 필요한 서비스예요!</h1>
+              <h1 className="text-lg font-bold">로그인이 필요한 서비스예요!</h1>
               <span>간편하게 로그인하고 좀 더 다양한 기능을 즐겨요</span>
               <div className="flex flex-row gap-3">
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={handleCloseModal}>
+                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={handleCloseModal}>
                   닫기
                 </button>
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={() => router.push("/login")}>
+                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={() => router.push("/login")}>
                   로그인 하러 가기
                 </button>
               </div>

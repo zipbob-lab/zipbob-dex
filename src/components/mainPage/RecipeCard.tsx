@@ -43,13 +43,13 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="w-[12rem] h-[12rem] relative">
+      <div className="relative h-[12rem] w-[12rem]">
         {post.recipe_img_done && (
           <Image
             src={post.recipe_img_done}
             alt="레시피 사진"
             fill
-            className="object-cover cursor-pointer"
+            className="cursor-pointer object-cover"
             onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
           />
         )}

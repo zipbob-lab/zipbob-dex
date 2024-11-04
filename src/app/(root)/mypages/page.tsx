@@ -4,9 +4,9 @@ import React from "react";
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col gap-6 justify-start items-start min-h-screen px-10 py-5">
-      <h1 className="font-bold text-3xl text-left mb-4">마이페이지</h1>
-      <div className="flex gap-8 w-full mx-auto">
+    <div className="flex min-h-screen flex-col items-start justify-start gap-6 px-10 py-5">
+      <h1 className="mb-4 text-left text-3xl font-bold">마이페이지</h1>
+      <div className="mx-auto flex w-full gap-8">
         <MyPageProfile />
         <MyPostsCommentView />
       </div>

@@ -29,19 +29,19 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-4 mb-2" onSubmit={handleSubmit(handleLogin)}>
+    <form className="mb-2 flex flex-col gap-4" onSubmit={handleSubmit(handleLogin)}>
       <h1 className="text-[2rem]">일반 로그인</h1>
       <input
         {...register("email")}
         type="email"
         placeholder="이메일"
-        className="border border-gray-500 rounded-md p-1"
+        className="rounded-md border border-gray-500 p-1"
       />
       <input
         {...register("password")}
         type="password"
         placeholder="비밀번호"
-        className="border border-gray-500 rounded-md p-1"
+        className="rounded-md border border-gray-500 p-1"
       />
       <button>로그인</button>
     </form>

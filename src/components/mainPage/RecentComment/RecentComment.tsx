@@ -39,7 +39,7 @@ const RecentComment = () => {
 
   return (
     <div className="mt-10">
-      <h1 className="text-[1.6rem] text-Primary-300 text-center">현재 다른 사람들이 도전하고 있는 레시피</h1>
+      <h1 className="text-center text-[1.6rem] text-Primary-300">현재 다른 사람들이 도전하고 있는 레시피</h1>
       <div className="grid grid-cols-2 p-5">
         {comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)}
       </div>

@@ -10,7 +10,7 @@ const LoginPage = () => {
     <div className="flex flex-col items-center">
       <LoginForm />
       <Link href="/sign-up">회원가입</Link>
-      <div className="flex flex-col mt-8">
+      <div className="mt-8 flex flex-col">
         <KakaoButton />
         <GithubButton />
         <GoogleButton />

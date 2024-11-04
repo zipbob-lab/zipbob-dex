@@ -44,7 +44,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, initial
         width={120}
         height={120}
         onClick={handleImageClick}
-        className="w-40 h-40 rounded-full object-cover cursor-pointer"
+        className="h-40 w-40 cursor-pointer rounded-full object-cover"
       />
     </div>
   );

@@ -97,27 +97,27 @@ const MyPageProfile = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="flex flex-col justify-evenly items-center bg-gray-100 w-[364px] h-[560px] p-5 rounded-lg shadow-lg">
+    <div className="flex h-[560px] w-[364px] flex-col items-center justify-evenly rounded-lg bg-gray-100 p-5 shadow-lg">
       {userData ? (
         <>
-          <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-gray-300 shadow-sm">
+          <div className="mb-4 h-40 w-40 overflow-hidden rounded-full border-2 border-gray-300 shadow-sm">
             <Image
               src={userData.user_img || DefaultImage}
               alt={userData.user_nickname}
               width={160}
               height={160}
-              className="object-cover object-center w-full h-full"
+              className="h-full w-full object-cover object-center"
             />
           </div>
 
-          <div className="flex flex-col justify-center items-center text-center">
+          <div className="flex flex-col items-center justify-center text-center">
             <div className="flex items-center space-x-2">
-              <h3 className="text-lg font-semibold mb-2">{userData.user_nickname}</h3>
+              <h3 className="mb-2 text-lg font-semibold">{userData.user_nickname}</h3>
               <button onClick={() => setIsModalOpen(true)} className="ml-1 text-gray-500 hover:text-gray-700">
                 <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
               </button>
             </div>
-            <p className="text-sm mt-2">{userData.user_introduce}</p>
+            <p className="mt-2 text-sm">{userData.user_introduce}</p>
           </div>
 
           {/* UserRank 컴포넌트 */}
@@ -125,7 +125,7 @@ const MyPageProfile = () => {
 
           <Link
             href="/myrecipewrite"
-            className="mt-5 p-3 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
+            className="mt-5 rounded-md bg-orange-500 p-3 text-white transition-colors duration-200 hover:bg-orange-600"
           >
             나만의 레시피 올리기
           </Link>

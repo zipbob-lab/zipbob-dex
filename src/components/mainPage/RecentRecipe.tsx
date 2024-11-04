@@ -38,10 +38,10 @@ const RecentRecipe = () => {
   }
 
   return (
-    <div className="mt-10 bg-[#FFE8D8] rounded-[64px] max-w-[1000px]">
+    <div className="mt-10 max-w-[1000px] rounded-[64px] bg-[#FFE8D8]">
       <div className="px-[5rem] py-[2.5rem]">
         <h1 className="text-[1.6rem] text-Primary-300">최근에 올라온 레시피</h1>
-        <div className="flex gap-[3rem] mt-8 overflow-x-auto">
+        <div className="mt-8 flex gap-[3rem] overflow-x-auto">
           {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
       </div>

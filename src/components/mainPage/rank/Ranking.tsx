@@ -9,7 +9,7 @@ const Ranking = () => {
 
   return (
     <>
-      <div className="mt-5 flex gap-10 mb-5">
+      <div className="mb-5 mt-5 flex gap-10">
         <button
           onClick={() => setShowUserRanking(false)}
           className={`${showUserRanking ? `text-black` : `text-yellow-300`}`}

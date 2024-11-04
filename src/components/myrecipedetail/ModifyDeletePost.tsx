@@ -49,11 +49,11 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   return (
     <>
       {userId === loginSessionId && (
-        <div className="flex gap-2 mt-4">
-          <button className="bg-orange-400 p-2 rounded text-white" onClick={handleModifyPost}>
+        <div className="mt-4 flex gap-2">
+          <button className="rounded bg-orange-400 p-2 text-white" onClick={handleModifyPost}>
             수정
           </button>
-          <button className="bg-red-500 p-2 rounded text-white" onClick={() => setIsDeleteModalOpen(true)}>
+          <button className="rounded bg-red-500 p-2 text-white" onClick={() => setIsDeleteModalOpen(true)}>
             삭제
           </button>
         </div>
@@ -61,15 +61,15 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
       {/* 삭제 확인 모달 */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 items-center justify-center bg-black bg-opacity-45">
-          <div className="bg-white p-5 rounded-lg">
+          <div className="rounded-lg bg-white p-5">
             <div className="flex flex-col items-center justify-center">
-              <h1 className="font-bold text-lg">레시피를 정말로 삭제하시겠어요?</h1>
+              <h1 className="text-lg font-bold">레시피를 정말로 삭제하시겠어요?</h1>
               <span>삭제된 레시피는 복구할 수 없어요!</span>
               <div className="flex flex-row gap-3">
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={() => setIsDeleteModalOpen(false)}>
+                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={() => setIsDeleteModalOpen(false)}>
                   취소하기
                 </button>
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={handleDeletePost}>
+                <button className="rounded-lg bg-orange-400 p-2 text-white" onClick={handleDeletePost}>
                   삭제하기
                 </button>
               </div>

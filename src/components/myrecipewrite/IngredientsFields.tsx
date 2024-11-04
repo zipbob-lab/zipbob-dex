@@ -13,7 +13,7 @@ const IngredientsFields = () => {
   };
 
   return (
-    <div className="flex flex-col bg-pink-200 p-5 gap-1">
+    <div className="flex flex-col gap-1 bg-pink-200 p-5">
       <label className="font-bold">재료 정보</label>
       <span>정보를 정확하게 입력하면 재료를 남기지 않을 수 있어요!</span>
 
@@ -33,7 +33,7 @@ const IngredientsFields = () => {
       <div>
         <button
           type="button"
-          className="bg-slate-100 p-3 flex justify-center items-center"
+          className="flex items-center justify-center bg-slate-100 p-3"
           onClick={handleAddIngredientsForm}
         >
           재료 추가하기

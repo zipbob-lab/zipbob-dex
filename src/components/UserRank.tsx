@@ -35,10 +35,10 @@ const UserRank: React.FC<UserRankProps> = ({ userId }) => {
   const progressPercent: number = userExp % 100;
 
   return (
-    <div className="text-center w-full">
+    <div className="w-full text-center">
       <p className="text-lg">{levelEmoji}</p>
-      <div className="w-full bg-orange-300 rounded-full h-2 mt-2">
-        <div className="bg-orange-400 h-2 rounded-full" style={{ width: `${progressPercent}%` }}></div>
+      <div className="mt-2 h-2 w-full rounded-full bg-orange-300">
+        <div className="h-2 rounded-full bg-orange-400" style={{ width: `${progressPercent}%` }}></div>
       </div>
       <p className="mt-2">{progressPercent}/100 경험치</p>
     </div>

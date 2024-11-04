@@ -37,25 +37,25 @@ const UserComment = ({ userId }: { userId: string }) => {
   if (!comments) return <p>아직 작성한 댓글이 없어요!</p>;
 
   return (
-    <div className="overflow-y-auto max-h-[560px]">
+    <div className="max-h-[560px] overflow-y-auto">
       {comments?.map((comment) => (
         <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-          <div key={comment.post_id} className="flex p-4 border-b border-gray-200 ">
+          <div key={comment.post_id} className="flex border-b border-gray-200 p-4">
             {comment.recipe ? (
               <Image
                 src={comment.recipe.recipe_img_done}
                 alt={comment.recipe.recipe_title}
                 width={100}
                 height={100}
-                className="w-24 h-24 rounded-md mr-4"
+                className="mr-4 h-24 w-24 rounded-md"
               />
             ) : (
               <p>댓글 정보를 찾을 수 없습니다</p>
             )}
             <div>
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
-                <span className="text-sm text-gray-500 inline-block">{comment.created_at}</span>
+                <span className="inline-block text-sm text-gray-500">{comment.created_at}</span>
               </div>
 
               <p className="mt-2">{comment.comment}</p>
