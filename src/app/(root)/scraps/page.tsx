@@ -53,7 +53,10 @@ const ScrapPage = () => {
             </button>
           ))}
           {/* 편집 버튼 */}
-          <button onClick={toggleEditMode} className="ml-auto">
+          <button
+            onClick={toggleEditMode}
+            className={`ml-auto ${isEditMode ? "text-Primary-300 font-bold" : "text-gray-700"}`}
+          >
             편집
           </button>
         </div>
