@@ -6,9 +6,10 @@ import { fetchUserProfile } from "@/serverActions/profileAction";
 import { uploadProfileImage } from "@/utils/uploadProfileImage";
 import { useEffect, useState } from "react";
 import EditProfileModal from "./EditProfileModal";
-import { Pencil } from "lucide-react";
+import Pencil from "../../../public/images/pen.svg";
 import UserRank from "../UserRank";
 import Image from "next/image";
+import DefaultImage from "../../../public/images/default-profile.svg";
 
 interface UserProfile {
   user_id: string;
@@ -78,19 +79,18 @@ const MyPageProfile = () => {
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
-    const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profile.png`;
     if (!userData) return;
 
     const { error } = await supabase
       .from("USER_TABLE")
-      .update({ user_img: profileImageUrl, user_introduce: "" })
+      .update({ user_img: "", user_introduce: "" })
       .eq("user_id", userData.user_id);
 
     if (error) {
       console.error("데이터 초기화 오류:", error.message);
       return;
     }
-    setUserData((prev) => (prev ? { ...prev, user_img: profileImageUrl, user_introduce: "" } : null));
+    setUserData((prev) => (prev ? { ...prev, user_img: "", user_introduce: "" } : null));
     setIsModalOpen(false);
   };
 
@@ -102,7 +102,7 @@ const MyPageProfile = () => {
         <>
           <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-gray-300 shadow-sm">
             <Image
-              src={userData.user_img}
+              src={userData.user_img || DefaultImage}
               alt={userData.user_nickname}
               width={160}
               height={160}
@@ -114,7 +114,7 @@ const MyPageProfile = () => {
             <div className="flex items-center space-x-2">
               <h3 className="text-lg font-semibold mb-2">{userData.user_nickname}</h3>
               <button onClick={() => setIsModalOpen(true)} className="ml-1 text-gray-500 hover:text-gray-700">
-                <Pencil size={16} />
+                <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
               </button>
             </div>
             <p className="text-sm mt-2">{userData.user_introduce}</p>
