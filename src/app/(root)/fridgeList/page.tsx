@@ -1,45 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
-import CategoreAdd from "@/components/fridgeList/InputAdd";
-import CategoreDelete from "@/components/fridgeList/InputDelete";
-import FilteredRecipeList from "@/components/fridgeList/Filter";
+import TagFilter from "@/components/fridgeList/FridgeFilter";
+import Timer from "@/components/Timer";
 
-const CategoreFilter = () => {
-  const [addKeywords, setAddKeywords] = useState<string[]>([]);
-  const [deleteKeywords, setDeleteKeywords] = useState<string[]>([]);
-  const [isSearchTriggered, setIsSearchTriggered] = useState(false);
+const FridgeListPage = () => {
+  const [modal, setModal] = useState(false);
 
-  const handleAddKeywords = (keywords: string[]) => {
-    setAddKeywords(keywords);
+  const handleTimerOpen = () => {
+    setModal(true);
   };
 
-  const handleDeleteKeywords = (keywords: string[]) => {
-    setDeleteKeywords(keywords);
-  };
-
-  const handleSearch = () => {
-    setIsSearchTriggered(true);
+  const handleTimerClose = () => {
+    setModal(false);
   };
 
   return (
     <div>
-      <h2>필터링 조건 입력</h2>
-
-      <CategoreAdd onAddCategory={handleAddKeywords} />
-      <CategoreDelete onDeleteCategory={handleDeleteKeywords} />
-
-      <button onClick={handleSearch} className="search-button">
-        검색
-      </button>
-
-      {isSearchTriggered && (
-        <FilteredRecipeList addKeywords={addKeywords} deleteKeywords={deleteKeywords} isSearching={isSearchTriggered} />
-      )}
+      <TagFilter />
+      {/* 타이머 모달 기능 메인페이지 적용하기 */}
+      <button onClick={handleTimerOpen}>타이머</button>
+      {modal && <Timer onClose={handleTimerClose} />}
     </div>
   );
 };
 
-export default CategoreFilter;
-
-// 필터 기능 페이지화 하기
+export default FridgeListPage;

@@ -24,6 +24,6 @@ export type RecipeCardProps = {
     like_count: number;
     scrap_count: number;
     recipe_level: string;
-    user_id: string;
+    user_id?: string;
   };
 };

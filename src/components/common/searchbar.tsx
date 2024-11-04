@@ -83,7 +83,7 @@ const SearchBar = () => {
             onChange={handleSearchChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            placeholder="레시피를 검색해보세요"
+            placeholder="메뉴나 재료 이름을 검색해보세요!"
           />
           <button type="submit">검색</button>
         </form>
