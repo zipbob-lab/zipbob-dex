@@ -60,14 +60,6 @@ const InputField = () => {
     }
   });
 
-  useEffect(() => {
-    console.log("이미지배열", recipeDoingImgViewArray);
-  }, [recipeDoingImgViewArray]);
-
-  useEffect(() => {
-    console.log("파일 배열", recipeDoingImgFileArray);
-  }, [recipeDoingImgFileArray]);
-
   const { ref, onChange, ...rest } = methods.register("recipeDoneImg");
 
   // 매뉴얼 이미지 배열 관리
@@ -105,7 +97,6 @@ const InputField = () => {
   const fetchOriginRecipeData = async (postId: string) => {
     const { data, error } = await supabase.from("TEST2_TABLE").select("*").eq("post_id", postId).single();
 
-    console.log("데이터", data);
     if (error) {
       console.error("레시피 불러오기 에러", error.message);
     } else {
@@ -119,6 +110,8 @@ const InputField = () => {
       methods.reset({
         recipeTitle: data.recipe_title,
         recipeDescription: data.recipe_description,
+        recipeType: data.recipe_type,
+        recipeMethod: data.recipe_method,
         ingredients: data.recipe_ingredients,
         recipeManual: data.recipe_manual
       });
@@ -128,9 +121,6 @@ const InputField = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("페치데이타", fetchData);
-  }, [fetchData]);
   const handleDoingImgFileSelect = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImgFile = event.target.files?.[0];
     if (!selectedImgFile) return;
@@ -314,11 +304,9 @@ const InputField = () => {
           console.error("업데이트 오류", updateError.message);
           return;
         }
-
         console.log("업데이트 완료!");
       } else {
         // 작성 모드
-
         const { error } = await supabase.from("TEST2_TABLE").insert({ ...recipeData, post_id: uuidv4() });
 
         if (error) {
@@ -379,7 +367,7 @@ const InputField = () => {
               }}
             >
               {recipeDoneImgView ? (
-                <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} objectFit="cover" />
+                <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
               ) : (
                 <p>이미지 파일</p>
               )}
@@ -416,7 +404,12 @@ const InputField = () => {
                   onClick={() => toggleImgModal(i)}
                 >
                   {recipeDoingImgViewArray[i] ? (
-                    <Image src={recipeDoingImgViewArray[i]} alt="매뉴얼 이미지" fill={true} objectFit="cover" />
+                    <Image
+                      src={recipeDoingImgViewArray[i]}
+                      alt="매뉴얼 이미지"
+                      fill={true}
+                      style={{ objectFit: "cover" }}
+                    />
                   ) : (
                     <p>선택된 이미지가 없습니다.</p>
                   )}
@@ -453,7 +446,7 @@ const InputField = () => {
             </div>
           </div>
 
-          {/* 단계별 이미지 모달 */}
+          {/* 단계별 이미지 편집 모달 */}
           {imgModalIndex !== null && recipeDoingImgViewArray[imgModalIndex] && (
             <ImageEditModal
               handleModify={() => handleModifyImage(imgModalIndex)}
@@ -462,7 +455,7 @@ const InputField = () => {
             />
           )}
 
-          {/* 완성 이미지 모달 */}
+          {/* 완성 이미지 편집 모달 */}
           {imgModalIndex === -1 && recipeDoneImgView && (
             <ImageEditModal
               handleModify={() => handleModifyImage(-1)}
