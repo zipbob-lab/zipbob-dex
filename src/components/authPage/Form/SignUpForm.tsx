@@ -162,10 +162,10 @@ const SignUpForm = () => {
           errors={errors}
         />
       )}
-      <div className="flex justify-center mt-4">
+      <div className="mt-4 flex justify-center">
         <button
           type="button"
-          className="border px-4 py-2 rounded"
+          className="rounded border px-4 py-2"
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
           {isNextForm ? "회원가입" : "다음"}

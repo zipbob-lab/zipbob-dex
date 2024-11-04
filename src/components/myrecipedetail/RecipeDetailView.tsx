@@ -25,10 +25,10 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
   }
 
   return (
-    <div className="bg-gray-400 flex flex-col justify-center items-center gap-5 p-5">
+    <div className="flex flex-col items-center justify-center gap-5 bg-gray-400 p-5">
       {/* 요리 완성 사진 & 설명 */}
-      <div className="bg-pink-400 flex justify-between w-1/3 p-5 gap-5">
-        <div className="w-52 h-52 rounded-lg bg-gray-500 relative overflow-hidden">
+      <div className="flex w-1/3 justify-between gap-5 bg-pink-400 p-5">
+        <div className="relative h-52 w-52 overflow-hidden rounded-lg bg-gray-500">
           <Image src={data.recipe_img_done} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
         </div>
         <div className="flex flex-col justify-between">
@@ -38,8 +38,8 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
           </div>
           <div className="flex justify-between">
             {/* 유저 사진 */}
-            <div className="flex bg-purple-300 gap-3">
-              <div className="flex justify-center items-center w-12 h-12 rounded-full bg-gray-500 relative overflow-hidden">
+            <div className="flex gap-3 bg-purple-300">
+              <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-500">
                 <Image
                   src={userInfo.user_img}
                   alt="완성 이미지"
@@ -57,7 +57,7 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
                 <span>{userInfo.user_introduce}</span>
               </div>
             </div>
-            <div className="flex flex-row justify-end items-end bg-lime-600">
+            <div className="flex flex-row items-end justify-end bg-lime-600">
               <div>
                 <Likebutton postId={postId} />
               </div>
@@ -70,7 +70,7 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
       </div>
 
       {/* 재료 목록 */}
-      <div className="flex flex-col bg-yellow-400  w-1/3 p-5 gap-5">
+      <div className="flex w-1/3 flex-col gap-5 bg-yellow-400 p-5">
         <h1 className="text-2xl font-bold">재료 목록</h1>
         <div>
           {typeof data.recipe_ingredients === "string"
@@ -90,13 +90,13 @@ const RecipeDetailView = async ({ postId }: RecipeDetailViewProps) => {
       </div>
 
       {/* 조리 순서 */}
-      <div className="flex flex-col bg-cyan-400 w-1/3 p-5 gap-5">
+      <div className="flex w-1/3 flex-col gap-5 bg-cyan-400 p-5">
         <div>
           <h1 className="text-2xl font-bold">조리 순서</h1>
         </div>
         <div className="flex flex-col gap-4">
           {data.recipe_img_doing.map((_: string, index: number) => (
-            <div key={index} className="p-4  flex gap-5">
+            <div key={index} className="flex gap-5 p-4">
               <h2 className="mt-2 text-xl font-semibold">{index + 1}</h2>
               <Image
                 className="rounded-sm object-scale-down"

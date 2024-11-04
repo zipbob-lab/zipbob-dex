@@ -31,16 +31,16 @@ const ProfileDropbox = () => {
   return (
     <nav
       ref={dropboxRef}
-      className="absolute right-5 px-4 py-2 min-w-[12rem] rounded-[1.25rem] border border-Gray-100 bg-white"
+      className="absolute right-5 min-w-[12rem] rounded-[1.25rem] border border-Gray-100 bg-white px-4 py-2"
     >
       <ul className="flex flex-col gap-2">
         <li
-          className="px-2 py-3 hover:bg-Secondary-50 rounded-2xl transition cursor-pointer"
+          className="cursor-pointer rounded-2xl px-2 py-3 transition hover:bg-Secondary-50"
           onClick={() => router.push("/mypages")}
         >
           <button>마이페이지</button>
         </li>
-        <li className="px-2 py-3 hover:bg-Secondary-50 rounded-2xl transition cursor-pointer" onClick={logout}>
+        <li className="cursor-pointer rounded-2xl px-2 py-3 transition hover:bg-Secondary-50" onClick={logout}>
           <button>로그아웃</button>
         </li>
       </ul>

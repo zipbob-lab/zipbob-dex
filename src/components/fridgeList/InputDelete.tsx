@@ -53,12 +53,12 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
         placeholder="빼고 싶은 재료를 입력하세요!"
         className="border"
       />
-      <button type="button" onClick={addCategory} className="ml-2 p-1 border">
+      <button type="button" onClick={addCategory} className="ml-2 border p-1">
         추가
       </button>
       <div>
         {category.map((tag) => (
-          <div key={tag} className="inline-block mr-2">
+          <div key={tag} className="mr-2 inline-block">
             <span>{tag}</span>
             <button type="button" onClick={() => deleteTag(tag)} className="ml-1">
               x

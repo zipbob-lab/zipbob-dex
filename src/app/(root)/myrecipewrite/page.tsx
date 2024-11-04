@@ -1,9 +1,12 @@
-import InputField from "@/components/myRecipeWrite/InputField";
+import InputAA from "@/components/myrecipewrite/InputField";
+import { Suspense } from "react";
 
 const MyRecipeWrite = () => {
   return (
     <div>
-      <InputField />
+      <Suspense fallback={<div>Loading</div>}>
+        <InputAA />
+      </Suspense>
     </div>
   );
 };

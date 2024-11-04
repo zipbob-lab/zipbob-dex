@@ -5,7 +5,7 @@ import InputField from "../InputField";
 const AccountSet = ({ register, errors }: AccountSetProps) => {
   return (
     <>
-      <h1 className="text-[2rem] text-center">회원가입</h1>
+      <h1 className="text-center text-[2rem]">회원가입</h1>
       <InputField
         register={register}
         label="이메일"

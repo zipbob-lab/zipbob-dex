@@ -6,25 +6,25 @@ import InputField from "../InputField";
 const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: UserInfoSetProps) => {
   return (
     <>
-      <div className="flex flex-col gap-2 mt-4">
-        <div className="relative w-20 h-20">
+      <div className="mt-4 flex flex-col gap-2">
+        <div className="relative h-20 w-20">
           <input
             {...register("profileImage")}
             type="file"
             accept={ACCEPTED_IMAGE_TYPES.join(",")}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
           />
-          <div className="bg-gray-300 w-20 h-20 rounded-full overflow-hidden">
+          <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-300">
             {previewImage ? (
               <Image
                 src={previewImage.toString()}
                 width={80}
                 height={80}
                 alt="프로필 사진"
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">+</div>
+              <div className="flex h-full w-full items-center justify-center text-gray-500">+</div>
             )}
           </div>
         </div>
