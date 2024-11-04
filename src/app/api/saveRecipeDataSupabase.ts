@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const saveRecipeDataSupabase = async () => {
   const recipeData = await fetchRecipeData();
-  console.log("레시피 데이터:", recipeData);
+  // console.log("레시피 데이터:", recipeData);
 
   const saveData = recipeData.COOKRCP01.row.map((recipeData: any) => ({
     user_id: "b8d5e70b-c868-43fc-ac7d-e0601de00d0b",

@@ -2,34 +2,24 @@
 
 import { createClient } from "@/supabase/client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-
-enum RecipeMethodEnum {
-  boil = "끓이기",
-  roast = "굽기",
-  frying = "튀기기",
-  steaming = "찌기",
-  stirfry = "볶기",
-  other = "기타"
-}
-
-enum RecipeTypeEnum {
-  bob = "밥",
-  soup = "국&찌개",
-  banchan = "반찬",
-  desert = "후식",
-  onefood = "일품",
-  other = "기타"
-}
+import ImageEditModal from "./ImageEditModal";
+import RecipeInfoFields from "./RecipeInfoFields";
+import IngredientsFields from "./IngredientsFields";
+import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
+import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
+import { supabase } from "@/supabase/supabase";
+import { Recipe } from "@/types/Recipe";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
   recipeType: RecipeTypeEnum;
   recipeTitle: string;
   recipeDescription: string;
+  recipeDoneImg?: File | undefined;
   recipeDoingImgs?: { file: File | undefined }[];
   recipeDoingTexts?: { text: string }[];
   ingredients: RecipeForm[];
@@ -43,75 +33,95 @@ export interface RecipeForm {
 }
 
 const InputField = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const postId = searchParams.get("postId");
+  const isModifyMode = !!postId;
+  // const queryClient = useQueryClient();
+
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<{ file: File | undefined }[]>([]);
   const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
   const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File | undefined>(undefined);
   const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
+  const [fetchData, setFetchData] = useState<Recipe | null>(null);
 
-  // ref 관리
-  // const recipeDoneImgRef = useRef<HTMLInputElement | null>(null);
-  // const recipeDoingImgRefs = useRef<HTMLInputElement[]>([]);
+  // 모달 관리
+  const [imgModalIndex, setImgModalIndex] = useState<number | null>(null);
+  const doneImgRef = useRef<HTMLInputElement | null>(null);
+  const doingImgRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // route
-  const router = useRouter();
-
-  const {
-    register,
-    control,
-    handleSubmit
-    // watch
-    // formState: { errors }
-  } = useForm<IFormInput>({
+  const methods = useForm<IFormInput>({
     defaultValues: {
+      recipeDoneImg: undefined,
       recipeDoingImgs: [{ file: undefined }],
       recipeDoingTexts: [{ text: "" }],
       ingredients: [{ ingredient: "", amount: "", unit: "" }]
     }
   });
 
-  // 필드 어레이 관리
-  // 재료 필드 배열 관리
-  const { fields, append } = useFieldArray({
-    control,
-    name: "ingredients"
-  });
+  const { ref, onChange, ...rest } = methods.register("recipeDoneImg");
 
   // 매뉴얼 이미지 배열 관리
-  const { fields: recipeDoingsImgFields, append: appendRecipeDoingImg } = useFieldArray({
-    control,
+  const {
+    fields: recipeDoingsImgFields,
+    append: appendRecipeDoingImg,
+    replace: replaceRecipeDoingImgs
+    // remove: removeRecipeDoingImgs
+  } = useFieldArray({
+    control: methods.control,
     name: "recipeDoingImgs"
   });
 
   // 매뉴얼 텍스트 배열 관리
-  const { fields: recipeDoingsTextFields, append: appendRecipeDoingText } = useFieldArray({
-    control,
+  const { append: appendRecipeDoingText, replace: replaceRecipeDoingTexts } = useFieldArray({
+    control: methods.control,
     name: "recipeDoingTexts"
   });
-
-  const handleAddIngredientsForm = () => {
-    append({ ingredient: "", amount: "", unit: "" }, { shouldFocus: false });
-  };
 
   const handleAddRecipeDoingForm = () => {
     appendRecipeDoingImg({ file: undefined });
     appendRecipeDoingText({ text: "" });
+
     setRecipeDoingImgFileArray((prev) => [...prev, { file: undefined }]);
     setRecipeDoingImgViewArray((prev) => [...prev, ""]);
   };
 
+  // 수정 모드일 경우 데이터 가져오기
   useEffect(() => {
-    if (recipeDoingsImgFields.length === 0) {
-      appendRecipeDoingImg({ file: undefined });
+    if (isModifyMode && postId) {
+      fetchOriginRecipeData(postId);
     }
-    if (recipeDoingsTextFields.length === 0) {
-      appendRecipeDoingText({ text: "" });
-    }
-  }, []);
+  }, [isModifyMode, postId]);
 
-  // 이미지 선택
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    // 업로드한 이미지 파일을 배열에 저장스
+  const fetchOriginRecipeData = async (postId: string) => {
+    const { data, error } = await supabase.from("TEST2_TABLE").select("*").eq("post_id", postId).single();
+
+    if (error) {
+      console.error("레시피 불러오기 에러", error.message);
+    } else {
+      setFetchData(data as Recipe);
+      // 기존 이미지 뷰에 넣어주기(초기화)
+      setRecipeDoneImgView(data?.recipe_img_done ?? "");
+      const existingImgViews = data?.recipe_img_doing ?? [];
+      setRecipeDoingImgViewArray(existingImgViews);
+      setRecipeDoingImgFileArray(existingImgViews.map(() => ({ file: undefined })));
+
+      methods.reset({
+        recipeTitle: data.recipe_title,
+        recipeDescription: data.recipe_description,
+        recipeType: data.recipe_type,
+        recipeMethod: data.recipe_method,
+        ingredients: data.recipe_ingredients,
+        recipeManual: data.recipe_manual
+      });
+      // 기존 동적 폼 길이 맞추기 (배열 초기화)
+      replaceRecipeDoingImgs(existingImgViews.map(() => ({ file: undefined })));
+      replaceRecipeDoingTexts(data.recipe_manual.map((text: string) => ({ text })));
+    }
+  };
+
+  const handleDoingImgFileSelect = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const selectedImgFile = event.target.files?.[0];
     if (!selectedImgFile) return;
 
@@ -120,16 +130,18 @@ const InputField = () => {
       updateImgFiles[index] = { file: selectedImgFile || undefined };
       return updateImgFiles;
     });
+
     const imgViewUrl = URL.createObjectURL(selectedImgFile);
-    // 이미지 미리보기를 배열에 저장스
     setRecipeDoingImgViewArray((prev) => {
       const updatedImgViews = [...prev];
       updatedImgViews[index] = imgViewUrl;
       return updatedImgViews;
     });
+    // 파일 업로드 후 모달 닫기
+    setImgModalIndex(null);
   };
 
-  const handleImgDoneFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDoneImgFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImgFile = event.target.files?.[0];
     if (selectedImgFile) {
       setRecipeDoneImgFile(selectedImgFile);
@@ -141,21 +153,52 @@ const InputField = () => {
     router.back();
   };
 
-  // useEffect(() => {
-  //   if (recipeDoingsImgFields.length === 0) {
-  //     appendRecipeDoingImg(undefined);
-  //   }
-  //   if (recipeDoingsTextFields.length === 0) {
-  //     appendRecipeDoingText("");
-  //   }
-  // }, []);
+  const toggleImgModal = (index: number) => {
+    if (recipeDoingImgViewArray[index]) {
+      setImgModalIndex(imgModalIndex === index ? null : index);
+    }
+  };
+
+  const handleModifyImage = (index: number) => {
+    if (index === -1) {
+      methods.setValue("recipeDoneImg", undefined);
+      if (doneImgRef.current) {
+        doneImgRef.current.click();
+      }
+    } else {
+      methods.setValue(`recipeDoingImgs.${index}`, { file: undefined });
+      if (doingImgRefs.current[index]) {
+        doingImgRefs.current[index].click();
+      }
+    }
+    setImgModalIndex(null);
+  };
+
+  const handleDeleteImage = (index: number) => {
+    if (index === -1) {
+      setRecipeDoneImgFile(undefined);
+      setRecipeDoneImgView("");
+    } else {
+      // setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
+      // setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
+      const updatedFileArray = [...recipeDoingImgFileArray];
+      updatedFileArray[index] = { file: undefined };
+      setRecipeDoingImgFileArray(updatedFileArray);
+
+      const updatedViewArray = [...recipeDoingImgViewArray];
+      updatedViewArray[index] =
+        "https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/images%20(4).jfif";
+      // 여기다가 기본 이미지 넣어야됨
+      setRecipeDoingImgViewArray(updatedViewArray);
+    }
+    setImgModalIndex(null);
+  };
 
   // 폼 제출
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const supabase = createClient();
 
     try {
-      // 로그인 세션
       const {
         data: { session },
         error: sessionError
@@ -166,38 +209,58 @@ const InputField = () => {
       }
       const loginSessionId = session?.user?.id;
 
-      // 이미지파일 유니크 파일명 만들어주는 함수
       const makeUniqueFileName = (file: File) => {
-        const lastDot = file.name.lastIndexOf(".");
-        const fileExtension = file.name.substring(lastDot + 1);
-        const newFileName = Math.random().toString(36).slice(2, 13);
-        const uniqueImgName = new Date().getTime();
-        const imgFileName = `${uniqueImgName}_${newFileName}.${fileExtension}`;
-        return imgFileName;
+        const fileExtension = file.name.split(".").pop();
+        return `${Date.now()}_${Math.random().toString(36).slice(2, 13)}.${fileExtension}`;
       };
 
-      // 매뉴얼 이미지 업로드
       const recipeDoingImgUrls: string[] = [];
-      for (let i = 0; i < recipeDoingImgFileArray.length; i++) {
-        const recipeDoingImgFile = recipeDoingImgFileArray[i].file;
-        if (recipeDoingImgFile) {
-          const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
-          const { error: imgError } = await supabase.storage
-            .from("zipbob_storage")
-            .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
-          if (imgError) {
-            alert("매뉴얼 이미지 업로드 실패");
-            console.error(imgError.message);
-            return;
-          } else {
-            const recipeDoingImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
+      for (let i = 0; i < recipeDoingImgViewArray.length; i++) {
+        if (isModifyMode) {
+          // 수정 모드일 때
+
+          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+          if (recipeDoingImgFile instanceof File) {
+            // 새로 업로드된 파일이 있는 경우
+            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+            const { error: imgError } = await supabase.storage
+              .from("zipbob_storage")
+              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+
+            if (imgError) {
+              alert("매뉴얼 이미지 업로드 실패");
+              console.error(imgError.message);
+              return;
+            }
+
+            const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
+            recipeDoingImgUrls.push(recipeDoingImgUrl);
+          } else if (recipeDoingImgViewArray[i]) {
+            // 기존 이미지 URL이 있는 경우
+            recipeDoingImgUrls.push(recipeDoingImgViewArray[i] || "");
+          }
+        } else {
+          // 작성 모드일 때
+          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+          if (recipeDoingImgFile instanceof File) {
+            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+            const { error: imgError } = await supabase.storage
+              .from("zipbob_storage")
+              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+
+            if (imgError) {
+              alert("매뉴얼 이미지 업로드 실패");
+              console.error(imgError.message);
+              return;
+            }
+
+            const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
             recipeDoingImgUrls.push(recipeDoingImgUrl);
           }
         }
       }
 
-      // 완료 이미지 업로드
-      let recipeDoneImgUrl = "";
+      let recipeDoneImgUrl = fetchData?.recipe_img_done;
       if (recipeDoneImgFile) {
         const imgDoneName = makeUniqueFileName(recipeDoneImgFile);
         const { error: doneImgError } = await supabase.storage
@@ -208,11 +271,10 @@ const InputField = () => {
           console.error(doneImgError.message);
           return;
         } else {
-          recipeDoneImgUrl = `https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/${imgDoneName}`;
+          recipeDoneImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/${imgDoneName}`;
         }
       }
 
-      // 난이도 설정
       let recipeLevel = "";
       if (data.ingredients.length > 0 && data.ingredients.length <= 3) {
         recipeLevel = "하";
@@ -222,50 +284,59 @@ const InputField = () => {
         recipeLevel = "상";
       }
 
-      // supabase에 데이터 INSERT
-      const { error } = await supabase.from("TEST2_TABLE").insert({
+      const recipeData = {
         user_id: loginSessionId,
-        post_id: uuidv4(),
         recipe_title: data.recipeTitle,
         recipe_type: RecipeTypeEnum[data.recipeType as unknown as keyof typeof RecipeTypeEnum],
         recipe_method: RecipeMethodEnum[data.recipeMethod as unknown as keyof typeof RecipeMethodEnum],
         recipe_ingredients: data.ingredients,
         recipe_img_doing: recipeDoingImgUrls,
         recipe_img_done: recipeDoneImgUrl,
-        recipe_manual: data.recipeDoingTexts?.map((item) => item.text) || [], // 객체배열을 일반 배열로 바꿔서 저장
+        recipe_manual: data.recipeDoingTexts?.map((item) => item.text) || [],
         recipe_description: data.recipeDescription,
         recipe_level: recipeLevel
-      });
+      };
 
-      if (error) {
-        console.error("나만의 레시피 INSERT 에러 : ", error.message);
-        return error;
-      }
-
-      // 유저 테이블 경험치 가져오기
-      const { data: userData, error: userError } = await supabase
-        .from("USER_TABLE")
-        .select("user_exp")
-        .eq("user_id", loginSessionId)
-        .single();
-
-      if (userError) {
-        console.error("유저 테이블 SELECT 에러 : ", userError.message);
-      } else {
-        const userExp = userData.user_exp || 0;
-        const updatedExp = userExp + 10;
-
-        // 유저 테이블 경험치 추가
-        const { error: updateUserError } = await supabase
-          .from("USER_TABLE")
-          .update({ user_exp: updatedExp })
-          .eq("user_id", loginSessionId);
-
-        if (updateUserError) {
-          console.error("경험치 UPDATE 에러 : ", updateUserError.message);
+      if (isModifyMode) {
+        // 수정 모드
+        const { error: updateError } = await supabase.from("TEST2_TABLE").update(recipeData).eq("post_id", postId);
+        if (updateError) {
+          console.error("업데이트 오류", updateError.message);
+          return;
         }
+        console.log("업데이트 완료!");
+      } else {
+        // 작성 모드
+        const { error } = await supabase.from("TEST2_TABLE").insert({ ...recipeData, post_id: uuidv4() });
+
+        if (error) {
+          console.error("나만의 레시피 INSERT 에러 : ", error.message);
+          return error;
+        }
+
+        const { data: userData, error: userError } = await supabase
+          .from("USER_TABLE")
+          .select("user_exp")
+          .eq("user_id", loginSessionId)
+          .single();
+
+        if (userError) {
+          console.error("유저 테이블 SELECT 에러 : ", userError.message);
+        } else {
+          const userExp = userData.user_exp || 0;
+          const updatedExp = userExp + 10;
+          const { error: updateUserError } = await supabase
+            .from("USER_TABLE")
+            .update({ user_exp: updatedExp })
+            .eq("user_id", loginSessionId);
+
+          if (updateUserError) {
+            console.error("경험치 UPDATE 에러 : ", updateUserError.message);
+          }
+        }
+        alert("레시피 작성이 완료되었습니다!");
       }
-      alert("레시피 작성이 완료되었습니다!");
+
       router.back();
     } catch (error) {
       console.error("레시피 작성 오류", error);
@@ -274,143 +345,137 @@ const InputField = () => {
   };
 
   return (
-    <div className="p-5 flex flex-col gap-5">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-5 flex flex-col">
-          <h1 className="text-2xl">나만의 레시피 등록하기</h1>
-          <span>다른 사람들에게 소개하고 싶은 나만의 레시피를 등록해요!</span>
-          <span>특별하지 않아도 괜찮아요, 상세하게 적을 수록 다른 사람들이 쉽게 만들 수 있어요.</span>
-        </div>
-
-        {/* 요리정보 */}
-        <div className=" bg-slate-200 p-5 flex justify-between">
-          <div>
-            <div className="flex mb-5 gap-10">
-              <label className="font-bold">카테고리</label>
-              <select {...register("recipeMethod", { required: true })}>
-                <option value="boil">끓이기</option>
-                <option value="roast">굽기</option>
-                <option value="frying">튀기기</option>
-                <option value="steaming">찌기</option>
-                <option value="stirfry">볶기</option>
-                <option value="other">기타</option>
-              </select>
-              <select {...register("recipeType", { required: true })}>
-                <option value="bob">밥</option>
-                <option value="soup">국&찌개</option>
-                <option value="banchan">반찬</option>
-                <option value="onefood">일품</option>
-                <option value="desert">후식</option>
-                <option value="other">기타</option>
-              </select>
-            </div>
-            <div className="flex mb-5 gap-10">
-              <label className="font-bold">레시피 제목</label>
-              <input
-                placeholder="예)10분이면 완성하는 바질 로제 파스타"
-                {...register("recipeTitle", { required: true })}
-              />
-            </div>
-            <div className="flex mb-5 gap-10">
-              <label className="font-bold">요리 소개</label>
-              <textarea
-                className="resize-none"
-                placeholder="레시피의 탄생배경, 특징을 적어주세요."
-                {...register("recipeDescription", { required: true })}
-              />
-            </div>
+    <FormProvider {...methods}>
+      <div className="p-5 flex flex-col gap-5">
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div className="mb-5 flex flex-col">
+            <h1 className="text-2xl">나만의 레시피 등록하기</h1>
+            <span>다른 사람들에게 소개하고 싶은 나만의 레시피를 등록해요!</span>
+            <span>특별하지 않아도 괜찮아요, 상세하게 적을 수록 다른 사람들이 쉽게 만들 수 있어요.</span>
           </div>
-          {/* 레시피 완성 이미지 */}
-          <div className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden">
-            {recipeDoneImgView ? (
-              <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} objectFit="cover" />
-            ) : (
-              <p>선택된 이미지가 없습니다.</p>
-            )}
-            <input type="file" onChange={handleImgDoneFileSelect} />
-          </div>
-        </div>
 
-        {/* 재료 정보 */}
-        <div className="flex flex-col bg-pink-200 p-5 gap-1">
-          <label className="font-bold">재료 정보</label>
-          <span>정보를 정확하게 입력하면 재료를 남기지 않을 수 있어요!</span>
-
-          <div className="flex gap-5"></div>
-
-          {fields.map((field, i) => (
-            <div className="flex gap-5" key={field.id}>
-              <input
-                placeholder="양상추, 표고 버섯 등의 재료 이름"
-                {...register(`ingredients.${i}.ingredient`, { required: true })}
-              />
-              <input placeholder="수량" {...register(`ingredients.${i}.amount`, { required: true })} />
-              <input placeholder="단위" {...register(`ingredients.${i}.unit`, { required: true })} />
-            </div>
-          ))}
-
-          <div>
-            <button
-              type="button"
-              className="bg-slate-100 p-3 flex justify-center items-center"
-              onClick={handleAddIngredientsForm}
+          {/* 요리정보 */}
+          <div className=" bg-slate-200 p-5 flex justify-between">
+            <RecipeInfoFields />
+            {/* 레시피 완성 이미지 */}
+            <div
+              className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden flex items-center justify-center"
+              onClick={() => {
+                if (recipeDoneImgView) {
+                  setImgModalIndex(-1);
+                }
+              }}
             >
-              재료 추가하기
-            </button>
+              {recipeDoneImgView ? (
+                <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
+              ) : (
+                <p>이미지 파일</p>
+              )}
+              <input
+                type="file"
+                {...rest}
+                ref={(imgEl) => {
+                  ref(imgEl);
+                  doneImgRef.current = imgEl;
+                }}
+                onChange={(e) => {
+                  onChange(e);
+                  handleDoneImgFileSelect(e);
+                }}
+                className={`absolute inset-0 opacity-0 cursor-pointer ${recipeDoneImgView ? "pointer-events-none" : ""}`}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* 단계별 레시피 */}
-        <div className="flex flex-col bg-yellow-50 p-5 gap-10">
-          <div className="flex flex-col mb-5">
-            <label className="font-bold">단계별 레시피 입력</label>
-            <span>레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!</span>
-          </div>
+          {/* 재료 정보 */}
+          <IngredientsFields />
 
-          {/* 단계별 레시피 이미지 */}
-          {recipeDoingsImgFields.map((_, i) => (
-            <div className="flex bg-green-200" key={i}>
-              <div className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden">
-                {recipeDoingImgViewArray[i] ? (
-                  <Image src={recipeDoingImgViewArray[i]} alt="매뉴얼 이미지" fill={true} objectFit="cover" />
-                ) : (
-                  <p>선택된 이미지가 없습니다.</p>
-                )}
-                <input
-                  type="file"
-                  id={`recipeImgDoing${i}`}
-                  {...register(`recipeDoingImgs.${i}`, {
-                    onChange: (e) => handleFileSelect(e, i)
-                  })}
+          {/* 단계별 레시피 */}
+          <div className="flex flex-col bg-yellow-50 p-5 gap-10">
+            <div className="flex flex-col mb-5">
+              <label className="font-bold">단계별 레시피 입력</label>
+              <span>레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!</span>
+            </div>
+
+            {recipeDoingsImgFields.map((_, i) => (
+              <div className="flex bg-green-200" key={i}>
+                <div
+                  className="w-48 h-48 rounded-lg bg-gray-500 relative overflow-hidden flex items-center justify-center"
+                  onClick={() => toggleImgModal(i)}
+                >
+                  {recipeDoingImgViewArray[i] ? (
+                    <Image
+                      src={recipeDoingImgViewArray[i]}
+                      alt="매뉴얼 이미지"
+                      fill={true}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <p>선택된 이미지가 없습니다.</p>
+                  )}
+                  <input
+                    type="file"
+                    id={`recipeImgDoing${i}`}
+                    {...methods.register(`recipeDoingImgs.${i}`, {
+                      onChange: (e) => handleDoingImgFileSelect(e, i)
+                    })}
+                    ref={(doingEl) => {
+                      methods.register(`recipeDoingImgs.${i}`).ref(doingEl);
+                      doingImgRefs.current[i] = doingEl;
+                    }}
+                    className={`absolute inset-0 opacity-0 ${recipeDoingImgViewArray[i] ? "pointer-events-none" : ""}`}
+                  />
+                </div>
+
+                <textarea
+                  className="resize-none"
+                  placeholder="자세하게 적을수록 더욱 도움이 돼요!"
+                  {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                 />
               </div>
+            ))}
 
-              <textarea
-                className="resize-none"
-                placeholder="자세하게 적을수록 더욱 도움이 돼요!"
-                {...register(`recipeDoingTexts.${i}.text`, { required: true })}
-              />
+            <div>
+              <button
+                type="button"
+                className="bg-slate-100 p-3 flex justify-center items-center"
+                onClick={handleAddRecipeDoingForm}
+              >
+                레시피 추가하기
+              </button>
             </div>
-          ))}
-
-          <div>
-            <button
-              type="button"
-              className="bg-slate-100 p-3 flex justify-center items-center"
-              onClick={handleAddRecipeDoingForm}
-            >
-              레시피 추가하기
-            </button>
           </div>
-        </div>
 
-        {/* 제출 버튼 */}
-        <button type="button" onClick={handleModalClose}>
-          닫기
-        </button>
-        <button type="submit">등록하기</button>
-      </form>
-    </div>
+          {/* 단계별 이미지 편집 모달 */}
+          {imgModalIndex !== null && recipeDoingImgViewArray[imgModalIndex] && (
+            <ImageEditModal
+              handleModify={() => handleModifyImage(imgModalIndex)}
+              handleDelete={() => handleDeleteImage(imgModalIndex)}
+              handleClose={() => setImgModalIndex(null)}
+            />
+          )}
+
+          {/* 완성 이미지 편집 모달 */}
+          {imgModalIndex === -1 && recipeDoneImgView && (
+            <ImageEditModal
+              handleModify={() => handleModifyImage(-1)}
+              handleDelete={() => {
+                setRecipeDoneImgFile(undefined);
+                setRecipeDoneImgView("");
+                setImgModalIndex(null);
+              }}
+              handleClose={() => setImgModalIndex(null)}
+            />
+          )}
+
+          {/* 제출 버튼 */}
+          <button type="button" onClick={handleModalClose}>
+            닫기
+          </button>
+          <button type="submit">등록하기</button>
+        </form>
+      </div>
+    </FormProvider>
   );
 };
 
