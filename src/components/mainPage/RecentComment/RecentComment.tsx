@@ -30,11 +30,11 @@ const RecentComment = () => {
   });
 
   if (isCommentPending) {
-    return <div>좋아요 랭킹을 가져오는중입니다</div>;
+    return <div>최근 후기를 가져오는중입니다</div>;
   }
 
   if (isCommentError) {
-    return <div>좋아요 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
+    return <div>최근 후기를 가져오는 도중 에러가 발생했습니다</div>;
   }
 
   return (
