@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
-import RecipeCard from "@/components/fridgeList/RecipeCard";
+import RecipeCard from "@/components/fridgeList/ListCard";
 
 const SearchResultPage = () => {
   const { query } = useParams();

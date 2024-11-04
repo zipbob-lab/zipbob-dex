@@ -24,13 +24,12 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
       clearInterval(timer!);
       setIsRunning(false);
       alert("타이머가 종료되었습니다!");
-      if (onClose) onClose();
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isRunning, timeLeft, onClose]);
+  }, [isRunning, timeLeft]);
 
   const handleStart = () => {
     const totalMilliseconds = (inputHours * 60 * 60 + inputMinutes * 60 + inputSeconds) * 1000;

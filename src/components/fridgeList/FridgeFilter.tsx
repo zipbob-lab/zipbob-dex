@@ -5,7 +5,7 @@ import browserClient from "@/supabase/client";
 import CategoreAdd from "@/components/fridgeList/InputAdd";
 import CategoreDelete from "@/components/fridgeList/InputDelete";
 import { Recipe } from "@/types/Recipe";
-import RecipeCard from "@/components/fridgeList/RecipeCard";
+import RecipeCard from "@/components/fridgeList/ListCard";
 
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
@@ -20,7 +20,15 @@ const TagFilter: React.FC = () => {
       if (error) {
         console.error("TEST2_TABLE 에러", error);
       } else {
-        console.log(Data);
+        console.log("fetch date result : ", Data);
+
+        Data.forEach((item) => {
+          if (item.recipe_ingredients && item.recipe_ingredients.length > 0) {
+            console.log(item.recipe_ingredients[0].ingredient);
+          } else {
+            console.log("없음");
+          }
+        });
         setData(Data as Recipe[]);
       }
     };
@@ -38,18 +46,39 @@ const TagFilter: React.FC = () => {
       let newFilteredData = data;
 
       if (addKeywords.length > 0) {
-        newFilteredData = newFilteredData.filter((recipe) =>
-          addKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword))
-        );
+        newFilteredData = newFilteredData.filter((recipe) => {
+          if (Array.isArray(recipe.recipe_ingredients)) {
+            return recipe.recipe_ingredients.some((item) => {
+              if (typeof item === "object" && item !== null && "ingredient" in item) {
+                return addKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
+              }
+              return false;
+            });
+          } else if (typeof recipe.recipe_ingredients === "string") {
+            return addKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
+          }
+          return false;
+        });
       }
 
       if (deleteKeywords.length > 0) {
-        newFilteredData = newFilteredData.filter(
-          (recipe) => !deleteKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword))
-        );
+        newFilteredData = newFilteredData.filter((recipe) => {
+          if (Array.isArray(recipe.recipe_ingredients)) {
+            return !recipe.recipe_ingredients.some((item) => {
+              if (typeof item === "object" && item !== null && "ingredient" in item) {
+                return deleteKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
+              }
+              return false;
+            });
+          } else if (typeof recipe.recipe_ingredients === "string") {
+            return !deleteKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
+          }
+          return true;
+        });
       }
 
       setFilteredData(newFilteredData);
+      console.log("필터링 데이터", newFilteredData);
     };
 
     filterData();
@@ -93,10 +122,11 @@ const TagFilter: React.FC = () => {
 export default TagFilter;
 
 // todos
-// 1. 테이블 변경시 주석부분 구현
-// 2. [{}] 형식 불러오기
-// 3. 타이머 기능 수정 (수정)
-// 4. 검색바 모달로 구현 css 작업시
-// 5. 카드 컴포넌트화 (완료)
-// 6. 코멘드 supabase데이터 카운트 설정후 로직 반영
+// [{}] 형식 불러오기 (완료)
+// 타이머 기능 수정 (완료)
+// 카드 컴포넌트화 (완료)
+// 코멘드 supabase 데이터 카운트 설정후 로직 반영 (진행중)
 // 7. 빌드 오류 수정
+// 1. 테이블 변경시 주석부분 구현
+
+// 검색바 모달로 구현 css 작업시
