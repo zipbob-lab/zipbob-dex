@@ -1,6 +1,8 @@
 import { useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import { Image as ImageIcon, X } from "lucide-react";
+import Pencil from "../../../public/images/pen.svg";
+import Image from "next/image";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -65,9 +67,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
               onSave(editedNickname, editedIntroduce, selectedFile);
               onClose();
             }}
-            className="px-4 py-2 bg-orange-500 text-white rounded"
+            className="px-4 py-2 bg-orange-500 text-white rounded flex"
           >
             변경
+            <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
           </button>
           <button onClick={onDelete} className="px-4 py-3 border-orange-500 text-orange-500 border-[1px] rounded">
             삭제
