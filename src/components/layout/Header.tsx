@@ -1,12 +1,28 @@
+"use client";
+
 import Image from "next/image";
 import MainLogo from "@images/mainLogo.svg";
 import Link from "next/link";
-import { getIsLogin } from "@/supabase/server";
 import AuthStatusBar from "./AuthStatusBar";
 import SearchBar from "@/components/common/searchbar";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getUserId } from "@/serverActions/profileAction";
 
-const Header = async () => {
-  const isUser = await getIsLogin();
+const Header = () => {
+  const [isUser, setIsUser] = useState(false);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userId = await getUserId();
+      if (userId) {
+        setIsUser(true);
+      }
+    };
+    getUser();
+  }, []);
+
+  const pathname = usePathname();
 
   return (
     <header className="flex items-center justify-between px-5 py-2 border-b-[#EAEAEA] border-b box-border">
@@ -21,7 +37,7 @@ const Header = async () => {
           스크랩한 레시피
         </Link>
       </nav>
-      <SearchBar />
+      {pathname !== "/" && <SearchBar />}
       <AuthStatusBar isUser={isUser} />
     </header>
   );
