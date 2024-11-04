@@ -18,7 +18,6 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
     const getSessionId = async () => {
       const sessionId = await getUserId();
       setLoginSessionId(sessionId || null);
-      console.log("세션", sessionId);
     };
     getSessionId();
   }, []);
