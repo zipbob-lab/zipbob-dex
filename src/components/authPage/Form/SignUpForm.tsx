@@ -7,8 +7,8 @@ import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useRouter } from "next/navigation";
-import AccountSet from "../SignUp/AccountSet";
-import UserInfoSet from "../SignUp/UserInfoSet";
+import AccountSet from "../signUp/AccountSet";
+import UserInfoSet from "../signUp/UserInfoSet";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
