@@ -6,6 +6,8 @@ import { useScrapData } from "@/hooks/useScrapData";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FireFilledIcon from "../../../../public/images/fireFilled.svg";
+import FireEmptyIcon from "../../../../public/images/fireEmpty.svg";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -65,6 +67,7 @@ const ScrapPage = () => {
                 let recipeDetail;
                 try {
                   recipeDetail = JSON.parse(scrap.scraped_recipe);
+                  console.log(recipeDetail);
                 } catch (e) {
                   console.error("스크랩 데이터 파싱 중 오류 발생", e);
                   return null;
@@ -84,6 +87,17 @@ const ScrapPage = () => {
                       )}
                       <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
                       <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
+                      <div className="flex">
+                        <Image src={FireFilledIcon} alt="레시피 난이도" />
+                        <Image
+                          src={recipeDetail.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                          alt="레시피 난이도"
+                        />
+                        <Image
+                          src={recipeDetail.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                          alt="레시피 난이도"
+                        />
+                      </div>
 
                       {/* 편집 모드일 때만 삭제 아이콘 표시 */}
                       {isEditMode && (
