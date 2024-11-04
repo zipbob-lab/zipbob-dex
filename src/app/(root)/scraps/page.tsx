@@ -34,10 +34,14 @@ const ScrapPage = () => {
       {/* 폴더명 리스트 */}
       <div className="mb-6">
         <div className="flex gap-2 border-b-2 py-2">
-          <button onClick={() => handleFolderClick(null)}>전체</button>
+          <button onClick={() => handleFolderClick(null)}>
+            전체
+            <span className="ml-1 text-sm text-gray-500">({scraps?.length})</span>
+          </button>
           {existingFolders?.map((folder) => (
             <button key={folder} onClick={() => handleFolderClick(folder)}>
               {folder}
+              <span className="m-1 ">{folder.length}</span>
             </button>
           ))}
           {/* 편집 버튼 */}
