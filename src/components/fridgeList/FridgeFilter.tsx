@@ -78,7 +78,6 @@ const TagFilter: React.FC = () => {
       }
 
       setFilteredData(newFilteredData);
-      console.log("필터링 데이터", newFilteredData);
     };
 
     filterData();
