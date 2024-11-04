@@ -13,7 +13,7 @@ export default function RootLayout({
     <>
       <Header />
       <ProfileDropbox />
-      {children}
+      <div className="min-h-[calc(100vh-332px)]">{children}</div>
       {modal}
       <Footer />
     </>
