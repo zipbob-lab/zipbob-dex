@@ -67,7 +67,6 @@ const ScrapPage = () => {
                 let recipeDetail;
                 try {
                   recipeDetail = JSON.parse(scrap.scraped_recipe);
-                  console.log(recipeDetail);
                 } catch (e) {
                   console.error("스크랩 데이터 파싱 중 오류 발생", e);
                   return null;
