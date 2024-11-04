@@ -13,23 +13,31 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isScrapped, setIsScrapped] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const { folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
+  const { userId, folderName, setFolderName, isSaving, setIsSaving } = useScrapStore();
   const { existingFolders, saveScrap, useFetchScrapCount, isAlreadyScrapped } = useScrapData();
 
   // 포스트 스크랩 개수
   const { data: scrapCount } = useFetchScrapCount(postId);
 
+  // 로그인 여부 확인
+  const isLoggedIn = Boolean(userId);
+
   // 스크랩 여부 확인 후 아이콘 칠하기
   useEffect(() => {
     const checkScrapStatus = async () => {
+      if (!isLoggedIn) return;
       const scrapped = await isAlreadyScrapped(postId);
       setIsScrapped(scrapped);
     };
     checkScrapStatus();
-  }, [postId, isAlreadyScrapped]);
+  }, [postId, isAlreadyScrapped, isLoggedIn]);
 
   // 북마크 클릭 시 모달 열기
   const handleMarkClick = () => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
     setIsModalOpen(true);
   };
 

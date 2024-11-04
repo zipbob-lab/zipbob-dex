@@ -2,6 +2,8 @@ import { fetchUserPosts } from "@/serverActions/fetchRecipeDataFromSupabase";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import LikeButton from "../common/button/LikeButton";
+import ScrapButton from "../common/button/ScrapButton";
 
 interface UserPost {
   post_id: string;
@@ -46,10 +48,16 @@ const UserPostLists = ({ userId }: { userId: string }) => {
               height={100}
               className="w-24 h-24 rounded-md mr-4"
             />
-            <div>
-              <h3 className="text-lg font-bold">{post.recipe_title}</h3>
-              <p className="text-sm text-gray-500">작성자: {post.user.user_nickname}</p>
-              <p className="text-sm text-gray-500">소개: {post.user.user_introduce}</p>
+            <div className="flex">
+              <div>
+                <h3 className="text-lg font-bold">{post.recipe_title}</h3>
+                <p className="text-sm text-gray-500">작성자: {post.user.user_nickname}</p>
+                <p className="text-sm text-gray-500">소개: {post.user.user_introduce}</p>
+              </div>
+              <div>
+                <LikeButton postId={post.post_id} />
+                <ScrapButton postId={post.post_id} />
+              </div>
             </div>
           </div>
         </Link>
