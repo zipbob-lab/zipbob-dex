@@ -1,20 +1,32 @@
+"use client";
+
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const CustomToast = ({ closeToast }: { closeToast: () => void }) => {
+interface CustomToastProps {
+  message: string;
+  onMove: () => void;
+}
+
+const CustomToast: React.FC<CustomToastProps> = ({ message, onMove }) => {
   const router = useRouter();
 
-  const moveToScrapPage = () => {
-    closeToast();
+  useEffect(() => {
+    const timer = setTimeout(onMove, 3000);
+    return () => clearTimeout(timer);
+  }, [onMove]);
+
+  const handleRedirect = () => {
+    onMove();
     router.push("/scraps");
   };
+
   return (
-    <div className=" flex justify-between items-center">
-      <p className="text-white">스크랩 되었습니다.</p>
-      <div className="flex gap-2 justify-end">
-        <button onClick={moveToScrapPage} className="text-orange-500">
-          스크랩 보기
-        </button>
-      </div>
+    <div className="fixed z-50 bottom-5 right-5 bg-gray-800 text-white p-4 rounded shadow-md flex justify-between items-center space-x-4 w-1/2">
+      <p>{message}</p>
+      <button onClick={handleRedirect} className="text-orange-500 font-semibold hover:underline">
+        스크랩 이동
+      </button>
     </div>
   );
 };

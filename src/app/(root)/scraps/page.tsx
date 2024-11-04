@@ -6,6 +6,8 @@ import { useScrapData } from "@/hooks/useScrapData";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FireFilledIcon from "../../../../public/images/fireFilled.svg";
+import FireEmptyIcon from "../../../../public/images/fireEmpty.svg";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -27,6 +29,14 @@ const ScrapPage = () => {
     refetchFolders();
   };
 
+  // 폴더별 스크랩 개수를 즉시 계산
+  const folderScrapCounts = scraps?.reduce((counts: { [key: string]: number }, scrap) => {
+    const folder = scrap.folder_name || "전체";
+    counts[folder] = (counts[folder] || 0) + 1;
+    counts["전체"] = (counts["전체"] || 0) + 1;
+    return counts;
+  }, {});
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold mt-8 mb-4">스크랩한 레시피</h2>
@@ -34,10 +44,12 @@ const ScrapPage = () => {
       {/* 폴더명 리스트 */}
       <div className="mb-6">
         <div className="flex gap-2 border-b-2 py-2">
-          <button onClick={() => handleFolderClick(null)}>전체</button>
+          <button onClick={() => handleFolderClick(null)}>
+            전체 ({folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0})
+          </button>
           {existingFolders?.map((folder) => (
             <button key={folder} onClick={() => handleFolderClick(folder)}>
-              {folder}
+              {folder} ({folderScrapCounts ? folderScrapCounts[folder] || 0 : 0})
             </button>
           ))}
           {/* 편집 버튼 */}
@@ -74,6 +86,17 @@ const ScrapPage = () => {
                       )}
                       <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
                       <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
+                      <div className="flex">
+                        <Image src={FireFilledIcon} alt="레시피 난이도" />
+                        <Image
+                          src={recipeDetail.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                          alt="레시피 난이도"
+                        />
+                        <Image
+                          src={recipeDetail.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                          alt="레시피 난이도"
+                        />
+                      </div>
 
                       {/* 편집 모드일 때만 삭제 아이콘 표시 */}
                       {isEditMode && (
