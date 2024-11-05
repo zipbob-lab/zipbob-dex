@@ -45,10 +45,10 @@ const UserComment = ({ userId }: { userId: string }) => {
   if (!comments) return <p>아직 작성한 댓글이 없어요!</p>;
 
   return (
-    <div className="max-h-[560px] overflow-y-auto">
+    <div className="max-h-[530px] w-full overflow-y-auto">
       {comments?.map((comment) => (
         <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-          <div key={comment.post_id} className="flex flex-col justify-between border-b border-gray-200 p-4">
+          <div className="flex w-full flex-col justify-between border-b border-gray-200 p-4">
             <div className="flex">
               {comment.recipe ? (
                 <Image
@@ -61,7 +61,7 @@ const UserComment = ({ userId }: { userId: string }) => {
               ) : (
                 <p>댓글 정보를 찾을 수 없습니다</p>
               )}
-              <div className="flex flex-col">
+              <div className="flex flex-1 flex-col">
                 <div className="flex items-center gap-2">
                   <div className="flex">
                     <Image src={FireFilledIcon} alt="레시피 난이도" />
@@ -76,13 +76,13 @@ const UserComment = ({ userId }: { userId: string }) => {
                   </div>
                   <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
                 </div>
-
-                <p className="mt-2">
+                <p className="mt-2 line-clamp-2 flex-1">
                   {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
                 </p>
+                {/* 시간을 제일 아래쪽에 붙임 */}
+                <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
               </div>
             </div>
-            <p className="line-clamp-2 flex justify-end text-sm text-gray-500">{formatDate(comment.created_at)}</p>
           </div>
         </Link>
       ))}

@@ -40,10 +40,10 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   if (posts.length === 0) return <p>데이터를 불러오고 있어요!</p>;
 
   return (
-    <div className="max-h-[560px] overflow-y-auto">
+    <div className="max-h-[560px] w-full overflow-y-auto">
       {posts.map((post) => (
-        <div key={post.post_id} className="flex border-b border-gray-200 p-4">
-          <Link href={`/myrecipedetail/${post.post_id}`} className="flex">
+        <div key={post.post_id} className="flex w-full justify-between border-b border-gray-200 p-4">
+          <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
             <Image
               src={post.recipe_img_done}
               alt={post.recipe_title}
@@ -51,7 +51,6 @@ const UserPostLists = ({ userId }: { userId: string }) => {
               height={100}
               className="mr-4 h-24 w-24 rounded-md"
             />
-
             <div className="flex flex-col">
               <div className="flex">
                 <Image src={FireFilledIcon} alt="레시피 난이도" />
@@ -62,8 +61,8 @@ const UserPostLists = ({ userId }: { userId: string }) => {
               <div className="mt-2 flex gap-2">
                 <Image src={post.user.user_img} alt={post.user.user_nickname} width={36} height={36} />
                 <div className="flex flex-col">
-                  <span className="text-sm text-gray-500">작성자: {post.user.user_nickname}</span>
-                  <span className="text-sm text-gray-500">소개: {post.user.user_introduce}</span>
+                  <span className="text-sm text-gray-500">{post.user.user_nickname}</span>
+                  <span className="text-sm text-gray-500">{post.user.user_introduce}</span>
                 </div>
               </div>
             </div>
