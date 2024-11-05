@@ -1,6 +1,8 @@
 "use client";
 
 import browserClient from "@/supabase/client";
+import GoogleIcon from "@images/google.svg";
+import Image from "next/image";
 
 const signInWithGoogle = async () => {
   await browserClient.auth.signInWithOAuth({
@@ -15,7 +17,11 @@ const signInWithGoogle = async () => {
 };
 
 const GoogleButton = () => {
-  return <button onClick={signInWithGoogle}>구글로 로그인</button>;
+  return (
+    <button onClick={signInWithGoogle}>
+      <Image src={GoogleIcon} alt="구글 아이콘" />
+    </button>
+  );
 };
 
 export default GoogleButton;

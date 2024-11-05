@@ -9,6 +9,7 @@ const RecentComment = () => {
     const { data, error } = await browserClient
       .from("COMMENT_TABLE")
       .select("*")
+      .eq("comment_active", true)
       .order("created_at", { ascending: false })
       .limit(6);
 
