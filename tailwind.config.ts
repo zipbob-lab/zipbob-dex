@@ -13,7 +13,7 @@ const config: Config = {
           50: "#FFF6F0",
           100: "#FFD8BD",
           200: "#FFBB8A",
-          300: "#FF9C56",
+          300: "#FF9143",
           400: "#FF7F24",
           500: "#F06400",
           600: "#BD4B00",
@@ -44,6 +44,9 @@ const config: Config = {
           700: "#454443",
           800: "#2B2B2A",
           900: "#121211"
+        },
+        SystemColor: {
+          Red: "#E80018"
         }
       },
       fontSize: {

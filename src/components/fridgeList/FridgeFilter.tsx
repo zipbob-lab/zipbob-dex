@@ -13,33 +13,46 @@ const TagFilter: React.FC = () => {
   const [addKeywords, setAddKeywords] = useState<string[]>([]);
   const [deleteKeywords, setDeleteKeywords] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [sortOption, setSortOption] = useState<string>("default");
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: Data, error } = await browserClient.from("TEST2_TABLE").select("*");
-      if (error) {
-        console.error("TEST2_TABLE 에러", error);
-      } else {
-        console.log("fetch date result : ", Data);
+      let request = browserClient.from("MY_RECIPE_TABLE").select("*");
+      if (sortOption === "likes") {
+        request = request.order("like_count", { ascending: false });
+      } else if (sortOption === "commnet") {
+        request = request.order("comment_count", { ascending: false });
+      } else if (sortOption === "level") {
+        request = request.order("recipe_level", { ascending: false });
+      } else if (sortOption === "scraps") {
+        request = request.order("scrap_count", { ascending: false });
+      }
 
-        Data.forEach((item) => {
+      const { data, error } = await request;
+      if (error) {
+        console.error("MY_RECIPE_TABLE 에러", error);
+      } else {
+        console.log("fetch data result: ", data);
+
+        data.forEach((item) => {
           if (item.recipe_ingredients && item.recipe_ingredients.length > 0) {
             console.log(item.recipe_ingredients[0].ingredient);
           } else {
             console.log("없음");
           }
         });
-        setData(Data as Recipe[]);
+
+        setData(data as Recipe[]);
+        setFilteredData(data as Recipe[]);
       }
     };
-
     fetchData();
-  }, []);
+  }, [sortOption]);
 
   useEffect(() => {
     const filterData = () => {
       if (addKeywords.length === 0 && deleteKeywords.length === 0) {
-        setFilteredData([]);
+        setFilteredData(data);
         return;
       }
 
@@ -92,6 +105,7 @@ const TagFilter: React.FC = () => {
   };
 
   const handleResults = () => {
+    console.log(filteredData);
     setShowResults(true);
   };
 
@@ -106,6 +120,14 @@ const TagFilter: React.FC = () => {
         <div>
           <ul>
             <h3>검색 결과</h3>
+            <p>검색결과 {filteredData.length} 개</p>
+            <select id="sort-option" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              <option value="default">전체</option>
+              <option value="likes">좋아요 높은 순</option>
+              <option value="commnet">후기 많은 순</option>
+              <option value="level">난이도 높은 순</option>
+              <option value="scraps">스크랩 많은 순</option>
+            </select>
             {filteredData.length > 0 ? (
               filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
             ) : (

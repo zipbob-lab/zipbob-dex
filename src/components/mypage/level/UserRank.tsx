@@ -4,20 +4,11 @@ import { fetchUserProfile } from "@/serverActions/profileAction"; // 유저 정�
 
 interface UserRankProps {
   userId: string;
+  onRankChange: (rank: number) => void; // 랭크가 변경되면 호출할 함수
 }
 
-const levelEmojis: { [key: number]: string } = {
-  0: "🌱",
-  1: "🪺",
-  2: "🥚",
-  3: "🐣",
-  4: "🐥",
-  5: "🐓"
-};
-
-const UserRank: React.FC<UserRankProps> = ({ userId }) => {
+const UserRank: React.FC<UserRankProps> = ({ userId, onRankChange }) => {
   const [userExp, setUserExp] = useState(0);
-  const [userRank, setUserRank] = useState(0);
 
   useEffect(() => {
     const loadRankData = async () => {
@@ -25,22 +16,19 @@ const UserRank: React.FC<UserRankProps> = ({ userId }) => {
       const updatedProfile = await fetchUserProfile();
       if (updatedProfile) {
         setUserExp(updatedProfile.user_exp);
-        setUserRank(updatedProfile.user_rank);
+        onRankChange(updatedProfile.user_rank);
       }
     };
     loadRankData();
-  }, [userId]);
+  }, [userId, onRankChange]);
 
-  const levelEmoji: string = levelEmojis[userRank] || "🧑🏻‍🍳";
   const progressPercent: number = userExp % 100;
 
   return (
-    <div className="w-full text-center">
-      <p className="text-lg">{levelEmoji}</p>
-      <div className="mt-2 h-2 w-full rounded-full bg-orange-300">
-        <div className="h-2 rounded-full bg-orange-400" style={{ width: `${progressPercent}%` }}></div>
+    <div>
+      <div className="my-9 w-36 rounded-full bg-white">
+        <div className="h-2 rounded-full bg-Primary-300" style={{ width: `${progressPercent}%` }}></div>
       </div>
-      <p className="mt-2">{progressPercent}/100 경험치</p>
     </div>
   );
 };

@@ -35,18 +35,28 @@ const MyPostsCommentView = () => {
 
   return (
     <div>
-      <div className="mb-4 flex min-w-[600px] gap-3 border-b-2 border-gray-200">
+      <div className="flex w-full gap-6 border-b-2 border-Gray-100">
         <button
           onClick={() => setActiveTab("recipe")}
-          className={activeTab === "recipe" ? "border-b-2 border-orange-500 font-bold" : ""}
+          className={`${
+            activeTab === "recipe" ? "border-b-4 border-Primary-300 pb-1 font-bold text-Primary-300" : "text-Gray-500"
+          } flex items-center gap-1`}
         >
-          나만의 레시피 <span className="rounded-full bg-orange-400 px-2 py-1 text-white">{recipeCount}</span>
+          <span className="title-16">나만의 레시피</span>
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+            {recipeCount}
+          </span>
         </button>
         <button
           onClick={() => setActiveTab("review")}
-          className={activeTab === "review" ? "border-b-2 border-orange-500 font-bold" : ""}
+          className={`${
+            activeTab === "review" ? "border-b-4 border-Primary-300 pb-1 font-bold text-Primary-300" : "text-Gray-500"
+          } flex items-center gap-1`}
         >
-          작성한 후기 <span className="rounded-full bg-orange-400 px-2 py-1 text-white">{commentCount}</span>
+          <span className="title-16">작성한 후기</span>
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+            {commentCount}
+          </span>
         </button>
       </div>
 
