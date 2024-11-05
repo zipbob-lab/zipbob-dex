@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
+import TrashCanIcon from "@images/trashcan.svg";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -38,24 +39,49 @@ const ScrapPage = () => {
   }, {});
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h2 className="mb-4 mt-8 text-2xl font-bold">스크랩한 레시피</h2>
+    <div className="min-h-screen px-52">
+      <h2 className="mb-3 pt-8 text-heading-28">스크랩한 레시피</h2>
 
       {/* 폴더명 리스트 */}
       <div className="mb-6">
-        <div className="flex gap-2 border-b-2 py-2">
-          <button onClick={() => handleFolderClick(null)}>
-            전체 ({folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0})
+        <div className="flex gap-6 border-b-[1px] pt-2">
+          <button
+            onClick={() => handleFolderClick(null)}
+            className={`relative flex w-24 items-center justify-center px-2 pb-1 text-body-16 ${
+              selectedFolder === null ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
+            }`}
+          >
+            전체
+            <span
+              className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
+                selectedFolder === null ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
+              }`}
+            >
+              {folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0}
+            </span>
           </button>
           {existingFolders?.map((folder) => (
-            <button key={folder} onClick={() => handleFolderClick(folder)}>
-              {folder} ({folderScrapCounts ? folderScrapCounts[folder] || 0 : 0})
+            <button
+              key={folder}
+              onClick={() => handleFolderClick(folder)}
+              className={`relative flex items-center px-2 pb-1 text-body-16 ${
+                selectedFolder === folder ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-Gray-500"
+              }`}
+            >
+              {folder}
+              <span
+                className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
+                  selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-200 text-white"
+                }`}
+              >
+                {folderScrapCounts ? folderScrapCounts[folder] || 0 : 0}
+              </span>
             </button>
           ))}
           {/* 편집 버튼 */}
           <button
             onClick={toggleEditMode}
-            className={`ml-auto ${isEditMode ? "font-bold text-Primary-300" : "text-gray-700"}`}
+            className={`ml-auto text-body-16 ${isEditMode ? "font-bold text-Primary-300" : "text-Gray-500"}`}
           >
             편집
           </button>
@@ -110,7 +136,7 @@ const ScrapPage = () => {
                           }}
                           className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
                         >
-                          <Trash2 size={16} />
+                          <Image src={TrashCanIcon} alt="레시피 난이도" width={24} height={24} />
                         </button>
                       )}
                     </div>

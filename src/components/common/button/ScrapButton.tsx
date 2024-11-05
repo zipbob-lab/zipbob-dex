@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import ScrapModal from "../ScrapModal";
+import ScrapModal from "../../scraps/ScrapModal";
 import CustomToast from "@/components/scraps/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
@@ -61,8 +61,14 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     } finally {
       setIsSaving(false);
       setIsModalOpen(false);
+      setFolderName("");
       setTimeout(() => setShowToast(false), 3000);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFolderName("");
   };
 
   return (
@@ -80,7 +86,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
           existingFolders={existingFolders || []}
           onFolderNameChange={setFolderName}
           onSave={handleSaveComplete}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleCloseModal}
           onFolderClick={handleFolderClick}
         />
       )}
