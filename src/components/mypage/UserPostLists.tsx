@@ -4,11 +4,14 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
+import FireFilledIcon from "@images/fireFilled.svg";
+import FireEmptyIcon from "@images/fireEmpty.svg";
 
 interface UserPost {
   post_id: string;
   recipe_title: string;
   recipe_img_done: string;
+  recipe_level: string;
   user: {
     user_id: string;
     user_nickname: string;
@@ -50,6 +53,11 @@ const UserPostLists = ({ userId }: { userId: string }) => {
             />
 
             <div className="flex flex-col">
+              <div className="flex">
+                <Image src={FireFilledIcon} alt="레시피 난이도" />
+                <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+              </div>
               <h3 className="text-lg font-bold">{post.recipe_title}</h3>
               <div className="mt-2 flex gap-2">
                 <Image src={post.user.user_img} alt={post.user.user_nickname} width={36} height={36} />
