@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MAinLogo from "@images/mainLogo.svg";
+import MainLogoGray from "@images/mainLogoGray.svg";
 import GithubIcon from "@images/github.svg";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <footer className="bg-Gray-50 px-[2.5rem] pb-[2rem] pt-[3rem]">
       <div className="flex justify-between px-[2.5rem]">
-        <Image src={MAinLogo} width={164} height={80} alt="메인 로고" />
+        <Image src={MainLogoGray} width={164} height={80} alt="메인 로고" />
         <div className="flex flex-col gap-[1.375rem] pr-[7rem]">
           <div className="flex items-center">
             <p className="text-[#FF9143]">Developer</p>
