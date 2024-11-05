@@ -148,8 +148,7 @@ const SignUpForm = () => {
 
   return (
     <form className="w-full">
-      {/* {!isNextForm ? ( */}
-      {isNextForm ? (
+      {!isNextForm ? (
         <AccountSet register={register} errors={errors} watch={watch} setValue={setValue} />
       ) : (
         <UserInfoSet
