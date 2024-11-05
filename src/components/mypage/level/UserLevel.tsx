@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { updateUserRank } from "@/utils/updateUserRank"; // 레벨 랭킹 계산 함수
+import { updateUserLevel } from "@/utils/updateUserRank"; // 레벨 랭킹 계산 함수
 import { fetchUserProfile } from "@/serverActions/profileAction"; // 유저 정보 받아오기
 
-interface UserRankProps {
+interface UserLevelProps {
   userId: string;
   onRankChange: (rank: number) => void; // 랭크가 변경되면 호출할 함수
 }
 
-const UserRank: React.FC<UserRankProps> = ({ userId, onRankChange }) => {
+const UserLevel: React.FC<UserLevelProps> = ({ userId, onRankChange }) => {
   const [userExp, setUserExp] = useState(0);
 
   useEffect(() => {
     const loadRankData = async () => {
-      await updateUserRank(userId);
+      await updateUserLevel(userId);
       const updatedProfile = await fetchUserProfile();
       if (updatedProfile) {
         setUserExp(updatedProfile.user_exp);
@@ -33,4 +33,4 @@ const UserRank: React.FC<UserRankProps> = ({ userId, onRankChange }) => {
   );
 };
 
-export default UserRank;
+export default UserLevel;

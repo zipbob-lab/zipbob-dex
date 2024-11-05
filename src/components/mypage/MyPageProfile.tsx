@@ -12,7 +12,7 @@ import PencilWhite from "@images/penWhite.svg";
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
 import UserLevelEmoji from "./level/UserLevelEmoji";
-import UserRank from "./level/UserRank";
+import UserRank from "./level/UserLevel";
 
 interface UserProfile {
   user_id: string;

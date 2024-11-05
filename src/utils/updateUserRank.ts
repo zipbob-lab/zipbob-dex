@@ -1,7 +1,7 @@
 import { supabase } from "@/supabase/supabase";
 
 // 경험치에 따라 레벨을 반복적으로 업데이트하는 함수
-export const updateUserRank = async (userId: string) => {
+export const updateUserLevel = async (userId: string) => {
   console.log("userId 확인", userId); //-> uuid값
   try {
     const { data: userData, error: userError } = await supabase
