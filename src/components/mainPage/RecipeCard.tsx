@@ -5,16 +5,17 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import LikeFilledIcon from "@images/likeFilled.svg";
-import LikeEmptyIcon from "@images/likeEmpty.svg";
+// import LikeFilledIcon from "@images/likeFilled.svg";
+// import LikeEmptyIcon from "@images/likeEmpty.svg";
 import ScrapEmptyIcon from "@images/scrapEmpty.svg";
 import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
+import LikeButton from "../common/button/LikeButton";
 
 const RecipeCard = ({ post }: RecipeCardProps) => {
   const [nickname, setNickname] = useState("");
-  const [isUserLiked, setIsUserLiked] = useState(false);
+  // const [isUserLiked, setIsUserLiked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
     };
     const fetchIsUserLiked = async () => {
       const userId = await getUserId();
-      const { data, error } = await browserClient
+      const { error } = await browserClient
         .from("LIKE_TABLE")
         .select("*")
         .eq("user_id", userId)
@@ -34,7 +35,7 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
       if (error) {
         throw error;
       }
-      setIsUserLiked(data.length > 0 ? true : false);
+      // setIsUserLiked(data.length > 0 ? true : false);
     };
     fetchUserProfile();
     fetchIsUserLiked();
@@ -64,8 +65,9 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
         </div>
         <div className="flex gap-2">
           <div className="flex items-center">
-            <Image src={isUserLiked ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요 상태" />
-            <p className="text-center">{post.like_count}</p>
+            {/* <Image src={isUserLiked ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요 상태" /> */}
+            <LikeButton postId={post.post_id} />
+            {/* <p className="text-center">{post.like_count}</p> */}
           </div>
           <div className="flex items-center">
             <Image src={ScrapEmptyIcon} alt="스크랩 상태" />
