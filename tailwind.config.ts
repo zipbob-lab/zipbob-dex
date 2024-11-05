@@ -69,7 +69,8 @@ const config: Config = {
         "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }]
       },
       fontFamily: {
-        pretendard: ["var(--font-pretendard)", "sans-serif"]
+        pretendard: ["var(--font-pretendard)", "sans-serif"],
+        yangjin: ["var(--font-yangjin)", "sans-serif"]
       }
     }
   },
