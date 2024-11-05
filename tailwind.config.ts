@@ -44,6 +44,9 @@ const config: Config = {
           700: "#454443",
           800: "#2B2B2A",
           900: "#121211"
+        },
+        SystemColor: {
+          Red: "#E80018"
         }
       },
       fontSize: {
