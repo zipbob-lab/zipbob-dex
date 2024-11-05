@@ -1,4 +1,5 @@
 "use client";
+
 import LoginForm from "@/components/authPage/Form/LoginForm";
 import GithubButton from "@/components/common/button/GithubButton";
 import GoogleButton from "@/components/common/button/GoogleButton";

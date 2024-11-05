@@ -51,7 +51,7 @@ const LoginForm = () => {
         <Image src={LoginPen} alt="로그인 버튼 이미지" />
         <span className="mr-7">로그인</span>
       </button>
-      <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium font-normal tracking-[0.5px]">
+      <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium tracking-[0.5px]">
         회원가입
       </Link>
     </form>

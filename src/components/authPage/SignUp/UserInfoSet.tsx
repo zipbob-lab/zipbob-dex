@@ -2,31 +2,34 @@ import { UserInfoSetProps } from "@/types/auth";
 import Image from "next/image";
 import React from "react";
 import InputField from "../InputField";
+import DefaultProfile from "@images/default-profile.svg";
+import ImageButton from "@images/imageButton.svg";
 
 const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: UserInfoSetProps) => {
   return (
     <>
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="relative h-20 w-20">
+      <div className="flex flex-col items-center">
+        <div className="relative">
           <input
             {...register("profileImage")}
             type="file"
             accept={ACCEPTED_IMAGE_TYPES.join(",")}
-            className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+            className="absolute inset-0 z-10 cursor-pointer opacity-0"
           />
-          <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-300">
+          <div className="h-[7.5rem] w-[7.5rem] overflow-hidden rounded-full bg-gray-300">
             {previewImage ? (
               <Image
                 src={previewImage.toString()}
-                width={80}
-                height={80}
+                width={120}
+                height={120}
                 alt="프로필 사진"
                 className="h-full w-full object-cover"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-gray-500">+</div>
+              <Image src={DefaultProfile} alt="기본 프로필" />
             )}
           </div>
+          <Image src={ImageButton} alt="이미지 드롭박스 버튼" className="absolute bottom-0 right-0" />
         </div>
         {errors.profileImage && <p className="text-red-500">{errors.profileImage.message?.toString()}</p>}
       </div>
