@@ -42,7 +42,7 @@ const InputField = () => {
 
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<{ file: File | undefined }[]>([]);
-  const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([]);
+  const [recipeDoingImgViewArray, setRecipeDoingImgViewArray] = useState<string[]>([""]);
   const [recipeDoneImgFile, setRecipeDoneImgFile] = useState<File | undefined>(undefined);
   const [recipeDoneImgView, setRecipeDoneImgView] = useState<string>("");
   const [fetchData, setFetchData] = useState<Recipe | null>(null);
@@ -266,11 +266,13 @@ const InputField = () => {
 
             const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
             recipeDoingImgUrls.push(recipeDoingImgUrl);
+          } else {
+            recipeDoingImgUrls.push(""); // 파일이 없는 경우 빈 문자열
           }
         }
       }
 
-      let recipeDoneImgUrl = fetchData?.recipe_img_done;
+      let recipeDoneImgUrl = fetchData?.recipe_img_done ?? "";
       if (recipeDoneImgFile) {
         const imgDoneName = makeUniqueFileName(recipeDoneImgFile);
         const { error: doneImgError } = await supabase.storage
