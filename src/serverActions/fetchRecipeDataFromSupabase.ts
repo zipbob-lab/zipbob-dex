@@ -35,6 +35,7 @@ export const fetchUserPosts = async (userId: string) => {
 
   if (error) {
     console.log("게시물 불러오기 실패", error.message);
+
     return null;
   }
   return data;
