@@ -6,13 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import ImageEditModal from "./ImageEditModal";
-import RecipeInfoFields from "./RecipeInfoFields";
-import IngredientsFields from "./IngredientsFields";
+
 import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
 import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
 import { supabase } from "@/supabase/supabase";
 import { Recipe } from "@/types/Recipe";
+import RecipeInfoFields from "./RecipeInfoFields";
+import IngredientsFields from "./IngredientsFields";
+import ImageEditModal from "./ImageEditModal";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
@@ -94,6 +95,14 @@ const InputField = () => {
     }
   }, [isModifyMode, postId]);
 
+  const getEnumKeyByEnumValue = <TEnumKey extends string, TEnumVal extends string | number>(
+    myEnum: { [key in TEnumKey]: TEnumVal },
+    enumValue: TEnumVal
+  ): string => {
+    const keys = (Object.keys(myEnum) as TEnumKey[]).filter((x) => myEnum[x] === enumValue);
+    return keys.length > 0 ? keys[0] : "";
+  };
+
   const fetchOriginRecipeData = async (postId: string) => {
     const { data, error } = await supabase.from("TEST2_TABLE").select("*").eq("post_id", postId).single();
 
@@ -101,6 +110,7 @@ const InputField = () => {
       console.error("레시피 불러오기 에러", error.message);
     } else {
       setFetchData(data as Recipe);
+      console.log("기존 데이터", data);
       // 기존 이미지 뷰에 넣어주기(초기화)
       setRecipeDoneImgView(data?.recipe_img_done ?? "");
       const existingImgViews = data?.recipe_img_doing ?? [];
@@ -110,8 +120,8 @@ const InputField = () => {
       methods.reset({
         recipeTitle: data.recipe_title,
         recipeDescription: data.recipe_description,
-        recipeType: data.recipe_type,
-        recipeMethod: data.recipe_method,
+        recipeType: getEnumKeyByEnumValue(RecipeTypeEnum, data.recipe_type) as RecipeTypeEnum,
+        recipeMethod: getEnumKeyByEnumValue(RecipeMethodEnum, data.recipe_method) as RecipeMethodEnum,
         ingredients: data.recipe_ingredients,
         recipeManual: data.recipe_manual
       });
