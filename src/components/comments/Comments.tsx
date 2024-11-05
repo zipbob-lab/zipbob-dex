@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
+import { CommentExp } from "./CommentExp";
 
 interface CommentFormInput {
   commentText: string;
@@ -96,6 +97,7 @@ const Comments = ({ postId }: PostDataProps) => {
       .from("COMMENT_TABLE")
       .select(`*, USER_TABLE(user_id,user_nickname, user_introduce,user_img,user_rank)`, { count: "exact" })
       .eq("post_id", postId)
+      .eq("comment_active", true)
       .order("created_at", { ascending: false })
       .range(startRange, endRange);
 
@@ -115,7 +117,11 @@ const Comments = ({ postId }: PostDataProps) => {
 
   // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
-    const { error: deleteError } = await supabase.from("COMMENT_TABLE").delete().eq("comment_id", commentId);
+    const { error: deleteError } = await supabase
+      .from("COMMENT_TABLE")
+      .update({ comment_active: false })
+      .eq("comment_id", commentId);
+
     if (deleteError) {
       console.error(deleteError.message);
       alert("댓글 삭제 실패");
@@ -140,12 +146,15 @@ const Comments = ({ postId }: PostDataProps) => {
   // 댓글 제출 핸들러
   const onSubmit: SubmitHandler<CommentFormInput> = async (data) => {
     const supabase = createClient();
+
+    await CommentExp({ userId: sessionId, postId });
     // supabase에 코멘트 INSERT
     const { error } = await supabase.from("COMMENT_TABLE").insert({
       user_id: sessionId,
       post_id: postId,
       comment_id: uuidv4(),
-      comment: data.commentText
+      comment: data.commentText,
+      comment_active: true
     });
 
     if (error) {
