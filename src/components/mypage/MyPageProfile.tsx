@@ -12,7 +12,7 @@ import PencilWhite from "@images/penWhite.svg";
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
 import UserLevelEmoji from "./level/UserLevelEmoji";
-import UserRank from "./level/UserRank";
+import UserRank from "./level/UserLevel";
 
 interface UserProfile {
   user_id: string;
@@ -132,8 +132,8 @@ const MyPageProfile = () => {
           <p className="mb-4 text-sm">{userData.user_introduce}</p>
 
           <div className="text-md mx-3 my-4 flex w-48 items-center justify-center rounded-2xl bg-Primary-300 p-3 text-white">
-            <Link href="/myrecipewrite">
-              <Image src={PencilWhite} width={20} height={20} alt="연필 아이콘" className="inline-block text-white" />
+            <Link href="/myrecipewrite" className="flex items-center gap-2">
+              <Image src={PencilWhite} width={20} height={20} alt="연필 아이콘" className="inline-block" />
               <span className="inline-block">나만의 레시피 올리기</span>
             </Link>
           </div>

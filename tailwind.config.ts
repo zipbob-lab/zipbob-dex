@@ -22,6 +22,7 @@ const config: Config = {
           900: "#240F00"
         },
         Secondary: {
+          25: "#FFF9E9",
           50: "#FFF4D1",
           100: "#FFE79E",
           200: "#FFDA6A",
@@ -54,6 +55,7 @@ const config: Config = {
         "heading-24": ["24px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.12px" }],
         "heading-20": ["20px", { lineHeight: "125%", fontWeight: "700", letterSpacing: "-0.1px" }],
         "heading-18": ["18px", { lineHeight: "125%", fontWeight: "700", letterSpacing: "-0.1px" }],
+        "title-24": ["24px", { lineHeight: "120%", fontWeight: "600" }],
         "title-20": ["20px", { lineHeight: "125%", fontWeight: "600" }],
         "title-18": ["18px", { lineHeight: "125%", fontWeight: "600" }],
         "title-16": ["16px", { lineHeight: "135%", fontWeight: "600" }],
@@ -66,7 +68,8 @@ const config: Config = {
         "caption-14": ["14px", { lineHeight: "135%", fontWeight: "300" }],
         "caption-12": ["12px", { lineHeight: "140%", fontWeight: "300" }],
         "caption-11": ["11px", { lineHeight: "135%", fontWeight: "300" }],
-        "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }]
+        "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }],
+        "r-body-14": ["14px", { lineHeight: "130%", fontWeight: "400" }]
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)", "sans-serif"],

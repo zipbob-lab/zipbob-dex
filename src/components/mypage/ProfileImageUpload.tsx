@@ -33,10 +33,9 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, initial
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
-  // const profileImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/userProfileFolder/default-profile.png`;
 
   return (
-    <div>
+    <div className="h-[120px] w-[120px]">
       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: "none" }} />
       <Image
         src={previewUrl || DefaultImage}
@@ -44,7 +43,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({ userId, initial
         width={120}
         height={120}
         onClick={handleImageClick}
-        className="h-40 w-40 cursor-pointer rounded-full object-cover"
+        className="h-full w-full cursor-pointer rounded-full object-cover"
       />
     </div>
   );

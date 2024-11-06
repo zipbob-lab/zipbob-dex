@@ -220,10 +220,10 @@ const Comments = ({ postId }: PostDataProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5 bg-white p-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5 bg-[#FBFBFB] p-5">
       {/* 댓글 제목 */}
       <div className="flex flex-row gap-3 p-5">
-        <h1 className="flex items-end justify-center text-2xl font-bold">요리 후기</h1>
+        <h1 className="flex items-end justify-center text-2xl font-bold">집밥 탐험일지</h1>
         <span className="flex items-end justify-center">{totalComments} 개</span>
       </div>
       {/* 댓글 작성창 */}
@@ -231,7 +231,7 @@ const Comments = ({ postId }: PostDataProps) => {
         <div className="flex flex-col gap-2 border-solid border-b-gray-800">
           <textarea
             className="h-20 w-full resize-none"
-            placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
+            placeholder={`레시피에 대해 자유롭게 의견을 남겨봐요!\n나만의 댓글을 남기면 경험치를 받을 수 있어요.`}
             {...register(`commentText`, {
               maxLength: {
                 value: commentMaxLength,
@@ -314,7 +314,6 @@ const Comments = ({ postId }: PostDataProps) => {
                             <div className="rounded-lg bg-white p-5">
                               <div className="flex flex-col items-center justify-center">
                                 <h1 className="text-lg font-bold">댓글을 정말로 삭제하시겠어요?</h1>
-                                <span>삭제된 댓글은 복구할 수 없어요!</span>
                                 <div className="flex flex-row gap-3">
                                   <button
                                     className="rounded-lg bg-orange-400 p-2 text-white"
