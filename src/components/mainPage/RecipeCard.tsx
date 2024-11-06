@@ -7,11 +7,12 @@ import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 // import LikeFilledIcon from "@images/likeFilled.svg";
 // import LikeEmptyIcon from "@images/likeEmpty.svg";
-import ScrapEmptyIcon from "@images/scrapEmpty.svg";
+// import ScrapEmptyIcon from "@images/scrapEmpty.svg";
 import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
 import LikeButton from "../common/button/LikeButton";
+import ScrapButton from "../common/button/ScrapButton";
 
 const RecipeCard = ({ post }: RecipeCardProps) => {
   const [nickname, setNickname] = useState("");
@@ -70,8 +71,9 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
             {/* <p className="text-center">{post.like_count}</p> */}
           </div>
           <div className="flex items-center">
-            <Image src={ScrapEmptyIcon} alt="스크랩 상태" />
-            <p className="text-center">{post.scrap_count}</p>
+            {/* <Image src={ScrapEmptyIcon} alt="스크랩 상태" />
+            <p className="text-center">{post.scrap_count}</p> */}
+            <ScrapButton postId={post.post_id} />
           </div>
         </div>
       </div>
