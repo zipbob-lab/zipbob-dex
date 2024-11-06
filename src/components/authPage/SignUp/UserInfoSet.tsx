@@ -5,7 +5,18 @@ import InputField from "../InputField";
 import DefaultProfile from "@images/default-profile.svg";
 import ImageButton from "@images/imageButton.svg";
 
-const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: UserInfoSetProps) => {
+const UserInfoSet = ({
+  ACCEPTED_IMAGE_TYPES,
+  previewImage,
+  register,
+  errors,
+  isProfileSet,
+  setPreviewImage,
+  setValue,
+  watch
+}: UserInfoSetProps) => {
+  console.log(isProfileSet);
+
   return (
     <>
       <div className="flex flex-col items-center">
@@ -31,7 +42,24 @@ const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: U
           </div>
           <Image src={ImageButton} alt="이미지 드롭박스 버튼" className="absolute bottom-0 right-0" />
         </div>
-        {errors.profileImage && <p className="text-red-500">{errors.profileImage.message?.toString()}</p>}
+        <div className="mt-3 h-[0.875rem] text-Primary-300">
+          {isProfileSet && (
+            <button
+              type="button"
+              onClick={() => {
+                setPreviewImage("");
+                setValue("profileImage", null);
+              }}
+            >
+              사진 제거
+            </button>
+          )}
+        </div>
+        <div className="mt-4 h-3">
+          {errors.profileImage && (
+            <p className="text-SystemColor-Red text-body-12">{errors.profileImage.message?.toString()}</p>
+          )}
+        </div>
       </div>
       <InputField
         register={register}
@@ -40,6 +68,8 @@ const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: U
         placeholder="2자 이상 8자 이하로 입력해주세요."
         type="text"
         errors={errors}
+        isEmpty={!watch("nickname")}
+        setValue={setValue}
       />
       <InputField
         register={register}
@@ -48,6 +78,8 @@ const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: U
         placeholder="200자 이내로 입력해주세요."
         type="text"
         errors={errors}
+        isEmpty={!watch("introduce")}
+        setValue={setValue}
       />
     </>
   );
