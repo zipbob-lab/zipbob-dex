@@ -1,16 +1,13 @@
 import { supabase } from "@/supabase/supabase";
 
 // 경험치에 따라 레벨을 반복적으로 업데이트하는 함수
-export const updateUserRank = async (userId: string) => {
-  console.log("userId 확인", userId); //-> uuid값
+export const updateUserLevel = async (userId: string) => {
   try {
     const { data: userData, error: userError } = await supabase
       .from("USER_TABLE")
       .select("user_exp, user_rank")
       .eq("user_id", userId)
       .single();
-
-    console.log("userData 확인", userData); //-> user의 exp, rank
 
     if (userError || !userData) {
       console.error("사용자 데이터 불러오기 실패", userError?.message);
@@ -19,7 +16,6 @@ export const updateUserRank = async (userId: string) => {
 
     const { user_exp } = userData;
     let { user_rank } = userData;
-    console.log("userData 확인", userData);
 
     const { data: rankData, error: rankError } = await supabase
       .from("RANK_TABLE")

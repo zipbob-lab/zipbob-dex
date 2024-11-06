@@ -72,7 +72,8 @@ const config: Config = {
         "r-body-14": ["14px", { lineHeight: "130%", fontWeight: "400" }]
       },
       fontFamily: {
-        pretendard: ["var(--font-pretendard)", "sans-serif"]
+        pretendard: ["var(--font-pretendard)", "sans-serif"],
+        yangjin: ["var(--font-yangjin)", "sans-serif"]
       }
     }
   },
