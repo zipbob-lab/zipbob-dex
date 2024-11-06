@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 
+import Image from "next/image";
+import TagDelete from "@images/tagDelete.svg";
+
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
   const [categoryInput, setCategoryInput] = useState<string>("");
@@ -42,26 +45,29 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <input
-        type="text"
-        value={categoryInput}
-        onChange={(e) => setCategoryInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onCompositionStart={handleComposition}
-        onCompositionEnd={handleComposition}
-        placeholder="넣고 싶은 재료를 입력해보세요!"
-        className="border p-1"
-      />
-      <button type="button" onClick={addCategory} className="ml-2 border p-1">
-        추가
-      </button>
+    <form onSubmit={(e) => e.preventDefault()} className="h-[128px] w-[512px] overflow-auto">
+      <p>냉장고 재료</p>
+      <div className="relative flex h-[48px] w-[452px] items-center rounded-xl border-2">
+        <input
+          type="text"
+          value={categoryInput}
+          onChange={(e) => setCategoryInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={handleComposition}
+          onCompositionEnd={handleComposition}
+          placeholder="넣고 싶은 재료를 입력해요!"
+          className="h-full flex-1 rounded-full px-4 outline-none"
+        />
+        <button type="button" onClick={addCategory} className="mr-4 h-[38px] rounded-full bg-white p-1">
+          입력
+        </button>
+      </div>
       <div>
         {category.map((tag) => (
           <div key={tag} className="mr-2 inline-block">
             <span>{tag}</span>
             <button type="button" onClick={() => deleteTag(tag)} className="ml-1">
-              x
+              <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>
           </div>
         ))}

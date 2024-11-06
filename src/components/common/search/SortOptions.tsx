@@ -1,6 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
+
+import Image from "next/image";
+import ChevronDown from "@images/chevronDown.svg";
 
 interface SortOptionsProps {
   sortOption: string;
@@ -23,17 +27,25 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
   };
 
   return (
-    <div className="relative inline-block w-64">
-      <button onClick={() => setIsOpen(!isOpen)} className="w-full rounded-md border p-2 text-left">
-        {options.find((option) => option.value === sortOption)?.label || "정렬 옵션 선택"}
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex h-[32px] w-auto items-center justify-between rounded-3xl border-2 px-4 py-2 focus:border-stone-400 focus:outline-none"
+      >
+        <span className="text-[14px] font-medium">
+          {options.find((option) => option.value === sortOption)?.label || "정렬 옵션 선택"}
+        </span>
+        <Image src={ChevronDown} width={24} height={24} alt="선택 버튼" className="ml-4" />
       </button>
+
+      {/* 드롭박스 */}
       {isOpen && (
-        <ul className="absolute mt-1 w-full rounded-md border bg-white shadow-lg">
+        <ul className="absolute z-10 mt-2 w-full rounded-2xl border-2 bg-white shadow-lg">
           {options.map((option) => (
             <li
               key={option.value}
               onClick={() => handleOptionClick(option.value)}
-              className="cursor-pointer p-2 hover:bg-gray-200"
+              className="cursor-pointer rounded-2xl px-4 py-2 text-[13px] hover:bg-stone-100"
             >
               {option.label}
             </li>

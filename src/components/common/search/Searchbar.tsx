@@ -111,7 +111,7 @@ const SearchBar = () => {
           </div>
           <ul>
             {keywords.map((k) => (
-              <li key={k.id} className="flex items-center rounded-3xl px-4 py-3 hover:bg-gray-100">
+              <li key={k.id} className="flex items-center rounded-3xl px-4 py-3 hover:bg-stone-100">
                 <div
                   className="flex flex-shrink-0 flex-grow cursor-pointer items-center"
                   onClick={() => handleKeywordClick(k.text)}

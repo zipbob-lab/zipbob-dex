@@ -8,6 +8,10 @@ import { Recipe } from "@/types/Recipe";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 
+import Image from "next/image";
+import TagDelete from "@images/tagDelete.svg";
+import SearchPan from "@images/searchPan.svg";
+
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
   const [filteredData, setFilteredData] = useState<Recipe[]>([]);
@@ -112,6 +116,8 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
+      <p>냉장고를 탐험해 봅시다!</p>
+      <p>재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
       <CategoreAdd onAddCategory={handleAddCategory} />
       <CategoreDelete onDeleteCategory={handleDeleteCategory} />
       <button onClick={handleResults} className="border">
@@ -120,8 +126,7 @@ const TagFilter: React.FC = () => {
       {showResults && (
         <div>
           <ul>
-            <h3>검색 결과</h3>
-            <p>검색결과 {filteredData.length} 개</p>
+            <p className="w-auto text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
             <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
             {filteredData.length > 0 ? (
               filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
