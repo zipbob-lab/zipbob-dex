@@ -3,6 +3,10 @@ import { getUserId } from "@/serverActions/profileAction";
 import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import TrashCan from "@images/myrecipe/trashCan.svg";
+import Pen from "@images/myrecipe/pen.svg";
+import Image from "next/image";
+import GrayVar from "@images/myrecipe/grayVar.svg";
 
 interface ModiDeleButtonProps {
   postId: string;
@@ -49,13 +53,22 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   return (
     <>
       {userId === loginSessionId && (
-        <div className="mt-4 flex gap-2">
-          <button className="rounded bg-orange-400 p-2 text-white" onClick={handleModifyPost}>
-            수정
-          </button>
-          <button className="rounded bg-red-500 p-2 text-white" onClick={() => setIsDeleteModalOpen(true)}>
-            삭제
-          </button>
+        <div className="flex flex-row">
+          <div className="flex flex-row gap-[10px] px-3 py-2">
+            <Image src={Pen} alt="수정" width={20} height={20}></Image>
+            <button className="text-body-14 text-Gray-500" onClick={handleModifyPost}>
+              수정하기
+            </button>
+          </div>
+
+          <Image src={GrayVar} alt="회색바" />
+
+          <div className="flex flex-row gap-[10px] px-3 py-2">
+            <Image src={TrashCan} alt="삭제" width={20} height={20}></Image>
+            <button className="p-2 text-body-14 text-SystemColor-Red" onClick={() => setIsDeleteModalOpen(true)}>
+              삭제하기
+            </button>
+          </div>
         </div>
       )}
       {/* 삭제 확인 모달 */}

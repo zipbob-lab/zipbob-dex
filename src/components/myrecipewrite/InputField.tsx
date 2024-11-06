@@ -14,6 +14,7 @@ import { Recipe } from "@/types/Recipe";
 import RecipeInfoFields from "./RecipeInfoFields";
 import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
+import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
@@ -192,15 +193,17 @@ const InputField = () => {
       // setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
       // setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
       const updatedFileArray = [...recipeDoingImgFileArray];
-      updatedFileArray[index] = { file: undefined };
+      updatedFileArray[index] = ImageUploadIcon;
       setRecipeDoingImgFileArray(updatedFileArray);
+      console.log("업데이트 파일 배열: ", updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
-      updatedViewArray[index] =
-        "https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/images%20(4).jfif";
+      updatedViewArray[index] = "/DEFAULT_IMAGE";
       // 여기다가 기본 이미지 넣어야됨
       setRecipeDoingImgViewArray(updatedViewArray);
+      console.log("업데이트 뷰 배열: ", updatedViewArray);
     }
+
     setImgModalIndex(null);
   };
 
@@ -228,8 +231,8 @@ const InputField = () => {
       for (let i = 0; i < recipeDoingImgViewArray.length; i++) {
         if (isModifyMode) {
           // 수정 모드일 때
-
           const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+
           if (recipeDoingImgFile instanceof File) {
             // 새로 업로드된 파일이 있는 경우
             const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
@@ -371,7 +374,8 @@ const InputField = () => {
             <RecipeInfoFields />
             {/* 레시피 완성 이미지 */}
             <div
-              className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
+              className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden"
+              style={{ borderRadius: "20px" }}
               onClick={() => {
                 if (recipeDoneImgView) {
                   setImgModalIndex(-1);
@@ -381,7 +385,13 @@ const InputField = () => {
               {recipeDoneImgView ? (
                 <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
               ) : (
-                <p>이미지 파일</p>
+                <Image
+                  src={ImageUploadIcon}
+                  alt="기본 이미지"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                  className="rounded-lg"
+                />
               )}
               <input
                 type="file"
@@ -411,19 +421,28 @@ const InputField = () => {
 
             {recipeDoingsImgFields.map((_, i) => (
               <div className="flex bg-green-200" key={i}>
+                <div className="mr-3 flex items-center justify-center text-lg font-bold">Step {i + 1}</div>
                 <div
-                  className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
+                  className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
+                  style={{ borderRadius: "13.3px" }}
                   onClick={() => toggleImgModal(i)}
                 >
-                  {recipeDoingImgViewArray[i] ? (
+                  {recipeDoingImgViewArray[i] && recipeDoingImgViewArray[i] !== "/DEFAULT_IMAGE" ? (
                     <Image
                       src={recipeDoingImgViewArray[i]}
                       alt="매뉴얼 이미지"
-                      fill={true}
-                      style={{ objectFit: "cover" }}
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      className="rounded-lg"
                     />
                   ) : (
-                    <p>선택된 이미지가 없습니다.</p>
+                    <Image
+                      src={ImageUploadIcon}
+                      alt="매뉴얼 기본 이미지"
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      className="rounded-lg"
+                    />
                   )}
                   <input
                     type="file"
