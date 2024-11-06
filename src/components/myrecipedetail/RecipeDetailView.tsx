@@ -44,7 +44,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
       <div className="flex w-full max-w-[1024px] flex-col items-center gap-10">
         {/* 요리 완성 사진 & 설명 */}
         <div className="flex-start flex w-full bg-pink-400">
-          <div className="relative h-[320px] w-[320px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500">
+          <div className="relative h-[320px] w-[320px] flex-shrink-0 overflow-hidden" style={{ borderRadius: "20px" }}>
             <Image
               src={data.recipe_img_done || DefaultImg}
               alt="완성 이미지"
@@ -98,7 +98,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                     <span className="text-title-16 text-Gray-900">{userInfo.user_nickname}</span>
                   </div>
                   <span className="flex items-center justify-center text-r-body-14 text-Gray-500">
-                    {userInfo.user_introduce}
+                    {userInfo.user_introduce || "한 줄 소개가 없어요."}
                   </span>
                 </div>
               </div>
@@ -139,9 +139,16 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
             {data.recipe_img_doing.map((_: string, index: number) => (
               <div key={index} className="flex">
                 {/* 매뉴얼 이미지*/}
-                <div className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500">
+                <div
+                  className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg"
+                  style={{ borderRadius: "16px" }}
+                >
                   <Image
-                    src={data.recipe_img_doing[index] || DefaultImg}
+                    src={
+                      data.recipe_img_doing[index] === "/DEFAULT_IMAGE" || data.recipe_img_doing[index] === ""
+                        ? DefaultImg
+                        : data.recipe_img_doing[index]
+                    }
                     alt={`매뉴얼 이미지 ${index + 1}`}
                     fill
                     style={{ objectFit: "cover", objectPosition: "center" }}

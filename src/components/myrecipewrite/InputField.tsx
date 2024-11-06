@@ -193,14 +193,17 @@ const InputField = () => {
       // setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
       // setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
       const updatedFileArray = [...recipeDoingImgFileArray];
-      updatedFileArray[index] = { file: undefined };
+      updatedFileArray[index] = ImageUploadIcon;
       setRecipeDoingImgFileArray(updatedFileArray);
+      console.log("업데이트 파일 배열: ", updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
-      updatedViewArray[index] = "/images/myrecipe/imageUpload.svg";
+      updatedViewArray[index] = "/DEFAULT_IMAGE";
       // 여기다가 기본 이미지 넣어야됨
       setRecipeDoingImgViewArray(updatedViewArray);
+      console.log("업데이트 뷰 배열: ", updatedViewArray);
     }
+
     setImgModalIndex(null);
   };
 
@@ -228,8 +231,8 @@ const InputField = () => {
       for (let i = 0; i < recipeDoingImgViewArray.length; i++) {
         if (isModifyMode) {
           // 수정 모드일 때
-
           const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+
           if (recipeDoingImgFile instanceof File) {
             // 새로 업로드된 파일이 있는 경우
             const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
@@ -371,7 +374,8 @@ const InputField = () => {
             <RecipeInfoFields />
             {/* 레시피 완성 이미지 */}
             <div
-              className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
+              className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden"
+              style={{ borderRadius: "20px" }}
               onClick={() => {
                 if (recipeDoneImgView) {
                   setImgModalIndex(-1);
@@ -420,9 +424,10 @@ const InputField = () => {
                 <div className="mr-3 flex items-center justify-center text-lg font-bold">Step {i + 1}</div>
                 <div
                   className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
+                  style={{ borderRadius: "13.3px" }}
                   onClick={() => toggleImgModal(i)}
                 >
-                  {recipeDoingImgViewArray[i] ? (
+                  {recipeDoingImgViewArray[i] && recipeDoingImgViewArray[i] !== "/DEFAULT_IMAGE" ? (
                     <Image
                       src={recipeDoingImgViewArray[i]}
                       alt="매뉴얼 이미지"
