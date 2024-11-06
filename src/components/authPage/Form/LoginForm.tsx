@@ -4,7 +4,7 @@ import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useStore } from "zustand";
-import LoginPen from "@images/loginPen.svg";
+import WhitePen from "@images/penWhite.svg";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,6 +14,13 @@ const LoginForm = () => {
   const { setIsLoggedIn } = useStore(useAuthStore);
 
   const handleLogin = async (value: FieldValues) => {
+    if (!value.email) {
+      alert("이메일을 입력해주세요");
+      return;
+    } else if (!value.password) {
+      alert("비밀번호를 입력해주세요");
+      return;
+    }
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: value.email,
@@ -32,7 +39,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="mb-2 flex w-full flex-col items-center" onSubmit={handleSubmit(handleLogin)}>
+    <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(handleLogin)}>
       <div className="flex w-full flex-col gap-3">
         <input
           {...register("email")}
@@ -48,7 +55,7 @@ const LoginForm = () => {
         />
       </div>
       <button className="mt-8 flex w-full justify-center gap-2 rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB]">
-        <Image src={LoginPen} alt="로그인 버튼 이미지" />
+        <Image src={WhitePen} alt="로그인 버튼 이미지" />
         <span className="mr-7">로그인</span>
       </button>
       <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium tracking-[0.5px]">

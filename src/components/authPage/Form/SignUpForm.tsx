@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import AccountSet from "../SignUp/AccountSet";
 import UserInfoSet from "../SignUp/UserInfoSet";
 import Image from "next/image";
-import LoginPen from "@images/loginPen.svg";
+import WhitePen from "@images/penWhite.svg";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -32,11 +32,7 @@ const accountSetSchema = z
 const userInfoSetSchema = z.object({
   profileImage: z
     .any()
-    .refine((files) => !files?.[0] || files?.[0]?.size <= MAX_FILE_SIZE, `파일 크기는 5MB 이하여야 합니다.`)
-    .refine(
-      (files) => !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png, .webp 형식의 이미지만 허용됩니다."
-    ),
+    .refine((files) => !files?.[0] || files?.[0]?.size <= MAX_FILE_SIZE, `파일 크기는 5MB 이하여야 합니다.`),
   nickname: z.string().min(2, "2자 이상 입력해주세요.").max(8, "8자 이하로 입력해주세요."),
   introduce: z.string().max(200, "200자 이내로 입력해주세요.")
 });
@@ -52,7 +48,8 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    getValues
+    getValues,
+    setValue
   } = useForm({ mode: "onChange", resolver: zodResolver(combinedSchema) });
   const watchProfileImage = watch("profileImage");
 
@@ -149,18 +146,20 @@ const SignUpForm = () => {
     }
   };
 
-  console.log(watch("profileImage"));
-
   return (
     <form className="w-full">
       {!isNextForm ? (
-        <AccountSet register={register} errors={errors} />
+        <AccountSet register={register} errors={errors} watch={watch} setValue={setValue} />
       ) : (
         <UserInfoSet
+          setPreviewImage={setPreviewImage}
+          setValue={setValue}
+          isProfileSet={!!watch("profileImage")?.length}
           ACCEPTED_IMAGE_TYPES={ACCEPTED_IMAGE_TYPES}
           previewImage={previewImage}
           register={register}
           errors={errors}
+          watch={watch}
         />
       )}
       <div className="mt-[8.625rem] flex justify-center">
@@ -172,7 +171,7 @@ const SignUpForm = () => {
           className={`mt-8 flex w-full justify-center gap-2 rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
-          <Image src={LoginPen} alt="로그인 버튼 이미지" />
+          <Image src={WhitePen} alt="로그인 버튼 이미지" />
           <span className="mr-7">{isNextForm ? "회원가입" : "다음"}</span>
         </button>
       </div>
