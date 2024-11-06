@@ -6,7 +6,6 @@ interface CommentExpInterface {
 }
 
 export const CommentExp = async ({ userId, postId }: CommentExpInterface) => {
-  console.log("꾸");
   // 코멘트 테이블에 기존 코멘트가 있는 지 확인
   const { data, error } = await supabase
     .from("COMMENT_TABLE")

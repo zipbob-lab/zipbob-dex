@@ -56,7 +56,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
           {/* 오른쪽 컨테이너 */}
           <div className="ml-10 flex w-full flex-grow flex-col gap-2">
-            <div className="flex h-auto flex-row items-center justify-between">
+            <div className="mt-2 flex h-auto flex-row items-center justify-between">
               <div className="flex">
                 <Image src={FireFilledIcon} alt="레시피 난이도" />
                 <Image src={data.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
@@ -168,15 +168,11 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
           </div>
         </div>
       </div>
-      {/* 나중에 */}
-      <div className="flex flex-col gap-80">
+      <div className="mb-12 mt-12">
         <Image src={GrayLine} alt="회색 라인" />
       </div>
-
-      <div className="flex w-full max-w-[1024px] flex-col items-center">
-        <div className="w-full">
-          <Comments postId={postId} />
-        </div>
+      <div className="flex w-full max-w-[1024px] items-center">
+        <Comments postId={postId} />
       </div>
     </div>
   );
