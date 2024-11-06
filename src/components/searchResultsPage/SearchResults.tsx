@@ -44,11 +44,11 @@ const SearchResult = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between px-[200px] py-[40px]">
-        <p className="w-auto text-[20px] font-semibold">
+      <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
+        <p className="text-[20px] font-semibold">
           "{searchText}" 키워드 검색 결과 {recipes.length}개
         </p>
-        <SortOptions sortOption={sortOption} setSortOption={setSortOption} /> {/* 적용된 부분 */}
+        <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       <section>
         {recipes.length > 0 ? (

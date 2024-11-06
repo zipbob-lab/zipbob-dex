@@ -9,7 +9,6 @@ import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 
 import Image from "next/image";
-import TagDelete from "@images/tagDelete.svg";
 import SearchPan from "@images/searchPan.svg";
 
 const TagFilter: React.FC = () => {
@@ -116,26 +115,38 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
-      <p>냉장고를 탐험해 봅시다!</p>
-      <p>재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
-      <CategoreAdd onAddCategory={handleAddCategory} />
-      <CategoreDelete onDeleteCategory={handleDeleteCategory} />
-      <button onClick={handleResults} className="border">
-        검색
-      </button>
-      {showResults && (
-        <div>
-          <ul>
-            <p className="w-auto text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
-            <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-            {filteredData.length > 0 ? (
-              filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
-            ) : (
-              <p>결과가 없습니다.</p>
-            )}
-          </ul>
+      <div className="mx-auto max-w-[1024px] p-4 py-[70px]">
+        <p className="text-[24px] font-semibold">냉장고를 탐험해 봅시다!</p>
+        <p className="mt-4 text-[18px]">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
+        <div className="mt-12 flex">
+          <CategoreAdd onAddCategory={handleAddCategory} />
+          <CategoreDelete onDeleteCategory={handleDeleteCategory} />
         </div>
-      )}
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={handleResults}
+            className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
+          >
+            <Image src={SearchPan} width={20} height={20} alt="검색 팬" />
+            <p className="text-[20px] text-white">검색</p>
+          </button>
+        </div>
+        {showResults && (
+          <div className="mt-6">
+            <ul>
+              <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
+                <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
+                <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+              </div>
+              {filteredData.length > 0 ? (
+                filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+              ) : (
+                <p>결과가 없습니다.</p>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -45,9 +45,9 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="h-[128px] w-[512px] overflow-auto">
-      <p>냉장고 재료</p>
-      <div className="relative flex h-[48px] w-[452px] items-center rounded-xl border-2">
+    <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
+      <p className="mb-3 text-[18px] font-medium">냉장고 재료</p>
+      <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-xl border-2">
         <input
           type="text"
           value={categoryInput}
@@ -58,15 +58,19 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
           placeholder="넣고 싶은 재료를 입력해요!"
           className="h-full flex-1 rounded-full px-4 outline-none"
         />
-        <button type="button" onClick={addCategory} className="mr-4 h-[38px] rounded-full bg-white p-1">
+        <button
+          type="button"
+          onClick={addCategory}
+          className="mr-4 h-[38px] rounded-full bg-white p-1 font-normal text-[#ff9143]"
+        >
           입력
         </button>
       </div>
       <div>
         {category.map((tag) => (
-          <div key={tag} className="mr-2 inline-block">
+          <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-[#fff6dc] px-2">
             <span>{tag}</span>
-            <button type="button" onClick={() => deleteTag(tag)} className="ml-1">
+            <button type="button" onClick={() => deleteTag(tag)} className="ml-1 flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>
           </div>
