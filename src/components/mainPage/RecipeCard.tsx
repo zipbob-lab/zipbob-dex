@@ -69,7 +69,7 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
 
         {/* 편집 모드 아닐 때 -> LikeButton / ScrapButton 활성화 */}
         {!isEditMode ? (
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <LikeButton postId={post.post_id} />
             <ScrapButton postId={post.post_id} />
           </div>
