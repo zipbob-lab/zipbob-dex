@@ -2,10 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import browserClient from "@/supabase/client";
-import CategoreAdd from "@/components/fridgeList/InputAdd";
-import CategoreDelete from "@/components/fridgeList/InputDelete";
+import CategoreAdd from "@/components/fridgeListPage/InputAdd";
+import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Recipe";
-import RecipeCard from "@/components/fridgeList/ListCard";
+import RecipeCard from "@/components/common/search/ListCard";
+import SortOptions from "@/components/common/search/SortOptions";
+
+import Image from "next/image";
+import SearchPan from "@images/searchPan.svg";
 
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
@@ -33,15 +37,6 @@ const TagFilter: React.FC = () => {
         console.error("MY_RECIPE_TABLE 에러", error);
       } else {
         console.log("fetch data result: ", data);
-
-        data.forEach((item) => {
-          if (item.recipe_ingredients && item.recipe_ingredients.length > 0) {
-            console.log(item.recipe_ingredients[0].ingredient);
-          } else {
-            console.log("없음");
-          }
-        });
-
         setData(data as Recipe[]);
         setFilteredData(data as Recipe[]);
       }
@@ -105,37 +100,45 @@ const TagFilter: React.FC = () => {
   };
 
   const handleResults = () => {
-    console.log(filteredData);
     setShowResults(true);
   };
 
   return (
     <div>
-      <CategoreAdd onAddCategory={handleAddCategory} />
-      <CategoreDelete onDeleteCategory={handleDeleteCategory} />
-      <button onClick={handleResults} className="border">
-        검색
-      </button>
-      {showResults && (
-        <div>
-          <ul>
-            <h3>검색 결과</h3>
-            <p>검색결과 {filteredData.length} 개</p>
-            <select id="sort-option" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="default">전체</option>
-              <option value="likes">좋아요 높은 순</option>
-              <option value="commnet">후기 많은 순</option>
-              <option value="level">난이도 높은 순</option>
-              <option value="scraps">스크랩 많은 순</option>
-            </select>
-            {filteredData.length > 0 ? (
-              filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
-            ) : (
-              <p>결과가 없습니다.</p>
-            )}
-          </ul>
+      <div className="mx-auto max-w-[1024px] p-4 py-[60px]">
+        <p className="text-[24px] font-semibold">냉장고를 탐험해 봅시다!</p>
+        <p className="mt-4 text-[18px]">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
+        <div className="mt-12 flex">
+          <CategoreAdd onAddCategory={handleAddCategory} />
+          <CategoreDelete onDeleteCategory={handleDeleteCategory} />
         </div>
-      )}
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={handleResults}
+            className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
+          >
+            <Image src={SearchPan} width={20} height={20} alt="검색 팬" />
+            <p className="text-[20px] text-white">검색</p>
+          </button>
+        </div>
+        {showResults && (
+          <div className="mt-6">
+            <ul>
+              <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
+                <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
+                <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+              </div>
+              <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[22px]">
+                {filteredData.length > 0 ? (
+                  filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+                ) : (
+                  <p>결과가 없습니다.</p>
+                )}
+              </ul>
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

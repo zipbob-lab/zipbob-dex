@@ -6,7 +6,7 @@ import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import AlertIcon from "@images/alert-circle-outline.svg";
+import AlertIcon from "@images/noneAlert.svg";
 interface UserPost {
   post_id: string;
   recipe_title: string;
