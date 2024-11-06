@@ -417,6 +417,7 @@ const InputField = () => {
 
             {recipeDoingsImgFields.map((_, i) => (
               <div className="flex bg-green-200" key={i}>
+                <div className="mr-3 flex items-center justify-center text-lg font-bold">Step {i + 1}</div>
                 <div
                   className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
                   onClick={() => toggleImgModal(i)}
