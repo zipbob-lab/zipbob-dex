@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import CloseX from "@images/CloseX.svg";
+import CloseX from "@images/closeX.svg";
 import AddButton from "@images/addButton.svg";
 
 interface ScrapModalProps {

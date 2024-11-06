@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import Pencil from "@images/penWhite.svg";
 import Image from "next/image";
-import CloseX from "@images/CloseX.svg";
+import CloseX from "@images/closeX.svg";
 import ImageButton from "@images/imageButton.svg";
 import DeleteButton from "@images/trashcan.svg";
 
