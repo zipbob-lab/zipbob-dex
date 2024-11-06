@@ -220,7 +220,7 @@ const Comments = ({ postId }: PostDataProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-5 bg-[#FBFBFB] p-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col bg-[#FBFBFB]">
       {/* 댓글 제목 */}
       <div className="flex flex-row gap-3 p-5">
         <h1 className="flex items-end justify-center text-2xl font-bold">집밥 탐험일지</h1>
