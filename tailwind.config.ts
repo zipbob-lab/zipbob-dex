@@ -51,6 +51,7 @@ const config: Config = {
         }
       },
       fontSize: {
+        "heading-32": ["32px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.16px" }],
         "heading-28": ["28px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.14px" }],
         "heading-24": ["24px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.12px" }],
         "heading-20": ["20px", { lineHeight: "125%", fontWeight: "700", letterSpacing: "-0.1px" }],
@@ -71,7 +72,8 @@ const config: Config = {
         "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }],
         "r-body-13": ["13px", { lineHeight: "135%", fontWeight: "400" }],
         "r-body-14": ["14px", { lineHeight: "130%", fontWeight: "400" }],
-        "r-body-16": ["16px", { lineHeight: "135%", fontWeight: "400" }]
+        "r-body-16": ["16px", { lineHeight: "135%", fontWeight: "400" }],
+        "r-body-18": ["18px", { lineHeight: "125%", fontWeight: "400" }]
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)", "sans-serif"],
