@@ -35,10 +35,10 @@ const ScrapPage = () => {
 
   return (
     <div className="min-h-screen px-52">
-      <h2 className="mb-3 pt-8 text-heading-28">스크랩한 레시피</h2>
+      <h2 className="mb-3 ml-48 pt-8 text-heading-28">스크랩한 레시피</h2>
 
       {/* 폴더명 리스트 */}
-      <div className="mb-6">
+      <div className="mx-48 mb-6">
         <div className="flex gap-6 border-b-[1px] pt-2">
           <button
             onClick={() => handleFolderClick(null)}
@@ -83,7 +83,7 @@ const ScrapPage = () => {
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 p-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
+        <div className="mx-4 mt-8 grid grid-cols-2 gap-x-24 gap-y-16 md:grid-cols-4 lg:grid-cols-4">
           {Array.isArray(scraps) &&
             scraps
               .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
