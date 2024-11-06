@@ -24,7 +24,11 @@ const isAlreadyScrappedDB = async (recipeId: string, userId: string): Promise<bo
 
 // 레시피의 스크랩 수를 가져오는 함수
 const fetchRecipeScrapCount = async (recipeId: string): Promise<number> => {
-  const { data, error } = await supabase.from("TEST2_TABLE").select("scrap_count").eq("post_id", recipeId).single();
+  const { data, error } = await supabase
+    .from("TEST2_TABLE")
+    .select("scrap_count")
+    .eq("post_id", recipeId)
+    .maybeSingle();
   if (error) throw new Error(error.message);
   return data?.scrap_count || 0;
 };
