@@ -14,6 +14,7 @@ import { Recipe } from "@/types/Recipe";
 import RecipeInfoFields from "./RecipeInfoFields";
 import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
+import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
@@ -196,8 +197,7 @@ const InputField = () => {
       setRecipeDoingImgFileArray(updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
-      updatedViewArray[index] =
-        "https://gnoefovruutfyrunuxkk.supabase.co/storage/v1/object/public/zipbob_storage/recipeDoneImgFolder/images%20(4).jfif";
+      updatedViewArray[index] = "/images/myrecipe/imageUpload.svg";
       // 여기다가 기본 이미지 넣어야됨
       setRecipeDoingImgViewArray(updatedViewArray);
     }
@@ -371,7 +371,7 @@ const InputField = () => {
             <RecipeInfoFields />
             {/* 레시피 완성 이미지 */}
             <div
-              className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
+              className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
               onClick={() => {
                 if (recipeDoneImgView) {
                   setImgModalIndex(-1);
@@ -381,7 +381,13 @@ const InputField = () => {
               {recipeDoneImgView ? (
                 <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
               ) : (
-                <p>이미지 파일</p>
+                <Image
+                  src={ImageUploadIcon}
+                  alt="기본 이미지"
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                  className="rounded-lg"
+                />
               )}
               <input
                 type="file"
@@ -412,18 +418,25 @@ const InputField = () => {
             {recipeDoingsImgFields.map((_, i) => (
               <div className="flex bg-green-200" key={i}>
                 <div
-                  className="relative flex h-48 w-48 items-center justify-center overflow-hidden rounded-lg bg-gray-500"
+                  className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-500"
                   onClick={() => toggleImgModal(i)}
                 >
                   {recipeDoingImgViewArray[i] ? (
                     <Image
                       src={recipeDoingImgViewArray[i]}
                       alt="매뉴얼 이미지"
-                      fill={true}
-                      style={{ objectFit: "cover" }}
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      className="rounded-lg"
                     />
                   ) : (
-                    <p>선택된 이미지가 없습니다.</p>
+                    <Image
+                      src={ImageUploadIcon}
+                      alt="매뉴얼 기본 이미지"
+                      fill
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      className="rounded-lg"
+                    />
                   )}
                   <input
                     type="file"
