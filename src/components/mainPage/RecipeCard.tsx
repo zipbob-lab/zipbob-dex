@@ -13,7 +13,7 @@ import ScrapButton from "../common/button/ScrapButton";
 import TrashCanIcon from "@images/trashcan.svg";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
-  isEditMode: boolean;
+  isEditMode?: boolean;
   onDelete?: (postId: string) => void;
 }
 
