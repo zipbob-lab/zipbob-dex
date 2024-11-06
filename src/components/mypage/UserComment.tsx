@@ -4,6 +4,7 @@ import Image from "next/image";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import React, { useEffect, useState } from "react";
+import AlertIcon from "@images/alert-circle-outline.svg";
 
 interface UserComment {
   post_id: string;
@@ -42,13 +43,19 @@ const UserComment = ({ userId }: { userId: string }) => {
     loadCommentsWithRecipes();
   }, [userId]);
 
-  if (!comments) return <p>아직 작성한 댓글이 없어요!</p>;
+  if (!comments)
+    return (
+      <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">
+        <Image src={AlertIcon} alt="느낌표 아이콘" width={30} height={30} />
+        아직 작성한 댓글이 없어요!
+      </div>
+    );
 
   return (
     <div className="max-h-[530px] w-full overflow-y-auto">
       {comments?.map((comment) => (
         <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-          <div className="flex w-full flex-col justify-between border-b border-gray-200 p-4">
+          <div className="flex w-full flex-col justify-between p-4">
             <div className="flex">
               {comment.recipe ? (
                 <Image
@@ -79,7 +86,6 @@ const UserComment = ({ userId }: { userId: string }) => {
                 <p className="mt-2 line-clamp-2 flex-1">
                   {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
                 </p>
-                {/* 시간을 제일 아래쪽에 붙임 */}
                 <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import ScrapModal from "../ScrapModal";
+import ScrapModal from "../../scraps/ScrapModal";
 import CustomToast from "@/components/scraps/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
@@ -61,16 +61,22 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     } finally {
       setIsSaving(false);
       setIsModalOpen(false);
+      setFolderName("");
       setTimeout(() => setShowToast(false), 3000);
     }
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFolderName("");
+  };
+
   return (
     <div>
-      <div className="flex cursor-pointer" onClick={handleMarkClick}>
+      <button className="flex cursor-pointer" onClick={handleMarkClick}>
         <Image src={isScrapped ? scrapFill : scrapEmpty} alt="스크랩 버튼" width={18} height={18} />
         <span className="ml-2 text-sm font-medium text-gray-700">{scrapCount || 0}</span>
-      </div>
+      </button>
 
       {/* 모달 컴포넌트 */}
       {isModalOpen && (
@@ -80,7 +86,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
           existingFolders={existingFolders || []}
           onFolderNameChange={setFolderName}
           onSave={handleSaveComplete}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleCloseModal}
           onFolderClick={handleFolderClick}
         />
       )}
