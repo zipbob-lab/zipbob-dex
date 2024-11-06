@@ -39,11 +39,7 @@ const TagFilter: React.FC = () => {
         console.log("fetch data result: ", data);
 
         data.forEach((item) => {
-          if (item.recipe_ingredients && item.recipe_ingredients.length > 0) {
-            console.log(item.recipe_ingredients[0].ingredient);
-          } else {
-            console.log("없음");
-          }
+          item.recipe_ingredients && item.recipe_ingredients.length > 0;
         });
 
         setData(data as Recipe[]);
@@ -109,7 +105,6 @@ const TagFilter: React.FC = () => {
   };
 
   const handleResults = () => {
-    console.log(filteredData);
     setShowResults(true);
   };
 
