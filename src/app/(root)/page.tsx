@@ -1,4 +1,4 @@
-import SearchBar from "@/components/common/searchbar";
+import SearchBar from "@/components/common/search/Searchbar";
 import HealthyRecipe from "@/components/mainPage/HealthyRecipe";
 import Ranking from "@/components/mainPage/rank/Ranking";
 import RecentComment from "@/components/mainPage/RecentComment/RecentComment";

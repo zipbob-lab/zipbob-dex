@@ -4,7 +4,7 @@ import Image from "next/image";
 import MainLogo from "@images/mainLogo.svg";
 import Link from "next/link";
 import AuthStatusBar from "./AuthStatusBar";
-import SearchBar from "@/components/common/searchbar";
+import SearchBar from "@/components/common/search/Searchbar";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";

@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import browserClient from "@/supabase/client";
-import CategoreAdd from "@/components/fridgeList/InputAdd";
-import CategoreDelete from "@/components/fridgeList/InputDelete";
+import CategoreAdd from "@/components/fridgeListPage/InputAdd";
+import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Recipe";
-import RecipeCard from "@/components/fridgeList/ListCard";
+import RecipeCard from "@/components/common/search/ListCard";
+import SortOptions from "@/components/common/search/SortOptions";
 
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
@@ -121,13 +122,7 @@ const TagFilter: React.FC = () => {
           <ul>
             <h3>검색 결과</h3>
             <p>검색결과 {filteredData.length} 개</p>
-            <select id="sort-option" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-              <option value="default">전체</option>
-              <option value="likes">좋아요 높은 순</option>
-              <option value="commnet">후기 많은 순</option>
-              <option value="level">난이도 높은 순</option>
-              <option value="scraps">스크랩 많은 순</option>
-            </select>
+            <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
             {filteredData.length > 0 ? (
               filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
             ) : (
