@@ -4,7 +4,7 @@ import Image from "next/image";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import React, { useEffect, useState } from "react";
-import AlertIcon from "@images/alert-circle-outline.svg";
+import AlertIcon from "@images/noneAlert.svg";
 
 interface UserComment {
   post_id: string;
