@@ -1,4 +1,4 @@
-import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldValues, FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 export type SignUpProps = {
   signUpEmail: string;
@@ -20,6 +20,8 @@ type UserInfoFormValues = {
 export type AccountSetProps = {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors<AccountFormValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
 };
 
 export type UserInfoSetProps = {
@@ -27,6 +29,10 @@ export type UserInfoSetProps = {
   previewImage: string | null | ArrayBuffer;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors<UserInfoFormValues>;
+  isProfileSet: boolean;
+  setPreviewImage: React.Dispatch<React.SetStateAction<string | null | ArrayBuffer>>;
+  setValue: UseFormSetValue<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
 };
 
 export type InputFieldProps = {
@@ -36,4 +42,6 @@ export type InputFieldProps = {
   placeholder: string;
   type: string;
   errors: FieldErrors;
+  isEmpty: boolean;
+  setValue: UseFormSetValue<FieldValues>;
 };
