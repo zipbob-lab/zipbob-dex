@@ -49,7 +49,8 @@ const Header = () => {
           스크랩한 레시피
         </a>
       </nav>
-      {pathname !== "/" && <SearchBar />}
+      <div className="flex-grow"></div>
+      {pathname !== "/" && <SearchBar className="mr-4 max-w-md" />}
       <AuthStatusBar isUser={isUser} />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 import MainSearch from "@images/mainSearch.svg";
 import Subsearch from "@images/subSearch.svg";
@@ -13,8 +12,13 @@ interface KeyInterface {
   text: string;
 }
 
+interface SearchBarProps {
+  className?: string;
+  isOrangeBorder?: boolean; // 새로운 prop 추가
+}
+
 // 상태 설정
-const SearchBar = () => {
+const SearchBar: React.FC<SearchBarProps> = ({ className = "", isOrangeBorder = false }) => {
   const [keywords, setKeywords] = useState<KeyInterface[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -61,6 +65,7 @@ const SearchBar = () => {
     setSearchValue(e.target.value);
   };
 
+  // 검색 폼 작동
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim() === "") return;
@@ -76,35 +81,33 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-md">
-      <div className="relative mx-auto w-full max-w-md">
-        <div className="w-full">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 transform">
-              <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
-            </div>
-            <input
-              type="text"
-              value={searchValue}
-              onChange={handleSearchChange}
-              onFocus={() => setIsDropdownVisible(true)}
-              onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
-              placeholder="메뉴나 재료 이름을 검색해보세요!"
-              className="h-[48px] w-full rounded-3xl border-2 px-12 py-2 focus:border-stone-400 focus:outline-none"
-            />
-            {/* 물어보기 */}
-            <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 transform text-stone-500">
-              검색
-            </button>
-          </form>
+    <div className={`relative mx-auto w-full max-w-[648px] ${className}`}>
+      <form onSubmit={handleSearchSubmit} className="relative">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 transform">
+          <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
         </div>
-      </div>
+        <input
+          type="text"
+          value={searchValue}
+          onChange={handleSearchChange}
+          onFocus={() => setIsDropdownVisible(true)}
+          onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
+          placeholder="메뉴나 재료 이름을 검색해보세요!"
+          className={`h-[48px] w-full rounded-3xl border-2 px-12 py-2 focus:outline-none ${
+            isOrangeBorder ? "focus:border-[#ff9143]" : "border-gray-300 focus:border-stone-400"
+          }`}
+          style={isOrangeBorder ? { borderColor: "#ff9143" } : {}}
+        />
+        <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 transform text-stone-500">
+          검색
+        </button>
+      </form>
 
       {/* 드롭박스 */}
       {isDropdownVisible && keywords.length > 0 && (
         <div className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg">
           <div className="flex items-center justify-between px-4 py-2">
-            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어</h3>
+            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 *(최대 5개까지 저장할수 있습니다.)</h3>
             <button type="button" onClick={deleteKeywords} className="text-xs text-red-400 hover:bg-gray-100">
               전체 삭제
             </button>

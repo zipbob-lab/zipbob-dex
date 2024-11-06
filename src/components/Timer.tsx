@@ -31,14 +31,14 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
     };
   }, [isRunning, timeLeft]);
 
-  const handleStart = () => {
-    const totalMilliseconds = (inputHours * 60 * 60 + inputMinutes * 60 + inputSeconds) * 1000;
-    setTimeLeft(totalMilliseconds);
-    setIsRunning(true);
-  };
-
-  const handleStop = () => {
-    setIsRunning(false);
+  const handleStartStop = () => {
+    if (isRunning) {
+      setIsRunning(false);
+    } else {
+      const totalMilliseconds = (inputHours * 60 * 60 + inputMinutes * 60 + inputSeconds) * 1000;
+      setTimeLeft(totalMilliseconds);
+      setIsRunning(true);
+    }
   };
 
   const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,33 +60,42 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
   };
 
   return (
-    <div>
-      <div>
-        <label>H:</label>
+    <div className="flex h-[48px] w-[240px] items-center justify-between">
+      <button onClick={handleStartStop} className="w-1/4">
+        {isRunning ? "중지" : "시작"}
+      </button>
+
+      <div className="flex justify-center space-x-2">
         <input
           type="number"
           value={String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, "0")}
           onChange={handleHoursChange}
           min="0"
+          className="w-8 text-center"
         />
-        <label>M:</label>
+        <p>시</p>
         <input
           type="number"
           value={String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, "0")}
           onChange={handleMinutesChange}
           min="0"
+          className="w-8 text-center"
         />
-        <label>S:</label>
+        <p>분</p>
+
         <input
           type="number"
           value={String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0")}
           onChange={handleSecondsChange}
           min="0"
+          className="w-8 text-center"
         />
+        <p>초</p>
       </div>
-      <button onClick={handleStart}>시작</button>
-      <button onClick={handleStop}>중지</button>
-      <button onClick={onClose}>닫기</button>
+
+      <button onClick={onClose} className="w-1/4">
+        닫기
+      </button>
     </div>
   );
 });
