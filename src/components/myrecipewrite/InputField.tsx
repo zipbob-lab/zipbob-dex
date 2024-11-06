@@ -18,7 +18,7 @@ import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
 import Pencil from "@images/penWhite.svg";
 import PencilOrange from "@images/penOrange.svg";
-import CloseWirteConfirm from "./closeWirteConfirm";
+import CloseWirteConfirm from "./CloseWirteConfirm";
 
 interface IFormInput {
   recipeMethod: RecipeMethodEnum;
