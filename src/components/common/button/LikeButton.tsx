@@ -5,6 +5,9 @@ import { supabase } from "@/supabase/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { getUserId } from "@/serverActions/profileAction";
 import LoginCheckModal from "../LoginCheckModal";
+import Image from "next/image";
+import LikeFilledIcon from "@images/likeFilled.svg";
+import LikeEmptyIcon from "@images/likeEmpty.svg";
 
 interface LikeButtonProps {
   postId: string;
@@ -122,8 +125,8 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
 
   return (
     <>
-      <button onClick={(e) => handleToggleLikeButton(e)}>
-        {isLike ? "💛" : "🤍"} {likeCount}
+      <button onClick={(e) => handleToggleLikeButton(e)} className="flex items-center justify-center text-body-12 text-Gray-500">
+        <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={24} height={24} /> {likeCount}
       </button>
       {/* 로그인 안 했을 때 나오는 모달*/}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
