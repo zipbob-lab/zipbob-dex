@@ -6,14 +6,16 @@ import RecentRecipe from "@/components/mainPage/RecentRecipe";
 
 export default async function Home() {
   return (
-    <>
-      <Introduce />
-      <div className="flex flex-col items-center p-4">
+    <div className="mx-auto">
+      <div className="flex flex-col">
+        <Introduce />
+      </div>
+      <div className="flex flex-col items-center px-[7.5rem] pt-[6rem]">
         <Ranking />
         <HealthyRecipe />
         <RecentRecipe />
         <RecentComment />
       </div>
-    </>
+    </div>
   );
 }
