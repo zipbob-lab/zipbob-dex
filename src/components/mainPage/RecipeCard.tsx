@@ -5,16 +5,20 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import LikeFilledIcon from "@images/likeFilled.svg";
-import LikeEmptyIcon from "@images/likeEmpty.svg";
-import ScrapEmptyIcon from "@images/scrapEmpty.svg";
 import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
+import LikeButton from "../common/button/LikeButton";
+import ScrapButton from "../common/button/ScrapButton";
+import TrashCanIcon from "@images/trashcan.svg";
 
-const RecipeCard = ({ post }: RecipeCardProps) => {
+interface ExtendedRecipeCardProps extends RecipeCardProps {
+  isEditMode: boolean;
+  onDelete?: (postId: string) => void;
+}
+
+const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardProps) => {
   const [nickname, setNickname] = useState("");
-  const [isUserLiked, setIsUserLiked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
     };
     const fetchIsUserLiked = async () => {
       const userId = await getUserId();
-      const { data, error } = await browserClient
+      const { error } = await browserClient
         .from("LIKE_TABLE")
         .select("*")
         .eq("user_id", userId)
@@ -34,7 +38,6 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
       if (error) {
         throw error;
       }
-      setIsUserLiked(data.length > 0 ? true : false);
     };
     fetchUserProfile();
     fetchIsUserLiked();
@@ -42,14 +45,15 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="relative h-[12rem] w-[12rem]">
+    <div className="flex flex-col gap-3">
+      <div className="aspect-w-1 aspect-h-1 relative min-h-[12rem] min-w-[12rem] overflow-hidden">
         {post.recipe_img_done && (
           <Image
             src={post.recipe_img_done}
             alt="레시피 사진"
-            fill
-            className="cursor-pointer object-cover"
+            layout="fill"
+            objectFit="cover"
+            className="cursor-pointer rounded-[20px] object-cover"
             onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
           />
         )}
@@ -62,16 +66,28 @@ const RecipeCard = ({ post }: RecipeCardProps) => {
           <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
           <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
         </div>
-        <div className="flex gap-2">
-          <div className="flex items-center">
-            <Image src={isUserLiked ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요 상태" />
-            <p className="text-center">{post.like_count}</p>
+
+        {/* 편집 모드 아닐 때 -> LikeButton / ScrapButton 활성화 */}
+        {!isEditMode ? (
+          <div className="flex gap-2">
+            <LikeButton postId={post.post_id} />
+            <ScrapButton postId={post.post_id} />
           </div>
-          <div className="flex items-center">
-            <Image src={ScrapEmptyIcon} alt="스크랩 상태" />
-            <p className="text-center">{post.scrap_count}</p>
-          </div>
-        </div>
+        ) : (
+          // 편집모드일 떄 -> 휴지통모양 생성
+          onDelete && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDelete(post.post_id);
+              }}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <Image src={TrashCanIcon} alt="삭제 아이콘" width={22} height={22} />
+            </button>
+          )
+        )}
       </div>
     </div>
   );

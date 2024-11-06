@@ -3,12 +3,7 @@
 import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import { Trash2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import FireFilledIcon from "@images/fireFilled.svg";
-import FireEmptyIcon from "@images/fireEmpty.svg";
-import TrashCanIcon from "@images/trashcan.svg";
+import RecipeCard from "@/components/mainPage/RecipeCard";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -88,7 +83,7 @@ const ScrapPage = () => {
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 p-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
           {Array.isArray(scraps) &&
             scraps
               .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
@@ -102,45 +97,12 @@ const ScrapPage = () => {
                 }
 
                 return (
-                  <Link href={`/myrecipedetail/${recipeDetail.post_id}`} key={scrap.scrap_id}>
-                    <div key={scrap.scrap_id} className="relative rounded-lg bg-white p-4 shadow">
-                      {recipeDetail.recipe_img_done && (
-                        <Image
-                          src={recipeDetail.recipe_img_done}
-                          alt={recipeDetail.recipe_title}
-                          width={244}
-                          height={244}
-                          className="mb-4 h-48 w-full rounded-md object-cover"
-                        />
-                      )}
-                      <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
-                      <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
-                      <div className="flex">
-                        <Image src={FireFilledIcon} alt="레시피 난이도" />
-                        <Image
-                          src={recipeDetail.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
-                          alt="레시피 난이도"
-                        />
-                        <Image
-                          src={recipeDetail.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
-                          alt="레시피 난이도"
-                        />
-                      </div>
-
-                      {/* 편집 모드일 때만 삭제 아이콘 표시 */}
-                      {isEditMode && (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDeleteScrap(scrap.scrap_id);
-                          }}
-                          className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
-                        >
-                          <Image src={TrashCanIcon} alt="레시피 난이도" width={24} height={24} />
-                        </button>
-                      )}
-                    </div>
-                  </Link>
+                  <RecipeCard
+                    key={scrap.scrap_id}
+                    post={recipeDetail}
+                    isEditMode={isEditMode}
+                    onDelete={handleDeleteScrap}
+                  />
                 );
               })}
         </div>
