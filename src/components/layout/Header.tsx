@@ -4,7 +4,7 @@ import Image from "next/image";
 import MainLogo from "@images/mainLogo.svg";
 import Link from "next/link";
 import AuthStatusBar from "./AuthStatusBar";
-import SearchBar from "@/components/common/searchbar";
+import SearchBar from "@/components/common/search/Searchbar";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
@@ -51,7 +51,8 @@ const Header = () => {
           스크랩한 레시피
         </Link>
       </nav>
-      {pathname !== "/" && <SearchBar />}
+      <div className="flex-grow"></div>
+      {pathname !== "/" && <SearchBar className="mr-4 w-[648px]" />}
       <AuthStatusBar isUser={isUser} />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
