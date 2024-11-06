@@ -138,11 +138,13 @@ const TagFilter: React.FC = () => {
                 <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
                 <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
               </div>
-              {filteredData.length > 0 ? (
-                filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
-              ) : (
-                <p>결과가 없습니다.</p>
-              )}
+              <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[22px]">
+                {filteredData.length > 0 ? (
+                  filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+                ) : (
+                  <p>결과가 없습니다.</p>
+                )}
+              </ul>
             </ul>
           </div>
         )}

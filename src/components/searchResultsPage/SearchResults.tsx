@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
-// import RecipeCard from "@/components/common/search/ListCard";
-import RecipeCard from "@/components/mainPage/RecipeCard";
+import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 
 import Image from "next/image";
@@ -53,10 +52,10 @@ const SearchResult = () => {
       </div>
       <section>
         {recipes.length > 0 ? (
-          <ul>
-            {/* {recipes.map((recipe) => (
-              // <RecipeCard key={recipe.post_id} recipe={recipe} />
-            ))} */}
+          <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[22px]">
+            {recipes.map((recipe) => (
+              <RecipeCard key={recipe.post_id} recipe={recipe} />
+            ))}
           </ul>
         ) : (
           <div>
