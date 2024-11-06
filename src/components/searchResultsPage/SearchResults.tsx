@@ -46,7 +46,7 @@ const SearchResult = () => {
     <div>
       <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
         <p className="text-[20px] font-semibold">
-          "{searchText}" 키워드 검색 결과 {recipes.length}개
+          &quot;{searchText}&quot; 키워드 검색 결과 {recipes.length}개
         </p>
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
@@ -62,7 +62,7 @@ const SearchResult = () => {
             <div className="flex min-h-[50vh] flex-col items-center justify-center">
               <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
               <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
-                "{searchText}" 키워드와 일치하는 레시피가 없습니다.
+                &quot;{searchText}&quot; 키워드와 일치하는 레시피가 없습니다.
               </p>
               <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4 pl-5">
                 <h1 className="mb-4 text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>

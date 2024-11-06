@@ -37,11 +37,6 @@ const TagFilter: React.FC = () => {
         console.error("MY_RECIPE_TABLE 에러", error);
       } else {
         console.log("fetch data result: ", data);
-
-        data.forEach((item) => {
-          item.recipe_ingredients && item.recipe_ingredients.length > 0;
-        });
-
         setData(data as Recipe[]);
         setFilteredData(data as Recipe[]);
       }
