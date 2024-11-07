@@ -6,7 +6,7 @@ import RecentRecipe from "@/components/mainPage/RecentRecipe";
 
 export default async function Home() {
   return (
-    <div className="mx-auto">
+    <div className="mx-auto pb-[9rem]">
       <div className="flex flex-col gap-[4rem]">
         <Introduce />
       </div>
