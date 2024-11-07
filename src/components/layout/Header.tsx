@@ -52,7 +52,7 @@ const Header = () => {
         </Link>
       </nav>
       <div className="flex-grow"></div>
-      {pathname !== "/" && <SearchBar className="mr-4 w-[648px]" />}
+      {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
       <AuthStatusBar isUser={isUser} />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}

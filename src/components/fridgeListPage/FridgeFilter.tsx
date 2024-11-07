@@ -10,6 +10,7 @@ import SortOptions from "@/components/common/search/SortOptions";
 
 import Image from "next/image";
 import SearchPan from "@images/searchPan.svg";
+import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {
   const [data, setData] = useState<Recipe[]>([]);
@@ -123,18 +124,33 @@ const TagFilter: React.FC = () => {
         </div>
         {showResults && (
           <div className="mt-6">
-            <ul>
-              <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
-                <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
-                <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-              </div>
-              <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[22px]">
-                {filteredData.length > 0 ? (
-                  filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
-                ) : (
-                  <p>결과가 없습니다.</p>
-                )}
-              </ul>
+            <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
+              <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
+              <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+            </div>
+            <ul
+              className={`${filteredData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-[42px]`}
+            >
+              {filteredData.length > 0 ? (
+                filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+              ) : (
+                <div className="flex min-h-screen items-center justify-center">
+                  <div className="flex min-h-[40vh] flex-col items-center justify-center">
+                    <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
+                    <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
+                      태그와 일치하는 레시피가 없습니다.
+                    </p>
+                    <ul className="flex h-[152px] w-[548px] flex-col items-center justify-center rounded-2xl bg-stone-100 p-4 pl-5">
+                      <h1 className="mb-4 text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
+                      <li className="text-center text-[16px] text-stone-500">재료명을 다시한번 확인해주세요!</li>
+                      <li className="text-center text-[16px] text-stone-500">구체적인 재료명를 적어주세요!</li>
+                      <li className="text-center text-[16px] text-stone-500">
+                        냉장고 재료와 중복일경우 검색결과가 나오지 않습니다!
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </ul>
           </div>
         )}
