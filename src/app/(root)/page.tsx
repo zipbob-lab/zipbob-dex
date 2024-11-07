@@ -7,7 +7,7 @@ import RecentRecipe from "@/components/mainPage/RecentRecipe";
 export default async function Home() {
   return (
     <div className="flex flex-col items-center p-4">
-      <SearchBar className="max-w-[692px]" isOrangeBorder={true} />
+      <SearchBar className="max-h-[52px] max-w-[692px]" mainSearchBar={true} />
       <Ranking />
       <HealthyRecipe />
       <RecentRecipe />

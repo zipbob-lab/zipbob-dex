@@ -19,7 +19,7 @@ const SearchResult = () => {
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
-        let request = browserClient.from("TEST2_TABLE").select("*").like("recipe_title", `%${searchText}%`);
+        let request = browserClient.from("MY_RECIPE_TABLE").select("*").like("recipe_title", `%${searchText}%`);
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "commnet") {
@@ -46,13 +46,13 @@ const SearchResult = () => {
     <div>
       <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
         <p className="text-[20px] font-semibold">
-          &quot;{searchText}&quot; 키워드 검색 결과 {recipes.length}개
+          &quot;{searchText}&quot; 검색어 결과 {recipes.length}개
         </p>
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       <section>
         {recipes.length > 0 ? (
-          <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[22px]">
+          <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
             {recipes.map((recipe) => (
               <RecipeCard key={recipe.post_id} recipe={recipe} />
             ))}
@@ -68,7 +68,7 @@ const SearchResult = () => {
                 <h1 className="mb-4 text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
                 <li className="text-center text-[16px] text-stone-500">레시피명을 다시 확인해주세요!</li>
                 <li className="text-center text-[16px] text-stone-500">구체적인 키워드를 사용해보세요!</li>
-                <li className="text-center text-[16px] text-stone-500">키워드를 조합해 레시피를 검색해보세요!</li>
+                <li className="mt-1 text-center text-[16px] text-stone-500">키워드를 조합해 레시피를 검색해보세요!</li>
               </ul>
             </div>
             <div className="min-h-[20vh]" />
