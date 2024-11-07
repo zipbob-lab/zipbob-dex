@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import TagFilter from "@/components/fridgeList/FridgeFilter";
+import TagFilter from "@/components/fridgeListPage/FridgeFilter";
 import Timer from "@/components/Timer";
 
 const FridgeListPage = () => {

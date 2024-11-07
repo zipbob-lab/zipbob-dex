@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import { Trash2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import FireFilledIcon from "@images/fireFilled.svg";
-import FireEmptyIcon from "@images/fireEmpty.svg";
+import RecipeCard from "@/components/mainPage/RecipeCard";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -38,28 +34,56 @@ const ScrapPage = () => {
   }, {});
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mt-8 mb-4">스크랩한 레시피</h2>
+    <div className="min-h-screen px-52">
+      <h2 className="mb-3 ml-48 pt-8 text-heading-28">스크랩한 레시피</h2>
 
       {/* 폴더명 리스트 */}
-      <div className="mb-6">
-        <div className="flex gap-2 border-b-2 py-2">
-          <button onClick={() => handleFolderClick(null)}>
-            전체 ({folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0})
+      <div className="mx-48 mb-6">
+        <div className="flex gap-6 border-b-[1px] pt-2">
+          <button
+            onClick={() => handleFolderClick(null)}
+            className={`relative flex w-24 items-center justify-center px-2 pb-1 text-body-16 ${
+              selectedFolder === null ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
+            }`}
+          >
+            전체
+            <span
+              className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
+                selectedFolder === null ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
+              }`}
+            >
+              {folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0}
+            </span>
           </button>
           {existingFolders?.map((folder) => (
-            <button key={folder} onClick={() => handleFolderClick(folder)}>
-              {folder} ({folderScrapCounts ? folderScrapCounts[folder] || 0 : 0})
+            <button
+              key={folder}
+              onClick={() => handleFolderClick(folder)}
+              className={`relative flex items-center px-2 pb-1 text-body-16 ${
+                selectedFolder === folder ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-Gray-500"
+              }`}
+            >
+              {folder}
+              <span
+                className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
+                  selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-200 text-white"
+                }`}
+              >
+                {folderScrapCounts ? folderScrapCounts[folder] || 0 : 0}
+              </span>
             </button>
           ))}
           {/* 편집 버튼 */}
-          <button onClick={toggleEditMode} className="ml-auto">
+          <button
+            onClick={toggleEditMode}
+            className={`ml-auto text-body-16 ${isEditMode ? "font-bold text-Primary-300" : "text-Gray-500"}`}
+          >
             편집
           </button>
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="grid grid-cols-1 mt-8 md:grid-cols-4 gap-4">
+        <div className="mx-4 mt-8 grid grid-cols-2 gap-x-24 gap-y-16 md:grid-cols-4 lg:grid-cols-4">
           {Array.isArray(scraps) &&
             scraps
               .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
@@ -73,45 +97,12 @@ const ScrapPage = () => {
                 }
 
                 return (
-                  <Link href={`/myrecipedetail/${recipeDetail.post_id}`} key={scrap.scrap_id}>
-                    <div key={scrap.scrap_id} className="relative p-4 bg-white rounded-lg shadow">
-                      {recipeDetail.recipe_img_done && (
-                        <Image
-                          src={recipeDetail.recipe_img_done}
-                          alt={recipeDetail.recipe_title}
-                          width={244}
-                          height={244}
-                          className="w-full h-48 object-cover rounded-md mb-4"
-                        />
-                      )}
-                      <h4 className="text-lg font-bold">{recipeDetail.recipe_title}</h4>
-                      <p className="text-sm text-gray-600">{recipeDetail.creator_nickname || "집밥도감 마스터"}</p>
-                      <div className="flex">
-                        <Image src={FireFilledIcon} alt="레시피 난이도" />
-                        <Image
-                          src={recipeDetail.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
-                          alt="레시피 난이도"
-                        />
-                        <Image
-                          src={recipeDetail.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
-                          alt="레시피 난이도"
-                        />
-                      </div>
-
-                      {/* 편집 모드일 때만 삭제 아이콘 표시 */}
-                      {isEditMode && (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDeleteScrap(scrap.scrap_id);
-                          }}
-                          className="absolute bottom-4 right-4 text-gray-500 hover:text-gray-700"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      )}
-                    </div>
-                  </Link>
+                  <RecipeCard
+                    key={scrap.scrap_id}
+                    post={recipeDetail}
+                    isEditMode={isEditMode}
+                    onDelete={handleDeleteScrap}
+                  />
                 );
               })}
         </div>

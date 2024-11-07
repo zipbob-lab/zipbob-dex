@@ -5,10 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { useRouter } from "next/navigation";
 import AccountSet from "../SignUp/AccountSet";
 import UserInfoSet from "../SignUp/UserInfoSet";
+import Image from "next/image";
+import WhitePen from "@images/penWhite.svg";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -31,12 +32,7 @@ const accountSetSchema = z
 const userInfoSetSchema = z.object({
   profileImage: z
     .any()
-    .refine((files) => files?.length == 1, "프로필 이미지를 선택해주세요.")
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `파일 크기는 5MB 이하여야 합니다.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png, .webp 형식의 이미지만 허용됩니다."
-    ),
+    .refine((files) => !files?.[0] || files?.[0]?.size <= MAX_FILE_SIZE, `파일 크기는 5MB 이하여야 합니다.`),
   nickname: z.string().min(2, "2자 이상 입력해주세요.").max(8, "8자 이하로 입력해주세요."),
   introduce: z.string().max(200, "200자 이내로 입력해주세요.")
 });
@@ -52,7 +48,8 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    getValues
+    getValues,
+    setValue
   } = useForm({ mode: "onChange", resolver: zodResolver(combinedSchema) });
   const watchProfileImage = watch("profileImage");
 
@@ -91,7 +88,6 @@ const SignUpForm = () => {
 
   const onNextPage = async () => {
     const formData = getValues();
-    console.log(formData);
 
     try {
       accountSetSchema.parse(formData);
@@ -142,8 +138,8 @@ const SignUpForm = () => {
 
       if (error) throw error;
 
-      alert("회원가입이 완료되었습니다.");
-      router.push("/");
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+      router.push("/login");
     } catch (error) {
       console.error("회원가입 오류:", error);
       alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -151,24 +147,32 @@ const SignUpForm = () => {
   };
 
   return (
-    <form>
+    <form className="w-full">
       {!isNextForm ? (
-        <AccountSet register={register} errors={errors} />
+        <AccountSet register={register} errors={errors} watch={watch} setValue={setValue} />
       ) : (
         <UserInfoSet
+          setPreviewImage={setPreviewImage}
+          setValue={setValue}
+          isProfileSet={!!watch("profileImage")?.length}
           ACCEPTED_IMAGE_TYPES={ACCEPTED_IMAGE_TYPES}
           previewImage={previewImage}
           register={register}
           errors={errors}
+          watch={watch}
         />
       )}
-      <div className="flex justify-center mt-4">
+      <div className="mt-[8.625rem] flex justify-center">
         <button
+          disabled={
+            isNextForm ? !watch("nickname") : !watch("email") || !watch("password") || !watch("confirmPassword")
+          }
           type="button"
-          className="border px-4 py-2 rounded"
+          className={`mt-8 flex w-full justify-center gap-2 rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
-          {isNextForm ? "회원가입" : "다음"}
+          <Image src={WhitePen} alt="로그인 버튼 이미지" />
+          <span className="mr-7">{isNextForm ? "회원가입" : "다음"}</span>
         </button>
       </div>
     </form>

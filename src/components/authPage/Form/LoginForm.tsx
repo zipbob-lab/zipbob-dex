@@ -4,6 +4,9 @@ import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { useStore } from "zustand";
+import WhitePen from "@images/penWhite.svg";
+import Image from "next/image";
+import Link from "next/link";
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm({ mode: "onChange" });
@@ -11,6 +14,13 @@ const LoginForm = () => {
   const { setIsLoggedIn } = useStore(useAuthStore);
 
   const handleLogin = async (value: FieldValues) => {
+    if (!value.email) {
+      alert("이메일을 입력해주세요");
+      return;
+    } else if (!value.password) {
+      alert("비밀번호를 입력해주세요");
+      return;
+    }
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: value.email,
@@ -29,21 +39,28 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-4 mb-2" onSubmit={handleSubmit(handleLogin)}>
-      <h1 className="text-[2rem]">일반 로그인</h1>
-      <input
-        {...register("email")}
-        type="email"
-        placeholder="이메일"
-        className="border border-gray-500 rounded-md p-1"
-      />
-      <input
-        {...register("password")}
-        type="password"
-        placeholder="비밀번호"
-        className="border border-gray-500 rounded-md p-1"
-      />
-      <button>로그인</button>
+    <form className="flex w-full flex-col items-center" onSubmit={handleSubmit(handleLogin)}>
+      <div className="flex w-full flex-col gap-3">
+        <input
+          {...register("email")}
+          type="email"
+          placeholder="이메일"
+          className="rounded-xl border border-Gray-100 px-4 py-3 text-body-16 text-Gray-500"
+        />
+        <input
+          {...register("password")}
+          type="password"
+          placeholder="비밀번호"
+          className="rounded-xl border border-Gray-100 px-4 py-3 text-body-16 text-Gray-500"
+        />
+      </div>
+      <button className="mt-8 flex w-full justify-center gap-2 rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB]">
+        <Image src={WhitePen} alt="로그인 버튼 이미지" />
+        <span className="mr-7">로그인</span>
+      </button>
+      <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium tracking-[0.5px]">
+        회원가입
+      </Link>
     </form>
   );
 };

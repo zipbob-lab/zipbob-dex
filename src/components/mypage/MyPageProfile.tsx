@@ -7,9 +7,12 @@ import { uploadProfileImage } from "@/utils/uploadProfileImage";
 import { useEffect, useState } from "react";
 import EditProfileModal from "./EditProfileModal";
 import Pencil from "@images/pen.svg";
-import UserRank from "../UserRank";
+import PencilWhite from "@images/penWhite.svg";
+
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
+import UserLevelEmoji from "./level/UserLevelEmoji";
+import UserRank from "./level/UserLevel";
 
 interface UserProfile {
   user_id: string;
@@ -23,7 +26,7 @@ const MyPageProfile = () => {
   const [userData, setUserData] = useState<UserProfile | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [userRank, setUserRank] = useState(0);
   useEffect(() => {
     const loadUserProfile = async () => {
       const profileData = await fetchUserProfile();
@@ -34,6 +37,10 @@ const MyPageProfile = () => {
     };
     loadUserProfile();
   }, []);
+
+  const handleRankChange = (rank: number) => {
+    setUserRank(rank); // userRank 상태 업데이트
+  };
 
   // 저장하기 버튼 -> 이미지, 자기소개 모두 저장
   const handleSave = async (nickname: string, introduce: string, file: File | null) => {
@@ -97,38 +104,39 @@ const MyPageProfile = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="flex flex-col justify-evenly items-center bg-gray-100 w-[364px] h-[560px] p-5 rounded-lg shadow-lg">
+    <div className="flex h-[560px] w-[360px] flex-col items-center justify-center rounded-2xl bg-[#FFF6DC] px-16 py-10">
       {userData ? (
         <>
-          <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-gray-300 shadow-sm">
+          <div className="mb-4 h-36 w-36 overflow-hidden rounded-full">
             <Image
               src={userData.user_img || DefaultImage}
               alt={userData.user_nickname}
               width={160}
               height={160}
-              className="object-cover object-center w-full h-full"
+              className="h-full w-full object-cover object-center"
             />
           </div>
 
-          <div className="flex flex-col justify-center items-center text-center">
-            <div className="flex items-center space-x-2">
-              <h3 className="text-lg font-semibold mb-2">{userData.user_nickname}</h3>
-              <button onClick={() => setIsModalOpen(true)} className="ml-1 text-gray-500 hover:text-gray-700">
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="flex items-center justify-center gap-2">
+              {/* UserLevelEmoji 컴포넌트 */}
+              <UserLevelEmoji userRank={userRank} />
+              <h3 className="text-xl font-semibold">{userData.user_nickname}</h3>
+              <button onClick={() => setIsModalOpen(true)} className="text-gray-500 hover:text-gray-700">
                 <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
               </button>
             </div>
-            <p className="text-sm mt-2">{userData.user_introduce}</p>
           </div>
-
           {/* UserRank 컴포넌트 */}
-          <UserRank userId={userData.user_id} />
+          <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
+          <p className="mb-4 text-sm">{userData.user_introduce}</p>
 
-          <Link
-            href="/myrecipewrite"
-            className="mt-5 p-3 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
-          >
-            나만의 레시피 올리기
-          </Link>
+          <div className="text-md mx-3 my-4 flex w-48 items-center justify-center rounded-2xl bg-Primary-300 p-3 text-white">
+            <Link href="/myrecipewrite" className="flex items-center gap-2">
+              <Image src={PencilWhite} width={20} height={20} alt="연필 아이콘" className="inline-block" />
+              <span className="inline-block">나만의 레시피 올리기</span>
+            </Link>
+          </div>
 
           {/* 프로필 수정 모달 */}
           <EditProfileModal

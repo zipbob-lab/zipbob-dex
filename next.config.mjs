@@ -4,6 +4,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "www.foodsafetykorea.go.kr",
+        port: "",
+        pathname: "/**"
+      },
+      {
         protocol: "http",
         hostname: "www.foodsafetykorea.go.kr",
         port: "",
@@ -30,6 +36,12 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "img1.kakaocdn.net",
+        port: "",
+        pathname: "/**"
+      },
+      {
+        protocol: "http",
+        hostname: "k.kakaocdn.net",
         port: "",
         pathname: "/**"
       }

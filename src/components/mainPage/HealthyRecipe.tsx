@@ -6,7 +6,7 @@ import RecipeCard from "./RecipeCard";
 
 const HealthyRecipe = () => {
   const fetchLowKcalPosts = async () => {
-    const { data, error } = await browserClient.from("TEST2_TABLE").select("*").order("recipe_kcal").limit(8);
+    const { data, error } = await browserClient.from("MY_RECIPE_TABLE").select("*").order("recipe_kcal").limit(8);
 
     if (error) {
       console.error("최근 게시글을 불러오는 과정에서 에러 발생" + error);
@@ -34,12 +34,12 @@ const HealthyRecipe = () => {
   }
 
   return (
-    <div className="mt-10 bg-[#FFF6DC] rounded-[64px] max-w-[1000px]">
-      <div className="px-[5rem] py-[2.5rem]">
-        <h1 className="text-[1.6rem] text-Secondary-400">건강하고 맛있는 저칼로리 레시피</h1>
-        <div className="flex gap-[3rem] mt-8 overflow-x-auto">
-          {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
-        </div>
+    <div className="w-full rounded-[2.5rem] bg-[#FFF6DC] px-[5.5rem] py-12">
+      <h1 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Secondary-400">
+        건강하고 맛있는 저칼로리 레시피
+      </h1>
+      <div className="mt-[3.75rem] flex gap-[3rem] overflow-x-auto">
+        {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
       </div>
     </div>
   );

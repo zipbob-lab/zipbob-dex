@@ -2,33 +2,64 @@ import { UserInfoSetProps } from "@/types/auth";
 import Image from "next/image";
 import React from "react";
 import InputField from "../InputField";
+import DefaultProfile from "@images/default-profile.svg";
+import ImageButton from "@images/imageButton.svg";
 
-const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: UserInfoSetProps) => {
+const UserInfoSet = ({
+  ACCEPTED_IMAGE_TYPES,
+  previewImage,
+  register,
+  errors,
+  isProfileSet,
+  setPreviewImage,
+  setValue,
+  watch
+}: UserInfoSetProps) => {
+  console.log(isProfileSet);
+
   return (
     <>
-      <div className="flex flex-col gap-2 mt-4">
-        <div className="relative w-20 h-20">
+      <div className="flex flex-col items-center">
+        <div className="relative">
           <input
             {...register("profileImage")}
             type="file"
             accept={ACCEPTED_IMAGE_TYPES.join(",")}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            className="absolute inset-0 z-10 cursor-pointer opacity-0"
           />
-          <div className="bg-gray-300 w-20 h-20 rounded-full overflow-hidden">
+          <div className="h-[7.5rem] w-[7.5rem] overflow-hidden rounded-full bg-gray-300">
             {previewImage ? (
               <Image
                 src={previewImage.toString()}
-                width={80}
-                height={80}
+                width={120}
+                height={120}
                 alt="프로필 사진"
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">+</div>
+              <Image src={DefaultProfile} alt="기본 프로필" />
             )}
           </div>
+          <Image src={ImageButton} alt="이미지 드롭박스 버튼" className="absolute bottom-0 right-0" />
         </div>
-        {errors.profileImage && <p className="text-red-500">{errors.profileImage.message?.toString()}</p>}
+        <div className="mt-3 h-[0.875rem] text-Primary-300">
+          {isProfileSet && (
+            <button
+              type="button"
+              onClick={() => {
+                setPreviewImage("");
+                setValue("profileImage", null);
+              }}
+            >
+              사진 제거
+            </button>
+          )}
+        </div>
+        <div className="mt-4 h-3">
+          {errors.profileImage && (
+            <p className="text-body-12 text-SystemColor-Red">{errors.profileImage.message?.toString()}</p>
+          )}
+        </div>
       </div>
       <InputField
         register={register}
@@ -37,6 +68,8 @@ const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: U
         placeholder="2자 이상 8자 이하로 입력해주세요."
         type="text"
         errors={errors}
+        isEmpty={!watch("nickname")}
+        setValue={setValue}
       />
       <InputField
         register={register}
@@ -45,6 +78,8 @@ const UserInfoSet = ({ ACCEPTED_IMAGE_TYPES, previewImage, register, errors }: U
         placeholder="200자 이내로 입력해주세요."
         type="text"
         errors={errors}
+        isEmpty={!watch("introduce")}
+        setValue={setValue}
       />
     </>
   );

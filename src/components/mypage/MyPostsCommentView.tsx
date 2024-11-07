@@ -31,22 +31,33 @@ const MyPostsCommentView = () => {
     fetchUserId();
   }, []);
 
-  if (!userId) return <p>Loading...</p>;
+  if (!userId)
+    return <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">잠시만 기다려 주세요</div>;
 
   return (
     <div>
-      <div className="flex gap-3 mb-4 border-b-2 border-gray-200 min-w-[600px]">
+      <div className="flex w-full gap-6 border-b border-gray-100">
         <button
           onClick={() => setActiveTab("recipe")}
-          className={activeTab === "recipe" ? "font-bold border-b-2 border-orange-500" : ""}
+          className={`${
+            activeTab === "recipe" ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-gray-500"
+          } flex items-center gap-1 pb-2`}
         >
-          나만의 레시피 <span className="py-1 px-2 bg-orange-400 text-white rounded-full">{recipeCount}</span>
+          <span className="title-16">나만의 레시피</span>
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+            {recipeCount}
+          </span>
         </button>
         <button
           onClick={() => setActiveTab("review")}
-          className={activeTab === "review" ? "font-bold border-b-2 border-orange-500" : ""}
+          className={`${
+            activeTab === "review" ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-gray-500"
+          } flex items-center gap-1 pb-2`}
         >
-          작성한 후기 <span className="py-1 px-2 bg-orange-400 text-white rounded-full">{commentCount}</span>
+          <span className="title-16">작성한 후기</span>
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+            {commentCount}
+          </span>
         </button>
       </div>
 

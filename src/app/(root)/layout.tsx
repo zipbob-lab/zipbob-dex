@@ -10,12 +10,12 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
       <ProfileDropbox />
-      {children}
+      <div className="flex-1">{children}</div>
       {modal}
       <Footer />
-    </>
+    </div>
   );
 }

@@ -4,9 +4,9 @@ import MyRecipeWrite from "../../myrecipewrite/page";
 
 const RecipeWriteModal = () => {
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div
-        className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[80vh] overflow-y-auto"
+        className="max-h-[80vh] w-full max-w-[1080px] overflow-y-auto rounded-lg bg-Gray-50 px-8 py-12"
         onClick={(e) => e.stopPropagation()}
       >
         <MyRecipeWrite />

@@ -9,6 +9,7 @@ const RecentComment = () => {
     const { data, error } = await browserClient
       .from("COMMENT_TABLE")
       .select("*")
+      .eq("comment_active", true)
       .order("created_at", { ascending: false })
       .limit(6);
 
@@ -38,9 +39,11 @@ const RecentComment = () => {
   }
 
   return (
-    <div className="mt-10">
-      <h1 className="text-[1.6rem] text-Primary-300 text-center">현재 다른 사람들이 도전하고 있는 레시피</h1>
-      <div className="grid grid-cols-2 p-5">
+    <div className="w-full px-[5.5rem]">
+      <h2 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Primary-300">
+        현재 다른 사람들이 도전하고 있는 레시피
+      </h2>
+      <div className="mt-[3.75rem] grid grid-cols-2">
         {comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)}
       </div>
     </div>

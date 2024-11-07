@@ -9,11 +9,11 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         <img
           src={recipe.recipe_img_done}
           alt={recipe.recipe_title}
-          className="w-full h-48 object-cover rounded-md mb-4"
+          className="mb-4 h-48 w-full rounded-md object-cover"
         />
       )}
 
-      <h3 className="text-lg font-semibold mb-2">{recipe.recipe_title}</h3>
+      <h3 className="mb-2 text-lg font-semibold">{recipe.recipe_title}</h3>
       {recipe.creator_nickname || "집밥도감 마스터"}
       <div className="flex justify-end"></div>
     </div>

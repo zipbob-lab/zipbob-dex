@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/supabase/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { getUserId } from "@/serverActions/profileAction";
-import { useRouter } from "next/navigation";
+import LoginCheckModal from "../LoginCheckModal";
+import Image from "next/image";
+import LikeFilledIcon from "@images/likeFilled.svg";
+import LikeEmptyIcon from "@images/likeEmpty.svg";
 
 interface LikeButtonProps {
   postId: string;
@@ -16,8 +19,6 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   const [likeStatusDb, setLikeStatusDb] = useState<string | null>(null);
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
-
-  const router = useRouter();
 
   // 세션 아이디 가져오고 좋아요 상태 확인
   useEffect(() => {
@@ -60,7 +61,11 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
 
     // 좋아요 총 개수 가져오기
-    const { data, error } = await supabase.from("TEST2_TABLE").select("like_count").eq("post_id", postId).maybeSingle();
+    const { data, error } = await supabase
+      .from("MY_RECIPE_TABLE")
+      .select("like_count")
+      .eq("post_id", postId)
+      .maybeSingle();
 
     if (error) {
       console.error("좋아요 개수 가져오기 오류:", error.message);
@@ -90,7 +95,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
       }
 
       await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ like_count: likeCount - 1 })
         .eq("post_id", postId);
 
@@ -112,7 +117,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
       }
 
       await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ like_count: likeCount + 1 })
         .eq("post_id", postId);
 
@@ -122,43 +127,16 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
   };
 
-  // 로그인 모달 닫기
-  const handleCloseModal: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsLoginModal(false);
-  };
-
   return (
     <>
-      <button onClick={(e) => handleToggleLikeButton(e)}>
-        {isLike ? "💛" : "🤍"} {likeCount}
+      <button
+        onClick={(e) => handleToggleLikeButton(e)}
+        className="flex items-center justify-center text-body-12 text-Gray-500"
+      >
+        <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={24} height={24} /> {likeCount}
       </button>
-      {/* 삭제 확인 모달 */}
-      {isLoginModal && (
-        <div
-          className="fixed inset-0 items-center justify-center bg-black bg-opacity-45"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <div className="bg-white p-5 rounded-lg" onClick={(e) => e.stopPropagation()}>
-            <div className="flex flex-col items-center justify-center">
-              <h1 className="font-bold text-lg">로그인이 필요한 서비스예요!</h1>
-              <span>간편하게 로그인하고 좀 더 다양한 기능을 즐겨요</span>
-              <div className="flex flex-row gap-3">
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={handleCloseModal}>
-                  닫기
-                </button>
-                <button className="bg-orange-400 text-white p-2 rounded-lg" onClick={() => router.push("/login")}>
-                  로그인 하러 가기
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 로그인 안 했을 때 나오는 모달*/}
+      {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
     </>
   );
 };
