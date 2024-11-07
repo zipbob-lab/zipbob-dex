@@ -44,7 +44,7 @@ const Header = () => {
         <Link href="/">
           <Image src={MainLogo} width={164} height={80} alt="메인 로고" />
         </Link>
-        <Link href="/fridgeList" className="px-3 py-2 text-body-16 text-Gray-900">
+        <Link href="/fridge-list" className="px-3 py-2 text-body-16 text-Gray-900">
           냉장고 탐험
         </Link>
         <Link href="/scraps" onClick={handleScrapClick} className="px-3 py-2 text-body-16 text-Gray-900">
