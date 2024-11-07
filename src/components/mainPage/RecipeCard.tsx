@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
 import TrashCanIcon from "@images/trashcan.svg";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
   isEditMode?: boolean;
@@ -47,16 +48,14 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
   return (
     <div className="flex flex-col gap-3">
       <div className="aspect-w-1 aspect-h-1 relative min-h-[12rem] min-w-[12rem] overflow-hidden">
-        {post.recipe_img_done && (
-          <Image
-            src={post.recipe_img_done}
-            alt="레시피 사진"
-            layout="fill"
-            objectFit="cover"
-            className="cursor-pointer rounded-[20px] object-cover"
-            onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
-          />
-        )}
+        <Image
+          src={post.recipe_img_done || DefaultImage}
+          alt="레시피 사진"
+          layout="fill"
+          objectFit="cover"
+          className="cursor-pointer rounded-[20px] object-cover"
+          onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
+        />
       </div>
       <p>{post.recipe_title}</p>
       <p className="text-gray-500">{nickname}</p>
