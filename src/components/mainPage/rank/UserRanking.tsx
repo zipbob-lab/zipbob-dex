@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UserRankingProps } from "@/types/main";
 import Image from "next/image";
 import RankingHat from "@images/rankingHat";
+import DefaultImage from "@images/default-profile.svg";
 
 const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   const fetchUserRanking = async () => {
@@ -47,7 +48,12 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
         </div>
         <div className="rounded-3xl p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
           <div className="relative h-[20.5rem] w-[20.5rem]">
-            <Image src={users?.[0].user_img} fill alt="유저 프로필 이미지" className="rounded-3xl object-cover" />
+            <Image
+              src={users?.[0].user_img || DefaultImage}
+              fill
+              alt="유저 프로필 이미지"
+              className="rounded-3xl object-cover"
+            />
           </div>
           <p className="mt-5 text-center text-title-20 text-Gray-900">{users?.[0].user_nickname}</p>
           <p className="mt-4 line-clamp-2 h-10 overflow-hidden text-body-15 text-Gray-500">
@@ -63,7 +69,7 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
         </div>
         <div className="rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
           <div className="relative h-[17.5rem] w-[17.5rem]">
-            <Image src={users?.[1].user_img} fill alt="유저 프로필 이미지" className="rounded-3xl" />
+            <Image src={users?.[1].user_img || DefaultImage} fill alt="유저 프로필 이미지" className="rounded-3xl" />
           </div>
           <p className="mt-4 text-center text-title-18 text-Gray-900">{users?.[1].user_nickname}</p>
           <p className="mt-4 line-clamp-2 h-9 overflow-hidden text-body-14 text-Gray-500">
@@ -79,7 +85,7 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
         </div>
         <div className="rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
           <div className="relative h-[17.5rem] w-[17.5rem]">
-            <Image src={users?.[2].user_img} fill alt="유저 프로필 이미지" className="rounded-3xl" />
+            <Image src={users?.[2].user_img || DefaultImage} fill alt="유저 프로필 이미지" className="rounded-3xl" />
           </div>
           <p className="mt-4 text-center text-title-18 text-Gray-900">{users?.[2].user_nickname}</p>
           <p className="mt-4 line-clamp-2 h-9 overflow-hidden text-body-14 text-Gray-500">
