@@ -110,7 +110,7 @@ const InputField = () => {
   };
 
   const fetchOriginRecipeData = async (postId: string) => {
-    const { data, error } = await supabase.from("TEST2_TABLE").select("*").eq("post_id", postId).single();
+    const { data, error } = await supabase.from("MY_RECIPE_TABLE").select("*").eq("post_id", postId).single();
 
     if (error) {
       console.error("레시피 불러오기 에러", error.message);
@@ -315,7 +315,7 @@ const InputField = () => {
 
       if (isModifyMode) {
         // 수정 모드
-        const { error: updateError } = await supabase.from("TEST2_TABLE").update(recipeData).eq("post_id", postId);
+        const { error: updateError } = await supabase.from("MY_RECIPE_TABLE").update(recipeData).eq("post_id", postId);
         if (updateError) {
           console.error("업데이트 오류", updateError.message);
           return;
@@ -323,7 +323,7 @@ const InputField = () => {
         console.log("업데이트 완료!");
       } else {
         // 작성 모드
-        const { error } = await supabase.from("TEST2_TABLE").insert({ ...recipeData, post_id: uuidv4() });
+        const { error } = await supabase.from("MY_RECIPE_TABLE").insert({ ...recipeData, post_id: uuidv4() });
 
         if (error) {
           console.error("나만의 레시피 INSERT 에러 : ", error.message);

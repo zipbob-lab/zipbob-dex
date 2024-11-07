@@ -141,7 +141,7 @@ const Comments = ({ postId }: PostDataProps) => {
     alert("댓글 삭제 성공!");
 
     const { error: countError } = await supabase
-      .from("TEST2_TABLE")
+      .from("MY_RECIPE_TABLE")
       .update({ comment_count: totalComments - 1 })
       .eq("post_id", postId);
 
@@ -173,7 +173,7 @@ const Comments = ({ postId }: PostDataProps) => {
       return error;
     } else {
       const { error: countError } = await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ comment_count: totalComments + 1 })
         .eq("post_id", postId);
       if (countError) {

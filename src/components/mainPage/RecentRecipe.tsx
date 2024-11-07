@@ -7,7 +7,7 @@ import RecipeCard from "./RecipeCard";
 const RecentRecipe = () => {
   const fetchRecentPosts = async () => {
     const { data, error } = await browserClient
-      .from("TEST2_TABLE")
+      .from("MY_RECIPE_TABLE")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(8);

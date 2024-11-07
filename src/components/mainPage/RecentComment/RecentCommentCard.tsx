@@ -14,7 +14,11 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   const [nickname, setNickname] = useState("");
   const router = useRouter();
   const fetchPosts = async () => {
-    const { data, error } = await browserClient.from("TEST2_TABLE").select("*").eq("post_id", comment.post_id).single();
+    const { data, error } = await browserClient
+      .from("MY_RECIPE_TABLE")
+      .select("*")
+      .eq("post_id", comment.post_id)
+      .single();
 
     if (error) {
       console.error("게시글을 불러오는 과정에서 에러 발생" + error);
