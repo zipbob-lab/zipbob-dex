@@ -14,11 +14,11 @@ interface KeyInterface {
 
 interface SearchBarProps {
   className?: string;
-  isOrangeBorder?: boolean; // 새로운 prop 추가
+  mainSearchBar?: boolean;
 }
 
 // 상태 설정
-const SearchBar: React.FC<SearchBarProps> = ({ className = "", isOrangeBorder = false }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = false }) => {
   const [keywords, setKeywords] = useState<KeyInterface[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -81,7 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", isOrangeBorder = 
   };
 
   return (
-    <div className={`relative mx-auto w-full max-w-[648px] ${className}`}>
+    <div className={`relative mx-auto max-h-[52px] w-full max-w-[648px] ${className}`}>
       <form onSubmit={handleSearchSubmit} className="relative">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 transform">
           <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
@@ -93,10 +93,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", isOrangeBorder = 
           onFocus={() => setIsDropdownVisible(true)}
           onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
           placeholder="메뉴나 재료 이름을 검색해보세요!"
-          className={`h-[48px] w-full rounded-3xl border-2 px-12 py-2 focus:outline-none ${
-            isOrangeBorder ? "focus:border-[#ff9143]" : "border-gray-300 focus:border-stone-400"
+          className={`${
+            mainSearchBar ? "h-[52px]" : "h-[48px]"
+          } w-full rounded-full border-2 px-12 py-2 focus:outline-none ${
+            mainSearchBar ? "focus:border-[#ff9143]" : "border-gray-300 focus:border-stone-400"
           }`}
-          style={isOrangeBorder ? { borderColor: "#ff9143" } : {}}
+          style={mainSearchBar ? { borderColor: "#ff9143" } : {}}
         />
         <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 transform text-stone-500">
           검색

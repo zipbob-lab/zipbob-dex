@@ -57,7 +57,7 @@ const UserInfoSet = ({
         </div>
         <div className="mt-4 h-3">
           {errors.profileImage && (
-            <p className="text-SystemColor-Red text-body-12">{errors.profileImage.message?.toString()}</p>
+            <p className="text-body-12 text-SystemColor-Red">{errors.profileImage.message?.toString()}</p>
           )}
         </div>
       </div>

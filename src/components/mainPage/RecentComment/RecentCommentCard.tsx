@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import { RecentCommentCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
 
 const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   const [nickname, setNickname] = useState("");
@@ -49,17 +50,17 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
 
   if (post) {
     return (
-      <div className="flex w-[500px] gap-3 p-3">
-        <div className="relative h-[8rem] w-[8rem]">
+      <div className="flex gap-4 p-4">
+        <div className="relative h-[7.5rem] w-[7.5rem]">
           <Image
-            src={post.recipe_img_done}
+            src={post.recipe_img_done || DefaultImage}
             alt="레시피 사진"
             fill
-            className="cursor-pointer object-cover"
+            className="cursor-pointer rounded-2xl object-cover"
             onClick={() => router.push(`myrecipedetail/${post.post_id}`)}
           />
         </div>
-        <div className="flex w-[calc(100%-12rem-3rem)] flex-col justify-between">
+        <div className="flex w-[calc(100%-7.5rem-3rem)] flex-col justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="flex">
@@ -67,11 +68,11 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
                 <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
                 <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
               </div>
-              <p>{post.recipe_title}</p>
+              <p className="text-title-16 text-Gray-900">{post.recipe_title}</p>
             </div>
-            <p className="text-Gray-500">{comment.comment}</p>
+            <p className="text-r-body-15 line-clamp-2 overflow-hidden text-Gray-500">{comment.comment}</p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-body-13 text-Gray-300">
             <p>{nickname}</p>
             <p>{comment.created_at.slice(0, 10)}</p>
           </div>

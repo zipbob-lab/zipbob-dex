@@ -37,7 +37,9 @@ const Header = () => {
   };
 
   return (
-    <header className="box-border flex items-center justify-between border-b border-b-[#EAEAEA] px-5 py-2">
+    <header
+      className={`box-border flex items-center justify-between ${pathname === "/" ? "bg-Secondary-100" : "border-b border-[#EAEAEA]"} px-5 py-2`}
+    >
       <nav className="flex items-center gap-8">
         <Link href="/">
           <Image src={MainLogo} width={164} height={80} alt="메인 로고" />
@@ -45,12 +47,12 @@ const Header = () => {
         <Link href="/fridgeList" className="px-3 py-2 text-body-16 text-Gray-900">
           냉장고 탐험
         </Link>
-        <a href="/scraps" onClick={handleScrapClick} className="px-3 py-2 text-body-16 text-Gray-900">
+        <Link href="/scraps" onClick={handleScrapClick} className="px-3 py-2 text-body-16 text-Gray-900">
           스크랩한 레시피
-        </a>
+        </Link>
       </nav>
       <div className="flex-grow"></div>
-      {pathname !== "/" && <SearchBar className="mr-4 w-[648px]" />}
+      {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
       <AuthStatusBar isUser={isUser} />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
