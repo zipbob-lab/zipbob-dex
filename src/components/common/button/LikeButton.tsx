@@ -61,7 +61,11 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
     }
 
     // 좋아요 총 개수 가져오기
-    const { data, error } = await supabase.from("TEST2_TABLE").select("like_count").eq("post_id", postId).maybeSingle();
+    const { data, error } = await supabase
+      .from("MY_RECIPE_TABLE")
+      .select("like_count")
+      .eq("post_id", postId)
+      .maybeSingle();
 
     if (error) {
       console.error("좋아요 개수 가져오기 오류:", error.message);
@@ -91,7 +95,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
       }
 
       await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ like_count: likeCount - 1 })
         .eq("post_id", postId);
 
@@ -113,7 +117,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
       }
 
       await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ like_count: likeCount + 1 })
         .eq("post_id", postId);
 
@@ -125,7 +129,10 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
 
   return (
     <>
-      <button onClick={(e) => handleToggleLikeButton(e)} className="flex items-center justify-center text-body-12 text-Gray-500">
+      <button
+        onClick={(e) => handleToggleLikeButton(e)}
+        className="flex items-center justify-center text-body-12 text-Gray-500"
+      >
         <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={24} height={24} /> {likeCount}
       </button>
       {/* 로그인 안 했을 때 나오는 모달*/}

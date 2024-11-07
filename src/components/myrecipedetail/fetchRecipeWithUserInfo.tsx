@@ -2,7 +2,7 @@ import { supabase } from "@/supabase/supabase";
 
 export const fetchRecipeWithUserInfo = async (postId: string) => {
   const { data, error } = await supabase
-    .from("TEST2_TABLE")
+    .from("MY_RECIPE_TABLE")
     .select(`*, USER_TABLE(user_id, user_nickname, user_introduce, user_img, user_rank)`)
     .eq("post_id", postId)
     .single();
