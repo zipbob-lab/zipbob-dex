@@ -4,7 +4,7 @@ import Pencil from "@images/pen.svg";
 import Image from "next/image";
 import CloseX from "@images/closeX.svg";
 import ImageButton from "@images/imageButton.svg";
-import DeleteButton from "@images/trashcan.svg";
+import DeleteButton from "@images/trashCan.svg";
 
 interface EditProfileModalProps {
   isOpen: boolean;

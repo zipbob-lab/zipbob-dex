@@ -10,7 +10,7 @@ import { RecipeCardProps } from "@/types/Main";
 import { useRouter } from "next/navigation";
 import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
-import TrashCanIcon from "@images/trashcan.svg";
+import TrashCanIcon from "@images/trashCan.svg";
 import DefaultImage from "@images/defaultRecipeImage2.svg";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
