@@ -60,8 +60,10 @@ const config: Config = {
         "title-18": ["18px", { lineHeight: "125%", fontWeight: "600" }],
         "title-16": ["16px", { lineHeight: "135%", fontWeight: "600" }],
         "title-14": ["14px", { lineHeight: "125%", fontWeight: "600" }],
+        "body-20": ["20px", { lineHeight: "125%", fontWeight: "500" }],
         "body-18": ["18px", { lineHeight: "125%", fontWeight: "500" }],
         "body-16": ["16px", { lineHeight: "135%", fontWeight: "500" }],
+        "body-15": ["15px", { lineHeight: "135%", fontWeight: "500" }],
         "body-14": ["14px", { lineHeight: "135%", fontWeight: "500" }],
         "body-13": ["13px", { lineHeight: "135%", fontWeight: "500" }],
         "body-12": ["12px", { lineHeight: "140%", fontWeight: "500" }],
@@ -69,6 +71,7 @@ const config: Config = {
         "caption-12": ["12px", { lineHeight: "140%", fontWeight: "300" }],
         "caption-11": ["11px", { lineHeight: "135%", fontWeight: "300" }],
         "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }],
+        "r-body-15": ["15px", { lineHeight: "135%", fontWeight: "400" }],
         "r-body-14": ["14px", { lineHeight: "130%", fontWeight: "400" }]
       },
       fontFamily: {
