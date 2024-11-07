@@ -38,12 +38,12 @@ const RecentRecipe = () => {
   }
 
   return (
-    <div className="mt-10 max-w-[1000px] rounded-[64px] bg-[#FFE8D8]">
-      <div className="px-[5rem] py-[2.5rem]">
-        <h1 className="text-[1.6rem] text-Primary-300">최근에 올라온 레시피</h1>
-        <div className="mt-8 flex gap-[3rem] overflow-x-auto">
-          {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
-        </div>
+    <div className="w-full rounded-[2.5rem] bg-[#FFE8D8] px-[5.5rem] py-12">
+      <h1 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Primary-300">
+        최근에 올라온 레시피
+      </h1>
+      <div className="mt-[3.75rem] flex gap-[3rem] overflow-x-auto">
+        {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
       </div>
     </div>
   );
