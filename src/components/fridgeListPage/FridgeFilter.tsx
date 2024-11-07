@@ -7,9 +7,8 @@ import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Recipe";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
-
 import Image from "next/image";
-import SearchPan from "@images/searchPan.svg";
+import SearchPan from "@images/pen.svg";
 import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {

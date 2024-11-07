@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { CommentExp } from "./CommentExp";
-import CommentGrayLine from "@images/comment/commentGrayLine.svg";
-import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
+import CommentGrayLine from "@images/grayLine.svg"; //1
+import CommentGrayLine2 from "@images/grayLine.svg"; //2
 import CommentDropBox from "./CommentDropBox";
 
 interface CommentFormInput {
@@ -141,7 +141,7 @@ const Comments = ({ postId }: PostDataProps) => {
     alert("댓글 삭제 성공!");
 
     const { error: countError } = await supabase
-      .from("TEST2_TABLE")
+      .from("MY_RECIPE_TABLE")
       .update({ comment_count: totalComments - 1 })
       .eq("post_id", postId);
 
@@ -173,7 +173,7 @@ const Comments = ({ postId }: PostDataProps) => {
       return error;
     } else {
       const { error: countError } = await supabase
-        .from("TEST2_TABLE")
+        .from("MY_RECIPE_TABLE")
         .update({ comment_count: totalComments + 1 })
         .eq("post_id", postId);
       if (countError) {

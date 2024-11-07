@@ -1,5 +1,5 @@
-import MyPageProfile from "@/components/mypage/MyPageProfile";
-import MyPostsCommentView from "@/components/mypage/MyPostsCommentView";
+import MyPageProfile from "@/components/myPage/MyPageProfile";
+import MyPostsCommentView from "@/components/myPage/MyPostsCommentView";
 import React from "react";
 import Image from "next/image";
 import ForkKnife from "@images/forkKnife.svg";

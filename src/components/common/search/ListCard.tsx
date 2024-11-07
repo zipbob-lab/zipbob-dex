@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Recipe } from "@/types/Recipe";
 
 import Image from "next/image";
-import LikeCount from "@images/likeCount.svg";
-import ScrapCount from "@images/scrapCount.svg";
+import LikeCount from "@images/likeEmpty.svg";
+import ScrapCount from "@images/scrapEmpty.svg";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireFilled.svg";
 

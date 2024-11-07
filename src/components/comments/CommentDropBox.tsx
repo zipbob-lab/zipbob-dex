@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import MoreVerticalIcon from "@images/comment/moreVertical.svg";
+import MoreVerticalIcon from "@images/moreVertical.svg";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 
 interface CommentDropBoxProps {

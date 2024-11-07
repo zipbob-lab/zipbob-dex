@@ -1,5 +1,5 @@
-import { InputFieldProps } from "@/types/auth";
-import DeleteInput from "@images/deleteInput.svg";
+import { InputFieldProps } from "@/types/Auth";
+import DeleteInput from "@images/closeX.svg";
 import Image from "next/image";
 
 const InputField = ({ register, label, name, placeholder, type, errors, isEmpty, setValue }: InputFieldProps) => {
@@ -28,7 +28,7 @@ const InputField = ({ register, label, name, placeholder, type, errors, isEmpty,
         )}
       </div>
       <div className="mt-1 h-3">
-        {errors[name] && <p className="text-SystemColor-Red pl-1 text-body-12">{errors[name].message?.toString()}</p>}
+        {errors[name] && <p className="pl-1 text-body-12 text-SystemColor-Red">{errors[name].message?.toString()}</p>}
       </div>
     </div>
   );

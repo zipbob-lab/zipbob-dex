@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MouseEvent } from "react";
-import Pencil from "@images/penWhite.svg";
-import PencilOrange from "@images/penOrange.svg";
+import Pencil from "@images/pen.svg";
+import PencilOrange from "@images/pen.svg";
 interface LoginModalProps {
   onClose: () => void;
 }

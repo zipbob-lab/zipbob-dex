@@ -1,4 +1,4 @@
-import { UserRankingProps } from "@/types/main";
+import { UserRankingProps } from "@/types/Main";
 import { useQuery } from "@tanstack/react-query";
 import browserClient from "@/supabase/client";
 import RankingHat from "@images/rankingHat";
