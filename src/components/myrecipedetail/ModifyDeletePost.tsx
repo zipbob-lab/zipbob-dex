@@ -34,7 +34,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   // 삭제
   const handleDeletePost = async () => {
     const { error: deleteError, count } = await supabase
-      .from("TEST2_TABLE")
+      .from("MY_RECIPE_TABLE")
       .delete({ count: "exact" }) // 실제 삭제가 된 행의 개수를 반환
       .eq("post_id", postId)
       .eq("user_id", loginSessionId);

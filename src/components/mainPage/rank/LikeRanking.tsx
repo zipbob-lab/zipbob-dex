@@ -6,7 +6,7 @@ import browserClient from "@/supabase/client";
 const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   const fetchPosts = async () => {
     const { data, error } = await browserClient
-      .from("TEST2_TABLE")
+      .from("MY_RECIPE_TABLE")
       .select("*")
       .order("like_count", { ascending: false })
       .limit(3);

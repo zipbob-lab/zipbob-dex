@@ -6,7 +6,7 @@ import RecipeCard from "./RecipeCard";
 
 const HealthyRecipe = () => {
   const fetchLowKcalPosts = async () => {
-    const { data, error } = await browserClient.from("TEST2_TABLE").select("*").order("recipe_kcal").limit(8);
+    const { data, error } = await browserClient.from("MY_RECIPE_TABLE").select("*").order("recipe_kcal").limit(8);
 
     if (error) {
       console.error("최근 게시글을 불러오는 과정에서 에러 발생" + error);

@@ -19,7 +19,7 @@ const SearchResult = () => {
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
-        let request = browserClient.from("TEST2_TABLE").select("*").like("recipe_title", `%${searchText}%`);
+        let request = browserClient.from("MY_RECIPE_TABLE").select("*").like("recipe_title", `%${searchText}%`);
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "commnet") {
