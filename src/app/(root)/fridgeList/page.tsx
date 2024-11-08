@@ -2,7 +2,7 @@
 
 // import React, { useState } from "react";
 import TagFilter from "@/components/fridgeListPage/FridgeFilter";
-import Timer from "@/components/Timer";
+// import Timer from "@/components/Timer";
 
 const FridgeListPage = () => {
   // const [modal, setModal] = useState(false);
