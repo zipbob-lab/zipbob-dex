@@ -7,9 +7,9 @@ import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
-import { RecentCommentCardProps } from "@/types/main";
+import { RecentCommentCardProps } from "@/types/Main";
 import { useRouter } from "next/navigation";
-import DefaultImage from "@images/myrecipe/imageFile.svg";
+import DefaultImage from "@images/defaultRecipeImage2.svg";
 
 const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   const [nickname, setNickname] = useState("");

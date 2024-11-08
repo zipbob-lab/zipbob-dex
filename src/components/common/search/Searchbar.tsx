@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import MainSearch from "@images/mainSearch.svg";
-import Subsearch from "@images/subSearch.svg";
-import Delete from "@images/subDelete.svg";
+import Subsearch from "@images/mainSearch.svg";
+import Delete from "@images/closeX.svg";
 
 interface KeyInterface {
   id: number;

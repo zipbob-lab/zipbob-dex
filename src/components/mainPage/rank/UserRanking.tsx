@@ -1,6 +1,6 @@
 import { supabase } from "@/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
-import { UserRankingProps } from "@/types/main";
+import { UserRankingProps } from "@/types/Main";
 import Image from "next/image";
 import RankingHat from "@images/rankingHat";
 import DefaultImage from "@images/default-profile.svg";

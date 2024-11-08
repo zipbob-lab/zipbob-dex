@@ -2,7 +2,7 @@
 
 import browserClient from "@/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import RecipeCard from "./RecipeCard";
+import RecipeCard from "../common/RecipeCard";
 
 const RecentRecipe = () => {
   const fetchRecentPosts = async () => {

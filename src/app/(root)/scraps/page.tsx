@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
-import RecipeCard from "@/components/mainPage/RecipeCard";
+import RecipeCard from "@/components/common/RecipeCard";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();

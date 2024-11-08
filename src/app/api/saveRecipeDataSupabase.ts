@@ -35,7 +35,7 @@
 //   }));
 //   const serverClient = createClient();
 
-//   const { error } = await serverClient.from("TEST2_TABLE").insert(saveData);
+//   const { error } = await serverClient.from("MY_RECIPE_TABLE").insert(saveData);
 
 //   if (error) {
 //     console.error("저장오류:", error.message);

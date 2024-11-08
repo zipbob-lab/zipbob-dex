@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-
 import Image from "next/image";
-import TagDelete from "@images/tagDelete.svg";
+import TagDelete from "@images/closeX.svg";
 
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
