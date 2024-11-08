@@ -11,7 +11,7 @@ const LoginPage = () => {
   return (
     <div className="-mt-3 flex h-screen flex-col items-center justify-center">
       <div className="flex w-[520px] flex-col items-center gap-14 rounded-3xl px-10 py-[4rem] shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
-        <Image src={LoginLogo} alt="집밥도감 로고" />
+        <Image src={LoginLogo} alt="집밥도감" />
         <LoginForm />
         <div className="flex flex-col items-center">
           <p className="text-body-14 text-[#777]">SNS로 로그인/회원가입</p>
