@@ -5,6 +5,7 @@ import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
 import DeleteCheckModal from "@/components/common/modal/DeleteCheckModal";
+import EmptyContent from "@/components/common/EmptyContent";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -17,7 +18,6 @@ const ScrapPage = () => {
     setSelectedFolder(folder);
   };
 
-  // 편집 모드 토글 함수
   const toggleEditMode = () => {
     setIsEditMode((prev) => !prev);
   };
@@ -26,6 +26,7 @@ const ScrapPage = () => {
     setScrapToDelete(scrapId);
     setIsDeleteModalOpen(true);
   };
+
   const confirmDeleteScrap = async () => {
     if (scrapToDelete) {
       await deleteScrap(scrapToDelete);
@@ -35,13 +36,16 @@ const ScrapPage = () => {
     setIsDeleteModalOpen(false);
   };
 
-  // 폴더별 스크랩 개수를 즉시 계산
   const folderScrapCounts = scraps?.reduce((counts: { [key: string]: number }, scrap) => {
     const folder = scrap.folder_name || "전체";
     counts[folder] = (counts[folder] || 0) + 1;
     counts["전체"] = (counts["전체"] || 0) + 1;
     return counts;
   }, {});
+
+  const filteredScraps = Array.isArray(scraps)
+    ? scraps.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
+    : [];
 
   return (
     <div className="min-h-screen px-52">
@@ -83,7 +87,6 @@ const ScrapPage = () => {
               </span>
             </button>
           ))}
-          {/* 편집 버튼 */}
           <button
             onClick={toggleEditMode}
             className={`ml-auto text-body-16 ${isEditMode ? "font-bold text-Primary-300" : "text-Gray-500"}`}
@@ -93,29 +96,35 @@ const ScrapPage = () => {
         </div>
 
         {/* 해당 폴더의 레시피 리스트 */}
-        <div className="mx-4 mt-8 grid grid-cols-2 gap-x-24 gap-y-16 md:grid-cols-4 lg:grid-cols-4">
-          {Array.isArray(scraps) &&
-            scraps
-              .filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
-              .map((scrap) => {
-                let recipeDetail;
-                try {
-                  recipeDetail = JSON.parse(scrap.scraped_recipe);
-                } catch (e) {
-                  console.error("스크랩 데이터 파싱 중 오류 발생", e);
-                  return null;
-                }
+        {filteredScraps.length === 0 ? (
+          <EmptyContent message="아직 스크랩한 레시피가 없어요!">
+            <ul className="text-body-16 text-Gray-500">
+              <li>· 집밥도감만의 레시피를 스크랩해 보세요.</li>
+              <li>· 집밥도감 유저들이 올린 레시피를 스크랩해 보세요.</li>
+            </ul>
+          </EmptyContent>
+        ) : (
+          <div className="mx-4 mt-8 grid grid-cols-2 gap-x-24 gap-y-16 md:grid-cols-4 lg:grid-cols-4">
+            {filteredScraps.map((scrap) => {
+              let recipeDetail;
+              try {
+                recipeDetail = JSON.parse(scrap.scraped_recipe);
+              } catch (e) {
+                console.error("스크랩 데이터 파싱 중 오류 발생", e);
+                return null;
+              }
 
-                return (
-                  <RecipeCard
-                    key={scrap.scrap_id}
-                    post={recipeDetail}
-                    isEditMode={isEditMode}
-                    onDelete={() => handleDeleteClick(scrap.scrap_id)}
-                  />
-                );
-              })}
-        </div>
+              return (
+                <RecipeCard
+                  key={scrap.scrap_id}
+                  post={recipeDetail}
+                  isEditMode={isEditMode}
+                  onDelete={() => handleDeleteClick(scrap.scrap_id)}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* 삭제 확인 모달 */}
