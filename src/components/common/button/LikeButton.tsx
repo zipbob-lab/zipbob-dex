@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/supabase/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { getUserId } from "@/serverActions/profileAction";
-import LoginCheckModal from "../LoginCheckModal";
+import LoginCheckModal from "../modal/LoginCheckModal";
 import Image from "next/image";
 import LikeFilledIcon from "@images/likeFilled.svg";
 import LikeEmptyIcon from "@images/likeEmpty.svg";

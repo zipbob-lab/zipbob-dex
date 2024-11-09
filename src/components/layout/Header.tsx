@@ -8,7 +8,7 @@ import SearchBar from "@/components/common/search/Searchbar";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
-import LoginCheckModal from "../common/LoginCheckModal";
+import LoginCheckModal from "../common/modal/LoginCheckModal";
 
 const Header = () => {
   const [isUser, setIsUser] = useState(false);

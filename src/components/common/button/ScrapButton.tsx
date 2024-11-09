@@ -8,7 +8,7 @@ import ScrapModal from "../../scraps/ScrapModal";
 import CustomToast from "@/components/scraps/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
-import LoginCheckModal from "../LoginCheckModal";
+import LoginCheckModal from "../modal/LoginCheckModal";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
