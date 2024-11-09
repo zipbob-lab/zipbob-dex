@@ -1,8 +1,9 @@
-import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import { useScrapStore } from "@/store/scrapStore";
 import { getUserId } from "@/serverActions/profileAction";
 import { useEffect } from "react";
+import { Scrap, UseScrapData } from "@/types/Scraps";
 
 // 폴더 목록을 가져오는 함수
 const fetchFolders = async (userId: string): Promise<string[]> => {
@@ -45,26 +46,6 @@ const deleteScrapDB = async (recipeId: string, userId: string): Promise<void> =>
   const { error } = await supabase.from("SCRAP_TABLE").delete().eq("scrap_id", recipeId).eq("user_id", userId);
   if (error) throw new Error(error.message);
 };
-
-interface Scrap {
-  scrap_id: string;
-  folder_name: string;
-  scraped_recipe: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface UseScrapData {
-  existingFolders: string[] | undefined;
-  scraps: Scrap[] | undefined;
-  refetchFolders: () => void;
-  refetchScraps: () => void;
-  incrementScrapCount: (recipeId: string) => Promise<boolean>;
-  saveScrap: (params: { recipeId: string; folderName: string }) => Promise<boolean>;
-  deleteScrap: (recipeId: string) => Promise<boolean>;
-  isAlreadyScrapped: (recipeId: string) => Promise<boolean>;
-  useFetchScrapCount: (recipeId: string) => UseQueryResult<number>;
-}
 
 // useScrapData 훅 정의
 export const useScrapData = (): UseScrapData => {
@@ -189,7 +170,6 @@ export const useScrapData = (): UseScrapData => {
         created_at: new Date(),
         updated_at: new Date()
       });
-      console.log("폴더명 확인", folderName);
 
       if (insertError) throw new Error(insertError.message);
 
