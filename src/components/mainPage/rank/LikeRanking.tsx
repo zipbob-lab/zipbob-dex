@@ -122,7 +122,7 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
           <div>
             <p className="text-title-18 text-Gray-900">{posts?.[1].recipe_title}</p>
             <p className="mt-1 h-[1.1375rem] text-[0.875rem] font-medium leading-[130%] text-Gray-500">
-              {userNickname[1]}
+              {userNickname[2]}
             </p>
             <div className="mt-3 flex justify-between">
               <div className="flex">
@@ -157,7 +157,7 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
           <div>
             <p className="text-title-18 text-Gray-900">{posts?.[2].recipe_title}</p>
             <p className="mt-1 h-[1.1375rem] text-[0.875rem] font-medium leading-[130%] text-Gray-500">
-              {userNickname[2]}
+              {userNickname[3]}
             </p>
             <div className="mt-3 flex justify-between">
               <div className="flex">
