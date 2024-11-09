@@ -15,6 +15,7 @@ export default function RootLayout({
       <ProfileDropbox />
       <div className="flex-1">{children}</div>
       {modal}
+      <div id="modal-root"></div>
       <Footer />
     </div>
   );
