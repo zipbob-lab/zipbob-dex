@@ -10,26 +10,19 @@ import { useDropboxStore } from "@/store/dropboxStore";
 import { useAuthStore } from "@/store/authStore";
 import DefaultProfile from "@images/default-profile.svg";
 
-type AuthStatusBarProps = {
-  isUser: boolean;
-};
-
-const AuthStatusBar = ({ isUser }: AuthStatusBarProps) => {
+const AuthStatusBar = () => {
   const [userProfile, setUserProfile] = useState("");
   const { isOpen, setIsOpen } = useStore(useDropboxStore);
-  const { isLoggedIn, setIsLoggedIn } = useStore(useAuthStore);
+  const { isLoggedIn } = useStore(useAuthStore);
 
   useEffect(() => {
-    if (isUser) {
-      setIsLoggedIn(true);
-    }
     const getUserProfile = async () => {
       const profileUrl = await fetchUserProfile();
       setUserProfile(profileUrl?.user_img || DefaultProfile);
     };
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUser]);
+  }, []);
 
   return (
     <>

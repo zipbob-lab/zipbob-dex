@@ -13,7 +13,7 @@ export default function RootLayout({
     <div className="flex min-h-screen flex-col">
       <Header />
       <ProfileDropbox />
-      <div className="flex-1">{children}</div>
+      <div>{children}</div>
       {modal}
       <Footer />
     </div>

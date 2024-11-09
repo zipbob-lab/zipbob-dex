@@ -9,10 +9,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
 import LoginCheckModal from "../common/LoginCheckModal";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 const Header = () => {
-  const [isUser, setIsUser] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
+  const { setIsLoggedIn, setUserId } = useStore(useAuthStore);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -20,7 +22,8 @@ const Header = () => {
     const getUser = async () => {
       const userId = await getUserId();
       if (userId) {
-        setIsUser(true);
+        setIsLoggedIn(true);
+        setUserId(userId);
       }
     };
     getUser();
@@ -53,7 +56,7 @@ const Header = () => {
       </nav>
       <div className="flex-grow"></div>
       {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
-      <AuthStatusBar isUser={isUser} />
+      <AuthStatusBar />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
     </header>
