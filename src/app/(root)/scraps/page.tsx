@@ -4,11 +4,14 @@ import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
+import DeleteCheckModal from "@/components/common/modal/DeleteCheckModal";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
   const { existingFolders, scraps, deleteScrap, refetchFolders } = useScrapData();
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [scrapToDelete, setScrapToDelete] = useState<string | null>(null);
 
   const handleFolderClick = (folder: string | null) => {
     setSelectedFolder(folder);
@@ -19,10 +22,17 @@ const ScrapPage = () => {
     setIsEditMode((prev) => !prev);
   };
 
-  // 게시글이 전부 삭제되면 폴더도 바로 안 보여지기
-  const handleDeleteScrap = async (scrapId: string) => {
-    await deleteScrap(scrapId);
-    refetchFolders();
+  const handleDeleteClick = (scrapId: string) => {
+    setScrapToDelete(scrapId);
+    setIsDeleteModalOpen(true);
+  };
+  const confirmDeleteScrap = async () => {
+    if (scrapToDelete) {
+      await deleteScrap(scrapToDelete);
+      refetchFolders();
+      setScrapToDelete(null);
+    }
+    setIsDeleteModalOpen(false);
   };
 
   // 폴더별 스크랩 개수를 즉시 계산
@@ -35,7 +45,7 @@ const ScrapPage = () => {
 
   return (
     <div className="min-h-screen px-52">
-      <h2 className="mb-3 ml-48 pt-8 text-heading-28">스크랩한 레시피</h2>
+      <h1 className="mb-3 ml-48 pt-8 text-heading-28">스크랩한 레시피</h1>
 
       {/* 폴더명 리스트 */}
       <div className="mx-48 mb-6">
@@ -101,12 +111,19 @@ const ScrapPage = () => {
                     key={scrap.scrap_id}
                     post={recipeDetail}
                     isEditMode={isEditMode}
-                    onDelete={handleDeleteScrap}
+                    onDelete={() => handleDeleteClick(scrap.scrap_id)}
                   />
                 );
               })}
         </div>
       </div>
+
+      {/* 삭제 확인 모달 */}
+      <DeleteCheckModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={confirmDeleteScrap}
+      />
     </div>
   );
 };
