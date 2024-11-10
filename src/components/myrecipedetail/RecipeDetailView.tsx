@@ -3,7 +3,6 @@ import Image from "next/image";
 import Comments from "../comments/Comments";
 import Likebutton from "../common/button/LikeButton";
 import ModifyDeletePost from "./ModifyDeletePost";
-import { RecipeForm } from "../myrecipewrite/InputField";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRecipeWithUserInfo } from "./fetchRecipeWithUserInfo";
 import GrayLine from "@images/myrecipe/grayLine.svg";
@@ -13,6 +12,7 @@ import ScrapButton from "../common/button/ScrapButton";
 import DefaultProfile from "@images/default-profile.svg";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import DefaultImg from "@images/myrecipe/imageFile.svg";
+import { RecipeForm } from "@/types/RecipeWriteFormType";
 
 interface RecipeDetailViewProps {
   postId: string;
