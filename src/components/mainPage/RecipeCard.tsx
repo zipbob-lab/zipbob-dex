@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserId, getUserNickname } from "@/serverActions/profileAction";
+import { getUserNickname } from "@/serverActions/profileAction";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
@@ -12,6 +12,8 @@ import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
 import TrashCanIcon from "@images/trashcan.svg";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
   isEditMode?: boolean;
@@ -19,6 +21,7 @@ interface ExtendedRecipeCardProps extends RecipeCardProps {
 }
 
 const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardProps) => {
+  const { userId } = useStore(useAuthStore);
   const [nickname, setNickname] = useState("");
   const router = useRouter();
 
@@ -30,7 +33,6 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
       }
     };
     const fetchIsUserLiked = async () => {
-      const userId = await getUserId();
       const { error } = await browserClient
         .from("LIKE_TABLE")
         .select("*")
