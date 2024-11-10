@@ -29,4 +29,7 @@ export interface UseScrapData {
   deleteScrap: (recipeId: string) => Promise<boolean>;
   isAlreadyScrapped: (recipeId: string) => Promise<boolean>;
   useFetchScrapCount: (recipeId: string) => UseQueryResult<number>;
+  page: number;
+  handlePageChange: (newPage: number) => void;
+  totalScraps: number;
 }

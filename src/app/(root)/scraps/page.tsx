@@ -6,10 +6,11 @@ import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
 import DeleteCheckModal from "@/components/common/modal/DeleteCheckModal";
 import EmptyContent from "@/components/common/EmptyContent";
+import Pagination from "@/components/common/Pagination";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
-  const { existingFolders, scraps, deleteScrap, refetchFolders } = useScrapData();
+  const { existingFolders, scraps, deleteScrap, refetchFolders, page, handlePageChange, totalScraps } = useScrapData();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [scrapToDelete, setScrapToDelete] = useState<string | null>(null);
@@ -125,6 +126,14 @@ const ScrapPage = () => {
             })}
           </div>
         )}
+      </div>
+      <div>
+        <Pagination
+          currentPage={page}
+          pageSize={8}
+          totalItems={totalScraps}
+          onPageChange={handlePageChange}
+        ></Pagination>
       </div>
 
       {/* 삭제 확인 모달 */}
