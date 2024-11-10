@@ -47,7 +47,7 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="aspect-w-1 aspect-h-1 relative min-h-[12rem] min-w-[12rem] overflow-hidden">
+      <div className="aspect-w-1 aspect-h-1 relative min-h-[15rem] min-w-[15rem] overflow-hidden">
         <Image
           src={post.recipe_img_done || DefaultImage}
           alt="레시피 사진"

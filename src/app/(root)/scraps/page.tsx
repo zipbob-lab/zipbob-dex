@@ -49,11 +49,11 @@ const ScrapPage = () => {
     : [];
 
   return (
-    <div className="min-h-screen px-52">
-      <h1 className="mb-3 ml-48 pt-8 text-heading-28">스크랩한 레시피</h1>
+    <div className="mx-auto max-w-[1024px] gap-2 gap-y-5">
+      <h1 className="py-8 text-heading-28">스크랩한 레시피</h1>
 
       {/* 폴더명 리스트 */}
-      <div className="mx-48 mb-6">
+      <div className="">
         <div className="flex gap-6 border-b-[1px] pt-2">
           <button
             onClick={() => handleFolderClick(null)}
@@ -105,7 +105,8 @@ const ScrapPage = () => {
             </ul>
           </EmptyContent>
         ) : (
-          <div className="mx-4 mt-8 grid grid-cols-2 gap-x-24 gap-y-16 md:grid-cols-4 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5 py-6 md:grid-cols-4 lg:grid-cols-4">
+            {/*<div className="flex flex-wrap gap-x-5 gap-y-5 py-6 md:grid-cols-4 lg:grid-cols-4">*/}
             {filteredScraps.map((scrap) => {
               let recipeDetail;
               try {
@@ -127,7 +128,7 @@ const ScrapPage = () => {
           </div>
         )}
       </div>
-      <div>
+      <div className="pb-14">
         <Pagination
           currentPage={page}
           pageSize={8}
