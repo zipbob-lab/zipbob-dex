@@ -1,5 +1,6 @@
 import browserClient from "@/supabase/client";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type AuthState = {
   isLoggedIn: boolean;
@@ -9,13 +10,20 @@ type AuthState = {
   logout: () => Promise<void>;
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn: false,
-  userId: null,
-  setIsLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
-  setUserId: (id) => set({ userId: id }),
-  logout: async () => {
-    await browserClient.auth.signOut();
-    set({ isLoggedIn: false, userId: null });
-  }
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      userId: null,
+      setIsLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
+      setUserId: (id) => set({ userId: id }),
+      logout: async () => {
+        await browserClient.auth.signOut();
+        set({ isLoggedIn: false, userId: null });
+      }
+    }),
+    {
+      name: "auth-storage"
+    }
+  )
+);
