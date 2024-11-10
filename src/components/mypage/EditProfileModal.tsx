@@ -5,6 +5,8 @@ import Image from "next/image";
 import CloseX from "@images/closeX.svg";
 import ImageButton from "@images/imageButton.svg";
 import DeleteButton from "@images/trashcan.svg";
+import { createPortal } from "react-dom";
+import ConfirmModal from "../common/modal/ConfirmModal";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -24,6 +26,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
   const [editedNickname, setEditedNickname] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errors, setErrors] = useState({ nickname: "", introduce: "" });
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const validateFeilds = () => {
     const newErrors = { nickname: "", introduce: "" };
@@ -41,6 +44,14 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
       onClose();
     }
   };
+
+  const handleDeleteClick = () => setIsConfirmOpen(true);
+
+  const handleConfirmDelete = () => {
+    onDelete();
+    setIsConfirmOpen(false);
+    onClose();
+  };
   useEffect(() => {
     if (isOpen) {
       setEditedNickname(userData.user_nickname);
@@ -49,9 +60,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
     }
   }, [isOpen, userData]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !document.getElementById("modal-root")) return null;
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
       <div className="relative flex min-w-[320px] flex-col items-center rounded-2xl bg-white p-8">
         {/* 모달 닫기 버튼 */}
@@ -113,16 +124,29 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
             <span>변경</span>
           </button>
           <button
-            onClick={onDelete}
+            onClick={handleDeleteClick}
             className="flex items-center gap-2 rounded-2xl border-[1px] border-Primary-300 px-6 py-2 text-Primary-300"
           >
             <Image src={DeleteButton} width={20} height={20} alt="쓰레기 아이콘" />
             <span>삭제</span>
           </button>
         </div>
+
+        {isConfirmOpen && (
+          <ConfirmModal
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="정말로 삭제하시겠습니까?"
+            confirmText="삭제하기"
+            cancelText="취소하기"
+          />
+        )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.getElementById("modal-root")!);
 };
 
 export default EditProfileModal;

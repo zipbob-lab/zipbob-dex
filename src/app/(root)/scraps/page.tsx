@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
-import DeleteCheckModal from "@/components/common/modal/DeleteCheckModal";
 import EmptyContent from "@/components/common/EmptyContent";
 import Pagination from "@/components/common/Pagination";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 
 const ScrapPage = () => {
   const { selectedFolder, setSelectedFolder } = useScrapStore();
@@ -138,10 +138,13 @@ const ScrapPage = () => {
       </div>
 
       {/* 삭제 확인 모달 */}
-      <DeleteCheckModal
+      <ConfirmModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        onDelete={confirmDeleteScrap}
+        onConfirm={confirmDeleteScrap}
+        title="스크랩한 레시피를 삭제하시겠어요?"
+        confirmText="삭제하기"
+        cancelText="취소하기"
       />
     </div>
   );
