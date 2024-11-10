@@ -6,7 +6,7 @@ import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import AlertIcon from "@images/noneAlert.svg";
+import EmptyContent from "@/components/common/EmptyContent";
 import type { UserPost } from "@/types/MyPage";
 import Pagination from "@/components/common/Pagination";
 
@@ -42,8 +42,12 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   if (posts.length === 0)
     return (
       <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">
-        <Image src={AlertIcon} alt="느낌표 아이콘" width={30} height={30} />
-        아직 작성한 글이 없어요!
+        <EmptyContent message="아직 나만의 레시피가 없어요!">
+          <ul className="text-body-16 text-Gray-500">
+            <li>· 마이프로필 카드에서 나만의 레시피를 클릭해 글을 남겨보세요.</li>
+            <li>· 글을 남기면 경험치가 올라간답니다!</li>
+          </ul>
+        </EmptyContent>
       </div>
     );
 

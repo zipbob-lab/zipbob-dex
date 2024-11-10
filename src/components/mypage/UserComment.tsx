@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Pagination from "@/components/common/Pagination";
-import AlertIcon from "@images/noneAlert.svg";
+import EmptyContent from "@/components/common/EmptyContent";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import type { UserComment } from "@/types/MyPage";
@@ -42,9 +42,13 @@ const UserComment = ({ userId }: { userId: string }) => {
 
   if (!comments || comments.length === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">
-        <Image src={AlertIcon} alt="느낌표 아이콘" width={30} height={30} />
-        아직 작성한 댓글이 없어요!
+      <div className="gap-2 pt-6">
+        <EmptyContent message="아직 작성한 후기가 없어요!">
+          <ul className="text-body-16 text-Gray-500">
+            <li>· 레시피를 탐험하며 후기를 남겨보세요.</li>
+            <li>· 후기를 남기면 경험치가 올라간답니다!</li>
+          </ul>
+        </EmptyContent>
       </div>
     );
   }
