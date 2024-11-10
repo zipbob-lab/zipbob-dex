@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const IngredientsFields = () => {
   const { register, control } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients"
   });
@@ -41,6 +41,13 @@ const IngredientsFields = () => {
             {...register(`ingredients.${i}.unit`, { required: true })}
             className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16"
           />
+          <button
+            type="button"
+            className="items-center justify-center rounded-[5px] bg-Primary-50 py-3"
+            onClick={() => remove(i)}
+          >
+            삭제
+          </button>
         </div>
       ))}
 
