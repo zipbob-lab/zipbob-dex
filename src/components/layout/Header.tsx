@@ -27,6 +27,7 @@ const Header = () => {
       }
     };
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleScrapClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
