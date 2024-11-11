@@ -23,6 +23,8 @@ const UserLevelEmoji: React.FC<UserLevelEmojiProps> = ({ userRank }) => {
         return Level4;
       case 4:
         return Level5;
+      case 5:
+        return Master;
       default:
         return null;
     }
