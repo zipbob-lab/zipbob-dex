@@ -27,8 +27,13 @@ const AuthStatusBar = () => {
   return (
     <>
       {isLoggedIn ? (
-        <div className="w-15 h-15 cursor-pointer rounded-full bg-[#d9d9d9]" onClick={() => !isOpen && setIsOpen(true)}>
-          {userProfile && <Image src={userProfile} alt="유저 프로필" width={60} height={60} className="rounded-full" />}
+        <div
+          className="relative h-[3rem] w-[3rem] cursor-pointer overflow-hidden rounded-full bg-[#d9d9d9]"
+          onClick={() => !isOpen && setIsOpen(true)}
+        >
+          {userProfile && (
+            <Image src={userProfile} alt="유저 프로필" fill sizes="3rem" className="rounded-full object-cover" />
+          )}
         </div>
       ) : (
         <div className="flex">
