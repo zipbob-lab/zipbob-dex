@@ -50,6 +50,7 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
 
   useEffect(() => {
     const fetchUserNickname = async () => {
+      if (!posts) return;
       const userNicknames = { ...userNickname };
       for (let i = 0; i < 3; i++) {
         const userProfile = await getUserNickname(posts?.[i].user_id);
@@ -76,14 +77,17 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
           <RankingHat fillColor="white" size={36} />
           <p className="mt-1 font-yangjin text-[1.875rem] font-medium leading-[120%] text-white">1위</p>
         </div>
-        <div className="flex flex-col gap-4 rounded-3xl p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+        <div
+          className="flex cursor-pointer flex-col gap-4 rounded-3xl p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]"
+          onClick={() => router.push(`/myrecipedetail/${posts?.[0].post_id}`)}
+        >
           <div className="relative h-[20.5rem] w-[20.5rem]">
             <Image
               src={posts?.[0].recipe_img_done}
               fill
               alt="레시피 이미지"
-              className="cursor-pointer rounded-3xl object-cover"
-              onClick={() => router.push(`/myrecipedetail/${posts?.[0].post_id}`)}
+              sizes="20.5rem"
+              className="rounded-3xl object-cover"
             />
           </div>
           <div>
@@ -91,11 +95,19 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
             <p className="mt-1 h-[1.349375rem] text-body-16 text-Gray-500">{userNickname[1]}</p>
             <div className="mt-3 flex justify-between">
               <div className="flex">
-                <Image src={FireFilledIcon} alt="레시피 난이도" />
-                <Image src={posts?.[0].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-                <Image src={posts?.[0].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={FireFilledIcon} alt="레시피 난이도" className="h-auto w-auto" />
+                <Image
+                  src={posts?.[0].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
+                <Image
+                  src={posts?.[0].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                 <LikeButton postId={posts?.[0].post_id} />
                 <ScrapButton postId={posts?.[0].post_id} />
               </div>
@@ -109,15 +121,12 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
           <RankingHat fillColor="white" size={32} />
           <p className="mt-1 font-yangjin text-[1.25rem] font-medium leading-[120%] text-white">2위</p>
         </div>
-        <div className="flex flex-col gap-3 rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+        <div
+          className="flex cursor-pointer flex-col gap-3 rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]"
+          onClick={() => router.push(`/myrecipedetail/${posts?.[1].post_id}`)}
+        >
           <div className="relative h-[17.5rem] w-[17.5rem]">
-            <Image
-              src={posts?.[1].recipe_img_done}
-              fill
-              alt="레시피 이미지"
-              className="cursor-pointer rounded-3xl"
-              onClick={() => router.push(`/myrecipedetail/${posts?.[1].post_id}`)}
-            />
+            <Image src={posts?.[1].recipe_img_done} fill sizes="17.5rem" alt="레시피 이미지" className="rounded-3xl" />
           </div>
           <div>
             <p className="text-title-18 text-Gray-900">{posts?.[1].recipe_title}</p>
@@ -126,11 +135,19 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
             </p>
             <div className="mt-3 flex justify-between">
               <div className="flex">
-                <Image src={FireFilledIcon} alt="레시피 난이도" />
-                <Image src={posts?.[1].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-                <Image src={posts?.[1].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={FireFilledIcon} alt="레시피 난이도" className="h-auto w-auto" />
+                <Image
+                  src={posts?.[1].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
+                <Image
+                  src={posts?.[1].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                 <LikeButton postId={posts?.[1].post_id} />
                 <ScrapButton postId={posts?.[1].post_id} />
               </div>
@@ -144,15 +161,12 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
           <RankingHat fillColor="white" size={32} />
           <p className="mt-1 font-yangjin text-[1.25rem] font-medium leading-[120%] text-white">3위</p>
         </div>
-        <div className="flex flex-col gap-3 rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+        <div
+          className="flex cursor-pointer flex-col gap-3 rounded-3xl px-3 py-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]"
+          onClick={() => router.push(`/myrecipedetail/${posts?.[2].post_id}`)}
+        >
           <div className="relative h-[17.5rem] w-[17.5rem]">
-            <Image
-              src={posts?.[2].recipe_img_done}
-              fill
-              alt="레시피 이미지"
-              className="cursor-pointer rounded-3xl"
-              onClick={() => router.push(`/myrecipedetail/${posts?.[2].post_id}`)}
-            />
+            <Image src={posts?.[2].recipe_img_done} fill sizes="17.5rem" alt="레시피 이미지" className="rounded-3xl" />
           </div>
           <div>
             <p className="text-title-18 text-Gray-900">{posts?.[2].recipe_title}</p>
@@ -161,11 +175,19 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
             </p>
             <div className="mt-3 flex justify-between">
               <div className="flex">
-                <Image src={FireFilledIcon} alt="레시피 난이도" />
-                <Image src={posts?.[2].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-                <Image src={posts?.[2].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+                <Image src={FireFilledIcon} alt="레시피 난이도" className="h-auto w-auto" />
+                <Image
+                  src={posts?.[2].recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
+                <Image
+                  src={posts?.[2].recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-auto w-auto"
+                />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                 <LikeButton postId={posts?.[2].post_id} />
                 <ScrapButton postId={posts?.[2].post_id} />
               </div>
