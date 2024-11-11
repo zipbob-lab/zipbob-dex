@@ -8,6 +8,7 @@ import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import EmptyContent from "@/components/common/EmptyContent";
 import type { UserPost } from "@/types/MyPage";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
 import Pagination from "@/components/common/Pagination";
 
 const UserPostLists = ({ userId }: { userId: string }) => {
@@ -53,12 +54,12 @@ const UserPostLists = ({ userId }: { userId: string }) => {
 
   return (
     <div>
-      <div className="max-h-[560px] w-full overflow-y-auto">
+      <div className="h-[560px] w-full overflow-y-auto">
         {posts.map((post) => (
           <div key={post.post_id} className="flex w-full items-end justify-between p-4">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
               <Image
-                src={post.recipe_img_done}
+                src={post.recipe_img_done || DefaultImage}
                 alt={post.recipe_title}
                 width={100}
                 height={100}
@@ -86,7 +87,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
                 </div>
               </div>
             </Link>
-            <div className="flex items-end gap-2">
+            <div className="flex gap-2">
               <LikeButton postId={post.post_id} />
               <ScrapButton postId={post.post_id} />
             </div>

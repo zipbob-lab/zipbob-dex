@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { updateUserLevel } from "@/utils/updateUserRank"; // 레벨 랭킹 계산 함수
-import { fetchUserProfile } from "@/serverActions/profileAction"; // 유저 정보 받아오기
+import { updateUserLevel } from "@/utils/updateUserRank";
+import { fetchUserProfile } from "@/serverActions/profileAction";
 
 interface UserLevelProps {
   userId: string;
-  onRankChange: (rank: number) => void; // 랭크가 변경되면 호출할 함수
+  onRankChange: (rank: number) => void;
 }
 
 const UserLevel: React.FC<UserLevelProps> = ({ userId, onRankChange }) => {

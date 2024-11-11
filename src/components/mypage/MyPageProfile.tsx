@@ -7,7 +7,6 @@ import { uploadProfileImage } from "@/utils/uploadProfileImage";
 import { useEffect, useState } from "react";
 import EditProfileModal from "./EditProfileModal";
 import Pencil from "@images/pen.svg";
-import PencilWhite from "@images/penWhite.svg";
 
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
@@ -98,7 +97,7 @@ const MyPageProfile = () => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>프로필을 로딩중입니다.</p>;
 
   return (
     <div className="flex h-[560px] w-[360px] flex-col items-center justify-center rounded-2xl bg-[#FFF6DC] px-16 py-10">
@@ -127,14 +126,11 @@ const MyPageProfile = () => {
           {/* UserRank 컴포넌트 */}
           <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
           <p className="mb-4 text-sm">{userData.user_introduce}</p>
-
-          <div className="text-md mx-3 my-4 flex w-48 items-center justify-center rounded-2xl bg-Primary-300 p-3 text-white">
-            <Link href="/myrecipewrite" className="flex items-center gap-2">
-              <Image src={PencilWhite} width={20} height={20} alt="연필 아이콘" className="inline-block" />
+          <Link href="/myrecipewrite" className="flex items-center gap-2">
+            <div className="flex w-48 items-center justify-center rounded-2xl bg-Primary-300 p-3 text-body-16 text-white">
               <span className="inline-block">나만의 레시피 올리기</span>
-            </Link>
-          </div>
-
+            </div>
+          </Link>
           {/* 프로필 수정 모달 */}
           <EditProfileModal
             isOpen={isModalOpen}

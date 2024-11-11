@@ -6,6 +6,7 @@ import EmptyContent from "@/components/common/EmptyContent";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import type { UserComment } from "@/types/MyPage";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
 import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
 
 const formatDate = (dateString: string) => {
@@ -55,14 +56,14 @@ const UserComment = ({ userId }: { userId: string }) => {
 
   return (
     <div>
-      <div className="max-h-[530px] w-full overflow-y-auto">
+      <div className="h-[560px] w-full overflow-y-auto">
         {comments.map((comment) => (
           <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
             <div className="flex w-full flex-col justify-between p-4">
               <div className="flex">
                 {comment.recipe ? (
                   <Image
-                    src={comment.recipe.recipe_img_done}
+                    src={comment.recipe.recipe_img_done || DefaultImage}
                     alt={comment.recipe.recipe_title}
                     width={100}
                     height={100}
