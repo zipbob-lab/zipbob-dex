@@ -19,6 +19,7 @@ import Pencil from "@images/penWhite.svg";
 import PencilOrange from "@images/penOrange.svg";
 import CloseWirteConfirm from "./CloseWirteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
+import IconX from "@images/myrecipe/iconX.svg";
 
 const InputField = () => {
   const router = useRouter();
@@ -485,13 +486,14 @@ const InputField = () => {
                     {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                   />
                   {/* 레시피 삭제 */}
+                  {recipeDoingsImgFields.length > 1 && (
                   <button
-      type="button"
-      className="items-center justify-center rounded-[5px] bg-Primary-50 py-3"
-      onClick={() => handleRemoveRecipeDoingForm(i)}
-    >
-      삭제
-    </button>
+                    type="button"
+                    onClick={() => handleRemoveRecipeDoingForm(i)}
+                  >
+                    <Image src={IconX} width={24} height={24} alt="삭제" />                  
+                  </button>
+                  )}
                 </div>
               ))}
 
