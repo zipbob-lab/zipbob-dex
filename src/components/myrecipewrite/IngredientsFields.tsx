@@ -1,6 +1,7 @@
 "use client";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
+import IconX from "@images/myrecipe/iconX.svg"
 import Image from "next/image";
 
 const IngredientsFields = () => {
@@ -41,13 +42,14 @@ const IngredientsFields = () => {
             {...register(`ingredients.${i}.unit`, { required: true })}
             className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16"
           />
+           {fields.length > 1 && (
           <button
-            type="button"
-            className="items-center justify-center rounded-[5px] bg-Primary-50 py-3"
+            type="button"            
             onClick={() => remove(i)}
           >
-            삭제
+            <Image src={IconX} width={24} height={24} alt="삭제" />              
           </button>
+           )}
         </div>
       ))}
 
