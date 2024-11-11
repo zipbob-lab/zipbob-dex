@@ -15,11 +15,12 @@ import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
 import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
-import Pencil from "@images/penWhite.svg";
-import PencilOrange from "@images/penOrange.svg";
+// import Pencil from "@images/penWhite.svg";
+// import PencilOrange from "@images/penOrange.svg";
 import CloseWirteConfirm from "./CloseWirteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
 import IconX from "@images/myrecipe/iconX.svg";
+import RecipeSubmitButton from "./RecipeSubmitButton";
 
 const InputField = () => {
   const router = useRouter();
@@ -533,25 +534,8 @@ const InputField = () => {
           )}
 
           {/* 제출 버튼 */}
-          <div>
-            <div className="flex justify-end gap-x-[10px]">
-              <button
-                className="bg-white-50 flex min-w-[256px] items-center justify-center gap-2 rounded-2xl border border-Primary-300 p-4 text-title-20 text-Primary-300"
-                type="button"
-                onClick={() => setCloseWriteModal(true)}
-              >
-                <Image src={PencilOrange} width={20} height={20} alt="연필 아이콘" />
-                닫기
-              </button>
-              <button
-                className="flex min-w-[256px] items-center justify-center gap-2 rounded-2xl bg-orange-400 p-4 text-title-20 text-white"
-                type="submit"
-              >
-                <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
-                등록하기
-              </button>
-            </div>
-          </div>
+          <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />         
+          {/* 닫기 확인 모달 */}
           <CloseWirteConfirm closeWriteModal={closeWriteModal} setCloseWriteModal={setCloseWriteModal} />
         </div>
       </form>
