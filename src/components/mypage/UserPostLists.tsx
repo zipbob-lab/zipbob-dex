@@ -56,7 +56,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
     <div>
       <div className="h-[560px] w-full overflow-y-auto">
         {posts.map((post) => (
-          <div key={post.post_id} className="flex w-full items-end justify-between p-4">
+          <div key={post.post_id} className="flex w-full items-end justify-between pt-4">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
               <Image
                 src={post.recipe_img_done || DefaultImage}

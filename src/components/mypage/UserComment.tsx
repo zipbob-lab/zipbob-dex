@@ -59,7 +59,7 @@ const UserComment = ({ userId }: { userId: string }) => {
       <div className="h-[560px] w-full overflow-y-auto">
         {comments.map((comment) => (
           <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-            <div className="flex w-full flex-col justify-between p-4">
+            <div className="flex w-full flex-col justify-between pt-4">
               <div className="flex">
                 {comment.recipe ? (
                   <Image

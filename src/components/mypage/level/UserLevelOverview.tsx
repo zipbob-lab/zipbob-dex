@@ -3,7 +3,6 @@ import Level2 from "@images/levels/levelTwoKimbab.svg";
 import Level3 from "@images/levels/levelThreePasta.svg";
 import Level4 from "@images/levels/levelFourSalmon.svg";
 import Level5 from "@images/levels/levelFiveStew.svg";
-import Master from "@images/levels/hat.svg";
 
 import { updateUserLevel } from "@/utils/updateUserRank";
 import { useEffect, useState } from "react";
@@ -14,7 +13,7 @@ interface UserLevelOverviewProps {
   userId: string;
 }
 
-const levelIcons = [Level1, Level2, Level3, Level4, Level5, Master];
+const levelIcons = [Level1, Level2, Level3, Level4, Level5];
 
 const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
   const [userLevel, setUserLevel] = useState<number | null>(null);

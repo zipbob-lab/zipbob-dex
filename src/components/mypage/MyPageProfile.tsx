@@ -149,9 +149,13 @@ const MyPageProfile = () => {
       </div>
       <div className="mt-7 rounded-2xl bg-white p-4 shadow-md">
         <span className="rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
-          Level{userData && userData.user_rank}
+          Level{" "}
+          <span className="ml-1">
+            {userData && typeof userData.user_rank === "number" ? userData.user_rank + 1 : ""}
+          </span>
         </span>
-        <p className="pt-4">{userData && <UserLevelOverview userId={userData?.user_id} />}</p>
+
+        <div className="pt-4">{userData && <UserLevelOverview userId={userData?.user_id} />}</div>
       </div>
     </section>
   );
