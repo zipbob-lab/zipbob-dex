@@ -37,6 +37,10 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
     return <div>레시피 정보를 가져오는 도중 에러가 발생했습니다</div>;
   }
 
+  if (!data) {
+    return <div>레시피 정보를 불러올 수 없습니다.</div>;
+  }
+
   const userInfo = data.USER_TABLE;
 
   return (
