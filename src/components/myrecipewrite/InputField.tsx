@@ -242,8 +242,12 @@ const InputField = () => {
             recipeDoingImgUrls.push(recipeDoingImgUrl);
           } else if (recipeDoingImgViewArray[i]) {
             // 기존 이미지 URL이 있는 경우
-            recipeDoingImgUrls.push(recipeDoingImgViewArray[i] || "");
+            recipeDoingImgUrls.push(recipeDoingImgViewArray[i]);
+          }else {
+            // 이미지가 없는 경우 빈 문자열
+            recipeDoingImgUrls.push("");
           }
+          
         } else {
           // 작성 모드일 때
           const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
