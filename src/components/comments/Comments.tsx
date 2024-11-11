@@ -68,7 +68,7 @@ const Comments = ({ postId }: PostDataProps) => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors }
+    // formState: { errors }
   } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { commentText: "" } });
 
   const {
