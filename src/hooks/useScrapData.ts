@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import { useScrapStore } from "@/store/scrapStore";
-import { getUserId } from "@/serverActions/profileAction";
 import { useEffect, useState } from "react";
 import { Scrap, UseScrapData } from "@/types/Scraps";
 import {
