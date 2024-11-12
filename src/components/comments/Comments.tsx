@@ -212,7 +212,7 @@ const Comments = ({ postId }: PostDataProps) => {
             isFocused ? "border-Primary-300" : "border-Gray-100"
           }`}
         >
-          <div className="flex flex-col border-solid border-b-gray-800">
+                    <div className="flex flex-col border-solid border-b-gray-800">
             <textarea
               className={`h-20 w-full resize-none text-body-16 text-Gray-900 placeholder-Gray-500 focus:outline-none ${
                 !sessionId ? "bg-white" : ""
