@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import { useScrapStore } from "@/store/scrapStore";
-import { getUserId } from "@/serverActions/profileAction";
 import { useEffect } from "react";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 // 폴더 목록을 가져오는 함수
 const fetchFolders = async (userId: string): Promise<string[]> => {
@@ -68,6 +69,7 @@ interface UseScrapData {
 
 // useScrapData 훅 정의
 export const useScrapData = (): UseScrapData => {
+  const { userId: id } = useStore(useAuthStore);
   const { userId, setUserId } = useScrapStore();
   const queryClient = useQueryClient();
 
@@ -75,7 +77,6 @@ export const useScrapData = (): UseScrapData => {
     const fetchUserId = async () => {
       if (!userId) {
         try {
-          const id = await getUserId();
           setUserId(id);
         } catch (error) {
           console.error("사용자 ID 설정 오류:", error);
