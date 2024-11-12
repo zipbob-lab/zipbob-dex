@@ -1,21 +1,13 @@
-import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Pagination from "@/components/common/Pagination";
+import EmptyContent from "@/components/common/EmptyContent";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import React, { useEffect, useState } from "react";
-import AlertIcon from "@images/noneAlert.svg";
-
-interface UserComment {
-  post_id: string;
-  comment: string;
-  created_at: string;
-  recipe?: {
-    recipe_title: string;
-    recipe_img_done: string;
-    recipe_level: string;
-  } | null;
-}
+import type { UserComment } from "@/types/MyPage";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
+import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -24,74 +16,95 @@ const formatDate = (dateString: string) => {
 
 const UserComment = ({ userId }: { userId: string }) => {
   const [comments, setComments] = useState<UserComment[] | null>(null);
+  const [commentCount, setCommentCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 4; // 페이지당 댓글 수
+
+  const loadCommentsWithRecipes = async (page: number) => {
+    const { comments: commentsData, commentCount } = await fetchUserComments(userId, page, pageSize);
+    setCommentCount(commentCount);
+
+    if (commentsData?.length) {
+      const commentsWithRecipes = await Promise.all(
+        commentsData.map(async (comment) => {
+          const recipeData = await fetchRecipeByPostId(comment.post_id);
+          return { ...comment, recipe: recipeData };
+        })
+      );
+      setComments(commentsWithRecipes);
+    } else {
+      setComments(null);
+    }
+  };
 
   useEffect(() => {
-    const loadCommentsWithRecipes = async () => {
-      const commentsData = await fetchUserComments(userId);
-      if (commentsData?.comments?.length) {
-        // 댓글의 post_id를 이용해 레시피 정보 추가
-        const commentsWithRecipes = await Promise.all(
-          commentsData.comments.map(async (comment) => {
-            const recipeData = await fetchRecipeByPostId(comment.post_id);
-            return { ...comment, recipe: recipeData };
-          })
-        );
-        setComments(commentsWithRecipes);
-      }
-    };
+    loadCommentsWithRecipes(currentPage);
+  }, [userId, currentPage]);
 
-    loadCommentsWithRecipes();
-  }, [userId]);
-
-  if (!comments)
+  if (!comments || comments.length === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">
-        <Image src={AlertIcon} alt="느낌표 아이콘" width={30} height={30} />
-        아직 작성한 댓글이 없어요!
+      <div className="gap-2 pt-6">
+        <EmptyContent message="아직 작성한 후기가 없어요!">
+          <ul className="text-body-16 text-Gray-500">
+            <li>· 레시피를 탐험하며 후기를 남겨보세요.</li>
+            <li>· 후기를 남기면 경험치가 올라간답니다!</li>
+          </ul>
+        </EmptyContent>
       </div>
     );
+  }
 
   return (
-    <div className="max-h-[530px] w-full overflow-y-auto">
-      {comments?.map((comment) => (
-        <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-          <div className="flex w-full flex-col justify-between p-4">
-            <div className="flex">
-              {comment.recipe ? (
-                <Image
-                  src={comment.recipe.recipe_img_done}
-                  alt={comment.recipe.recipe_title}
-                  width={100}
-                  height={100}
-                  className="mr-4 h-24 w-24 rounded-md"
-                />
-              ) : (
-                <p>댓글 정보를 찾을 수 없습니다</p>
-              )}
-              <div className="flex flex-1 flex-col">
-                <div className="flex items-center gap-2">
-                  <div className="flex">
-                    <Image src={FireFilledIcon} alt="레시피 난이도" />
-                    <Image
-                      src={comment.recipe?.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
-                      alt="레시피 난이도"
-                    />
-                    <Image
-                      src={comment.recipe?.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
-                      alt="레시피 난이도"
-                    />
+    <div>
+      <div className="h-[560px] w-full overflow-y-auto">
+        {comments.map((comment) => (
+          <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
+            <div className="flex w-full flex-col justify-between pt-4">
+              <div className="flex">
+                {comment.recipe ? (
+                  <Image
+                    src={comment.recipe.recipe_img_done || DefaultImage}
+                    alt={comment.recipe.recipe_title}
+                    width={100}
+                    height={100}
+                    className="mr-4 h-24 w-24 rounded-md"
+                  />
+                ) : (
+                  <p>댓글 정보를 찾을 수 없습니다</p>
+                )}
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-center gap-2">
+                    <div className="flex">
+                      <Image src={FireFilledIcon} alt="레시피 난이도" />
+                      <Image
+                        src={comment.recipe?.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                        alt="레시피 난이도"
+                      />
+                      <Image
+                        src={comment.recipe?.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                        alt="레시피 난이도"
+                      />
+                    </div>
+                    <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
                   </div>
-                  <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
+                  <p className="mt-2">
+                    {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
+                  </p>
+                  <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
                 </div>
-                <p className="mt-2 line-clamp-2 flex-1">
-                  {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
-                </p>
-                <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
               </div>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
+
+      {/* 페이지네이션 */}
+      <Pagination
+        currentPage={currentPage}
+        pageSize={pageSize}
+        totalItems={commentCount}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 };

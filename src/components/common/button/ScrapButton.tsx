@@ -8,7 +8,7 @@ import ScrapModal from "../../scraps/ScrapModal";
 import CustomToast from "@/components/scraps/CustomToast";
 import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
-import LoginCheckModal from "../LoginCheckModal";
+import LoginCheckModal from "../modal/LoginCheckModal";
 
 const ScrapButton = ({ postId }: { postId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,7 +72,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <div>
+    <>
       <button className="flex cursor-pointer items-center" onClick={handleMarkClick}>
         <Image src={isScrapped ? scrapFill : scrapEmpty} alt="스크랩 버튼" width={16} height={16} />
         <span className="ml-2 text-body-12 text-Gray-500">{scrapCount || 0}</span>
@@ -94,7 +94,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
 
       {showToast && <CustomToast message="스크랩 되었습니다." onMove={() => setShowToast(false)} />}
-    </div>
+    </>
   );
 };
 

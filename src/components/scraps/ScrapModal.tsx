@@ -1,19 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { ScrapModalProps } from "@/types/Scraps";
 import CloseX from "@images/closeX.svg";
 import AddButton from "@images/addButton.svg";
-
-interface ScrapModalProps {
-  isSaving: boolean;
-  folderName: string;
-  existingFolders: string[];
-  onFolderNameChange: (folder: string) => void;
-  onSave: () => Promise<void>;
-  onClose: () => void;
-  onFolderClick: (folder: string) => void;
-}
 
 const ScrapModal: React.FC<ScrapModalProps> = ({
   isSaving,
@@ -24,18 +16,23 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
   onClose,
   onFolderClick
 }) => {
-  const [warningMessage, setWarningMessage] = useState(""); // 폴더 선택X, 폴더명 추가 안 했을 때 상태 체크
+  const [warningMessage, setWarningMessage] = useState("");
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   const handleSaveClick = async () => {
     if (!folderName) {
       setWarningMessage("폴더 이름을 입력하거나 폴더를 선택해 주세요.");
       return;
     }
-    setWarningMessage(""); // 경고 메시지 초기화
-    await onSave(); // 저장 로직 실행
+    setWarningMessage("");
+    await onSave();
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
       <div className="relative w-full max-w-96 rounded-2xl bg-white px-5 py-4">
         {/* 새 폴더 이름 입력 */}
@@ -92,6 +89,13 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
       </div>
     </div>
   );
+
+  //브라우저 환경에서만 포탈 렌더링
+  if (isBrowser) {
+    return createPortal(modalContent, document.getElementById("modal-root")!);
+  } else {
+    return null;
+  }
 };
 
 export default ScrapModal;
