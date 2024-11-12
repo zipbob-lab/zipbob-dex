@@ -8,7 +8,8 @@ import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import EmptyContent from "@/components/common/EmptyContent";
 import type { UserPost } from "@/types/MyPage";
-import DefaultImage from "@images/myrecipe/imageFile.svg";
+import DefaultFoodImage from "@images/myrecipe/imageFile.svg";
+import DefaultProfileImage from "@images/default-profile.svg";
 import Pagination from "@/components/common/Pagination";
 
 const UserPostLists = ({ userId }: { userId: string }) => {
@@ -59,7 +60,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
           <div key={post.post_id} className="flex w-full items-end justify-between pt-4">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
               <Image
-                src={post.recipe_img_done || DefaultImage}
+                src={post.recipe_img_done || DefaultFoodImage}
                 alt={post.recipe_title}
                 width={100}
                 height={100}
@@ -73,13 +74,16 @@ const UserPostLists = ({ userId }: { userId: string }) => {
                 </div>
                 <h3 className="text-title-16">{post.recipe_title}</h3>
                 <div className="mt-2 flex flex-1 items-center gap-5">
-                  <Image
-                    src={post.user.user_img}
-                    alt={post.user.user_nickname}
-                    width={36}
-                    height={36}
-                    className="rounded-full"
-                  />
+                  <div className="h-9 w-9 overflow-hidden rounded-full">
+                    <Image
+                      src={post.user.user_img || DefaultProfileImage}
+                      alt={post.user.user_nickname}
+                      width={36}
+                      height={36}
+                      className="aspect-square h-full w-full object-cover"
+                    />
+                  </div>
+
                   <div className="flex flex-col">
                     <span className="text-title-14 text-Gray-900">{post.user.user_nickname}</span>
                     <span className="Gray-900 text-xs">{post.user.user_introduce}</span>
