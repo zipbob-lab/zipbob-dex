@@ -49,7 +49,7 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
 
   return (
     <div
-      className="flex cursor-pointer flex-col gap-3 rounded-[1.25rem] bg-white p-3"
+      className="flex cursor-pointer flex-col gap-3 rounded-[1.25rem] bg-white p-3 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]"
       onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
     >
       <div className="relative h-[13.5rem] w-[13.5rem] overflow-hidden">
