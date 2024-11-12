@@ -50,7 +50,7 @@ const Comments = ({ postId }: PostDataProps) => {
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
-  const commentsPerPage = 2; // 페이지 당 댓글 수
+  const commentsPerPage = 10; // 페이지 당 댓글 수
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isModiFocused, setIsModiFocused] = useState<boolean>(false);
 
