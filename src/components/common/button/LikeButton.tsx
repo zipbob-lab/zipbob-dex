@@ -3,17 +3,22 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/supabase/supabase";
 import { v4 as uuidv4 } from "uuid";
+
 import { getUserId } from "@/serverActions/profileAction";
 import LoginCheckModal from "../modal/LoginCheckModal";
+
 import Image from "next/image";
 import LikeFilledIcon from "@images/likeFilled.svg";
 import LikeEmptyIcon from "@images/likeEmpty.svg";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 interface LikeButtonProps {
   postId: string;
 }
 
 const LikeButton = ({ postId }: LikeButtonProps) => {
+  const { userId } = useStore(useAuthStore);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [likeStatusDb, setLikeStatusDb] = useState<string | null>(null);
@@ -23,7 +28,6 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
   // 세션 아이디 가져오고 좋아요 상태 확인
   useEffect(() => {
     const getSessionId = async () => {
-      const userId = await getUserId();
       setLoginSessionId(userId);
       fetchLikeStatus(userId);
     };

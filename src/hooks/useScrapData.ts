@@ -12,9 +12,12 @@ import {
   fetchRecipeScrapCount,
   isAlreadyScrappedDB
 } from "@/serverActions/scrapActions";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 // useScrapData 훅 정의
 export const useScrapData = (): UseScrapData => {
+  const { userId: id } = useStore(useAuthStore);
   const { userId, setUserId } = useScrapStore();
   const queryClient = useQueryClient();
 
@@ -27,7 +30,6 @@ export const useScrapData = (): UseScrapData => {
     const fetchUserId = async () => {
       if (!userId) {
         try {
-          const id = await getUserId();
           setUserId(id);
         } catch (error) {
           console.error("사용자 ID 설정 오류:", error);

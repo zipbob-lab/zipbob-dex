@@ -247,11 +247,17 @@ const Comments = ({ postId }: PostDataProps) => {
             isFocused ? "border-Primary-300" : "border-Gray-100"
           }`}
         >
-          <div className="flex flex-col border-solid border-b-gray-800">
+                    <div className="flex flex-col border-solid border-b-gray-800">
             <textarea
-              className="h-20 w-full resize-none text-body-16 text-gray-500 placeholder-gray-500 focus:outline-none"
+              className={`h-20 w-full resize-none text-body-16 text-Gray-900 placeholder-Gray-500 focus:outline-none ${
+                !sessionId ? "bg-white" : ""
+              }`}
               disabled={!sessionId}
-              placeholder={`레시피에 대해 자유롭게 의견을 남겨봐요!\n나만의 댓글을 남기면 경험치를 받을 수 있어요.`}
+              placeholder={
+                sessionId
+                  ? `레시피에 대해 자유롭게 의견을 남겨봐요!\n나만의 댓글을 남기면 경험치를 받을 수 있어요.`
+                  : `댓글을 작성하려면 로그인 해야해요.`
+              }
               {...register(`commentText`, {
                 maxLength: {
                   value: commentMaxLength,
