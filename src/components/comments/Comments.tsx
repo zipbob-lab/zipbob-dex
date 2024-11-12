@@ -10,6 +10,9 @@ import CommentGrayLine from "@images/comment/commentGrayLine.svg";
 import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
 import CommentDropBox from "./CommentDropBox";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
+import { DeleteComment, FetchCommentInfo } from "./CommentHooks";
+import { getUserId } from "@/serverActions/profileAction";
+import DEFAULT_USER_IMG from "@images/default-profile.svg"
 
 interface CommentFormInput {
   commentText: string;
@@ -26,7 +29,7 @@ interface UserInfo {
   user_rank: number;
 }
 
-interface CommentData {
+export interface CommentData {
   comment_id: string;
   comment: string;
   user_id: string;
@@ -47,17 +50,25 @@ const Comments = ({ postId }: PostDataProps) => {
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
-  // const [commentCount, setCommentCount] = useState<number>(0);
   const commentsPerPage = 10; // 페이지 당 댓글 수
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isModiFocused, setIsModiFocused] = useState<boolean>(false);
+
+  const commentFetchOptions = {
+    postId,
+    currentPage,
+    commentsPerPage,
+    setComments,
+    setTotalComments,
+  };
+
 
   const {
     register,
     handleSubmit,
     watch,
     reset,
-    formState: { errors }
+    // formState: { errors }
   } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { commentText: "" } });
 
   const {
@@ -73,52 +84,25 @@ const Comments = ({ postId }: PostDataProps) => {
   const modifyCommentCurrentLength = modifyWatch("modifyCommentText")?.length;
 
   useEffect(() => {
-    FetchCommentInfo();
+    fetchSessionId();
   }, []);
+
+  useEffect(() => {
+    if (sessionId) {
+      FetchCommentInfo(commentFetchOptions);
+    }
+  }, [commentFetchOptions, sessionId]);
+
+  const fetchSessionId = async () => {
+    const userId = await getUserId();
+    setSessionId(userId); // userId가 null이 아닐 때만 설정
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
   };
 
-  const FetchCommentInfo = async () => {
-    const supabase = createClient();
-
-    // 페이지 네이션
-    const startRange = (currentPage - 1) * commentsPerPage;
-    const endRange = startRange + commentsPerPage - 1;
-
-    // 로그인 세션
-    const {
-      data: { session },
-      error: sessionError
-    } = await supabase.auth.getSession();
-    if (sessionError) {
-      console.error(sessionError.message);
-      return sessionError;
-    }
-    const loginSessionId = session?.user?.id;
-    setSessionId(loginSessionId || null);
-    // 코멘트 정보 가져오기
-    const {
-      data: commentData,
-      error: commnetError,
-      count
-    } = await supabase
-      .from("COMMENT_TABLE")
-      .select(`*, USER_TABLE(user_id,user_nickname, user_introduce,user_img,user_rank)`, { count: "exact" })
-      .eq("post_id", postId)
-      .eq("comment_active", true)
-      .order("created_at", { ascending: false })
-      .range(startRange, endRange);
-
-    if (commnetError) {
-      console.error("코멘트 데이터 불러오기 실패  ", commnetError.message);
-    } else {
-      setComments(commentData || []);
-      setTotalComments(count || 0); // 페이지 네이션
-    }
-  };
 
   // // 댓글 더보기
   // const handleDropDown = (commentId: string) => {
@@ -128,30 +112,11 @@ const Comments = ({ postId }: PostDataProps) => {
 
   // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
-    const { error: deleteError } = await supabase
-      .from("COMMENT_TABLE")
-      .update({ comment_active: false })
-      .eq("comment_id", commentId);
-
-    if (deleteError) {
-      console.error(deleteError.message);
-      alert("댓글 삭제 실패");
-      return;
+    const deleteOptions = {
+      postId,commentId,totalComments, setTotalComments
     }
-
-    alert("댓글 삭제 성공!");
-
-    const { error: countError } = await supabase
-      .from("MY_RECIPE_TABLE")
-      .update({ comment_count: totalComments - 1 })
-      .eq("post_id", postId);
-
-    if (countError) {
-      console.error("카운트 업데이트 에러", countError.message);
-    } else {
-      setTotalComments((prev) => prev - 1);
-    }
-    FetchCommentInfo();
+    await DeleteComment(deleteOptions);
+    FetchCommentInfo(commentFetchOptions);
   };
 
   // 댓글 제출 핸들러
@@ -184,7 +149,7 @@ const Comments = ({ postId }: PostDataProps) => {
       }
 
       setCurrentPage(1);
-      FetchCommentInfo();
+      FetchCommentInfo(commentFetchOptions);
       alert("댓글 등록 완료!");
       reset({ commentText: "" });
     }
@@ -215,12 +180,11 @@ const Comments = ({ postId }: PostDataProps) => {
 
     alert("댓글 수정 성공!");
     setModifyCommentId(null);
-    FetchCommentInfo();
+    FetchCommentInfo(commentFetchOptions);
   };
 
   useEffect(() => {
-    FetchCommentInfo();
-
+    FetchCommentInfo(commentFetchOptions);
     setIsFocused(false);
     setIsModiFocused(false);
   }, [currentPage]);
@@ -275,7 +239,7 @@ const Comments = ({ postId }: PostDataProps) => {
             <div className="mb-3 mt-2">
               <Image src={CommentGrayLine} alt="회색 라인" />
             </div>
-            {errors?.commentText?.message ? <span>{errors?.commentText?.message}</span> : null}
+            {/* {errors?.commentText?.message ? <span>{errors?.commentText?.message}</span> : null} */}
           </div>
           <div className="flex flex-row items-center justify-between">
             <span className="text-body-14 text-Gray-500">
@@ -301,7 +265,7 @@ const Comments = ({ postId }: PostDataProps) => {
                 {/* 프로필 이미지 */}
                 <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gray-500">
                   <Image
-                    src={comment.USER_TABLE.user_img}
+                    src={comment.USER_TABLE.user_img||DEFAULT_USER_IMG}
                     alt="프로필 이미지"
                     fill={true}
                     style={{ objectFit: "cover" }}
@@ -312,7 +276,9 @@ const Comments = ({ postId }: PostDataProps) => {
                 <div className="flex flex-col justify-center">
                   <div className="flex justify-between">
                     <div className="flex items-center justify-center">
-                      <span className="mr-2"><UserLevelEmoji userRank={comment.USER_TABLE.user_rank} /></span>
+                      <span className="mr-2">
+                        <UserLevelEmoji userRank={comment.USER_TABLE.user_rank} />
+                      </span>
                       <span className="mr-3 text-title-16 text-Gray-900">{comment.USER_TABLE.user_nickname}</span>
                       {comment.user_id === sessionId && (
                         <div className="flex items-center justify-center rounded-[10px] border border-Primary-300 px-3 py-0.5 text-body-14 text-Primary-300">
