@@ -50,7 +50,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   );
 
   if (isBrowser && isOpen) {
-    return createPortal(modalContent, document.getElementById("modal-root")!);
+    return createPortal(modalContent, document.getElementById("confirm-root")!);
   } else {
     return null;
   }

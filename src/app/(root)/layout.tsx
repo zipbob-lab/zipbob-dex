@@ -18,6 +18,7 @@ export default function RootLayout({
       </div>
       {modal}
       <div id="modal-root"></div>
+      <div id="confirm-root"></div>
       <Footer />
     </div>
   );
