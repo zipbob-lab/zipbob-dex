@@ -1,8 +1,10 @@
+import { useAuthStore } from "@/store/authStore";
 import { supabase } from "@/supabase/supabase";
 import { useEffect, useState } from "react";
-import { getUserId } from "@/serverActions/profileAction";
+import { useStore } from "zustand";
 
 export const useScrap = () => {
+  const { userId: user_id } = useStore(useAuthStore);
   const [folderName, setFolderName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [existingFolders, setExistingFolders] = useState<string[]>([]);
@@ -12,7 +14,6 @@ export const useScrap = () => {
   // supabase에서 로그인한 user 데이터 가져오기
   useEffect(() => {
     const fetchUserId = async () => {
-      const user_id = await getUserId();
       if (user_id) {
         setUserId(user_id);
         fetchFolders(user_id);

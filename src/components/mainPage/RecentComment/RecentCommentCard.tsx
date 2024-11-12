@@ -56,7 +56,9 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
             src={post.recipe_img_done || DefaultImage}
             alt="레시피 사진"
             fill
+            sizes="7.5rem"
             className="cursor-pointer rounded-2xl object-cover"
+            loading="lazy"
             onClick={() => router.push(`myrecipedetail/${post.post_id}`)}
           />
         </div>
