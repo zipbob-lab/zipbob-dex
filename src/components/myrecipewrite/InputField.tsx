@@ -109,7 +109,6 @@ const InputField = () => {
       console.error("레시피 불러오기 에러", error.message);
     } else {
       setFetchData(data as Recipe);
-      console.log("기존 데이터", data);
       // 기존 이미지 뷰에 넣어주기(초기화)
       setRecipeDoneImgView(data?.recipe_img_done ?? "");
       const existingImgViews = data?.recipe_img_doing ?? [];
