@@ -1,15 +1,12 @@
 
 import { createClient } from "@/supabase/client";
-import { CommentData } from "./Comments";
 import { supabase } from "@/supabase/supabase";
 
 
 interface FetchCommentInfoProps {
-    postId:string  
-    currentPage:number;
-    commentsPerPage:number;
-    setComments: (comments: CommentData[]) => void; 
-    setTotalComments: (count: number) => void;    
+  startRange:number;
+  endRange:number;
+  postId:string  ;  
   }
 
 interface DeleteCommentProps {
@@ -20,11 +17,8 @@ interface DeleteCommentProps {
 }
 
 
-export const FetchCommentInfo = async ({postId, setComments,setTotalComments,currentPage,commentsPerPage}:FetchCommentInfoProps)=>{
-    const supabase = createClient();
-    // 페이지 네이션
-    const startRange = (currentPage - 1) * commentsPerPage;
-    const endRange = startRange + commentsPerPage - 1;
+export const FetchCommentInfo = async ({postId, startRange,endRange}:FetchCommentInfoProps)=>{
+    const supabase = createClient(); 
     const {
         data: commentData,
         error: commentError,
@@ -38,11 +32,9 @@ export const FetchCommentInfo = async ({postId, setComments,setTotalComments,cur
         .range(startRange, endRange);
 
     if (commentError) {
-        console.error("코멘트 데이터 불러오기 실패  ", commentError.message);
-    } else {
-        setComments(commentData || []);
-        setTotalComments(count || 0); // 페이지 네이션
-    }
+      throw new Error(commentError.message); 
+    } 
+    return { commentData: commentData || [], totalComments: count || 0 };
 }
 
 export const DeleteComment = async ({postId,commentId,totalComments, setTotalComments}:DeleteCommentProps) =>{

@@ -10,9 +10,9 @@ import CommentGrayLine from "@images/comment/commentGrayLine.svg";
 import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
 import CommentDropBox from "./CommentDropBox";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
-import { DeleteComment, FetchCommentInfo } from "./CommentHooks";
 import { getUserId } from "@/serverActions/profileAction";
 import DEFAULT_USER_IMG from "@images/default-profile.svg"
+import { DeleteComment, FetchCommentInfo } from "./CommentHooks";
 
 interface CommentFormInput {
   commentText: string;
@@ -28,6 +28,7 @@ interface UserInfo {
   user_img: string;
   user_rank: number;
 }
+
 
 export interface CommentData {
   comment_id: string;
@@ -47,20 +48,17 @@ const Comments = ({ postId }: PostDataProps) => {
   // 댓글 수정 관련
   const [modifyCommentId, setModifyCommentId] = useState<string | null>(null);
   // const [dropDownId, setDropDownId] = useState<string | null>(null);
+
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
   const commentsPerPage = 10; // 페이지 당 댓글 수
+ const totalPages = Math.ceil(totalComments / commentsPerPage);
+
+  // 댓글 폼 포커스
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isModiFocused, setIsModiFocused] = useState<boolean>(false);
 
-  const commentFetchOptions = {
-    postId,
-    currentPage,
-    commentsPerPage,
-    setComments,
-    setTotalComments,
-  };
 
 
   const {
@@ -89,9 +87,12 @@ const Comments = ({ postId }: PostDataProps) => {
 
   useEffect(() => {
     if (sessionId) {
-      FetchCommentInfo(commentFetchOptions);
+       fetchComments(currentPage);
     }
-  }, [commentFetchOptions, sessionId]);
+    // setIsFocused(false);
+    // setIsModiFocused(false);
+  }, [currentPage, sessionId]);
+  
 
   const fetchSessionId = async () => {
     const userId = await getUserId();
@@ -103,6 +104,23 @@ const Comments = ({ postId }: PostDataProps) => {
     return date.toISOString().split("T")[0];
   };
 
+  const fetchComments = async (currentPage:number) => {
+    const startRange = (currentPage - 1) * commentsPerPage;
+    const endRange = startRange + commentsPerPage - 1;
+
+    try {
+      const { commentData, totalComments } = await FetchCommentInfo({postId, startRange, endRange});
+      setComments(commentData);
+      setTotalComments(totalComments);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("댓글 불러오기 에러: ", error.message);
+      } else {
+        console.error(String(error))
+      }      
+    }
+  };
 
   // // 댓글 더보기
   // const handleDropDown = (commentId: string) => {
@@ -116,7 +134,7 @@ const Comments = ({ postId }: PostDataProps) => {
       postId,commentId,totalComments, setTotalComments
     }
     await DeleteComment(deleteOptions);
-    FetchCommentInfo(commentFetchOptions);
+    fetchComments(currentPage);
   };
 
   // 댓글 제출 핸들러
@@ -149,7 +167,7 @@ const Comments = ({ postId }: PostDataProps) => {
       }
 
       setCurrentPage(1);
-      FetchCommentInfo(commentFetchOptions);
+      fetchComments(currentPage);
       alert("댓글 등록 완료!");
       reset({ commentText: "" });
     }
@@ -180,17 +198,8 @@ const Comments = ({ postId }: PostDataProps) => {
 
     alert("댓글 수정 성공!");
     setModifyCommentId(null);
-    FetchCommentInfo(commentFetchOptions);
+    fetchComments(currentPage);
   };
-
-  useEffect(() => {
-    FetchCommentInfo(commentFetchOptions);
-    setIsFocused(false);
-    setIsModiFocused(false);
-  }, [currentPage]);
-
-  // 페이지 수 계산
-  const totalPages = Math.ceil(totalComments / commentsPerPage);
 
   // 페이지 번호 변경
   const handlePageChange = (pageNumber: number) => {
