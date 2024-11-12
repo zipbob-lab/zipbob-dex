@@ -36,11 +36,20 @@ const ProfileDropbox = () => {
       <ul className="flex flex-col gap-2">
         <li
           className="cursor-pointer rounded-2xl px-2 py-3 transition hover:bg-Secondary-50"
-          onClick={() => router.push("/mypages")}
+          onClick={() => {
+            router.push("/mypages");
+            setIsOpen(false);
+          }}
         >
           <button>마이페이지</button>
         </li>
-        <li className="cursor-pointer rounded-2xl px-2 py-3 transition hover:bg-Secondary-50" onClick={logout}>
+        <li
+          className="cursor-pointer rounded-2xl px-2 py-3 transition hover:bg-Secondary-50"
+          onClick={() => {
+            logout();
+            setIsOpen(false);
+          }}
+        >
           <button>로그아웃</button>
         </li>
       </ul>

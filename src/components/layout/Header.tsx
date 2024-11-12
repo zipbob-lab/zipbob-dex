@@ -8,11 +8,15 @@ import SearchBar from "@/components/common/search/Searchbar";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
-import LoginCheckModal from "../common/LoginCheckModal";
+
+import LoginCheckModal from "../common/modal/LoginCheckModal";
+
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 const Header = () => {
-  const [isUser, setIsUser] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
+  const { setIsLoggedIn, setUserId } = useStore(useAuthStore);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -20,10 +24,12 @@ const Header = () => {
     const getUser = async () => {
       const userId = await getUserId();
       if (userId) {
-        setIsUser(true);
+        setIsLoggedIn(true);
+        setUserId(userId);
       }
     };
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleScrapClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -44,7 +50,7 @@ const Header = () => {
         <Link href="/">
           <Image src={MainLogo} width={164} height={80} alt="메인 로고" />
         </Link>
-        <Link href="/fridgeList" className="px-3 py-2 text-body-16 text-Gray-900">
+        <Link href="/fridge-list" className="px-3 py-2 text-body-16 text-Gray-900">
           냉장고 탐험
         </Link>
         <Link href="/scraps" onClick={handleScrapClick} className="px-3 py-2 text-body-16 text-Gray-900">
@@ -53,7 +59,7 @@ const Header = () => {
       </nav>
       <div className="flex-grow"></div>
       {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
-      <AuthStatusBar isUser={isUser} />
+      <AuthStatusBar />
       {/* 로그인 모달 */}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
     </header>

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Comments from "../comments/Comments";
 import Likebutton from "../common/button/LikeButton";
 import ModifyDeletePost from "./ModifyDeletePost";
-import { RecipeForm } from "../myrecipewrite/InputField";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRecipeWithUserInfo } from "./fetchRecipeWithUserInfo";
 import GrayLine from "@images/myrecipe/grayLine.svg";
@@ -13,6 +12,7 @@ import ScrapButton from "../common/button/ScrapButton";
 import DefaultProfile from "@images/default-profile.svg";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import DefaultImg from "@images/myrecipe/imageFile.svg";
+import { RecipeForm } from "@/types/RecipeWriteFormType";
 
 interface RecipeDetailViewProps {
   postId: string;
@@ -35,6 +35,10 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
   if (isPostError) {
     return <div>레시피 정보를 가져오는 도중 에러가 발생했습니다</div>;
+  }
+
+  if (!data) {
+    return <div>레시피 정보를 불러올 수 없습니다.</div>;
   }
 
   const userInfo = data.USER_TABLE;

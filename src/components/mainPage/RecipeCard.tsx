@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserId, getUserNickname } from "@/serverActions/profileAction";
+import { getUserNickname } from "@/serverActions/profileAction";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
@@ -10,8 +10,10 @@ import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
 import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
-import TrashCanIcon from "@images/trashcan.svg";
+import TrashCanIcon from "@images/myrecipe/trashCan.svg";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
   isEditMode?: boolean;
@@ -19,6 +21,7 @@ interface ExtendedRecipeCardProps extends RecipeCardProps {
 }
 
 const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardProps) => {
+  const { userId } = useStore(useAuthStore);
   const [nickname, setNickname] = useState("");
   const router = useRouter();
 
@@ -30,7 +33,6 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
       }
     };
     const fetchIsUserLiked = async () => {
-      const userId = await getUserId();
       const { error } = await browserClient
         .from("LIKE_TABLE")
         .select("*")
@@ -46,29 +48,40 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
   }, []);
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="aspect-w-1 aspect-h-1 relative min-h-[12rem] min-w-[12rem] overflow-hidden">
+    <div
+      className="flex cursor-pointer flex-col gap-3 rounded-[1.25rem] bg-white p-3"
+      onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
+    >
+      <div className="relative h-[13.5rem] w-[13.5rem] overflow-hidden">
         <Image
           src={post.recipe_img_done || DefaultImage}
           alt="레시피 사진"
-          layout="fill"
-          objectFit="cover"
-          className="cursor-pointer rounded-[20px] object-cover"
-          onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
+          fill
+          sizes="13.5rem"
+          className="rounded-[1.25rem] object-cover"
+          loading="lazy"
         />
       </div>
       <p>{post.recipe_title}</p>
       <p className="text-gray-500">{nickname}</p>
       <div className="flex justify-between">
         <div className="flex">
-          <Image src={FireFilledIcon} alt="레시피 난이도" />
-          <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-          <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+          <Image src={FireFilledIcon} alt="레시피 난이도" className="h-auto w-auto" />
+          <Image
+            src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+            alt="레시피 난이도"
+            className="h-auto w-auto"
+          />
+          <Image
+            src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+            alt="레시피 난이도"
+            className="h-auto w-auto"
+          />
         </div>
 
         {/* 편집 모드 아닐 때 -> LikeButton / ScrapButton 활성화 */}
         {!isEditMode ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
             <LikeButton postId={post.post_id} />
             <ScrapButton postId={post.post_id} />
           </div>

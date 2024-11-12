@@ -1,5 +1,5 @@
 "use client";
-import { getUserId } from "@/serverActions/profileAction";
+
 import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,8 @@ import TrashCan from "@images/myrecipe/trashCan.svg";
 import Pen from "@images/myrecipe/pen.svg";
 import Image from "next/image";
 import GrayVar from "@images/myrecipe/grayVar.svg";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 interface ModiDeleButtonProps {
   postId: string;
@@ -14,13 +16,13 @@ interface ModiDeleButtonProps {
 }
 
 const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
+  const { userId: sessionId } = useStore(useAuthStore);
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
     const getSessionId = async () => {
-      const sessionId = await getUserId();
       setLoginSessionId(sessionId || null);
     };
     getSessionId();

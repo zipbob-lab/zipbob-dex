@@ -37,8 +37,6 @@ export const updateUserLevel = async (userId: string) => {
 
       if (updateError) {
         console.log("USER_TABLE 업데이트 오류", updateError.message);
-      } else {
-        console.log("USER_TABLE 업데이트 성공", { user_exp, user_rank });
       }
     }
   } catch (error) {
