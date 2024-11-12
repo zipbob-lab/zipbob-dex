@@ -9,6 +9,7 @@ import { CommentExp } from "./CommentExp";
 import CommentGrayLine from "@images/comment/commentGrayLine.svg";
 import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
 import CommentDropBox from "./CommentDropBox";
+import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 
 interface CommentFormInput {
   commentText: string;
@@ -311,7 +312,7 @@ const Comments = ({ postId }: PostDataProps) => {
                 <div className="flex flex-col justify-center">
                   <div className="flex justify-between">
                     <div className="flex items-center justify-center">
-                      <span className="mr-2">Lv.{comment.USER_TABLE.user_rank}</span>
+                      <span className="mr-2"><UserLevelEmoji userRank={comment.USER_TABLE.user_rank} /></span>
                       <span className="mr-3 text-title-16 text-Gray-900">{comment.USER_TABLE.user_nickname}</span>
                       {comment.user_id === sessionId && (
                         <div className="flex items-center justify-center rounded-[10px] border border-Primary-300 px-3 py-0.5 text-body-14 text-Primary-300">
