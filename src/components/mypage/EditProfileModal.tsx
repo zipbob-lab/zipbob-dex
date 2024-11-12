@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import Pencil from "@images/penWhite.svg";
 import Image from "next/image";
 import CloseX from "@images/closeX.svg";
 import ImageButton from "@images/imageButton.svg";
 import DeleteButton from "@images/trashcan.svg";
+import { createPortal } from "react-dom";
+import ConfirmModal from "../common/modal/ConfirmModal";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -23,10 +25,44 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
   const [editedIntroduce, setEditedIntroduce] = useState("");
   const [editedNickname, setEditedNickname] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [errors, setErrors] = useState({ nickname: "", introduce: "" });
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  if (!isOpen) return null;
+  const validateFeilds = () => {
+    const newErrors = { nickname: "", introduce: "" };
+    if (!editedNickname.trim()) newErrors.nickname = "닉네임을 입력해주세요.";
+    if (!editedIntroduce.trim()) newErrors.introduce = "자기소개를 입력해주세요.";
+    if (editedIntroduce.length > 50) newErrors.introduce = "자기소개는 50자 이하로 작성해주세요";
 
-  return (
+    setErrors(newErrors);
+    return !newErrors.nickname && !newErrors.introduce;
+  };
+
+  const handleSaveClick = () => {
+    if (validateFeilds()) {
+      onSave(editedNickname, editedIntroduce, selectedFile);
+      onClose();
+    }
+  };
+
+  const handleDeleteClick = () => setIsConfirmOpen(true);
+
+  const handleConfirmDelete = () => {
+    onDelete();
+    setIsConfirmOpen(false);
+    onClose();
+  };
+  useEffect(() => {
+    if (isOpen) {
+      setEditedNickname(userData.user_nickname);
+      setEditedIntroduce(userData.user_introduce);
+      setErrors({ nickname: "", introduce: "" });
+    }
+  }, [isOpen, userData]);
+
+  if (!isOpen || !document.getElementById("modal-root")) return null;
+
+  const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
       <div className="relative flex min-w-[320px] flex-col items-center rounded-2xl bg-white p-8">
         {/* 모달 닫기 버튼 */}
@@ -63,41 +99,54 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
               className="mb-3 w-[240px] rounded-2xl border p-3 text-body-14"
               placeholder="닉네임을 입력하세요"
             />
+            {errors.nickname && <p className="mx-1 mb-1 text-body-14 text-red-500">{errors.nickname}</p>}
           </div>
           <div>
-            <p className="p-1 text-body-14 text-gray-500">자기소개</p>
+            <p className="p-1 text-body-14 text-gray-500">자기소개 (50자 이하)</p>
             <textarea
               value={editedIntroduce}
               onChange={(e) => setEditedIntroduce(e.target.value)}
               className="min-h-[100px] w-[240px] resize-none rounded-2xl border p-3 text-body-14"
               placeholder="자기소개를 입력하세요"
+              maxLength={50}
             />
+            {errors.introduce && <p className="m-1 text-body-14 text-red-500">{errors.introduce}</p>}
           </div>
         </div>
 
         {/* 저장 및 취소 버튼 */}
         <div className="flex gap-4 text-body-16">
           <button
-            onClick={() => {
-              onSave(editedNickname, editedIntroduce, selectedFile);
-              onClose();
-            }}
+            onClick={handleSaveClick}
             className="flex items-center gap-2 rounded-2xl bg-Primary-300 px-6 py-2 text-white"
           >
             <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
             <span>변경</span>
           </button>
           <button
-            onClick={onDelete}
+            onClick={handleDeleteClick}
             className="flex items-center gap-2 rounded-2xl border-[1px] border-Primary-300 px-6 py-2 text-Primary-300"
           >
             <Image src={DeleteButton} width={20} height={20} alt="쓰레기 아이콘" />
             <span>삭제</span>
           </button>
         </div>
+
+        {isConfirmOpen && (
+          <ConfirmModal
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+            onConfirm={handleConfirmDelete}
+            title="정말로 삭제하시겠습니까?"
+            confirmText="삭제하기"
+            cancelText="취소하기"
+          />
+        )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.getElementById("modal-root")!);
 };
 
 export default EditProfileModal;
