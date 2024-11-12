@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-
 import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
 import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
 import { supabase } from "@/supabase/supabase";
@@ -16,27 +15,12 @@ import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
 import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
-import Pencil from "@images/penWhite.svg";
-import PencilOrange from "@images/penOrange.svg";
+// import Pencil from "@images/penWhite.svg";
+// import PencilOrange from "@images/penOrange.svg";
 import CloseWirteConfirm from "./CloseWirteConfirm";
-
-interface IFormInput {
-  recipeMethod: RecipeMethodEnum;
-  recipeType: RecipeTypeEnum;
-  recipeTitle: string;
-  recipeDescription: string;
-  recipeDoneImg?: File | undefined;
-  recipeDoingImgs?: { file: File | undefined }[];
-  recipeDoingTexts?: { text: string }[];
-  ingredients: RecipeForm[];
-  recipeManual: string;
-}
-
-export interface RecipeForm {
-  ingredient: string;
-  amount: string;
-  unit: string;
-}
+import { IFormInput } from "@/types/RecipeWriteFormType";
+import IconX from "@images/myrecipe/iconX.svg";
+import RecipeSubmitButton from "./RecipeSubmitButton";
 
 const InputField = () => {
   const router = useRouter();
@@ -73,19 +57,20 @@ const InputField = () => {
   const {
     fields: recipeDoingsImgFields,
     append: appendRecipeDoingImg,
-    replace: replaceRecipeDoingImgs
-    // remove: removeRecipeDoingImgs
+    replace: replaceRecipeDoingImgs,
+    remove: removeRecipeDoingImgs
   } = useFieldArray({
     control: methods.control,
     name: "recipeDoingImgs"
   });
 
   // 매뉴얼 텍스트 배열 관리
-  const { append: appendRecipeDoingText, replace: replaceRecipeDoingTexts } = useFieldArray({
+  const { append: appendRecipeDoingText, replace: replaceRecipeDoingTexts, remove:removeRecipeDoingTexts } = useFieldArray({
     control: methods.control,
     name: "recipeDoingTexts"
   });
 
+  
   const handleAddRecipeDoingForm = () => {
     appendRecipeDoingImg({ file: undefined });
     appendRecipeDoingText({ text: "" });
@@ -93,6 +78,14 @@ const InputField = () => {
     setRecipeDoingImgFileArray((prev) => [...prev, { file: undefined }]);
     setRecipeDoingImgViewArray((prev) => [...prev, ""]);
   };
+
+  // 레시피 단계 삭제
+  const handleRemoveRecipeDoingForm = (index:number) => {
+    removeRecipeDoingImgs(index); 
+    removeRecipeDoingTexts(index); 
+    setRecipeDoingImgFileArray((prev) => prev.filter((_, i) => i !== index));
+    setRecipeDoingImgViewArray((prev) => prev.filter((_, i) => i !== index));
+  }
 
   // 수정 모드일 경우 데이터 가져오기
   useEffect(() => {
@@ -199,8 +192,8 @@ const InputField = () => {
       console.log("업데이트 파일 배열: ", updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
-      updatedViewArray[index] = "/DEFAULT_IMAGE";
       // 여기다가 기본 이미지 넣어야됨
+      updatedViewArray[index] = "/DEFAULT_IMAGE";      
       setRecipeDoingImgViewArray(updatedViewArray);
       console.log("업데이트 뷰 배열: ", updatedViewArray);
     }
@@ -251,8 +244,12 @@ const InputField = () => {
             recipeDoingImgUrls.push(recipeDoingImgUrl);
           } else if (recipeDoingImgViewArray[i]) {
             // 기존 이미지 URL이 있는 경우
-            recipeDoingImgUrls.push(recipeDoingImgViewArray[i] || "");
+            recipeDoingImgUrls.push(recipeDoingImgViewArray[i]);
+          }else {
+            // 이미지가 없는 경우 빈 문자열
+            recipeDoingImgUrls.push("");
           }
+          
         } else {
           // 작성 모드일 때
           const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
@@ -321,6 +318,8 @@ const InputField = () => {
           return;
         }
         console.log("업데이트 완료!");
+        setImgModalIndex(null);
+        router.push(`/myrecipedetail/${postId}`);
       } else {
         // 작성 모드
         const { error } = await supabase.from("MY_RECIPE_TABLE").insert({ ...recipeData, post_id: uuidv4() });
@@ -487,6 +486,15 @@ const InputField = () => {
                     placeholder="자세하게 적을수록 더욱 도움이 돼요!"
                     {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                   />
+                  {/* 레시피 삭제 */}
+                  {recipeDoingsImgFields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveRecipeDoingForm(i)}
+                  >
+                    <Image src={IconX} width={24} height={24} alt="삭제" />                  
+                  </button>
+                  )}
                 </div>
               ))}
 
@@ -526,25 +534,8 @@ const InputField = () => {
           )}
 
           {/* 제출 버튼 */}
-          <div>
-            <div className="flex justify-end gap-x-[10px]">
-              <button
-                className="bg-white-50 flex min-w-[256px] items-center justify-center gap-2 rounded-2xl border border-Primary-300 p-4 text-title-20 text-Primary-300"
-                type="button"
-                onClick={() => setCloseWriteModal(true)}
-              >
-                <Image src={PencilOrange} width={20} height={20} alt="연필 아이콘" />
-                닫기
-              </button>
-              <button
-                className="flex min-w-[256px] items-center justify-center gap-2 rounded-2xl bg-orange-400 p-4 text-title-20 text-white"
-                type="submit"
-              >
-                <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
-                등록하기
-              </button>
-            </div>
-          </div>
+          <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />         
+          {/* 닫기 확인 모달 */}
           <CloseWirteConfirm closeWriteModal={closeWriteModal} setCloseWriteModal={setCloseWriteModal} />
         </div>
       </form>

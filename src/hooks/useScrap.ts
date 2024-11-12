@@ -99,7 +99,7 @@ export const useScrap = () => {
     // 새 폴더와 레시피를 저장
     const { error } = await supabase.from("SCRAP_TABLE").insert({
       user_id: userId,
-      scrap_id: recipeId, //my_recipe_table 속성과 동일하게 설정
+      scrap_id: recipeId, //MY_RECIPE_TABLE 속성과 동일하게 설정
       folder_name: folderName,
       scraped_recipe: JSON.stringify(recipeData),
       created_at: new Date(),
