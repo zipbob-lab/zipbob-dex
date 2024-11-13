@@ -1,19 +1,15 @@
 "use client";
 
-import { getUserNickname } from "@/serverActions/profileAction";
+import { useUserNickname } from "@/serverActions/profileAction";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
-import browserClient from "@/supabase/client";
 import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
 import LikeButton from "../common/button/LikeButton";
 import ScrapButton from "../common/button/ScrapButton";
 import TrashCanIcon from "@images/myrecipe/trashCan.svg";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
-import { useStore } from "zustand";
-import { useAuthStore } from "@/store/authStore";
 
 interface ExtendedRecipeCardProps extends RecipeCardProps {
   isEditMode?: boolean;
@@ -21,35 +17,12 @@ interface ExtendedRecipeCardProps extends RecipeCardProps {
 }
 
 const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardProps) => {
-  const { userId } = useStore(useAuthStore);
-  const [nickname, setNickname] = useState("");
+  const { data: nickname } = useUserNickname(post.user_id);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (post.user_id) {
-        const userProfile = await getUserNickname(post.user_id);
-        setNickname(userProfile);
-      }
-    };
-    const fetchIsUserLiked = async () => {
-      const { error } = await browserClient
-        .from("LIKE_TABLE")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("post_id", post.post_id);
-      if (error) {
-        throw error;
-      }
-    };
-    fetchUserProfile();
-    fetchIsUserLiked();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div
-      className="flex cursor-pointer flex-col gap-3 rounded-[1.25rem] bg-white p-3"
+      className="flex cursor-pointer flex-col gap-3 rounded-[1.25rem] bg-white p-3 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]"
       onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
     >
       <div className="relative h-[13.5rem] w-[13.5rem] overflow-hidden">
