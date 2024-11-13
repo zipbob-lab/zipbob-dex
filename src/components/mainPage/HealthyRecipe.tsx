@@ -21,8 +21,7 @@ const HealthyRecipe = () => {
     isError: isPostError
   } = useQuery({
     queryKey: ["lowKcal"],
-    queryFn: fetchLowKcalPosts,
-    staleTime: 60
+    queryFn: fetchLowKcalPosts
   });
 
   if (isPostPending) {

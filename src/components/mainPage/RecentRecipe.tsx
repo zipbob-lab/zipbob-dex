@@ -25,8 +25,7 @@ const RecentRecipe = () => {
     isError: isPostError
   } = useQuery({
     queryKey: ["recentPosts"],
-    queryFn: fetchRecentPosts,
-    staleTime: 60
+    queryFn: fetchRecentPosts
   });
 
   if (isPostPending) {

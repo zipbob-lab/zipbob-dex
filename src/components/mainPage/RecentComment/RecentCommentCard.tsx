@@ -30,8 +30,7 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
 
   const { data: post, isError: isPostError } = useQuery({
     queryKey: ["commentPosts", comment.post_id],
-    queryFn: fetchPosts,
-    staleTime: 60
+    queryFn: fetchPosts
   });
 
   useEffect(() => {
