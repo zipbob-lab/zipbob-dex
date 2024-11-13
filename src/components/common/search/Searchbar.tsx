@@ -112,7 +112,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
       {isDropdownVisible && keywords.length > 0 && (
         <div
           className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg"
-          onMouseDown={(e) => e.preventDefault()} // 드롭박스 유지
+          onMouseDown={(e) => e.preventDefault()}
         >
           <div className="flex items-center justify-between px-4 py-2">
             <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 * (최대 5개까지 저장할 수 있습니다.)</h3>

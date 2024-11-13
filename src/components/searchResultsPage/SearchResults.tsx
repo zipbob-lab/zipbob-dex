@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import browserClient from "@/supabase/client";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
+import browserClient from "@/supabase/client";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
-
 import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
 
@@ -42,6 +41,7 @@ const SearchResult = () => {
           console.error("에러", error);
         } else {
           setRecipes(data as Recipe[]);
+          setCurrentPage(1);
         }
       };
       fetchResults();
@@ -56,7 +56,13 @@ const SearchResult = () => {
     setCurrentPage(page);
   };
 
-  const totalPages = Math.ceil(recipes.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData: Recipe[] = [];
+
+  for (let i = startIndex; i < endIndex && i < recipes.length; i++) {
+    currentData.push(recipes[i]);
+  }
 
   return (
     <div>
@@ -70,7 +76,7 @@ const SearchResult = () => {
         {recipes.length > 0 ? (
           <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
-              {recipes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((recipe) => (
+              {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} recipe={recipe} />
               ))}
             </ul>

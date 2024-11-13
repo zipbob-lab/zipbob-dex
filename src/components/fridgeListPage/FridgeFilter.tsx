@@ -7,12 +7,14 @@ import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Recipe";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
+import Pagination from "@/components/common/Pagination";
 
 import Image from "next/image";
 import SearchPan from "@images/searchPan.svg";
 import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {
+  // Supabase 데이터
   const [data, setData] = useState<Recipe[]>([]);
   const [filteredData, setFilteredData] = useState<Recipe[]>([]);
   const [addKeywords, setAddKeywords] = useState<string[]>([]);
@@ -20,6 +22,11 @@ const TagFilter: React.FC = () => {
   const [showResults, setShowResults] = useState(false);
   const [sortOption, setSortOption] = useState<string>("likes");
 
+  // 페이지네이션 상태
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 16;
+
+  // 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
       let request = browserClient.from("MY_RECIPE_TABLE").select("*");
@@ -37,14 +44,15 @@ const TagFilter: React.FC = () => {
       if (error) {
         console.error("MY_RECIPE_TABLE 에러", error);
       } else {
-        console.log("fetch data result: ", data);
         setData(data as Recipe[]);
         setFilteredData(data as Recipe[]);
+        setCurrentPage(1);
       }
     };
     fetchData();
   }, [sortOption]);
 
+  // 필터링 로직
   useEffect(() => {
     const filterData = () => {
       if (addKeywords.length === 0 && deleteKeywords.length === 0) {
@@ -87,21 +95,24 @@ const TagFilter: React.FC = () => {
       }
 
       setFilteredData(newFilteredData);
+      setCurrentPage(1);
     };
 
     filterData();
   }, [addKeywords, deleteKeywords, data]);
 
-  const handleAddCategory = (keywords: string[]) => {
-    setAddKeywords(keywords);
-  };
 
-  const handleDeleteCategory = (keywords: string[]) => {
-    setDeleteKeywords(keywords);
-  };
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentData: Recipe[] = [];
 
-  const handleResults = () => {
-    setShowResults(true);
+
+  for (let i = startIndex; i < endIndex && i < filteredData.length; i++) {
+    currentData.push(filteredData[i]);
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -110,12 +121,12 @@ const TagFilter: React.FC = () => {
         <p className="text-[24px] font-semibold">냉장고를 탐험해 봅시다!</p>
         <p className="mt-4 text-[18px]">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
         <div className="mt-12 flex">
-          <CategoreAdd onAddCategory={handleAddCategory} />
-          <CategoreDelete onDeleteCategory={handleDeleteCategory} />
+          <CategoreAdd onAddCategory={setAddKeywords} />
+          <CategoreDelete onDeleteCategory={setDeleteKeywords} />
         </div>
         <div className="mt-8 flex justify-center">
           <button
-            onClick={handleResults}
+            onClick={() => setShowResults(true)}
             className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
           >
             <Image src={SearchPan} width={20} height={20} alt="검색 팬" />
@@ -129,10 +140,10 @@ const TagFilter: React.FC = () => {
               <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
             </div>
             <ul
-              className={`${filteredData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-[42px]`}
+              className={`${currentData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-[42px]`}
             >
-              {filteredData.length > 0 ? (
-                filteredData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+              {currentData.length > 0 ? (
+                currentData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
               ) : (
                 <div className="flex items-center justify-center">
                   <div className="flex min-h-[40vh] flex-col items-center justify-center">
@@ -146,12 +157,22 @@ const TagFilter: React.FC = () => {
                         냉장고 재료와 중복일경우 검색결과가 나오지 않습니다!
                       </li>
                       <li className="mb-1 text-center text-[16px] text-stone-500">재료명을 다시한번 확인해주세요!</li>
-                      <li className="mb-1 text-center text-[16px] text-stone-500">구체적인 재료명를 적어주세요!</li>
+                      <li className="mb-1 text-center text-[16px] text-stone-500">구체적인 재료명을 적어주세요!</li>
                     </ul>
                   </div>
                 </div>
               )}
             </ul>
+            <div className="mb-8 mt-8">
+              {filteredData.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  pageSize={pageSize}
+                  totalItems={filteredData.length}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </div>
           </div>
         )}
       </div>
