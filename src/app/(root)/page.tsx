@@ -6,11 +6,11 @@ import RecentRecipe from "@/components/mainPage/RecentRecipe";
 
 export default async function Home() {
   return (
-    <div className="mx-auto bg-[#FBFBFB] pb-[9rem]">
-      <div className="flex flex-col gap-[4rem]">
+    <div className="mx-auto px-[3.75rem] pb-[9rem]">
+      <div className="flex flex-col gap-32">
         <Introduce />
       </div>
-      <div className="mx-auto mt-[4rem] flex max-w-[1200px] flex-col items-center gap-[7.5rem]">
+      <div className="mx-auto mt-20 flex flex-col items-center gap-[5rem]">
         <Ranking />
         <HealthyRecipe />
         <RecentRecipe />

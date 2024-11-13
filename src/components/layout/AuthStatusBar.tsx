@@ -37,13 +37,11 @@ const AuthStatusBar = () => {
         </div>
       ) : (
         <div className="flex">
-          <Link href="/sign-up" className="px-4 py-3 text-body-16 text-Gray-600">
+          <Link href="/sign-up" className="px-3 py-2 text-body-16 text-Gray-600">
             회원가입
           </Link>
-          <div>
-            <Image src={DivideIcon} alt="구분선" />
-          </div>
-          <Link href="/login" className="px-4 py-3 text-body-16 text-Gray-600">
+          <Image src={DivideIcon} alt="구분선" />
+          <Link href="/login" className="px-3 py-2 text-body-16 text-Gray-600">
             로그인
           </Link>
         </div>
