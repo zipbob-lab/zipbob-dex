@@ -55,7 +55,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
             className="mb-2 mt-3 w-full rounded-xl border-[1px] border-Gray-100 p-3 pl-10 text-body-18 outline-none focus:border-Primary-300"
           />
 
-          {/* 만들기 버튼 */}
+          {/* 추가 버튼 */}
           <button
             onClick={handleSaveClick}
             disabled={isSaving}
@@ -63,7 +63,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
               folderName ? "text-Primary-300" : "text-Gray-300"
             }`}
           >
-            만들기
+            추가
           </button>
 
           {/* 경고 메시지 */}

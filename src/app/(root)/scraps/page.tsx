@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
@@ -9,15 +9,30 @@ import Pagination from "@/components/common/Pagination";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
 
 const ScrapPage = () => {
-  const { selectedFolder, setSelectedFolder } = useScrapStore();
-  const { existingFolders, scraps, deleteScrap, refetchFolders, page, handlePageChange, totalScraps } = useScrapData();
+  const { selectedFolder, userId, setSelectedFolder } = useScrapStore();
+  const {
+    folderScrapCounts,
+    existingFolders,
+    scraps,
+    deleteScrap,
+    page,
+    handlePageChange,
+    refetchScraps,
+    selectedFolderTotal,
+    handleFolderClick
+  } = useScrapData();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [scrapToDelete, setScrapToDelete] = useState<string | null>(null);
 
-  const handleFolderClick = (folder: string | null) => {
-    setSelectedFolder(folder);
-  };
+  useEffect(() => {
+    if (userId && !selectedFolder) {
+      setSelectedFolder("전체");
+      handleFolderClick("전체");
+      console.log(userId);
+      console.log("scraps", scraps);
+    }
+  }, [userId, selectedFolder, setSelectedFolder, handleFolderClick]);
 
   const toggleEditMode = () => {
     setIsEditMode((prev) => !prev);
@@ -31,18 +46,11 @@ const ScrapPage = () => {
   const confirmDeleteScrap = async () => {
     if (scrapToDelete) {
       await deleteScrap(scrapToDelete);
-      refetchFolders();
+
       setScrapToDelete(null);
     }
     setIsDeleteModalOpen(false);
   };
-
-  const folderScrapCounts = scraps?.reduce((counts: { [key: string]: number }, scrap) => {
-    const folder = scrap.folder_name || "전체";
-    counts[folder] = (counts[folder] || 0) + 1;
-    counts["전체"] = (counts["전체"] || 0) + 1;
-    return counts;
-  }, {});
 
   const filteredScraps = Array.isArray(scraps)
     ? scraps.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
@@ -67,7 +75,7 @@ const ScrapPage = () => {
                 selectedFolder === null ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
               }`}
             >
-              {folderScrapCounts ? folderScrapCounts["전체"] || 0 : 0}
+              {folderScrapCounts["전체"] || 0}
             </span>
           </button>
           {existingFolders?.map((folder) => (
@@ -84,7 +92,7 @@ const ScrapPage = () => {
                   selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-200 text-white"
                 }`}
               >
-                {folderScrapCounts ? folderScrapCounts[folder] || 0 : 0}
+                {folderScrapCounts[folder] || 0}
               </span>
             </button>
           ))}
@@ -106,7 +114,6 @@ const ScrapPage = () => {
           </EmptyContent>
         ) : (
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 py-6 md:grid-cols-4 lg:grid-cols-4">
-            {/*<div className="flex flex-wrap gap-x-5 gap-y-5 py-6 md:grid-cols-4 lg:grid-cols-4">*/}
             {filteredScraps.map((scrap) => {
               let recipeDetail;
               try {
@@ -132,7 +139,7 @@ const ScrapPage = () => {
         <Pagination
           currentPage={page}
           pageSize={8}
-          totalItems={totalScraps}
+          totalItems={selectedFolderTotal}
           onPageChange={handlePageChange}
         ></Pagination>
       </div>

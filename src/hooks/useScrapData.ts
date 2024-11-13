@@ -1,34 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/supabase/supabase";
 import { useScrapStore } from "@/store/scrapStore";
+import { getUserId } from "@/serverActions/profileAction";
 import { useEffect, useState } from "react";
 import { Scrap, UseScrapData } from "@/types/Scraps";
 import {
   fetchFolders,
   fetchScraps,
-  fetchScrapCount,
+  fetchTotalScrapCount,
+  fetchFolderScrapCount,
   deleteScrapDB,
   fetchRecipeScrapCount,
   isAlreadyScrappedDB
 } from "@/serverActions/scrapActions";
-import { useStore } from "zustand";
-import { useAuthStore } from "@/store/authStore";
 
 // useScrapData 훅 정의
 export const useScrapData = (): UseScrapData => {
-  const { userId: id } = useStore(useAuthStore);
-  const { userId, setUserId } = useScrapStore();
+  const { userId, setUserId, selectedFolder, setSelectedFolder } = useScrapStore();
   const queryClient = useQueryClient();
-
-  // 페이지네이션
-  const [page, setPage] = useState(1);
   const pageSize = 8;
-  const [totalScraps, setTotalScraps] = useState(0);
 
+  const [page, setPage] = useState(1);
+
+  const [totalScraps, setTotalScraps] = useState(0); // 전체 폴더의 레시피 개수
+  const [selectedFolderTotal, setSelectedFolderTotal] = useState(0); // 현재 클릭한 폴더의 레시피 개수
+  const [folderScrapCounts, setFolderScrapCounts] = useState<{ [key: string]: number }>({});
   useEffect(() => {
+    // 사용자 ID 설정
     const fetchUserId = async () => {
       if (!userId) {
         try {
+          const id = await getUserId();
           setUserId(id);
         } catch (error) {
           console.error("사용자 ID 설정 오류:", error);
@@ -39,37 +41,72 @@ export const useScrapData = (): UseScrapData => {
     fetchUserId();
   }, [userId, setUserId]);
 
-  // 전체 스크랩 개수 가져오는 로직
   useEffect(() => {
-    if (userId) {
-      const loadScrapCount = async () => {
-        const count = await fetchScrapCount(userId);
-        setTotalScraps(count);
-      };
-      loadScrapCount();
-    }
+    // 전체 레시피 개수 설정
+    const loadTotalScraps = async () => {
+      if (userId) {
+        const allScrapCount = await fetchTotalScrapCount(userId);
+        setTotalScraps(allScrapCount);
+
+        // 각 폴더별 레시피 개수 가져오기
+        const folders = await fetchFolders(userId);
+        const folderCounts: { [key: string]: number } = {};
+
+        for (const folder of folders) {
+          const folderCount = await fetchFolderScrapCount(userId, folder);
+          folderCounts[folder] = folderCount;
+        }
+
+        folderCounts["전체"] = allScrapCount; // 전체 개수도 저장
+        setFolderScrapCounts(folderCounts);
+      }
+    };
+    loadTotalScraps();
   }, [userId]);
 
+  useEffect(() => {
+    // 선택된 폴더의 레시피 개수 설정
+    const loadSelectedFolderTotal = async () => {
+      // 전체 탭이면 전체 개수를 사용
+      if (selectedFolder === "전체" || !selectedFolder) {
+        setSelectedFolderTotal(totalScraps);
+      } else {
+        // 선택된 폴더의 개수를 사용
+        const folderTotal = await fetchFolderScrapCount(userId as string, selectedFolder);
+        setSelectedFolderTotal(folderTotal);
+      }
+    };
+    loadSelectedFolderTotal();
+  }, [selectedFolder, totalScraps, userId]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    refetchScraps();
+  };
+
+  // 다른 폴더 가면 1페이지로 가도록 하기
+  const handleFolderClick = async (folder: string | null) => {
+    setSelectedFolder(folder); // 폴더 변경
+    setPage(1); // 페이지 초기화
+
+    // 폴더 별 레시피 개수 업데이트
+    const folderTotal = folder ? await fetchFolderScrapCount(userId as string, folder) : totalScraps;
+    setSelectedFolderTotal(folderTotal);
+  };
+
   // 폴더 목록 쿼리
-  const { data: existingFolders, refetch: refetchFolders } = useQuery({
+  const { data: existingFolders = [], refetch: refetchFolders } = useQuery({
     queryKey: ["folders", userId],
     queryFn: () => fetchFolders(userId as string),
-    enabled: !!userId,
-    staleTime: 5 * 60 * 1000
+    enabled: !!userId
   });
 
   // 스크랩 데이터 쿼리 + 페이지네이션 적용
   const { data: scraps, refetch: refetchScraps } = useQuery<Scrap[] | undefined>({
-    queryKey: ["scraps", userId, page],
-    queryFn: () => fetchScraps(userId as string, page, pageSize),
-    enabled: !!userId,
-    placeholderData: queryClient.getQueryData(["scraps", userId, page - 1]) as Scrap[] | undefined
+    queryKey: ["scraps", userId, page, selectedFolder],
+    queryFn: () => fetchScraps(userId as string, page, pageSize, selectedFolder ?? undefined),
+    enabled: !!userId
   });
-
-  // 페이지 변경 함수
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
 
   // 개별 레시피 스크랩 수를 위한 커스텀 훅
   const useFetchScrapCount = (recipeId: string) =>
@@ -105,30 +142,41 @@ export const useScrapData = (): UseScrapData => {
     }
   });
 
-  // 스크랩 삭제 mutation
+  // 삭제 기능
   const { mutateAsync: deleteScrap } = useMutation({
     mutationFn: async (recipeId: string) => {
       if (!userId) throw new Error("로그인 된 사용자가 없습니다.");
-      await deleteScrapDB(recipeId, userId);
 
-      const currentCount = await fetchRecipeScrapCount(recipeId);
-      const newCount = currentCount > 0 ? currentCount - 1 : 0;
+      try {
+        await deleteScrapDB(recipeId, userId as string);
+        // 삭제 후 개수 갱신
+        const updatedTotalCount = await fetchTotalScrapCount(userId);
+        const updatedFolderCount =
+          selectedFolder && selectedFolder !== "전체"
+            ? await fetchFolderScrapCount(userId, selectedFolder)
+            : updatedTotalCount;
 
-      const { error } = await supabase
-        .from("MY_RECIPE_TABLE")
-        .update({ scrap_count: newCount })
-        .eq("post_id", recipeId);
-      if (error) throw new Error(error.message);
+        // 상태 업데이트
+        setTotalScraps(updatedTotalCount);
+        setSelectedFolderTotal(updatedFolderCount);
+        setFolderScrapCounts((prevCounts) => ({
+          ...prevCounts,
+          [selectedFolder ?? "전체"]: updatedFolderCount // 선택된 폴더의 개수 갱신
+        }));
 
-      queryClient.setQueryData(["scraps", userId], (oldData: Scrap[] | undefined) =>
-        oldData ? oldData.filter((scrap) => scrap.scrap_id !== recipeId) : []
-      );
-      queryClient.setQueryData(["scrapCount", recipeId], newCount);
-
-      alert("삭제되었습니다.");
-      refetchFolders();
-      refetchScraps();
-      return true;
+        // 페이지 업데이트
+        const totalPages = Math.ceil(updatedFolderCount / pageSize);
+        if (page > totalPages) {
+          setPage(totalPages); // 현재 페이지가 전체 페이지 수보다 클 경우 마지막 페이지로 이동
+        } else {
+          refetchScraps();
+        }
+        alert("삭제되었습니다.");
+        return true;
+      } catch (error) {
+        console.error("삭제 중 오류 발생:", error);
+        return false;
+      }
     }
   });
 
@@ -139,7 +187,7 @@ export const useScrapData = (): UseScrapData => {
 
       const alreadyScrapped = await isAlreadyScrapped(recipeId);
       if (alreadyScrapped) {
-        alert("이미 스크랩 한 레시피입니다.");
+        alert("이미 스크랩한 레시피입니다.");
         return false;
       }
 
@@ -181,6 +229,9 @@ export const useScrapData = (): UseScrapData => {
     useFetchScrapCount,
     page,
     handlePageChange,
-    totalScraps
+    totalScraps,
+    selectedFolderTotal,
+    folderScrapCounts,
+    handleFolderClick
   };
 };

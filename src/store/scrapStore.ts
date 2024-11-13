@@ -9,8 +9,8 @@ type ScrapStore = {
   setIsSaving: (saving: boolean) => void;
   existingFolders: string[];
   setExistingFolders: (folders: string[]) => void;
-  selectedFolder: string | null;
-  setSelectedFolder: (folder: string | null) => void;
+  selectedFolder: string | null | undefined;
+  setSelectedFolder: (folder: string | null | undefined) => void;
 };
 
 export const useScrapStore = create<ScrapStore>((set) => ({
@@ -22,6 +22,6 @@ export const useScrapStore = create<ScrapStore>((set) => ({
   setIsSaving: (saving) => set({ isSaving: saving }),
   existingFolders: [],
   setExistingFolders: (folders) => set({ existingFolders: folders }),
-  selectedFolder: null,
-  setSelectedFolder: (folder) => set({ selectedFolder: folder })
+  selectedFolder: undefined,
+  setSelectedFolder: (folder: string | null | undefined) => set({ selectedFolder: folder })
 }));
