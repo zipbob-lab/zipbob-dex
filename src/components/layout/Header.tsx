@@ -43,12 +43,10 @@ const Header = () => {
   };
 
   return (
-    <header
-      className={`box-border flex items-center justify-between ${pathname === "/" ? "bg-Secondary-100" : "border-b border-[#EAEAEA]"} px-5 py-2`}
-    >
+    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-[3.75rem] py-3">
       <nav className="flex items-center gap-8">
-        <Link href="/">
-          <Image src={MainLogo} width={164} height={80} alt="메인 로고" />
+        <Link href="/" className="relative h-[3.5rem] w-[7.25rem]">
+          <Image src={MainLogo} fill alt="메인 로고" />
         </Link>
         <Link href="/fridge-list" className="px-3 py-2 text-body-16 text-Gray-900">
           냉장고 탐험
@@ -57,7 +55,6 @@ const Header = () => {
           스크랩한 레시피
         </Link>
       </nav>
-      <div className="flex-grow"></div>
       {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
       <AuthStatusBar />
       {/* 로그인 모달 */}

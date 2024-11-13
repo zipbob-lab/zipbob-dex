@@ -33,12 +33,13 @@ const HealthyRecipe = () => {
   }
 
   return (
-    <div className="w-full rounded-[2.5rem] bg-[#FFF6DC] px-[5.5rem] py-12">
-      <h1 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Secondary-400">
-        건강하고 맛있는 저칼로리 레시피
-      </h1>
-      <div className="mt-[3.75rem] flex gap-[3rem] overflow-x-auto">
-        {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
+    <div className="w-full rounded-[3.75rem] bg-Secondary-25 py-[6.25rem]">
+      <div className="mx-auto max-w-[1024px] text-center">
+        <h2 className="font-wiggle text-main-30 text-[#834D27]">건강하고 맛있는 저칼로리 레시피</h2>
+        <p className="mt-4">집밥도감이 추천하는 건강한 레시피에 도전해 보세요!</p>
+        <div className="mt-[3.75rem] flex gap-4 overflow-x-auto">
+          {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
+        </div>
       </div>
     </div>
   );
