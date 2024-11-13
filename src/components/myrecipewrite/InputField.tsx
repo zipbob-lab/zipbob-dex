@@ -478,7 +478,7 @@ const InputField = () => {
                         methods.register(`recipeDoingImgs.${i}`).ref(doingEl);
                         doingImgRefs.current[i] = doingEl;
                       }}
-                      className={`absolute inset-0 opacity-0 ${recipeDoingImgViewArray[i] ? "pointer-events-none" : ""}`}
+                      className={`cursor-pointer absolute inset-0 opacity-0 ${recipeDoingImgViewArray[i] ? "pointer-events-none" : ""}`}
                     />
                   </div>
                   <textarea
