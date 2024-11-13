@@ -47,6 +47,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   return (
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
       <p className="mb-3 text-[18px] font-medium">냉장고 재료</p>
+      {/* <Image /> */}
       <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-xl border-2">
         <input
           type="text"

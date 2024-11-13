@@ -81,11 +81,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
   };
 
   return (
-    <div className={`relative mx-auto max-h-[52px] w-full max-w-[648px] ${className}`}>
+    <div
+      className={`relative mx-auto max-h-[52px] w-full max-w-[648px] ${className}`}
+      onMouseDown={(e) => e.stopPropagation()} // 드롭박스 닫히지 않도록 이벤트 적용 방지
+    >
       <form onSubmit={handleSearchSubmit} className="relative">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 transform">
-          <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
-        </div>
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 transform"></div>
         <input
           type="text"
           value={searchValue}
@@ -95,21 +96,24 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
           placeholder="메뉴나 재료 이름을 검색해보세요!"
           className={`${
             mainSearchBar ? "h-[52px]" : "h-[48px]"
-          } w-full rounded-full border-2 px-12 py-2 focus:outline-none ${
+          } w-full rounded-full border-2 px-12 py-2 pl-4 text-left focus:outline-none ${
             mainSearchBar ? "focus:border-[#ff9143]" : "border-gray-300 focus:border-stone-400"
           }`}
           style={mainSearchBar ? { borderColor: "#ff9143" } : {}}
         />
-        <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 transform text-stone-500">
-          검색
+        <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 transform">
+          <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
         </button>
       </form>
 
       {/* 드롭박스 */}
       {isDropdownVisible && keywords.length > 0 && (
-        <div className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg">
+        <div
+          className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg"
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <div className="flex items-center justify-between px-4 py-2">
-            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 *(최대 5개까지 저장할수 있습니다.)</h3>
+            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 * (최대 5개까지 저장할 수 있습니다.)</h3>
             <button type="button" onClick={deleteKeywords} className="text-xs text-red-400 hover:bg-gray-100">
               전체 삭제
             </button>
