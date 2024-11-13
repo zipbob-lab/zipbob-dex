@@ -173,7 +173,6 @@ const Comments = ({ postId }: PostDataProps) => {
 
       setCurrentPage(1);
       fetchComments(currentPage);
-      alert("댓글 등록 완료!");
       reset({ commentText: "" });
     }
   };
@@ -200,8 +199,6 @@ const Comments = ({ postId }: PostDataProps) => {
       alert("댓글 수정 실패");
       return;
     }
-
-    alert("댓글 수정 성공!");
     setModifyCommentId(null);
     fetchComments(currentPage);
   };
