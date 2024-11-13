@@ -28,19 +28,19 @@ const IngredientsFields = () => {
       {fields.map((field, i) => (
         <div className="flex gap-x-3" key={field.id}>
           <input
-            className="w-[368px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16"
+            className="w-[368px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 input-focus"
             placeholder="양상추, 표고 버섯 등의 재료 이름"
             {...register(`ingredients.${i}.ingredient`, { required: true })}
           />
           <input
             placeholder="수량"
             {...register(`ingredients.${i}.amount`, { required: true })}
-            className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16"
+            className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 input-focus"
           />
           <input
             placeholder="단위"
             {...register(`ingredients.${i}.unit`, { required: true })}
-            className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16"
+            className="w-[280px] rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 input-focus"
           />
            {fields.length > 1 && (
           <button

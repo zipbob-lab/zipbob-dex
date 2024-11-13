@@ -482,7 +482,7 @@ const InputField = () => {
                     />
                   </div>
                   <textarea
-                    className="h-[160px] w-[706px] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500"
+                    className="h-[160px] w-[706px] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500 input-focus"
                     placeholder="자세하게 적을수록 더욱 도움이 돼요!"
                     {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                   />

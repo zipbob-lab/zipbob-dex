@@ -10,3 +10,9 @@
 :root {
   --font-yangjin: "Yangjin";
 }
+
+@layer components {  
+  .input-focus {
+    @apply  focus:border-Primary-300 focus:border-2 focus:outline-none box-border border-2 border-transparent;
+  }
+}
