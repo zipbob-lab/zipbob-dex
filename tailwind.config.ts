@@ -51,6 +51,8 @@ const config: Config = {
         }
       },
       fontSize: {
+        "main-54": ["54px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.27px" }],
+        "main-30": ["30px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.15px" }],
         "heading-32": ["32px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.16px" }],
         "heading-28": ["28px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.14px" }],
         "heading-24": ["24px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.12px" }],
@@ -79,7 +81,8 @@ const config: Config = {
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)", "sans-serif"],
-        yangjin: ["var(--font-yangjin)", "sans-serif"]
+        yangjin: ["var(--font-yangjin)", "sans-serif"],
+        wiggle: ["var(--font-wiggle)", "sans-serif"]
       }
     }
   },
