@@ -81,7 +81,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
   };
 
   return (
-    <div className={`relative mx-auto max-h-[52px] w-full max-w-[648px] ${className}`}>
+    <div
+      className={`relative mx-auto max-h-[52px] w-full max-w-[648px] ${className}`}
+      onMouseDown={(e) => e.stopPropagation()} // 드롭박스 닫히지 않도록 이벤트 적용 방지
+    >
       <form onSubmit={handleSearchSubmit} className="relative">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 transform">
           <Image src={MainSearch} width={24} height={24} alt="큰 돋보기" />
@@ -107,9 +110,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
 
       {/* 드롭박스 */}
       {isDropdownVisible && keywords.length > 0 && (
-        <div className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg">
+        <div
+          className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg"
+          onMouseDown={(e) => e.preventDefault()} // 드롭박스 유지
+        >
           <div className="flex items-center justify-between px-4 py-2">
-            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 *(최대 5개까지 저장할수 있습니다.)</h3>
+            <h3 className="py-1 text-sm font-normal text-gray-400">최근 검색어 * (최대 5개까지 저장할 수 있습니다.)</h3>
             <button type="button" onClick={deleteKeywords} className="text-xs text-red-400 hover:bg-gray-100">
               전체 삭제
             </button>

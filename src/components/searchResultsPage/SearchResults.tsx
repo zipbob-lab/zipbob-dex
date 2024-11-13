@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
@@ -6,6 +6,7 @@ import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
+import Pagination from "@/components/common/search/SearchPagiNation";
 
 import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
@@ -14,12 +15,17 @@ const SearchResult = () => {
   const { query } = useParams();
   const searchText = decodeURI(query as string);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [sortOption, setSortOption] = useState<string>("default");
+  const [sortOption, setSortOption] = useState<string>("likes");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 16;
 
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
-        let request = browserClient.from("MY_RECIPE_TABLE").select("*").like("recipe_title", `%${searchText}%`);
+        let request = browserClient
+          .from("MY_RECIPE_TABLE")
+          .select("*")
+          .filter("recipe_title", "ilike", `%${searchText}%`);
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "commnet") {
@@ -31,7 +37,6 @@ const SearchResult = () => {
         }
 
         const { data, error } = await request;
-
         if (error) {
           console.error("에러", error);
         } else {
@@ -42,6 +47,18 @@ const SearchResult = () => {
     }
   }, [query, sortOption]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentRecipes = recipes.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(recipes.length / itemsPerPage);
+
   return (
     <div>
       <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
@@ -51,12 +68,15 @@ const SearchResult = () => {
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       <section>
-        {recipes.length > 0 ? (
-          <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
-            {recipes.map((recipe) => (
-              <RecipeCard key={recipe.post_id} recipe={recipe} />
-            ))}
-          </ul>
+        {currentRecipes.length > 0 ? (
+          <>
+            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
+              {currentRecipes.map((recipe) => (
+                <RecipeCard key={recipe.post_id} recipe={recipe} />
+              ))}
+            </ul>
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+          </>
         ) : (
           <div>
             <div className="flex min-h-[50vh] flex-col items-center justify-center">
