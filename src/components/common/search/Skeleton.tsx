@@ -69,3 +69,11 @@
 // };
 
 // 스켈레톤 작업중
+
+import React from "react";
+
+const Skeleton = () => {
+  return <div>Skeleton</div>;
+};
+
+export default Skeleton;
