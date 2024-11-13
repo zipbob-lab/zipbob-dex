@@ -18,7 +18,7 @@ const TagFilter: React.FC = () => {
   const [addKeywords, setAddKeywords] = useState<string[]>([]);
   const [deleteKeywords, setDeleteKeywords] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const [sortOption, setSortOption] = useState<string>("default");
+  const [sortOption, setSortOption] = useState<string>("likes");
 
   useEffect(() => {
     const fetchData = async () => {

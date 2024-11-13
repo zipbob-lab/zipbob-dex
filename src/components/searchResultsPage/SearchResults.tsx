@@ -68,19 +68,21 @@ const SearchResult = () => {
       </div>
       <section>
         {recipes.length > 0 ? (
-          <>
+          <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
               {recipes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((recipe) => (
                 <RecipeCard key={recipe.post_id} recipe={recipe} />
               ))}
             </ul>
-            <Pagination
-              currentPage={currentPage}
-              pageSize={itemsPerPage}
-              totalItems={recipes.length}
-              onPageChange={handlePageChange}
-            />
-          </>
+            <div className="mb-8 mt-8">
+              <Pagination
+                currentPage={currentPage}
+                pageSize={itemsPerPage}
+                totalItems={recipes.length}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </div>
         ) : (
           <div>
             <div className="flex min-h-[50vh] flex-col items-center justify-center">
