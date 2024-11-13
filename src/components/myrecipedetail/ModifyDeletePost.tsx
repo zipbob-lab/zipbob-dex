@@ -43,13 +43,9 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
 
     if (deleteError || count === 0) {
       console.error(deleteError?.message);
-      console.log("레시피 삭제 실패");
       return;
     }
-
-    console.log("레시피 삭제 성공");
-    router.push("/myrecipedetail");
-    router.refresh();
+    router.push("/");
   };
 
   return (
