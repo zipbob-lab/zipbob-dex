@@ -21,13 +21,14 @@ import CloseWirteConfirm from "./CloseWirteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
 import IconX from "@images/myrecipe/iconX.svg";
 import RecipeSubmitButton from "./RecipeSubmitButton";
+import { useQueryClient } from "@tanstack/react-query";
 
 const InputField = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const postId = searchParams.get("postId");
   const isModifyMode = !!postId;
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // 상태관리
   const [recipeDoingImgFileArray, setRecipeDoingImgFileArray] = useState<{ file: File | undefined }[]>([]);
@@ -109,7 +110,6 @@ const InputField = () => {
       console.error("레시피 불러오기 에러", error.message);
     } else {
       setFetchData(data as Recipe);
-      console.log("기존 데이터", data);
       // 기존 이미지 뷰에 넣어주기(초기화)
       setRecipeDoneImgView(data?.recipe_img_done ?? "");
       const existingImgViews = data?.recipe_img_doing ?? [];
@@ -203,7 +203,8 @@ const InputField = () => {
 
   // 폼 제출
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const supabase = createClient();
+    const supabase = createClient();  
+    const newPostId = isModifyMode ? postId : uuidv4();
 
     try {
       const {
@@ -318,11 +319,14 @@ const InputField = () => {
           return;
         }
         console.log("업데이트 완료!");
+        queryClient.invalidateQueries({ queryKey: ["recipeWithUser", postId] });
+
         setImgModalIndex(null);
         router.push(`/myrecipedetail/${postId}`);
       } else {
+        
         // 작성 모드
-        const { error } = await supabase.from("MY_RECIPE_TABLE").insert({ ...recipeData, post_id: uuidv4() });
+        const { error } = await supabase.from("MY_RECIPE_TABLE").insert({ ...recipeData, post_id:newPostId });
 
         if (error) {
           console.error("나만의 레시피 INSERT 에러 : ", error.message);
@@ -348,11 +352,15 @@ const InputField = () => {
           if (updateUserError) {
             console.error("경험치 UPDATE 에러 : ", updateUserError.message);
           }
-        }
-        alert("레시피 작성이 완료되었습니다!");
-      }
-
+        }       
+      }      
+      
+      alert("레시피 작성이 완료되었습니다!");
       router.back();
+      // 작성 게시글로 이동
+      setTimeout(() => {
+        router.push(`/myrecipedetail/${newPostId}`);
+      }, 50);
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
