@@ -10,7 +10,6 @@ import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 
 import Image from "next/image";
-import SearchPan from "@images/searchPan.svg";
 import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {
