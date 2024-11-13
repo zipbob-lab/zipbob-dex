@@ -14,7 +14,7 @@ import SearchPan from "@images/searchPan.svg";
 import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {
-  // Supabase 데이터
+  // 필터 메인 상태
   const [data, setData] = useState<Recipe[]>([]);
   const [filteredData, setFilteredData] = useState<Recipe[]>([]);
   const [addKeywords, setAddKeywords] = useState<string[]>([]);
@@ -52,7 +52,7 @@ const TagFilter: React.FC = () => {
     fetchData();
   }, [sortOption]);
 
-  // 필터링 로직
+  // 불러온 데이터 필터링
   useEffect(() => {
     const filterData = () => {
       if (addKeywords.length === 0 && deleteKeywords.length === 0) {
@@ -101,16 +101,17 @@ const TagFilter: React.FC = () => {
     filterData();
   }, [addKeywords, deleteKeywords, data]);
 
-
+  // 페이지 네이션
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentData: Recipe[] = [];
 
-
+  // 페이지 네이션
   for (let i = startIndex; i < endIndex && i < filteredData.length; i++) {
     currentData.push(filteredData[i]);
   }
 
+  // 페이지 네이션
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

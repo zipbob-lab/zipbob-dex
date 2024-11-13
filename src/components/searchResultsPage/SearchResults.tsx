@@ -16,11 +16,13 @@ const SearchResult = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [sortOption, setSortOption] = useState<string>("likes");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const itemsPerPage = 16;
 
   useEffect(() => {
     if (query) {
       const fetchResults = async () => {
+        setLoading(true);
         let request = browserClient
           .from("MY_RECIPE_TABLE")
           .select("*")
@@ -43,6 +45,7 @@ const SearchResult = () => {
           setRecipes(data as Recipe[]);
           setCurrentPage(1);
         }
+        setLoading(false);
       };
       fetchResults();
     }
@@ -52,17 +55,13 @@ const SearchResult = () => {
     window.scrollTo(0, 0);
   }, [currentPage]);
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData: Recipe[] = recipes.slice(startIndex, endIndex);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData: Recipe[] = [];
-
-  for (let i = startIndex; i < endIndex && i < recipes.length; i++) {
-    currentData.push(recipes[i]);
-  }
 
   return (
     <div>
@@ -73,7 +72,11 @@ const SearchResult = () => {
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       <section>
-        {recipes.length > 0 ? (
+        {loading ? (
+          <div className="flex min-h-[50vh] flex-col items-center justify-center">
+            <p className="rounded-lg bg-gray-100 px-4 py-2 text-center text-[20px] font-semibold">로딩 중입니다!</p>
+          </div>
+        ) : recipes.length > 0 ? (
           <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
               {currentData.map((recipe) => (
@@ -90,21 +93,25 @@ const SearchResult = () => {
             </div>
           </div>
         ) : (
-          <div>
-            <div className="flex min-h-[50vh] flex-col items-center justify-center">
-              <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
-              <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
-                &quot;{searchText}&quot; 키워드와 일치하는 레시피가 없습니다.
-              </p>
-              <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4 pl-5">
-                <h1 className="mb-4 text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
-                <li className="text-center text-[16px] text-stone-500">레시피명을 다시 확인해주세요!</li>
-                <li className="text-center text-[16px] text-stone-500">구체적인 키워드를 사용해보세요!</li>
-                <li className="mt-1 text-center text-[16px] text-stone-500">키워드를 조합해 레시피를 검색해보세요!</li>
-              </ul>
+          !loading && (
+            <div>
+              <div className="flex min-h-[50vh] flex-col items-center justify-center">
+                <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
+                <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
+                  &quot;{searchText}&quot; 키워드와 일치하는 레시피가 없습니다.
+                </p>
+                <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4 pl-5">
+                  <h1 className="mb-4 text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
+                  <li className="text-center text-[16px] text-stone-500">레시피명을 다시 확인해주세요!</li>
+                  <li className="text-center text-[16px] text-stone-500">구체적인 키워드를 사용해보세요!</li>
+                  <li className="mt-1 text-center text-[16px] text-stone-500">
+                    키워드를 조합해 레시피를 검색해보세요!
+                  </li>
+                </ul>
+              </div>
+              <div className="min-h-[20vh]" />
             </div>
-            <div className="min-h-[20vh]" />
-          </div>
+          )
         )}
       </section>
     </div>
