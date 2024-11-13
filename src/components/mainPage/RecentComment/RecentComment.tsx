@@ -26,8 +26,7 @@ const RecentComment = () => {
     isError: isCommentError
   } = useQuery({
     queryKey: ["recentComments"],
-    queryFn: fetchRecentComments,
-    staleTime: 60
+    queryFn: fetchRecentComments
   });
 
   if (isCommentPending) {
@@ -39,11 +38,10 @@ const RecentComment = () => {
   }
 
   return (
-    <div className="w-full px-[5.5rem]">
-      <h2 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Primary-300">
-        현재 다른 사람들이 도전하고 있는 레시피
-      </h2>
-      <div className="mt-[3.75rem] grid grid-cols-2 gap-x-6 gap-y-4">
+    <div className="w-[1024px] py-[5rem] text-center">
+      <h2 className="font-wiggle text-main-30 text-[#834D27]">현재 다른 사람들이 도전하고 있는 레시피</h2>
+      <p className="mt-4 text-body-18 text-Gray-600">최근에 올라온 후기를 확인해 봐요!</p>
+      <div className="mt-[3.75rem] grid grid-cols-2 gap-x-4 gap-y-5">
         {comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)}
       </div>
     </div>

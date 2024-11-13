@@ -30,8 +30,7 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
 
   const { data: post, isError: isPostError } = useQuery({
     queryKey: ["commentPosts", comment.post_id],
-    queryFn: fetchPosts,
-    staleTime: 60
+    queryFn: fetchPosts
   });
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
 
   if (post) {
     return (
-      <div className="flex gap-4 p-4">
+      <div className="flex rounded-2xl p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         <div className="relative h-[7.5rem] w-[7.5rem]">
           <Image
             src={post.recipe_img_done || DefaultImage}
@@ -62,7 +61,7 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
             onClick={() => router.push(`myrecipedetail/${post.post_id}`)}
           />
         </div>
-        <div className="flex w-[calc(100%-7.5rem-3rem)] flex-col justify-between">
+        <div className="ml-4 flex w-[calc(100%-8.5rem)] flex-col justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="flex">
@@ -72,7 +71,7 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
               </div>
               <p className="text-title-16 text-Gray-900">{post.recipe_title}</p>
             </div>
-            <p className="text-r-body-15 line-clamp-2 overflow-hidden text-Gray-500">{comment.comment}</p>
+            <p className="text-r-body-15 line-clamp-2 overflow-hidden text-start text-Gray-900">{comment.comment}</p>
           </div>
           <div className="flex justify-between text-body-13 text-Gray-300">
             <p>{nickname}</p>

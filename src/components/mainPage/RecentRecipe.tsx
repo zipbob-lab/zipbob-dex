@@ -25,8 +25,7 @@ const RecentRecipe = () => {
     isError: isPostError
   } = useQuery({
     queryKey: ["recentPosts"],
-    queryFn: fetchRecentPosts,
-    staleTime: 60
+    queryFn: fetchRecentPosts
   });
 
   if (isPostPending) {
@@ -38,12 +37,13 @@ const RecentRecipe = () => {
   }
 
   return (
-    <div className="w-full rounded-[2.5rem] bg-[#FFE8D8] px-[5.5rem] py-12">
-      <h1 className="mt-2 text-center font-yangjin text-[2.25rem] font-medium leading-[105%] tracking-[-0.18px] text-Primary-300">
-        최근에 올라온 레시피
-      </h1>
-      <div className="mt-[3.75rem] flex gap-[3rem] overflow-x-auto">
-        {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
+    <div className="w-full rounded-[2.5rem] bg-Primary-50 py-[6.25rem]">
+      <div className="mx-auto max-w-[1024px] text-center">
+        <h2 className="font-wiggle text-main-30 text-[#834D27]">최근에 올라온 레시피</h2>
+        <p className="mt-4">집밥도감 유저들이 올려준 레시피에 도전해 보세요!</p>
+        <div className="mt-[3.75rem] flex gap-4 overflow-x-auto">
+          {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
+        </div>
       </div>
     </div>
   );
