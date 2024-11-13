@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import browserClient from "@/supabase/client";
@@ -6,7 +6,7 @@ import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
-import Pagination from "@/components/common/search/SearchPagiNation";
+import Pagination from "@/components/common/Pagination";
 
 import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
@@ -26,6 +26,7 @@ const SearchResult = () => {
           .from("MY_RECIPE_TABLE")
           .select("*")
           .filter("recipe_title", "ilike", `%${searchText}%`);
+
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
         } else if (sortOption === "commnet") {
@@ -55,8 +56,6 @@ const SearchResult = () => {
     setCurrentPage(page);
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentRecipes = recipes.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(recipes.length / itemsPerPage);
 
   return (
@@ -68,14 +67,19 @@ const SearchResult = () => {
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       <section>
-        {currentRecipes.length > 0 ? (
+        {recipes.length > 0 ? (
           <>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
-              {currentRecipes.map((recipe) => (
+              {recipes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((recipe) => (
                 <RecipeCard key={recipe.post_id} recipe={recipe} />
               ))}
             </ul>
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination
+              currentPage={currentPage}
+              pageSize={itemsPerPage}
+              totalItems={recipes.length}
+              onPageChange={handlePageChange}
+            />
           </>
         ) : (
           <div>
