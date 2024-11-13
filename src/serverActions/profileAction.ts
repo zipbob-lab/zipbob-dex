@@ -1,4 +1,5 @@
 import browserClient from "@/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 export const getUserId = async (): Promise<string | null> => {
   const { data, error } = await browserClient.auth.getUser();
@@ -51,4 +52,11 @@ export const getUserNickname = async (id: string) => {
   }
 
   return data[0].user_nickname;
+};
+
+export const useUserNickname = (userId: string) => {
+  return useQuery({
+    queryKey: ["userNickname", userId],
+    queryFn: () => getUserNickname(userId)
+  });
 };
