@@ -25,6 +25,7 @@ export const useScrapData = (): UseScrapData => {
   const [totalScraps, setTotalScraps] = useState(0); // 전체 폴더의 레시피 개수
   const [selectedFolderTotal, setSelectedFolderTotal] = useState(0); // 현재 클릭한 폴더의 레시피 개수
   const [folderScrapCounts, setFolderScrapCounts] = useState<{ [key: string]: number }>({});
+
   useEffect(() => {
     // 사용자 ID 설정
     const fetchUserId = async () => {

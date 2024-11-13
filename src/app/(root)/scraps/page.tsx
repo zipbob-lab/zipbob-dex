@@ -17,7 +17,6 @@ const ScrapPage = () => {
     deleteScrap,
     page,
     handlePageChange,
-    refetchScraps,
     selectedFolderTotal,
     handleFolderClick
   } = useScrapData();
@@ -29,8 +28,6 @@ const ScrapPage = () => {
     if (userId && !selectedFolder) {
       setSelectedFolder("전체");
       handleFolderClick("전체");
-      console.log(userId);
-      console.log("scraps", scraps);
     }
   }, [userId, selectedFolder, setSelectedFolder, handleFolderClick]);
 
@@ -52,8 +49,14 @@ const ScrapPage = () => {
     setIsDeleteModalOpen(false);
   };
 
+  // const filteredScraps = Array.isArray(scraps)
+  //   ? scraps.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
+  //   : [];
+
   const filteredScraps = Array.isArray(scraps)
-    ? scraps.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
+    ? selectedFolder === "전체"
+      ? scraps
+      : scraps.filter((scrap) => scrap.folder_name === selectedFolder)
     : [];
 
   return (

@@ -22,11 +22,10 @@ export const fetchScraps = async (
   const query = supabase.from("SCRAP_TABLE").select("*").eq("user_id", userId).range(start, end);
   if (folderName !== "전체" && folderName) {
     query.eq("folder_name", folderName);
-    console.log("folder_name", folderName);
   }
-  console.log("query", query);
+
   const { data, error } = await query;
-  console.log("data", data);
+
   if (error) throw new Error(error.message);
   return data || [];
 };
