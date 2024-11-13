@@ -12,6 +12,10 @@ import CommentDropBox from "./CommentDropBox";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import { getUserId } from "@/serverActions/profileAction";
 import DEFAULT_USER_IMG from "@images/default-profile.svg"
+import LeftArrow from "@images/comment/leftArrow.svg";
+import RightArrow from "@images/comment/rightArrow.svg";
+import LeftArrowGray from "@images/comment/leftArrowGray.svg";
+import RightArrowGray from "@images/comment/rightArrowGray.svg";
 import { DeleteComment, FetchCommentInfo } from "./CommentHooks";
 
 interface CommentFormInput {
@@ -53,7 +57,8 @@ const Comments = ({ postId }: PostDataProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
   const commentsPerPage = 10; // 페이지 당 댓글 수
- const totalPages = Math.ceil(totalComments / commentsPerPage);
+  const totalPages = Math.ceil(totalComments / commentsPerPage);
+  const [arrowColor, setArrowColor] = useState<boolean>(false)
 
   // 댓글 폼 포커스
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -211,7 +216,7 @@ const Comments = ({ postId }: PostDataProps) => {
       {/* 댓글 제목 & 작성창 */}
       <div className="flex flex-col gap-y-3">
         <div className="flex flex-row gap-x-2 p-3">
-          <h1 className="flex items-end justify-center text-heading-28 text-Gray-900">집밥 탐험일지</h1>
+          <h1 className="flex items-end justify-center text-heading-24 text-Gray-900">집밥 탐험일지</h1>
           <span className="flex w-[71px] items-end justify-start text-body-18 text-[#787878]">{totalComments}개</span>
         </div>
 
@@ -272,7 +277,7 @@ const Comments = ({ postId }: PostDataProps) => {
             <div className="flex gap-x-3 p-4">
               <div>
                 {/* 프로필 이미지 */}
-                <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gray-500">
+                <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full">
                   <Image
                     src={comment.USER_TABLE.user_img||DEFAULT_USER_IMG}
                     alt="프로필 이미지"
@@ -368,15 +373,40 @@ const Comments = ({ postId }: PostDataProps) => {
 
       {/* 페이지 네이션 */}
       <div className="flex items-center justify-center gap-6">
+
+  {/* 화살표 */}
+  {currentPage > 1 && (
+    <button
+      onClick={() => handlePageChange(currentPage - 1)}     
+      onMouseEnter={()=>setArrowColor(true)}
+      onMouseLeave={()=>setArrowColor(false)}
+    >
+     <Image src={arrowColor?LeftArrow:LeftArrowGray} alt="이전 화살표" />
+    </button>
+  )}
+      {/* 페이지 */}
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className="text-caption-14 text-Gray-900 hover:text-Secondary-200"
+            className={`text-caption-14 ${currentPage === index + 1 ? "rounded-[18px] h-[30px] w-[30px] bg-Primary-300 text-white" : "text-Primary-300"}`}
           >
             {index + 1}
           </button>
         ))}
+
+{/* 화살표 */}
+{currentPage < totalPages && (
+    <button
+      onClick={() => handlePageChange(currentPage + 1)}     
+      onMouseEnter={()=>setArrowColor(true)}
+      onMouseLeave={()=>setArrowColor(false)}
+    >
+      <Image src={arrowColor?RightArrow:RightArrowGray} alt="다음 화살표" />
+    </button>
+  )}
+
+        
       </div>
     </form>
   );
