@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Recipe } from "@/types/Recipe";
 
 import Image from "next/image";
+import DefaultImage from "@images/myrecipe/imageFile.svg";
 import LikeCount from "@images/likeCount.svg";
 import ScrapCount from "@images/scrapCount.svg";
 import FireFilledIcon from "@images/fireFilled.svg";
@@ -17,7 +18,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     <li key={recipe.post_id} className="h-auto w-[216px]">
       <Link href={`/myrecipedetail/${recipe.post_id}`}>
         <Image
-          src={recipe.recipe_img_done}
+          src={recipe.recipe_img_done || DefaultImage}
           width={216}
           height={216}
           alt="이미지 없음"
