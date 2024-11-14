@@ -35,12 +35,12 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
   };
 
   return (
-    <div className="flex items-center justify-center gap-6 text-body-14 text-Gray-900">
+    <div className="flex items-center justify-center text-body-14">
       {/* 이전 버튼 */}
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-[14px] py-[5px] text-gray-900"
+        className="px-[14px] py-[5px] sm:pr-10"
       >
         <Image src={leftArrow} alt="왼쪽 화살표" width={20} height={20} />
       </button>
@@ -52,9 +52,9 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
           <button
             key={index}
             onClick={() => handlePageClick(page)}
-            disabled={page > totalPages} // 존재하지 않는 페이지는 비활성화
-            className={`min-h-[30px] min-w-[30px] rounded ${
-              currentPage === page ? "rounded-full border border-Secondary-200 text-gray-900" : "text-gray-900"
+            disabled={page > totalPages}
+            className={`min-h-[1.875rem;] min-w-[1.875rem;] gap-6 rounded sm:gap-3 ${
+              currentPage === page ? "rounded-full bg-Primary-300 text-white" : "text-Primary-300"
             } ${page > totalPages ? "cursor-not-allowed opacity-50" : ""}`}
           >
             {page}
@@ -66,7 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-[14px] py-[5px] text-gray-900"
+        className="px-[14px] py-[5px] sm:pl-10"
       >
         <Image src={rightArrow} alt="오른쪽 화살표" width={20} height={20} />
       </button>

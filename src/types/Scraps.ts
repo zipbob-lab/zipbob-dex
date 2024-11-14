@@ -20,7 +20,7 @@ export interface Scrap {
 }
 
 export interface UseScrapData {
-  existingFolders: string[] | undefined;
+  existingFolders: string[];
   scraps: Scrap[] | undefined;
   refetchFolders: () => void;
   refetchScraps: () => void;
@@ -32,4 +32,8 @@ export interface UseScrapData {
   page: number;
   handlePageChange: (newPage: number) => void;
   totalScraps: number;
+  totalItems: number;
+  folderScrapCounts: { [key: string]: number };
+  selectedFolderTotal: number;
+  handleFolderClick: (folder: string | null) => void;
 }
