@@ -83,8 +83,8 @@ const ScrapPage = () => {
   }
 
   return (
-    <div className="mx-auto flex flex-col justify-center pb-16 pt-8 sm:max-w-[336px] sm:px-[4.5rem] sm:pb-[32px] sm:pt-8 lg:max-w-[1024px]">
-      <h1 className="pb-[0.75rem] text-heading-28 text-Gray-900 sm:text-heading-20">스크랩한 레시피</h1>
+    <div className="mx-auto flex flex-col justify-center ssm:max-w-[336px] ssm:px-[18px] ssm:py-8 sm:max-w-[336px] sm:py-8 md:max-w-[668px] md:py-8 lg:max-w-[1024px] lg:pb-16 lg:pt-8">
+      <h1 className="pb-3 text-Gray-900 ssm:text-title-20 sm:text-heading-20 md:text-heading-24">스크랩한 레시피</h1>
 
       {/* 로딩 중일 때 화면 표시 */}
       {isLoading ? (
@@ -92,17 +92,17 @@ const ScrapPage = () => {
       ) : (
         <>
           {/* 폴더명 리스트 */}
-          <div className="">
-            <div className="flex gap-x-6 border-b-[1px] pt-2">
+          <>
+            <div className="ssm:text-title-13 flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[2px] sm:gap-3 sm:text-title-14">
               <button
                 onClick={() => handleFolderClick("전체")}
-                className={`relative flex items-center justify-center px-2 pb-1 text-center text-body-16 ${
+                className={`ssm:text-title-13 relative flex items-center justify-center px-2 pb-1 text-center text-title-16 sm:text-title-14 ${
                   selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
                 }`}
               >
                 전체
                 <span
-                  className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
+                  className={`ssm:text-title-13 ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 sm:h-5 sm:w-5 sm:text-title-14 ${
                     selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
                   }`}
                 >
@@ -113,16 +113,14 @@ const ScrapPage = () => {
                 <button
                   key={folder}
                   onClick={() => handleFolderClick(folder)}
-                  className={`relative flex items-center justify-center px-2 pb-1 text-center text-body-16 ${
-                    selectedFolder === folder
-                      ? "border-b-2 border-Primary-200 text-body-16 text-Primary-200"
-                      : "text-Gray-500"
+                  className={`relative flex items-center justify-center px-2 pb-1 text-center sm:text-title-14 md:text-title-16 ${
+                    selectedFolder === folder ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
                   }`}
                 >
                   {folder}
                   <span
-                    className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
-                      selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
+                    className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 sm:h-5 sm:w-5 sm:text-title-14 ${
+                      selectedFolder === folder ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
                     }`}
                   >
                     {folderScrapCounts[folder] || 0}
@@ -131,7 +129,7 @@ const ScrapPage = () => {
               ))}
               <button
                 onClick={toggleEditMode}
-                className={`ml-auto text-body-16 ${isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"}`}
+                className={`ml-auto pb-1 sm:text-title-14 lg:text-body-16 ${isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"}`}
               >
                 편집
               </button>
@@ -147,7 +145,7 @@ const ScrapPage = () => {
                   </ul>
                 </EmptyContent>
               ) : (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-6 pb-7 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
                   {filteredScraps.map((scrap) => {
                     let recipeDetail;
                     try {
@@ -169,8 +167,8 @@ const ScrapPage = () => {
                 </div>
               )}
             </div>
-          </div>
-          <div className="text-Primary-300">
+          </>
+          <div className="flex items-center justify-center pt-7">
             <Pagination currentPage={page} pageSize={8} totalItems={totalItems} onPageChange={handlePageChange} />
           </div>
 

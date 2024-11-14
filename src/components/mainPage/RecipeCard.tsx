@@ -71,7 +71,7 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
               }}
               className="text-gray-500 hover:text-gray-700"
             >
-              <Image src={TrashCanIcon} alt="삭제 아이콘" width={22} height={22} />
+              <Image src={TrashCanIcon} alt="삭제 아이콘" width={20} height={20} />
             </button>
           )
         )}
