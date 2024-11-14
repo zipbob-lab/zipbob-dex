@@ -78,7 +78,7 @@ const SearchResult = () => {
           </div>
         ) : recipes.length > 0 ? (
           <div>
-            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-[52px]">
+            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-[16px] gap-y-[28px]">
               {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} recipe={recipe} />
               ))}

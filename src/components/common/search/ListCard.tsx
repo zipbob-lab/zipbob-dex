@@ -15,14 +15,14 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
-    <li key={recipe.post_id} className="h-auto w-[216px]">
+    <li key={recipe.post_id} className="h-[344px] w-[244px] p-[16px]">
       <Link href={`/myrecipedetail/${recipe.post_id}`}>
         <Image
           src={recipe.recipe_img_done || DefaultImage}
           width={216}
           height={216}
           alt="이미지 없음"
-          className="mb-3 h-[216px] w-[216px] rounded-3xl object-cover"
+          className="mb-3 h-[212px] w-[212px] rounded-3xl object-cover"
         />
         <h2 className="mb-3 text-[16px] font-medium">{recipe.recipe_title}</h2>
         <div className="flex items-center justify-between">
