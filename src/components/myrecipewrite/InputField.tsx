@@ -360,7 +360,7 @@ const InputField = () => {
       // 작성 게시글로 이동
       setTimeout(() => {
         router.push(`/myrecipedetail/${newPostId}`);
-      }, 50);
+      }, 10);
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
