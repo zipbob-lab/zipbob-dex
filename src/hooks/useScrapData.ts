@@ -19,9 +19,8 @@ export const useScrapData = (): UseScrapData => {
   const { userId, setUserId, selectedFolder, setSelectedFolder } = useScrapStore();
   const queryClient = useQueryClient();
   const pageSize = 8;
-
   const [page, setPage] = useState(1);
-
+  const [totalItems, setTotalItems] = useState(0); // 페이지네이션에 적용할 상태관리 / 전체 아이템
   const [totalScraps, setTotalScraps] = useState(0); // 전체 폴더의 레시피 개수
   const [selectedFolderTotal, setSelectedFolderTotal] = useState(0); // 현재 클릭한 폴더의 레시피 개수
   const [folderScrapCounts, setFolderScrapCounts] = useState<{ [key: string]: number }>({});
@@ -42,12 +41,28 @@ export const useScrapData = (): UseScrapData => {
     fetchUserId();
   }, [userId, setUserId]);
 
+  // "선택된 폴더"의 총 레시피 개수를 설정
   useEffect(() => {
-    // 전체 레시피 개수 설정
+    const loadTotalItems = async () => {
+      if (userId) {
+        if (selectedFolder === "전체" || !selectedFolder) {
+          const allScrapCount = await fetchTotalScrapCount(userId);
+          setTotalItems(allScrapCount); // 전체 레시피 개수로 설정
+        } else {
+          const folderTotal = await fetchFolderScrapCount(userId, selectedFolder);
+          setTotalItems(folderTotal); // 선택된 폴더의 레시피 개수로 설정
+        }
+      }
+    };
+    loadTotalItems();
+  }, [userId, selectedFolder]);
+
+  // "전체" 레시피 개수 설정
+  useEffect(() => {
     const loadTotalScraps = async () => {
       if (userId) {
         const allScrapCount = await fetchTotalScrapCount(userId);
-        setTotalScraps(allScrapCount);
+        setTotalItems(allScrapCount);
 
         // 각 폴더별 레시피 개수 가져오기
         const folders = await fetchFolders(userId);
@@ -80,19 +95,20 @@ export const useScrapData = (): UseScrapData => {
     loadSelectedFolderTotal();
   }, [selectedFolder, totalScraps, userId]);
 
+  const handleFolderClick = async (folder: string | null) => {
+    setSelectedFolder(folder); // 폴더 변경
+    setPage(1); // 페이지 초기화 - 전체 폴더로 돌아올 때 1페이지로 설정
+
+    // 폴더 별 레시피 개수 업데이트
+    const folderTotal = folder ? await fetchFolderScrapCount(userId as string, folder) : totalItems;
+    setTotalItems(folderTotal);
+
+    // 페이지네이션을 위해 데이터 리패치
+    refetchScraps();
+  };
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     refetchScraps();
-  };
-
-  // 다른 폴더 가면 1페이지로 가도록 하기
-  const handleFolderClick = async (folder: string | null) => {
-    setSelectedFolder(folder); // 폴더 변경
-    setPage(1); // 페이지 초기화
-
-    // 폴더 별 레시피 개수 업데이트
-    const folderTotal = folder ? await fetchFolderScrapCount(userId as string, folder) : totalScraps;
-    setSelectedFolderTotal(folderTotal);
   };
 
   // 폴더 목록 쿼리
@@ -221,6 +237,7 @@ export const useScrapData = (): UseScrapData => {
   return {
     existingFolders,
     scraps,
+    totalItems,
     refetchFolders,
     refetchScraps,
     incrementScrapCount,

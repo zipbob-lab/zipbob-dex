@@ -32,6 +32,7 @@ export interface UseScrapData {
   page: number;
   handlePageChange: (newPage: number) => void;
   totalScraps: number;
+  totalItems: number;
   folderScrapCounts: { [key: string]: number };
   selectedFolderTotal: number;
   handleFolderClick: (folder: string | null) => void;

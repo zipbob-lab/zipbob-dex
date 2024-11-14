@@ -17,9 +17,11 @@ const ScrapPage = () => {
     scraps,
     deleteScrap,
     page,
+    totalItems,
     handlePageChange,
-    selectedFolderTotal,
-    handleFolderClick
+    // selectedFolderTotal,
+    handleFolderClick,
+    refetchScraps
   } = useScrapData();
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,21 +37,27 @@ const ScrapPage = () => {
   }, [scraps]);
 
   useEffect(() => {
-    if (userId && !selectedFolder) {
-      setSelectedFolder("전체");
-      handleFolderClick("전체");
+    if (userId) {
+      if (!selectedFolder) {
+        setSelectedFolder("전체");
+      } else {
+        refetchScraps();
+      }
     }
-  }, [userId, selectedFolder, setSelectedFolder, handleFolderClick]);
+  }, [userId, selectedFolder, page, setSelectedFolder, refetchScraps]);
 
+  // 편집 버튼 토글
   const toggleEditMode = () => {
     setIsEditMode((prev) => !prev);
   };
 
+  // 삭제 기능 + 삭제 재확인 모달 활성화
   const handleDeleteClick = (scrapId: string) => {
     setScrapToDelete(scrapId);
     setIsDeleteModalOpen(true);
   };
 
+  // 삭제 확인 모달 로직
   const confirmDeleteScrap = async () => {
     if (scrapToDelete) {
       await deleteScrap(scrapToDelete);
@@ -58,10 +66,6 @@ const ScrapPage = () => {
     }
     setIsDeleteModalOpen(false);
   };
-
-  // const filteredScraps = Array.isArray(scraps)
-  //   ? scraps.filter((scrap) => selectedFolder === null || scrap.folder_name === selectedFolder)
-  //   : [];
 
   const filteredScraps = Array.isArray(scraps)
     ? selectedFolder === "전체"
@@ -79,8 +83,8 @@ const ScrapPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-[1024px] gap-2 gap-y-5">
-      <h1 className="py-8 text-heading-28">스크랩한 레시피</h1>
+    <div className="mx-auto max-w-[1024px] pb-16 pt-8">
+      <h1 className="pb-[0.75rem] text-heading-28 text-Gray-900">스크랩한 레시피</h1>
 
       {/* 로딩 중일 때 화면 표시 */}
       {isLoading ? (
@@ -89,17 +93,17 @@ const ScrapPage = () => {
         <>
           {/* 폴더명 리스트 */}
           <div className="">
-            <div className="flex gap-6 border-b-[1px] pt-2">
+            <div className="flex gap-x-6 border-b-[1px] pt-2">
               <button
                 onClick={() => handleFolderClick("전체")}
-                className={`relative flex w-24 items-center justify-center px-2 pb-1 text-center text-body-16 ${
+                className={`relative flex items-center justify-center px-2 pb-1 text-center text-body-16 ${
                   selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
                 }`}
               >
                 전체
                 <span
                   className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
-                    selectedFolder === "전체" ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
+                    selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
                   }`}
                 >
                   {folderScrapCounts["전체"] || 0}
@@ -109,16 +113,16 @@ const ScrapPage = () => {
                 <button
                   key={folder}
                   onClick={() => handleFolderClick(folder)}
-                  className={`relative flex w-24 items-center justify-center px-2 pb-1 text-center text-body-16 ${
+                  className={`relative flex items-center justify-center px-2 pb-1 text-center text-body-16 ${
                     selectedFolder === folder
-                      ? "border-b-2 border-Primary-300 font-bold text-Primary-300"
+                      ? "border-b-2 border-Primary-200 text-body-16 text-Primary-200"
                       : "text-Gray-500"
                   }`}
                 >
                   {folder}
                   <span
                     className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ${
-                      selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-200 text-white"
+                      selectedFolder === folder ? "bg-Primary-300 text-white" : "bg-Gray-500 text-white"
                     }`}
                   >
                     {folderScrapCounts[folder] || 0}
@@ -127,50 +131,47 @@ const ScrapPage = () => {
               ))}
               <button
                 onClick={toggleEditMode}
-                className={`ml-auto text-body-16 ${isEditMode ? "font-bold text-Primary-300" : "text-Gray-500"}`}
+                className={`ml-auto text-body-16 ${isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"}`}
               >
                 편집
               </button>
             </div>
 
             {/* 해당 폴더의 레시피 리스트 */}
-            {filteredScraps.length === 0 ? (
-              <EmptyContent message="아직 스크랩한 레시피가 없어요!">
-                <ul className="text-body-16 text-Gray-500">
-                  <li>· 집밥도감만의 레시피를 스크랩해 보세요.</li>
-                  <li>· 집밥도감 유저들이 올린 레시피를 스크랩해 보세요.</li>
-                </ul>
-              </EmptyContent>
-            ) : (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-5 py-6 md:grid-cols-4 lg:grid-cols-4">
-                {filteredScraps.map((scrap) => {
-                  let recipeDetail;
-                  try {
-                    recipeDetail = JSON.parse(scrap.scraped_recipe);
-                  } catch (e) {
-                    console.error("스크랩 데이터 파싱 중 오류 발생", e);
-                    return null;
-                  }
+            <div className="pt-6">
+              {filteredScraps.length === 0 ? (
+                <EmptyContent message="아직 스크랩한 레시피가 없어요!">
+                  <ul className="text-body-16 text-Gray-500">
+                    <li>· 집밥도감만의 레시피를 스크랩해 보세요.</li>
+                    <li>· 집밥도감 유저들이 올린 레시피를 스크랩해 보세요.</li>
+                  </ul>
+                </EmptyContent>
+              ) : (
+                <div className="grid grid-cols-2 gap-x-4 gap-y-6 pb-7 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+                  {filteredScraps.map((scrap) => {
+                    let recipeDetail;
+                    try {
+                      recipeDetail = JSON.parse(scrap.scraped_recipe);
+                    } catch (e) {
+                      console.error("스크랩 데이터 파싱 중 오류 발생", e);
+                      return null;
+                    }
 
-                  return (
-                    <RecipeCard
-                      key={scrap.scrap_id}
-                      post={recipeDetail}
-                      isEditMode={isEditMode}
-                      onDelete={() => handleDeleteClick(scrap.scrap_id)}
-                    />
-                  );
-                })}
-              </div>
-            )}
+                    return (
+                      <RecipeCard
+                        key={scrap.scrap_id}
+                        post={recipeDetail}
+                        isEditMode={isEditMode}
+                        onDelete={() => handleDeleteClick(scrap.scrap_id)}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="pb-14">
-            <Pagination
-              currentPage={page}
-              pageSize={8}
-              totalItems={selectedFolderTotal}
-              onPageChange={handlePageChange}
-            ></Pagination>
+          <div className="text-Primary-300">
+            <Pagination currentPage={page} pageSize={8} totalItems={totalItems} onPageChange={handlePageChange} />
           </div>
 
           {/* 삭제 확인 모달 */}
