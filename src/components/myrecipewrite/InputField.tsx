@@ -355,7 +355,7 @@ const InputField = () => {
         }       
       }      
       
-      alert("레시피 작성이 완료되었습니다!");
+      // alert("레시피 작성이 완료되었습니다!");
       router.back();
       // 작성 게시글로 이동
       setTimeout(() => {
