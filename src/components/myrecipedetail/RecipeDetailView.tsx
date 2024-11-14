@@ -16,6 +16,7 @@ import { RecipeForm } from "@/types/RecipeWriteFormType";
 import RecommendRecipe from "./RecommendRecipe";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/authStore";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 interface RecipeDetailViewProps {
   postId: string;
@@ -30,13 +31,15 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
     queryKey: ["recipeWithUser", postId],
     queryFn: () => fetchRecipeWithUserInfo(postId as string),
     enabled: !!postId,
-    staleTime: 24 * 60 * 60 * 1000 // 하루
+    staleTime: 24 * 60 * 60 * 1000,// 하루
+    refetchOnMount: false,
+    refetchOnWindowFocus: false 
   });
 
   const { userId } = useStore(useAuthStore);
  
   if (isPostPending) {
-    return <div>레시피 정보를 가져오는중입니다</div>;
+    return <div> <LoadingSpinner /></div>;
   }
 
   if (isPostError) {
