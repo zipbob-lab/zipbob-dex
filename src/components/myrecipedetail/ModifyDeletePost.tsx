@@ -47,7 +47,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
       console.error(deleteError?.message);
       return;
     }
-    queryClient.invalidateQueries({ queryKey: ["recipeWithUser", postId] });
+    queryClient.invalidateQueries({ queryKey: ["recentPosts", postId] });
     router.push("/");
     
   };
