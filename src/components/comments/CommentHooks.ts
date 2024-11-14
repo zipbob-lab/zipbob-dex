@@ -45,11 +45,11 @@ export const DeleteComment = async ({postId,commentId,totalComments, setTotalCom
 
   if (deleteError) {
     console.error(deleteError.message);
-    alert("댓글 삭제 실패");
+    // alert("댓글 삭제 실패");
     return;
   }
 
-  alert("댓글 삭제 성공!");
+  // alert("댓글 삭제 성공!");
 
   const { error: countError } = await supabase
     .from("MY_RECIPE_TABLE")
