@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
-import SoopmFork from "@images/search/spoomFork.svg";
+import SoopmFork from "@images/fridge/spoomFork.svg";
 
 const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);

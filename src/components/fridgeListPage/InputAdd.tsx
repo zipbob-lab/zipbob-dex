@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 // import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
-import SpoomFork from "@images/search/spoomFork.svg";
+import SpoomFork from "@images/fridge/spoomFork.svg";
 import Image from "next/image";
 
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {

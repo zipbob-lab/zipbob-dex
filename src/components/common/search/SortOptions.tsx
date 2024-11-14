@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import Image from "next/image";
 import ChevronDown from "@images/chevronDown.svg";
+import DownArrow from "@images/search/downArrow.svg";
+import UpArrow from "@images/search/upArrow.svg";
 
 interface SortOptionsProps {
   sortOption: string;
@@ -34,12 +36,12 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
         <span className="text-[14px] font-medium">
           {options.find((option) => option.value === sortOption)?.label || "정렬 옵션 선택"}
         </span>
-        <Image src={ChevronDown} width={24} height={24} alt="선택 버튼" className="ml-4" />
+        <Image src={isOpen ? UpArrow : DownArrow} width={24} height={24} alt="선택 버튼" className="ml-8" />
       </button>
 
       {/* 드롭박스 */}
       {isOpen && (
-        <ul className="absolute z-10 mt-2 w-full rounded-2xl border-2 bg-white shadow-lg">
+        <ul className="absolute z-10 mt-2 w-full rounded-2xl border-2 bg-white p-1 shadow-lg">
           {options.map((option) => (
             <li
               key={option.value}
