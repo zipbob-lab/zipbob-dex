@@ -83,7 +83,7 @@ const ScrapPage = () => {
   }
 
   return (
-    <div className="mx-auto flex max-w-[1024px] flex-col justify-center px-[4.5rem] pb-16 pt-8 sm:max-w-[336px] sm:pb-[32px] sm:pt-8">
+    <div className="mx-auto flex flex-col justify-center pb-16 pt-8 sm:max-w-[336px] sm:px-[4.5rem] sm:pb-[32px] sm:pt-8 lg:max-w-[1024px]">
       <h1 className="pb-[0.75rem] text-heading-28 text-Gray-900 sm:text-heading-20">스크랩한 레시피</h1>
 
       {/* 로딩 중일 때 화면 표시 */}
