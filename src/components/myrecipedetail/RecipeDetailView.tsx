@@ -55,7 +55,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
       <div className="flex w-full max-w-[1024px] flex-col items-center gap-10">
         {/* 요리 완성 사진 & 설명 */}
         <div className="flex-start flex w-full">
-          <div className="relative h-[320px] w-[320px] flex-shrink-0 overflow-hidden" style={{ borderRadius: "20px" }}>
+          <div className="relative h-[20rem] w-[20rem] flex-shrink-0 overflow-hidden" style={{ borderRadius: "20px" }}>
             <Image
               src={data.recipe_img_done || DefaultImg}
               alt="완성 이미지"
@@ -133,15 +133,15 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
         {/* 재료 목록 */}
         <div className="flex w-full flex-col gap-5 rounded-[18px] bg-Secondary-25 p-5 pb-[24px] pl-[32px] pr-[32px] pt-[20px] text-Gray-900">
-          <h1 className="text-2xl font-bold">재료 목록</h1>
+          <h1 className="text-heading-24">재료 목록</h1>
           <div className="relative grid grid-cols-2 gap-4 gap-x-8">
             {/* 가운데 세로선 */}
             <div className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 transform rounded-full bg-Secondary-300"></div>
             {/* 재료 */}
             {data.recipe_ingredients.map((item: RecipeForm, index: number) => (
               <div key={index} className="flex justify-between">
-                <span>{item.ingredient}</span>
-                <span>
+                <span className="text-body-16">{item.ingredient}</span>
+                <span  className="text-body-16">
                   {item.amount}
                   {item.unit}
                 </span>
@@ -153,7 +153,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
         {/* 조리 순서 */}
         <div className="flex w-full flex-col gap-y-6 bg-[#FBFBFB]">
           <div>
-            <h1 className="text-heading-28 text-Gray-900">조리 순서</h1>
+            <h1 className="text-heading-24 text-Gray-900">조리 순서</h1>
           </div>
           <div className="flex flex-col gap-y-6">
             {data.recipe_img_doing.map((_: string, index: number) => (
@@ -177,10 +177,10 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                   />
                 </div>
                 <div className="flex flex-col gap-y-2">
-                  <h2 className="text-[20px] font-bold text-Primary-300" style={{ lineHeight: "135%" }}>
+                  <h2 className="text-title-18 font-bold text-Primary-300" style={{ lineHeight: "135%" }}>
                     Step {index + 1}
                   </h2>
-                  <p className="text-[16px] font-normal text-Gray-900 whitespace-pre-wrap" style={{ lineHeight: "150%" }}>
+                  <p className="text-body-16 font-normal text-Gray-900 whitespace-pre-wrap" style={{ lineHeight: "150%" }}>
                     {data.recipe_manual[index]}
                   </p>
                 </div>
