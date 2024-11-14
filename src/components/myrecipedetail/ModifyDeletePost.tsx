@@ -9,6 +9,7 @@ import Image from "next/image";
 import GrayVar from "@images/myrecipe/grayVar.svg";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/authStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ModiDeleButtonProps {
   postId: string;
@@ -20,6 +21,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const getSessionId = async () => {
@@ -45,7 +47,9 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
       console.error(deleteError?.message);
       return;
     }
+    queryClient.invalidateQueries({ queryKey: ["recipeWithUser", postId] });
     router.push("/");
+    
   };
 
   return (
