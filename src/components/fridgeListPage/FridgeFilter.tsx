@@ -139,7 +139,7 @@ const TagFilter: React.FC = () => {
               <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
             </div>
             <ul
-              className={`${currentData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-[42px]`}
+              className={`${currentData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-x-4 gap-y-7`}
             >
               {currentData.length > 0 ? (
                 currentData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)

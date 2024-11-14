@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 
-import Image from "next/image";
+// import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
+import SpoomFork from "@images/search/spoomFork.svg";
+import Image from "next/image";
 
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
@@ -46,8 +48,8 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
+      <Image src={SpoomFork} width={20} height={20} alt="냉장고 재료" />
       <p className="mb-3 text-[18px] font-medium">냉장고 재료</p>
-      {/* <Image /> */}
       <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-xl border-2">
         <input
           type="text"

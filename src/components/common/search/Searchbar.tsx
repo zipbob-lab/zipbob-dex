@@ -109,7 +109,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
       {/* 드롭박스 */}
       {isDropdownVisible && keywords.length > 0 && (
         <div
-          className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white shadow-lg"
+          className="absolute z-10 mt-2 w-full rounded-3xl border border-gray-300 bg-white p-2 shadow-lg"
           onMouseDown={(e) => e.preventDefault()}
         >
           <div className="flex items-center justify-between px-4 py-2">

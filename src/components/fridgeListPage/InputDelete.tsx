@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
+import SoopmFork from "@images/search/spoomFork.svg";
 
 const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
@@ -47,6 +48,8 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
   return (
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
       <div className="mb-3 pl-11">
+        <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
+
         <p className="text-[18px] font-medium">없는 재료</p>
       </div>
       <div className="relative mb-2 ml-auto flex h-[48px] w-[452px] items-center rounded-xl border-2">
@@ -63,7 +66,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
         <button
           type="button"
           onClick={addCategory}
-          className="mr-4 h-[38px] rounded-full bg-white p-1 font-normal text-[#ff9143]"
+          className="mr-4 h-[38px] rounded-2xl bg-[#ff9143] p-1 font-normal text-[#ffffff]"
         >
           입력
         </button>
