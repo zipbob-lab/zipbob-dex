@@ -13,7 +13,9 @@ import DefaultProfile from "@images/default-profile.svg";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import DefaultImg from "@images/myrecipe/imageFile.svg";
 import { RecipeForm } from "@/types/RecipeWriteFormType";
-// import RecommendRecipe from "./RecommendRecipe";
+import RecommendRecipe from "./RecommendRecipe";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/authStore";
 
 interface RecipeDetailViewProps {
   postId: string;
@@ -31,6 +33,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
     staleTime: 24 * 60 * 60 * 1000 // 하루
   });
 
+  const { userId } = useStore(useAuthStore);
  
   if (isPostPending) {
     return <div>레시피 정보를 가져오는중입니다</div>;
@@ -88,29 +91,37 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
             <div className="flex-end mt-[20px] flex justify-between gap-x-2">
               {/* 유저 사진 */}
-              <div className="flex gap-3 py-2">
-                <div className="h-[60px] w-[60px] overflow-hidden rounded-full">
-                  <Image
-                    src={userInfo.user_img || DefaultProfile}
-                    alt={userInfo.user_nickname}
-                    width={60}
-                    height={60}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-                {/* 유저 정보 */}
-                <div className="flex flex-col items-start justify-center gap-x-2 gap-y-2">
-                  <div className="flex items-center justify-center">
-                    <span className="font-bold">
-                      <UserLevelEmoji userRank={userInfo.user_rank} />
-                    </span>
-                    <span className="text-title-16 text-Gray-900">{userInfo.user_nickname}</span>
-                  </div>
-                  <span className="flex items-center justify-center text-r-body-14 text-Gray-500">
-                    {userInfo.user_introduce || "한 줄 소개가 없어요."}
-                  </span>
-                </div>
-              </div>
+
+              {userInfo.user_id !== userId ? (
+                                      <div className="flex gap-3 py-2">
+                                      <div className="h-[60px] w-[60px] overflow-hidden rounded-full">
+                                        <Image
+                                          src={userInfo.user_img || DefaultProfile}
+                                          alt={userInfo.user_nickname}
+                                          width={60}
+                                          height={60}
+                                          className="h-full w-full object-cover object-center"
+                                        />
+                                      </div>
+                                      {/* 유저 정보 */}
+                                      
+                                      <div className="flex flex-col items-start justify-center gap-x-2 gap-y-2">
+                                        <div className="flex items-center justify-center">
+                                          <span className="font-bold">
+                                            <UserLevelEmoji userRank={userInfo.user_rank} />
+                                          </span>
+                                          <span className="text-title-16 text-Gray-900">{userInfo.user_nickname}</span>
+                                        </div>
+                                        <span className="flex items-center justify-center text-r-body-14 text-Gray-500">
+                                          {userInfo.user_introduce || "한 줄 소개가 없어요."}
+                                        </span>
+                                      </div>
+                                    </div>
+                      ): <div className="flex items-center justify-center w-auto h-auto rounded-[2.625rem] border border-Primary-300 px-[1.25rem] py-[0.5rem] text-body-16 text-Primary-300">
+                      내가 작성한 레시피
+                    </div>
+                    }
+              
               {/* 좋아요/스크랩 버튼 */}
               <div className="mr-1 flex flex-row items-center justify-center gap-3">
                 <Likebutton postId={postId} />
@@ -178,16 +189,16 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
           </div>
         </div>
       </div>
-      <div className="mb-12 mt-12">
+      <div className="my-[2rem]">
         <Image src={GrayLine} alt="회색 라인" />
       </div>
       {/* 이 레시피는 어때요 */}
-      {/* <div className="flex w-full max-w-[1024px] items-center">
+      <div className="flex w-full max-w-[1024px] items-center  pb-[1.5rem]">
         <RecommendRecipe/>
       </div>
       <div className="mb-12 mt-12">
         <Image src={GrayLine} alt="회색 라인" />
-      </div> */}
+      </div>
       <div className="flex w-full max-w-[1024px] items-center">
         <Comments postId={postId} />
       </div>
