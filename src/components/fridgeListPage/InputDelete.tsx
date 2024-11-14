@@ -47,9 +47,8 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
-      <div className="mb-3 pl-11">
+      <div className="mb-2 flex space-x-2 pl-11">
         <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
-
         <p className="text-[18px] font-medium">없는 재료</p>
       </div>
       <div className="relative mb-2 ml-auto flex h-[48px] w-[452px] items-center rounded-xl border-2">
@@ -66,7 +65,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
         <button
           type="button"
           onClick={addCategory}
-          className="mr-4 h-[38px] rounded-2xl bg-[#ff9143] p-1 font-normal text-[#ffffff]"
+          className="h-full rounded-r-[12px] bg-[#ffbb8a] px-4 text-[16px] font-normal text-[#ffffff]"
         >
           입력
         </button>

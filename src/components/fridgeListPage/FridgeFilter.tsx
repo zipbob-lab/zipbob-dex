@@ -119,7 +119,7 @@ const TagFilter: React.FC = () => {
     <div>
       <div className="mx-auto max-w-[1024px] p-4 py-[60px]">
         <p className="text-[24px] font-semibold">냉장고를 탐험해 봅시다!</p>
-        <p className="mt-4 text-[18px]">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
+        <p className="mt-4 text-[18px] font-normal">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
         <div className="mt-12 flex">
           <CategoreAdd onAddCategory={setAddKeywords} />
           <CategoreDelete onDeleteCategory={setDeleteKeywords} />
@@ -129,7 +129,7 @@ const TagFilter: React.FC = () => {
             onClick={() => setShowResults(true)}
             className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
           >
-            <p className="text-[20px] text-white">검색</p>
+            <p className="text-[20px] font-normal text-white">검색</p>
           </button>
         </div>
         {showResults && (
