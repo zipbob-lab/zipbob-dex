@@ -13,6 +13,7 @@ import DefaultProfile from "@images/default-profile.svg";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import DefaultImg from "@images/myrecipe/imageFile.svg";
 import { RecipeForm } from "@/types/RecipeWriteFormType";
+// import RecommendRecipe from "./RecommendRecipe";
 
 interface RecipeDetailViewProps {
   postId: string;
@@ -22,13 +23,15 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
   const {
     data,
     isPending: isPostPending,
-    isError: isPostError
+    isError: isPostError,
   } = useQuery({
     queryKey: ["recipeWithUser", postId],
     queryFn: () => fetchRecipeWithUserInfo(postId as string),
-    enabled: !!postId
+    enabled: !!postId,
+    staleTime: 24 * 60 * 60 * 1000 // 하루
   });
 
+ 
   if (isPostPending) {
     return <div>레시피 정보를 가져오는중입니다</div>;
   }
@@ -43,6 +46,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
   const userInfo = data.USER_TABLE;
 
+
   return (
     <div className="justify-center0 flex flex-col items-center bg-[#FBFBFB] py-8">
       <div className="flex w-full max-w-[1024px] flex-col items-center gap-10">
@@ -55,6 +59,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
               fill
               style={{ objectFit: "cover", objectPosition: "center" }}
               className="rounded-lg"
+              loading="lazy"
             />
           </div>
 
@@ -67,7 +72,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                 <Image src={data.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
               </div>
               <div>
-                <ModifyDeletePost postId={postId} userId={userInfo.user_id} />
+                <ModifyDeletePost postId={postId} userId={userInfo.user_id}/>
               </div>
             </div>
             {/* 레시피 제목 */}
@@ -157,13 +162,14 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                     fill
                     style={{ objectFit: "cover", objectPosition: "center" }}
                     className="rounded-lg"
+                    loading="lazy"
                   />
                 </div>
                 <div className="flex flex-col gap-y-2">
                   <h2 className="text-[20px] font-bold text-Primary-300" style={{ lineHeight: "135%" }}>
                     Step {index + 1}
                   </h2>
-                  <p className="text-[16px] font-normal text-Gray-900" style={{ lineHeight: "150%" }}>
+                  <p className="text-[16px] font-normal text-Gray-900 whitespace-pre-wrap" style={{ lineHeight: "150%" }}>
                     {data.recipe_manual[index]}
                   </p>
                 </div>
@@ -175,6 +181,13 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
       <div className="mb-12 mt-12">
         <Image src={GrayLine} alt="회색 라인" />
       </div>
+      {/* 이 레시피는 어때요 */}
+      {/* <div className="flex w-full max-w-[1024px] items-center">
+        <RecommendRecipe/>
+      </div>
+      <div className="mb-12 mt-12">
+        <Image src={GrayLine} alt="회색 라인" />
+      </div> */}
       <div className="flex w-full max-w-[1024px] items-center">
         <Comments postId={postId} />
       </div>
