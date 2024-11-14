@@ -7,6 +7,8 @@ import browserClient from "@/supabase/client";
 import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
+import LoadingSpinner from "../common/LoadingSpinner";
+
 import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
 
@@ -73,9 +75,7 @@ const SearchResult = () => {
       </div>
       <section>
         {loading ? (
-          <div className="flex min-h-[50vh] flex-col items-center justify-center">
-            <p className="rounded-lg bg-gray-100 px-4 py-2 text-center text-[20px] font-semibold">로딩 중입니다!</p>
-          </div>
+          <LoadingSpinner />
         ) : recipes.length > 0 ? (
           <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-[16px] gap-y-[28px]">
