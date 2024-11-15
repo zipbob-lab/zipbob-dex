@@ -83,6 +83,14 @@ const config: Config = {
         pretendard: ["var(--font-pretendard)", "sans-serif"],
         yangjin: ["var(--font-yangjin)", "sans-serif"],
         wiggle: ["var(--font-wiggle)", "sans-serif"]
+      },
+      screens: {
+        ssm: "375px",
+        sm: "480px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1440px",
+        xxl: "1920px"
       }
     }
   },
