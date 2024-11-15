@@ -51,64 +51,61 @@ const TagFilter: React.FC = () => {
     fetchData();
   }, [sortOption]);
 
-  // 불러온 데이터 필터링
-  useEffect(() => {
-    const filterData = () => {
-      if (addKeywords.length === 0 && deleteKeywords.length === 0) {
-        setFilteredData(data);
-        return;
-      }
+  // 필터링 로직
+  const filterData = () => {
+    if (addKeywords.length === 0 && deleteKeywords.length === 0) {
+      setFilteredData(data);
+      return;
+    }
 
-      let newFilteredData = data;
+    let newFilteredData = data;
 
-      if (addKeywords.length > 0) {
-        newFilteredData = newFilteredData.filter((recipe) => {
-          if (Array.isArray(recipe.recipe_ingredients)) {
-            return recipe.recipe_ingredients.some((item) => {
-              if (typeof item === "object" && item !== null && "ingredient" in item) {
-                return addKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
-              }
-              return false;
-            });
-          } else if (typeof recipe.recipe_ingredients === "string") {
-            return addKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
-          }
-          return false;
-        });
-      }
+    if (addKeywords.length > 0) {
+      newFilteredData = newFilteredData.filter((recipe) => {
+        if (Array.isArray(recipe.recipe_ingredients)) {
+          return recipe.recipe_ingredients.some((item) => {
+            if (typeof item === "object" && item !== null && "ingredient" in item) {
+              return addKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
+            }
+            return false;
+          });
+        } else if (typeof recipe.recipe_ingredients === "string") {
+          return addKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
+        }
+        return false;
+      });
+    }
 
-      if (deleteKeywords.length > 0) {
-        newFilteredData = newFilteredData.filter((recipe) => {
-          if (Array.isArray(recipe.recipe_ingredients)) {
-            return !recipe.recipe_ingredients.some((item) => {
-              if (typeof item === "object" && item !== null && "ingredient" in item) {
-                return deleteKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
-              }
-              return false;
-            });
-          } else if (typeof recipe.recipe_ingredients === "string") {
-            return !deleteKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
-          }
-          return true;
-        });
-      }
+    if (deleteKeywords.length > 0) {
+      newFilteredData = newFilteredData.filter((recipe) => {
+        if (Array.isArray(recipe.recipe_ingredients)) {
+          return !recipe.recipe_ingredients.some((item) => {
+            if (typeof item === "object" && item !== null && "ingredient" in item) {
+              return deleteKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
+            }
+            return false;
+          });
+        } else if (typeof recipe.recipe_ingredients === "string") {
+          return !deleteKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
+        }
+        return true;
+      });
+    }
 
-      setFilteredData(newFilteredData);
-      setCurrentPage(1);
-    };
+    setFilteredData(newFilteredData);
+    setCurrentPage(1);
+  };
 
+  // 검색 버튼 클릭 시에만 필터링
+  const handleSearch = () => {
     filterData();
-  }, [addKeywords, deleteKeywords, data]);
+    setShowResults(true);
+  };
 
   // 페이지 네이션
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const currentData: Recipe[] = [];
-
-  // 페이지 네이션
-  for (let i = startIndex; i < endIndex && i < filteredData.length; i++) {
-    currentData.push(filteredData[i]);
-  }
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   // 페이지 네이션
   const handlePageChange = (page: number) => {
@@ -126,7 +123,7 @@ const TagFilter: React.FC = () => {
         </div>
         <div className="mt-8 flex justify-center">
           <button
-            onClick={() => setShowResults(true)}
+            onClick={handleSearch}
             className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
           >
             <p className="text-[20px] font-normal text-white">검색</p>
