@@ -19,7 +19,6 @@ const ScrapPage = () => {
     page,
     totalItems,
     handlePageChange,
-    // selectedFolderTotal,
     handleFolderClick,
     refetchScraps
   } = useScrapData();
@@ -83,7 +82,7 @@ const ScrapPage = () => {
   }
 
   return (
-    <div className="mx-auto flex flex-col justify-center ssm:max-w-[336px] ssm:px-[18px] ssm:py-8 sm:max-w-[336px] sm:py-8 md:max-w-[668px] md:py-8 lg:max-w-[1024px] lg:pb-16 lg:pt-8">
+    <div className="mx-auto flex flex-col justify-center ssm:max-w-[336px] ssm:px-[1.125rem] ssm:py-8 sm:max-w-[336px] sm:py-8 md:max-w-[668px] md:py-8 lg:max-w-[1024px] lg:pb-16 lg:pt-8">
       <h1 className="pb-3 text-Gray-900 ssm:text-title-20 sm:text-heading-20 md:text-heading-24">스크랩한 레시피</h1>
 
       {/* 로딩 중일 때 화면 표시 */}
@@ -93,7 +92,7 @@ const ScrapPage = () => {
         <>
           {/* 폴더명 리스트 */}
           <>
-            <div className="flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[2px] ssm:text-title-13 sm:gap-3 sm:text-title-14">
+            <div className="flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[0.125rem] ssm:text-title-13 sm:gap-3 sm:text-title-14">
               <button
                 onClick={() => handleFolderClick("전체")}
                 className={`relative flex items-center justify-center px-2 pb-1 text-center ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
