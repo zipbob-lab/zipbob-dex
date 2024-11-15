@@ -1,28 +1,26 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
-
+import React, { useState } from "react";
 import Image from "next/image";
 import DownArrow from "@images/search/downArrow.svg";
 import UpArrow from "@images/search/upArrow.svg";
 
-interface SortOptionsProps {
-  sortOption: string;
-  setSortOption: (option: string) => void;
+interface FilterOptionsProps {
+  filterOption: string;
+  setFilterOption: (value: string) => void;
 }
 
-const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) => {
+const FilterOptions: React.FC<FilterOptionsProps> = ({ filterOption, setFilterOption }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const options = [
-    { value: "likes", label: "좋아요 높은 순" },
-    { value: "level", label: "난이도 높은 순" },
-    { value: "scraps", label: "스크랩 많은 순" },
-    { value: "commnet", label: "후기 많은 순" }
+    { value: "title+ingredients", label: "제목+재료 검색" },
+    { value: "title", label: "제목 검색" },
+    { value: "ingredients", label: "재료 검색" }
   ];
 
   const handleOptionClick = (optionValue: string) => {
-    setSortOption(optionValue);
+    setFilterOption(optionValue);
     setIsOpen(false);
   };
 
@@ -33,7 +31,7 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
         className="flex h-[32px] w-auto items-center justify-between rounded-3xl border-2 px-4 py-2 focus:border-stone-400 focus:outline-none"
       >
         <span className="text-[14px] font-medium">
-          {options.find((option) => option.value === sortOption)?.label || "정렬 옵션 선택"}
+          {options.find((option) => option.value === filterOption)?.label || "필터 옵션 선택"}
         </span>
         <Image src={isOpen ? UpArrow : DownArrow} width={24} height={24} alt="선택 버튼" className="ml-8" />
       </button>
@@ -56,4 +54,4 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
   );
 };
 
-export default SortOptions;
+export default FilterOptions;
