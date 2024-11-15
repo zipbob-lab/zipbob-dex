@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { RecipeMethodEnum } from "@/types/RecipeMethodEnum";
 import { RecipeTypeEnum } from "@/types/RecipeTypeEnum";
 import { supabase } from "@/supabase/supabase";
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 import RecipeInfoFields from "./RecipeInfoFields";
 import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";

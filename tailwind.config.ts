@@ -63,6 +63,7 @@ const config: Config = {
         "title-18": ["18px", { lineHeight: "135%", fontWeight: "600" }],
         "title-16": ["16px", { lineHeight: "135%", fontWeight: "600" }],
         "title-14": ["14px", { lineHeight: "125%", fontWeight: "600" }],
+        "title-13": ["13px", { lineHeight: "125%", fontWeight: "600" }],
         "body-20": ["20px", { lineHeight: "125%", fontWeight: "500" }],
         "body-18": ["18px", { lineHeight: "125%", fontWeight: "500" }],
         "body-16": ["16px", { lineHeight: "125%", fontWeight: "500" }],
@@ -92,8 +93,16 @@ const config: Config = {
         xl: "1440px",
         xxl: "1920px"
       }
+    },
+    screens: {
+      ssm: "375px",
+      sm: "480px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1920px"
     }
   },
+
   plugins: []
 };
 export default config;

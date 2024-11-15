@@ -1,4 +1,4 @@
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 // import ScrapButton from "./common/button/ScrapButton";
 // import LikeButton from "./common/button/LikeButton";
 
