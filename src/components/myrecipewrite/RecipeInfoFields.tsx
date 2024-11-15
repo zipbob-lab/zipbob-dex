@@ -35,19 +35,19 @@ const RecipeInfoFields = () => {
       </div>
 
       {/* 레시피 제목 */}
-      <div className="flex gap-x-16">
+      <div className="flex gap-x-[4rem]">
         <h1 className="flex w-[120px] items-center text-title-18 text-Gray-700">레시피 제목</h1>
         <input
           placeholder="예)10분이면 완성하는 바질 로제 파스타"
           {...register("recipeTitle", { required: true })}
-          className="w-[528px] resize-none rounded-2xl bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500  input-focus"
+          className="w-[33rem] resize-none rounded-2xl bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500  input-focus"
         />
       </div>
       {/* 요리 소개 */}
-      <div className="flex gap-x-16">
+      <div className="flex gap-x-[4rem]">
         <h1 className="flex w-[120px] items-center text-title-18 text-Gray-700">요리 소개</h1>
         <textarea
-          className="h-[116px] w-[528px] resize-none rounded-2xl bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500  input-focus"
+          className="w-[33rem] h-[7.25rem] resize-none rounded-2xl bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500  input-focus"
           placeholder="레시피의 탄생배경, 특징을 적어주세요."
           {...register("recipeDescription", { required: true })}
         />

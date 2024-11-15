@@ -75,7 +75,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
     <>
       <button className="flex cursor-pointer items-center" onClick={handleMarkClick}>
         <Image src={isScrapped ? scrapFill : scrapEmpty} alt="스크랩 버튼" width={16} height={16} />
-        <span className="ml-2 text-body-12 text-Gray-500">{scrapCount || 0}</span>
+        <span className="flex items-center text-body-12 text-Gray-500">{scrapCount || 0}</span>
       </button>
 
       {/* 모달 컴포넌트 */}
