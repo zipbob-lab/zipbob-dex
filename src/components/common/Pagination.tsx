@@ -1,7 +1,5 @@
-import Image from "next/image";
-import React from "react";
-import rightArrow from "@images/rightArrow.svg";
-import leftArrow from "@images/leftArrow.svg";
+import LeftArrow from "@images/LeftArrow";
+import RightArrow from "@images/RightArrow";
 
 interface PaginationProps {
   currentPage: number;
@@ -39,7 +37,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
       {/* 이전 버튼 */}
       <div className="flex items-center justify-between">
         <button onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1} className="sm:pr-10">
-          <Image src={leftArrow} alt="왼쪽 화살표" width={20} height={20} />
+          <LeftArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
 
         {/* 페이지 번호 */}
@@ -65,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
           disabled={currentPage === totalPages}
           className="sm:pl-10"
         >
-          <Image src={rightArrow} alt="오른쪽 화살표" width={20} height={20} />
+          <RightArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
       </div>
     </div>

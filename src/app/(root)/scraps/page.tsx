@@ -93,16 +93,16 @@ const ScrapPage = () => {
         <>
           {/* 폴더명 리스트 */}
           <>
-            <div className="ssm:text-title-13 flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[2px] sm:gap-3 sm:text-title-14">
+            <div className="flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[2px] ssm:text-title-13 sm:gap-3 sm:text-title-14">
               <button
                 onClick={() => handleFolderClick("전체")}
-                className={`ssm:text-title-13 relative flex items-center justify-center px-2 pb-1 text-center text-title-16 sm:text-title-14 ${
+                className={`relative flex items-center justify-center px-2 pb-1 text-center ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
                   selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
                 }`}
               >
                 전체
                 <span
-                  className={`ssm:text-title-13 ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 sm:h-5 sm:w-5 sm:text-title-14 ${
+                  className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ssm:text-title-13 sm:h-5 sm:w-5 sm:text-title-14 ${
                     selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
                   }`}
                 >
