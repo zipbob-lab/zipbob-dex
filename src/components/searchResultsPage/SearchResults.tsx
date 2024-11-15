@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
 import browserClient from "@/supabase/client";
-// import RecipeCard from "@/components/common/search/ListCard";
 import RecipeCard from "@/components/mainPage/RecipeCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
@@ -73,12 +72,14 @@ const SearchResult = () => {
 
   return (
     <div>
-      <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
-        <p className="text-[20px] font-semibold">
-          &quot;{searchText}&quot; 검색어 결과 {recipes.length}개
-        </p>
-        <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-      </div>
+      {recipes.length > 0 && (
+        <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
+          <p className="text-[20px] font-semibold">
+            &quot;{searchText}&quot; 검색어 결과 {recipes.length}개
+          </p>
+          <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+        </div>
+      )}
       <section>
         {loading ? (
           <LoadingSpinner />

@@ -86,12 +86,11 @@ const TagFilter: React.FC = () => {
     setShowResults(true);
   };
 
-  // 페이지 네이션
+  // 페이지네이션
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentData = filteredData.slice(startIndex, endIndex);
 
-  // 페이지 네이션
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -115,45 +114,45 @@ const TagFilter: React.FC = () => {
         </div>
         {showResults && (
           <div className="mt-6">
-            <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
-              <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
-              <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-            </div>
-            <ul
-              className={`${currentData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-x-[16px] gap-y-[28px]`}
-            >
-              {currentData.length > 0 ? (
-                currentData.map((recipe) => <RecipeCard key={recipe.post_id} post={recipe} />)
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <div className="flex min-h-[40vh] flex-col items-center justify-center">
-                    <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
-                    <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
-                      태그와 일치하는 레시피가 없습니다.
-                    </p>
-                    <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4">
-                      <h1 className="mb-4 ml-8 self-start text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
-                      <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
-                        입력한 재료를 다시 확인 해주세요!
-                      </li>
-                      <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
-                        넣고 싶은 재료와 빼고 싶은 재료가 중복될 경우 결과가 나오지 않습니다!
-                      </li>
-                    </ul>
-                  </div>
+            {filteredData.length > 0 ? (
+              <>
+                <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
+                  <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
+                  <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
-              )}
-            </ul>
-            <div className="mb-8 mt-8">
-              {filteredData.length > 0 && (
-                <Pagination
-                  currentPage={currentPage}
-                  pageSize={pageSize}
-                  totalItems={filteredData.length}
-                  onPageChange={handlePageChange}
-                />
-              )}
-            </div>
+                <ul className="mx-auto grid max-w-[1024px] grid-cols-4 items-center gap-x-[16px] gap-y-[28px]">
+                  {currentData.map((recipe) => (
+                    <RecipeCard key={recipe.post_id} post={recipe} />
+                  ))}
+                </ul>
+                <div className="mb-8 mt-8">
+                  <Pagination
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    totalItems={filteredData.length}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <div className="flex min-h-[40vh] flex-col items-center justify-center">
+                  <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
+                  <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
+                    태그와 일치하는 레시피가 없습니다.
+                  </p>
+                  <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4">
+                    <h1 className="mb-4 ml-8 self-start text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
+                    <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
+                      입력한 재료를 다시 확인 해주세요!
+                    </li>
+                    <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
+                      넣고 싶은 재료와 빼고 싶은 재료가 중복될 경우 결과가 나오지 않습니다!
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
