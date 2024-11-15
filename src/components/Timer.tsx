@@ -3,9 +3,9 @@
 import React, { useState, useEffect, memo } from "react";
 
 import Image from "next/image";
-import PlayButton from "@images/playButton.svg";
-import StopButton from "@images/stopButton.svg";
-import TimerClose from "@images/timerClose.svg";
+import PlayButton from "@images/timer/playButton.svg";
+import StopButton from "@images/timer/stopButton.svg";
+import TimerClose from "@images/timer/timerClose.svg";
 
 interface TimerProps {
   onClose?: () => void;

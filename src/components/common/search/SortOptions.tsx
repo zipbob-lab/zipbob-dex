@@ -4,7 +4,6 @@ import React from "react";
 import { useState } from "react";
 
 import Image from "next/image";
-import ChevronDown from "@images/chevronDown.svg";
 import DownArrow from "@images/search/downArrow.svg";
 import UpArrow from "@images/search/upArrow.svg";
 
