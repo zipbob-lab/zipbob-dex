@@ -38,14 +38,14 @@ const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center gap-6">
+    <div className="flex items-center justify-center gap-x-6 pt-6">
       {levelIcons.map((LevelIcon, index) => (
         <div
           key={index}
           className={"flex items-center justify-center"}
           style={{
             transform: index === userLevel ? "scale(1.25)" : "scale(1)",
-            filter: index !== userLevel ? "grayscale(100%)" : "none" // 비활성화된 아이콘에 회색 효과
+            filter: index !== userLevel ? "grayscale(100%)" : "none"
           }}
         >
           <Image

@@ -55,11 +55,11 @@ const UserComment = ({ userId }: { userId: string }) => {
   }
 
   return (
-    <div>
-      <div className="h-[560px] w-full overflow-y-auto">
+    <div className="flex flex-col items-center">
+      <div className="w-full overflow-y-auto lg:h-[480px]">
         {comments.map((comment) => (
           <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-            <div className="flex w-full flex-col justify-between pt-4">
+            <div className="flex w-full flex-col justify-between pb-5">
               <div className="flex">
                 {comment.recipe ? (
                   <Image
@@ -67,14 +67,14 @@ const UserComment = ({ userId }: { userId: string }) => {
                     alt={comment.recipe.recipe_title}
                     width={100}
                     height={100}
-                    className="mr-4 h-24 w-24 rounded-md"
+                    className="mr-5 h-[100px] w-[100px] rounded-md"
                   />
                 ) : (
                   <p>댓글 정보를 찾을 수 없습니다</p>
                 )}
                 <div className="flex flex-1 flex-col">
-                  <div className="flex items-center gap-2">
-                    <div className="flex">
+                  <div className="flex gap-2">
+                    <div className="flex text-Gray-900">
                       <Image src={FireFilledIcon} alt="레시피 난이도" />
                       <Image
                         src={comment.recipe?.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
@@ -85,12 +85,12 @@ const UserComment = ({ userId }: { userId: string }) => {
                         alt="레시피 난이도"
                       />
                     </div>
-                    <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
+                    <h3 className="text-title-16">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
                   </div>
-                  <p className="mt-2">
+                  <p className="mt-2 text-body-15">
                     {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
                   </p>
-                  <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
+                  <p className="mt-auto text-right text-body-13 text-Gray-500">{formatDate(comment.created_at)}</p>
                 </div>
               </div>
             </div>

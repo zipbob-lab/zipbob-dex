@@ -3,16 +3,14 @@ import MyPostsCommentView from "@/components/mypage/MyPostsCommentView";
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 px-52 py-16">
-      <div className="flex w-full justify-start">
-        <h1 className="py-8 text-heading-28">마이페이지</h1>
-      </div>
-      <div className="flex w-full gap-9">
+    <div className="m-auto flex flex-col gap-6 pt-[2rem] lg:max-w-[1024px] lg:pb-[10.70rem]">
+      <h1 className="text-heading-28">마이페이지</h1>
+      <section className="flex gap-20">
         <MyPageProfile />
         <div className="flex-1">
           <MyPostsCommentView />
         </div>
-      </div>
+      </section>
     </div>
   );
 };

@@ -16,7 +16,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 4; // 페이지당 댓글 수
+  const pageSize = 4;
 
   // 전체 작성 글 개수 불러오기
   useEffect(() => {
@@ -54,47 +54,47 @@ const UserPostLists = ({ userId }: { userId: string }) => {
     );
 
   return (
-    <div>
-      <div className="h-[560px] w-full overflow-y-auto">
+    <div className="flex flex-col items-center">
+      <div className="w-full lg:h-[480px]">
         {posts.map((post) => (
-          <div key={post.post_id} className="flex w-full items-end justify-between pt-4">
+          <div key={post.post_id} className="flex w-full items-end justify-between pb-4">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
               <Image
                 src={post.recipe_img_done || DefaultFoodImage}
                 alt={post.recipe_title}
                 width={100}
                 height={100}
-                className="mr-4 h-24 w-24 rounded-md"
+                className="mr-5 h-[100px] w-[100px] rounded-md"
               />
               <div className="flex flex-col justify-start">
-                <div className="mb-1 flex items-center">
+                <div className="mb-1 flex">
                   <Image src={FireFilledIcon} alt="레시피 난이도" />
                   <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
                   <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
                 </div>
                 <h3 className="text-title-16">{post.recipe_title}</h3>
-                <div className="mt-2 flex flex-1 items-center gap-5">
+                <div className="mt-3 flex flex-1 items-center gap-3">
                   <div className="h-9 w-9 overflow-hidden rounded-full">
                     <Image
                       src={post.user.user_img || DefaultProfileImage}
                       alt={post.user.user_nickname}
                       width={36}
                       height={36}
-                      className="aspect-square h-full w-full object-cover"
+                      className="h-9 w-9 object-cover"
                     />
                   </div>
 
-                  <div className="flex flex-col">
+                  <div className="flex flex-col gap-1 pr-3">
                     <span className="text-title-14 text-Gray-900">{post.user.user_nickname}</span>
                     <span className="Gray-900 text-xs">{post.user.user_introduce}</span>
                   </div>
                 </div>
               </div>
             </Link>
-            <div className="flex gap-2">
+            <span className="flex gap-2">
               <LikeButton postId={post.post_id} />
               <ScrapButton postId={post.post_id} />
-            </div>
+            </span>
           </div>
         ))}
       </div>
