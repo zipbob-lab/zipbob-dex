@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 
 import Image from "next/image";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
@@ -15,14 +15,14 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
-    <li key={recipe.post_id} className="h-auto w-[216px]">
+    <li key={recipe.post_id} className="h-[344px] w-[244px] p-[16px]">
       <Link href={`/myrecipedetail/${recipe.post_id}`}>
         <Image
           src={recipe.recipe_img_done || DefaultImage}
           width={216}
           height={216}
           alt="이미지 없음"
-          className="mb-3 h-[216px] w-[216px] rounded-3xl object-cover"
+          className="mb-3 h-[212px] w-[212px] rounded-3xl object-cover"
         />
         <h2 className="mb-3 text-[16px] font-medium">{recipe.recipe_title}</h2>
         <div className="flex items-center justify-between">
@@ -49,7 +49,4 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
 export default RecipeCard;
 
-// todo
-// 1. 사용지 닉네임 표시
-// 2. 인증인가 좋아요 기능 업데이트
-// 3. 인증인가 스크랩 기능 업데이트
+// 2024.11.15 이후 사용 중단

@@ -1,14 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
+import SpoomFork from "@images/fridge/spoomFork.svg";
 
 const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
   const [categoryInput, setCategoryInput] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
+
+  useEffect(() => {
+    const storedCategories = localStorage.getItem("categories");
+    if (storedCategories) {
+      const parsedCategories = JSON.parse(storedCategories);
+      setCategory(parsedCategories);
+      onAddCategory(parsedCategories);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("categories", JSON.stringify(category));
+  }, [category]);
 
   const handleComposition = (e: React.CompositionEvent<HTMLInputElement>) => {
     setIsComposing(e.type !== "compositionend");
@@ -46,9 +60,12 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
-      <p className="mb-3 text-[18px] font-medium">냉장고 재료</p>
-      {/* <Image /> */}
-      <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-xl border-2">
+      <div className="mb-2 flex space-x-2">
+        <Image src={SpoomFork} width={20} height={20} alt="냉장고 재료" />
+        <p className="text-[18px] font-medium">냉장고 재료</p>
+      </div>
+
+      <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-[14px] border-2">
         <input
           type="text"
           value={categoryInput}
@@ -62,7 +79,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
         <button
           type="button"
           onClick={addCategory}
-          className="mr-4 h-[38px] rounded-full bg-white p-1 font-normal text-[#ff9143]"
+          className="h-full rounded-r-[12px] bg-[#ffbb8a] px-4 text-[16px] font-normal text-[#ffffff]"
         >
           입력
         </button>
@@ -70,7 +87,7 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
       <div>
         {category.map((tag) => (
           <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-[#fff6dc] px-2">
-            <span>{tag}</span>
+            <span className="text-[16px]">{tag}</span>
             <button type="button" onClick={() => deleteTag(tag)} className="ml-1 flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>
