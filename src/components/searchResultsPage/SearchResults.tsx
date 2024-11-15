@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Recipe } from "@/types/Recipe";
 import { useParams } from "next/navigation";
 import browserClient from "@/supabase/client";
-import RecipeCard from "@/components/common/search/ListCard";
+// import RecipeCard from "@/components/common/search/ListCard";
+import RecipeCard from "@/components/mainPage/RecipeCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 import LoadingSpinner from "../common/LoadingSpinner";
@@ -25,14 +26,12 @@ const SearchResult = () => {
     if (query) {
       const fetchResults = async () => {
         setLoading(true);
-        let request = browserClient
-          .from("MY_RECIPE_TABLE")
-          .select("*")
-          .filter("recipe_title", "ilike", `%${searchText}%`);
+        let request = browserClient.from("MY_RECIPE_TABLE").select("*");
 
+        // 정렬 옵션 적용
         if (sortOption === "likes") {
           request = request.order("like_count", { ascending: false });
-        } else if (sortOption === "commnet") {
+        } else if (sortOption === "comment") {
           request = request.order("comment_count", { ascending: false });
         } else if (sortOption === "level") {
           request = request.order("recipe_level", { ascending: false });
@@ -44,7 +43,14 @@ const SearchResult = () => {
         if (error) {
           console.error("에러", error);
         } else {
-          setRecipes(data as Recipe[]);
+          const filteredData = data.filter((recipe: Recipe) => {
+            const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
+            const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
+              ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
+            );
+            return titleMatch || ingredientsMatch;
+          });
+          setRecipes(filteredData as Recipe[]);
           setCurrentPage(1);
         }
         setLoading(false);
@@ -80,7 +86,7 @@ const SearchResult = () => {
           <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-[16px] gap-y-[28px]">
               {currentData.map((recipe) => (
-                <RecipeCard key={recipe.post_id} recipe={recipe} />
+                <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
             </ul>
             <div className="mb-8 mt-8">

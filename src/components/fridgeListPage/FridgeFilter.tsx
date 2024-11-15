@@ -5,7 +5,7 @@ import browserClient from "@/supabase/client";
 import CategoreAdd from "@/components/fridgeListPage/InputAdd";
 import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Recipe";
-import RecipeCard from "@/components/common/search/ListCard";
+import RecipeCard from "@/components/mainPage/RecipeCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 
@@ -62,33 +62,17 @@ const TagFilter: React.FC = () => {
 
     if (addKeywords.length > 0) {
       newFilteredData = newFilteredData.filter((recipe) => {
-        if (Array.isArray(recipe.recipe_ingredients)) {
-          return recipe.recipe_ingredients.some((item) => {
-            if (typeof item === "object" && item !== null && "ingredient" in item) {
-              return addKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
-            }
-            return false;
-          });
-        } else if (typeof recipe.recipe_ingredients === "string") {
-          return addKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
-        }
-        return false;
+        return recipe.recipe_ingredients.some((item) =>
+          addKeywords.some((keyword) => item.ingredient.includes(keyword))
+        );
       });
     }
 
     if (deleteKeywords.length > 0) {
       newFilteredData = newFilteredData.filter((recipe) => {
-        if (Array.isArray(recipe.recipe_ingredients)) {
-          return !recipe.recipe_ingredients.some((item) => {
-            if (typeof item === "object" && item !== null && "ingredient" in item) {
-              return deleteKeywords.some((keyword) => (item as { ingredient: string }).ingredient.includes(keyword));
-            }
-            return false;
-          });
-        } else if (typeof recipe.recipe_ingredients === "string") {
-          return !deleteKeywords.some((keyword) => recipe.recipe_ingredients.includes(keyword));
-        }
-        return true;
+        return !recipe.recipe_ingredients.some((item) =>
+          deleteKeywords.some((keyword) => item.ingredient.includes(keyword))
+        );
       });
     }
 
@@ -139,7 +123,7 @@ const TagFilter: React.FC = () => {
               className={`${currentData.length > 0 ? "grid-cols-4" : "grid-cols-1"} mx-auto grid max-w-[1024px] items-center gap-x-[16px] gap-y-[28px]`}
             >
               {currentData.length > 0 ? (
-                currentData.map((recipe) => <RecipeCard key={recipe.post_id} recipe={recipe} />)
+                currentData.map((recipe) => <RecipeCard key={recipe.post_id} post={recipe} />)
               ) : (
                 <div className="flex h-full items-center justify-center">
                   <div className="flex min-h-[40vh] flex-col items-center justify-center">
