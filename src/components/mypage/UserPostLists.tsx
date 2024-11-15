@@ -11,18 +11,27 @@ import type { UserPost } from "@/types/MyPage";
 import DefaultFoodImage from "@images/myrecipe/imageFile.svg";
 import DefaultProfileImage from "@images/default-profile.svg";
 import Pagination from "@/components/common/Pagination";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const UserPostLists = ({ userId }: { userId: string }) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const pageSize = 4;
 
   // 전체 작성 글 개수 불러오기
   useEffect(() => {
     const loadPostCount = async () => {
-      const count = await fetchUserRecipesCount(userId);
-      setTotalPosts(count);
+      setIsLoading(true); // 로딩 시작
+      try {
+        const count = await fetchUserRecipesCount(userId);
+        setTotalPosts(count);
+      } catch (error) {
+        console.error("전체 레시피 개수 로드 실패:", error);
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
     };
     loadPostCount();
   }, [userId]);
@@ -30,16 +39,27 @@ const UserPostLists = ({ userId }: { userId: string }) => {
   // 페이지마다 포스트 개수 가져오기
   useEffect(() => {
     const loadPosts = async () => {
+      setIsLoading(true); // 로딩 시작
       try {
         const data = await fetchUserPosts(userId, currentPage, pageSize);
         if (data) setPosts(data);
       } catch (error) {
         console.error("레시피 데이터를 가져오는 중 에러 발생:", error);
+      } finally {
+        setIsLoading(false); // 로딩 종료
       }
     };
 
     loadPosts();
   }, [userId, currentPage]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (posts.length === 0)
     return (

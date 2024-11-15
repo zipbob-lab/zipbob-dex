@@ -13,6 +13,7 @@ import DefaultImage from "@images/default-profile.svg";
 import UserLevelEmoji from "./level/UserLevelEmoji";
 import UserRank from "./level/UserLevel";
 import UserLevelOverview from "./level/UserLevelOverview";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 interface UserProfile {
   user_id: string;
@@ -99,7 +100,12 @@ const MyPageProfile = () => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <p>프로필을 로딩중입니다.</p>;
+  if (loading)
+    return (
+      <div className="w-full">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center justify-between">

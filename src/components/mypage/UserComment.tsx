@@ -8,6 +8,7 @@ import FireEmptyIcon from "@images/fireEmpty.svg";
 import type { UserComment } from "@/types/MyPage";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
 import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -18,9 +19,11 @@ const UserComment = ({ userId }: { userId: string }) => {
   const [comments, setComments] = useState<UserComment[] | null>(null);
   const [commentCount, setCommentCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const pageSize = 4; // 페이지당 댓글 수
 
   const loadCommentsWithRecipes = async (page: number) => {
+    setIsLoading(true);
     const { comments: commentsData, commentCount } = await fetchUserComments(userId, page, pageSize);
     setCommentCount(commentCount);
 
@@ -35,11 +38,20 @@ const UserComment = ({ userId }: { userId: string }) => {
     } else {
       setComments(null);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     loadCommentsWithRecipes(currentPage);
   }, [userId, currentPage]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!comments || comments.length === 0) {
     return (
