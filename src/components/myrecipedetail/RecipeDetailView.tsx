@@ -26,20 +26,24 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
   const {
     data,
     isPending: isPostPending,
-    isError: isPostError,
+    isError: isPostError
   } = useQuery({
     queryKey: ["recipeWithUser", postId],
     queryFn: () => fetchRecipeWithUserInfo(postId as string),
     enabled: !!postId,
-    staleTime: 24 * 60 * 60 * 1000,// 하루
+    staleTime: 24 * 60 * 60 * 1000, // 하루
     refetchOnMount: false,
-    refetchOnWindowFocus: false 
+    refetchOnWindowFocus: false
   });
 
   const { userId } = useStore(useAuthStore);
- 
+
   if (isPostPending) {
-    return <div> <LoadingSpinner /></div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isPostError) {
@@ -52,10 +56,9 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
 
   const userInfo = data.USER_TABLE;
 
-
   return (
-    <div className="justify-center0 flex flex-col items-center bg-[#FBFBFB] py-8">
-      <div className="flex w-full max-w-[1024px] flex-col items-center gap-10">
+    <div className="flex flex-col items-center justify-center bg-[#FBFBFB] lg:py-8">
+      <div className="flex w-full flex-col items-center lg:max-w-[1024px] lg:gap-10">
         {/* 요리 완성 사진 & 설명 */}
         <div className="flex-start flex w-full">
           <div className="relative h-[20rem] w-[20rem] flex-shrink-0 overflow-hidden" style={{ borderRadius: "20px" }}>
@@ -78,7 +81,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                 <Image src={data.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
               </div>
               <div>
-                <ModifyDeletePost postId={postId} userId={userInfo.user_id}/>
+                <ModifyDeletePost postId={postId} userId={userInfo.user_id} />
               </div>
             </div>
             {/* 레시피 제목 */}
@@ -96,35 +99,36 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
               {/* 유저 사진 */}
 
               {userInfo.user_id !== userId ? (
-                                      <div className="flex gap-3 py-2">
-                                      <div className="h-[60px] w-[60px] overflow-hidden rounded-full">
-                                        <Image
-                                          src={userInfo.user_img || DefaultProfile}
-                                          alt={userInfo.user_nickname}
-                                          width={60}
-                                          height={60}
-                                          className="h-full w-full object-cover object-center"
-                                        />
-                                      </div>
-                                      {/* 유저 정보 */}
-                                      
-                                      <div className="flex flex-col items-start justify-center gap-x-2 gap-y-2">
-                                        <div className="flex items-center justify-center">
-                                          <span className="font-bold">
-                                            <UserLevelEmoji userRank={userInfo.user_rank} />
-                                          </span>
-                                          <span className="text-title-16 text-Gray-900">{userInfo.user_nickname}</span>
-                                        </div>
-                                        <span className="flex items-center justify-center text-r-body-14 text-Gray-500">
-                                          {userInfo.user_introduce || "한 줄 소개가 없어요."}
-                                        </span>
-                                      </div>
-                                    </div>
-                      ): <div className="flex items-center justify-center w-auto h-auto rounded-[2.625rem] border border-Primary-300 px-[1.25rem] py-[0.5rem] text-body-16 text-Primary-300">
-                      내가 작성한 레시피
+                <div className="flex gap-3 py-2">
+                  <div className="h-[60px] w-[60px] overflow-hidden rounded-full">
+                    <Image
+                      src={userInfo.user_img || DefaultProfile}
+                      alt={userInfo.user_nickname}
+                      width={60}
+                      height={60}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  {/* 유저 정보 */}
+
+                  <div className="flex flex-col items-start justify-center gap-x-2 gap-y-2">
+                    <div className="flex items-center justify-center">
+                      <span className="font-bold">
+                        <UserLevelEmoji userRank={userInfo.user_rank} />
+                      </span>
+                      <span className="text-title-16 text-Gray-900">{userInfo.user_nickname}</span>
                     </div>
-                    }
-              
+                    <span className="flex w-[11.9375rem] items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap text-r-body-14 text-Gray-500">
+                      {userInfo.user_introduce || "한 줄 소개가 없어요."}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex h-auto w-auto items-center justify-center rounded-[2.625rem] border border-Primary-300 px-[1.25rem] py-[0.5rem] text-body-16 text-Primary-300">
+                  내가 작성한 레시피
+                </div>
+              )}
+
               {/* 좋아요/스크랩 버튼 */}
               <div className="mr-1 flex flex-row items-center justify-center gap-3">
                 <Likebutton postId={postId} />
@@ -144,7 +148,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
             {data.recipe_ingredients.map((item: RecipeForm, index: number) => (
               <div key={index} className="flex justify-between">
                 <span className="text-body-16">{item.ingredient}</span>
-                <span  className="text-body-16">
+                <span className="text-body-16">
                   {item.amount}
                   {item.unit}
                 </span>
@@ -183,7 +187,10 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                   <h2 className="text-title-18 font-bold text-Primary-300" style={{ lineHeight: "135%" }}>
                     Step {index + 1}
                   </h2>
-                  <p className="text-body-16 font-normal text-Gray-900 whitespace-pre-wrap" style={{ lineHeight: "150%" }}>
+                  <p
+                    className="whitespace-pre-wrap text-body-16 font-normal text-Gray-900"
+                    style={{ lineHeight: "150%" }}
+                  >
                     {data.recipe_manual[index]}
                   </p>
                 </div>
@@ -196,8 +203,8 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
         <Image src={GrayLine} alt="회색 라인" />
       </div>
       {/* 이 레시피는 어때요 */}
-      <div className="flex w-full max-w-[1024px] items-center  pb-[1.5rem]">
-        <RecommendRecipe/>
+      <div className="flex w-full max-w-[1024px] items-center pb-[1.5rem]">
+        <RecommendRecipe />
       </div>
       <div className="mb-12 mt-12">
         <Image src={GrayLine} alt="회색 라인" />
