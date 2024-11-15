@@ -16,7 +16,7 @@ const SearchResult = () => {
   const { query } = useParams();
   const searchText = decodeURI(query as string);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [sortOption, setSortOption] = useState<string>("likes");
+  const [sortOption, setSortOption] = useState<string>("title+ingredients"); // 기본값 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const itemsPerPage = 16;
@@ -43,11 +43,23 @@ const SearchResult = () => {
           console.error("에러", error);
         } else {
           const filteredData = data.filter((recipe: Recipe) => {
-            const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
-            const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
-              ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
-            );
-            return titleMatch || ingredientsMatch;
+            // 정렬 옵션에 따른 필터링
+            if (sortOption === "title") {
+              // 제목만 필터링
+              return recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
+            } else if (sortOption === "ingredients") {
+              // 재료만 필터링
+              return recipe.recipe_ingredients.some((ingredient) =>
+                ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
+              );
+            } else {
+              // 기본값: 제목 + 재료
+              const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
+              const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
+                ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
+              );
+              return titleMatch || ingredientsMatch;
+            }
           });
           setRecipes(filteredData as Recipe[]);
           setCurrentPage(1);
@@ -77,6 +89,16 @@ const SearchResult = () => {
           <p className="text-[20px] font-semibold">
             &quot;{searchText}&quot; 검색어 결과 {recipes.length}개
           </p>
+          {/* 정렬 옵션 추가 */}
+          <select
+            className="rounded border px-3 py-1 text-[16px]"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="title+ingredients">제목+재료</option>
+            <option value="title">제목</option>
+            <option value="ingredients">재료</option>
+          </select>
           <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
         </div>
       )}
