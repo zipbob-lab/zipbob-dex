@@ -2,7 +2,7 @@
 
 import browserClient from "@/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import RecipeCard2 from "../mainPage/RecipeCard2";
+import RecipeCard2 from "./RecipeCard2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
