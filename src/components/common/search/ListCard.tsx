@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 
 import Image from "next/image";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
@@ -49,7 +49,4 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
 export default RecipeCard;
 
-// todo
-// 1. 사용지 닉네임 표시
-// 2. 인증인가 좋아요 기능 업데이트
-// 3. 인증인가 스크랩 기능 업데이트
+// 2024.11.15 이후 사용 중단

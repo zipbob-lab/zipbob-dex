@@ -16,7 +16,6 @@ export type Recipe = {
   creator_nickname?: string; // 생성한 사람 닉네임 필드 추가
   user_id: string;
 
-  // junggol 작업자 임시 추가
   like_count: number; // 누적 좋아요 기능 카운트
   scrap_count: number; //  누적 스크랩 횟수 카운트
 };

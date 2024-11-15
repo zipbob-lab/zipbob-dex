@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import browserClient from "@/supabase/client";
 import CategoreAdd from "@/components/fridgeListPage/InputAdd";
 import CategoreDelete from "@/components/fridgeListPage/InputDelete";
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 import RecipeCard from "@/components/mainPage/RecipeCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";

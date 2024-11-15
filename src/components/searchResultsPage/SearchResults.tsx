@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Recipe } from "@/types/Recipe";
+import { Recipe } from "@/types/Search";
 import { useParams } from "next/navigation";
 import browserClient from "@/supabase/client";
 import RecipeCard from "@/components/mainPage/RecipeCard";
+import FilterOptions from "@/components/searchResultsPage/FilterOptions";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
-import LoadingSpinner from "../common/LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
@@ -15,60 +16,75 @@ import NoneAlert from "@images/noneAlert.svg";
 const SearchResult = () => {
   const { query } = useParams();
   const searchText = decodeURI(query as string);
+
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [sortOption, setSortOption] = useState<string>("title+ingredients"); // 기본값 설정
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+  const [sortOption, setSortOption] = useState<string>("likes");
+  const [filterOption, setFilterOption] = useState<string>("title+ingredients");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const itemsPerPage = 16;
 
+  const fetchRecipes = async () => {
+    setLoading(true);
+
+    let request = browserClient.from("MY_RECIPE_TABLE").select("*");
+
+    if (sortOption === "likes") {
+      request = request.order("like_count", { ascending: false });
+    } else if (sortOption === "comment") {
+      request = request.order("comment_count", { ascending: false });
+    } else if (sortOption === "level") {
+      request = request.order("recipe_level", { ascending: false });
+    } else if (sortOption === "scraps") {
+      request = request.order("scrap_count", { ascending: false });
+    }
+
+    const { data, error } = await request;
+
+    if (error) {
+      console.error("에러", error);
+    } else {
+      setRecipes(data as Recipe[]);
+      setFilteredRecipes(data as Recipe[]);
+      setCurrentPage(1);
+    }
+    setLoading(false);
+  };
+
+  const applyFilter = () => {
+    let filteredData = recipes;
+
+    if (filterOption === "title") {
+      filteredData = recipes.filter((recipe) => recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase()));
+    } else if (filterOption === "ingredients") {
+      filteredData = recipes.filter((recipe) =>
+        recipe.recipe_ingredients.some((ingredient) =>
+          ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
+        )
+      );
+    } else if (filterOption === "title+ingredients") {
+      filteredData = recipes.filter((recipe) => {
+        const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
+        const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
+          ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
+        );
+        return titleMatch || ingredientsMatch;
+      });
+    }
+
+    setFilteredRecipes(filteredData);
+  };
+
   useEffect(() => {
     if (query) {
-      const fetchResults = async () => {
-        setLoading(true);
-        let request = browserClient.from("MY_RECIPE_TABLE").select("*");
-
-        // 정렬 옵션 적용
-        if (sortOption === "likes") {
-          request = request.order("like_count", { ascending: false });
-        } else if (sortOption === "comment") {
-          request = request.order("comment_count", { ascending: false });
-        } else if (sortOption === "level") {
-          request = request.order("recipe_level", { ascending: false });
-        } else if (sortOption === "scraps") {
-          request = request.order("scrap_count", { ascending: false });
-        }
-
-        const { data, error } = await request;
-        if (error) {
-          console.error("에러", error);
-        } else {
-          const filteredData = data.filter((recipe: Recipe) => {
-            // 정렬 옵션에 따른 필터링
-            if (sortOption === "title") {
-              // 제목만 필터링
-              return recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
-            } else if (sortOption === "ingredients") {
-              // 재료만 필터링
-              return recipe.recipe_ingredients.some((ingredient) =>
-                ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
-              );
-            } else {
-              // 기본값: 제목 + 재료
-              const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
-              const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
-                ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
-              );
-              return titleMatch || ingredientsMatch;
-            }
-          });
-          setRecipes(filteredData as Recipe[]);
-          setCurrentPage(1);
-        }
-        setLoading(false);
-      };
-      fetchResults();
+      fetchRecipes();
     }
   }, [query, sortOption]);
+
+  useEffect(() => {
+    applyFilter();
+  }, [recipes, filterOption]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,7 +92,7 @@ const SearchResult = () => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData: Recipe[] = recipes.slice(startIndex, endIndex);
+  const currentData: Recipe[] = filteredRecipes.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -84,28 +100,21 @@ const SearchResult = () => {
 
   return (
     <div>
-      {recipes.length > 0 && (
+      {filteredRecipes.length > 0 && (
         <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
           <p className="text-[20px] font-semibold">
-            &quot;{searchText}&quot; 검색어 결과 {recipes.length}개
+            &quot;{searchText}&quot; 검색결과 {filteredRecipes.length}개
           </p>
-          {/* 정렬 옵션 추가 */}
-          <select
-            className="rounded border px-3 py-1 text-[16px]"
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="title+ingredients">제목+재료</option>
-            <option value="title">제목</option>
-            <option value="ingredients">재료</option>
-          </select>
-          <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+          <div className="flex items-center space-x-4">
+            <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} />
+            <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
+          </div>
         </div>
       )}
       <section>
         {loading ? (
           <LoadingSpinner />
-        ) : recipes.length > 0 ? (
+        ) : filteredRecipes.length > 0 ? (
           <div>
             <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-[16px] gap-y-[28px]">
               {currentData.map((recipe) => (
@@ -116,7 +125,7 @@ const SearchResult = () => {
               <Pagination
                 currentPage={currentPage}
                 pageSize={itemsPerPage}
-                totalItems={recipes.length}
+                totalItems={filteredRecipes.length}
                 onPageChange={handlePageChange}
               />
             </div>
