@@ -7,6 +7,18 @@
   src: url("./fonts/YangJin.woff") format("woff");
 }
 
+@font-face {
+  font-family: "Wiggle";
+  src: url("./fonts/WiggleHangeul.woff") format("woff");
+}
+
 :root {
   --font-yangjin: "Yangjin";
+  --font-wiggle: "Wiggle";
+}
+
+@layer components {  
+  .input-focus {
+    @apply  focus:border-Primary-300 focus:border-2 focus:outline-none box-border border-2 border-transparent;
+  }
 }

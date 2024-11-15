@@ -14,11 +14,10 @@ interface SortOptionsProps {
 const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = [
-    { value: "default", label: "정렬 옵션 (기본 순)" },
-    { value: "commnet", label: "후기 많은 순" },
     { value: "likes", label: "좋아요 높은 순" },
     { value: "level", label: "난이도 높은 순" },
-    { value: "scraps", label: "스크랩 많은 순" }
+    { value: "scraps", label: "스크랩 많은 순" },
+    { value: "commnet", label: "후기 많은 순" }
   ];
 
   const handleOptionClick = (optionValue: string) => {

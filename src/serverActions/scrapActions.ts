@@ -9,22 +9,44 @@ export const fetchFolders = async (userId: string): Promise<string[]> => {
 };
 
 // 스크랩 데이터 가져오기 함수 + 페이지네이션 추가
-export const fetchScraps = async (userId: string, page: number, pageSize: number): Promise<Scrap[]> => {
+export const fetchScraps = async (
+  userId: string,
+  page: number,
+  pageSize: number,
+  folderName?: string
+): Promise<Scrap[]> => {
   const start = (page - 1) * pageSize;
   const end = start + pageSize - 1;
 
-  const { data, error } = await supabase.from("SCRAP_TABLE").select("*").eq("user_id", userId).range(start, end);
+  // folderName 조건 추가
+  const query = supabase.from("SCRAP_TABLE").select("*").eq("user_id", userId).range(start, end);
+  if (folderName !== "전체" && folderName) {
+    query.eq("folder_name", folderName);
+  }
+
+  const { data, error } = await query;
+
   if (error) throw new Error(error.message);
   return data || [];
 };
 
-// 현재 로그인 된 사용자의 전체 스크랩 한 레시피의 개수 -> 페이지네이션에 활용
-export const fetchScrapCount = async (userId: string): Promise<number> => {
+// 전체 스크랩 개수 가져오기 함수
+export const fetchTotalScrapCount = async (userID: string): Promise<number> => {
+  const { count: totalCount, error } = await supabase
+    .from("SCRAP_TABLE")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userID);
+  if (error) throw new Error(error.message);
+  return totalCount || 0;
+};
+
+// 특정 폴더의 스크랩 개수 가져오기 함수
+export const fetchFolderScrapCount = async (userId: string, folderName: string): Promise<number> => {
   const { count, error } = await supabase
     .from("SCRAP_TABLE")
-    .select("*", { count: "exact", head: true }) // head : 개수만 가져옴
-    .eq("user_id", userId);
-
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("folder_name", folderName);
   if (error) throw new Error(error.message);
   return count || 0;
 };

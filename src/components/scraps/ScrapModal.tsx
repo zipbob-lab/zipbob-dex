@@ -32,6 +32,20 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
     await onSave();
   };
 
+  const handleKeyDownSave = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!folderName) {
+        setWarningMessage("폴더 이름을 입력하거나 폴더를 선택해 주세요.");
+        return;
+      }
+      setWarningMessage("");
+      if (!isSaving) {
+        await onSave();
+      }
+    }
+  };
+
   const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
       <div className="relative w-full max-w-96 rounded-2xl bg-white px-5 py-4">
@@ -52,10 +66,11 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
             placeholder="폴더 이름을 적어주세요"
             value={folderName}
             onChange={(e) => onFolderNameChange(e.target.value)}
+            onKeyDown={handleKeyDownSave}
             className="mb-2 mt-3 w-full rounded-xl border-[1px] border-Gray-100 p-3 pl-10 text-body-18 outline-none focus:border-Primary-300"
           />
 
-          {/* 만들기 버튼 */}
+          {/* 추가 버튼 */}
           <button
             onClick={handleSaveClick}
             disabled={isSaving}
@@ -63,7 +78,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
               folderName ? "text-Primary-300" : "text-Gray-300"
             }`}
           >
-            만들기
+            추가
           </button>
 
           {/* 경고 메시지 */}

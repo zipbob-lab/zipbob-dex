@@ -16,14 +16,14 @@ const ImageEditModal = ({ handleModify, handleDelete, handleClose }: ImageEditMo
         style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.20)" }}
       >
         <div className="justify-cente flex flex-col items-center gap-y-1">
-          <button onClick={handleModify} className="flex gap-x-1 px-4 py-3">
+          <button onClick={handleModify} className="flex gap-x-[0.25rem] px-4 py-3">
             <Image src={ImageIcon} alt="사진 변경하기" width={24} height={24} />
             <span className="text-title-18 text-Gray-900">사진 변경하기</span>
           </button>
 
-          <button onClick={handleDelete} className="flex gap-x-1 px-3 py-4">
-            <Image src={TrashCanIcon} alt="사진 삭제하기" width={24} height={24} />
-            <span className="text-title-18 text-SystemColor-Red">사진 삭제하기</span>
+          <button onClick={handleDelete} className="flex gap-x-[0.25rem] px-3 py-4">
+            <Image src={TrashCanIcon} alt="사진 제거하기" width={24} height={24} />
+            <span className="text-title-18 text-SystemColor-Red">사진 제거하기</span>
           </button>
 
           <Image src={ImgEditModalLine} alt="선" width={250} height={24} />

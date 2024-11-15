@@ -13,9 +13,10 @@ import { useAuthStore } from "@/store/authStore";
 
 interface LikeButtonProps {
   postId: string;
+  size?: number;
 }
 
-const LikeButton = ({ postId }: LikeButtonProps) => {
+const LikeButton = ({ postId,size = 20 }: LikeButtonProps) => {
   const { userId } = useStore(useAuthStore);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -135,7 +136,7 @@ const LikeButton = ({ postId }: LikeButtonProps) => {
         onClick={(e) => handleToggleLikeButton(e)}
         className="flex items-center justify-center text-body-12 text-Gray-500"
       >
-        <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={24} height={24} /> {likeCount}
+        <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={size} height={size} /> {likeCount}
       </button>
       {/* 로그인 안 했을 때 나오는 모달*/}
       {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}

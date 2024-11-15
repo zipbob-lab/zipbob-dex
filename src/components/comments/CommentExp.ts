@@ -6,20 +6,21 @@ interface CommentExpInterface {
 }
 
 export const CommentExp = async ({ userId, postId }: CommentExpInterface) => {
+
   // 코멘트 테이블에 기존 코멘트가 있는 지 확인
   const { data, error } = await supabase
     .from("COMMENT_TABLE")
     .select("comment_id")
     .eq("user_id", userId)
     .eq("post_id", postId)
-    .maybeSingle();
+    .limit(1)
 
   if (error) {
     console.error("기존 댓글 조회 에러 : ", error.message);
     return;
   }
 
-  if (!data) {
+  if (!data || data.length === 0) {
     const { data: userData, error: userError } = await supabase
       .from("USER_TABLE")
       .select("user_exp")

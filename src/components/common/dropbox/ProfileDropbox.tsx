@@ -48,6 +48,7 @@ const ProfileDropbox = () => {
           onClick={() => {
             logout();
             setIsOpen(false);
+            router.push("/");
           }}
         >
           <button>로그아웃</button>
