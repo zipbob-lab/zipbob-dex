@@ -355,12 +355,12 @@ const InputField = () => {
         }       
       }      
       
-      alert("레시피 작성이 완료되었습니다!");
+      // alert("레시피 작성이 완료되었습니다!");
       router.back();
       // 작성 게시글로 이동
       setTimeout(() => {
         router.push(`/myrecipedetail/${newPostId}`);
-      }, 10);
+      }, 5);
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
@@ -370,35 +370,39 @@ const InputField = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-y-10">
-          {/* 상단 */}
-          <div className="gap-y-4px-5 flex max-w-[880px] flex-col">
-            <h1 className="text-heading-32 text-Gray-900">나만의 레시피 등록하기</h1>
-            <div className="flex flex-col text-r-body-18 text-Gray-600">
+        <div className="flex flex-col gap-y-[2.5rem]">
+          <div className="gap-y-4 px-[0.75rem] flex max-w-[880px] flex-col">
+            <h1 className="text-heading-28 text-Gray-900">나만의 레시피 등록하기</h1>
+            <div className="flex flex-col text-body-16 text-Gray-600">
               <span>다른 사람들에게 소개하고 싶은 나만의 레시피를 등록해요!</span>
               <span>특별하지 않아도 괜찮아요, 상세하게 적을 수록 다른 사람들이 쉽게 만들 수 있어요.</span>
             </div>
           </div>
+
+
+        <div className="flex flex-col gap-y-[1.5rem]">
+          {/* 상단 */}
+
           {/* 인풋창 */}
           <div className="flex flex-col gap-y-6">
             {/* 요리 정보 */}
             <div
-              className="flex w-full flex-col gap-y-10 rounded-3xl bg-white p-6"
+              className="flex w-full flex-col gap-y-10 rounded-3xl bg-white px-[1.5rem] py-[2rem]"
               style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.10)" }}
             >
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-heading-24 text-Gray-900">레시피 정보 입력</h1>
-                <span className="text-body-18 text-Gray-500">
+                <span className="text-body-16 text-Gray-500">
                   정보를 정확하게 입력하면 재료를 남기지 않을 수 있어요!
                 </span>
               </div>
 
-              <div className="flex gap-x-4">
+              <div className="flex gap-x-[1rem]">
                 <RecipeInfoFields />
                 {/* 레시피 완성 이미지 */}
                 <div className="flex justify-items-end">
                   <div
-                    className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden"
+                    className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden rounded-[1.5rem]"
                     style={{ borderRadius: "20px" }}
                     onClick={() => {
                       if (recipeDoneImgView) {
@@ -413,7 +417,7 @@ const InputField = () => {
                         src={ImageUploadIcon}
                         alt="기본 이미지"
                         fill
-                        style={{ objectFit: "cover", objectPosition: "center", borderRadius: "20px" }}
+                        style={{ objectFit: "cover", objectPosition: "center" }}
                       />
                     )}
                     <input
@@ -439,7 +443,7 @@ const InputField = () => {
 
             {/* 단계별 레시피 */}
             <div
-              className="flex w-full flex-col gap-y-10 rounded-3xl bg-white p-6"
+              className="flex w-full flex-col gap-y-10 rounded-3xl bg-white px-[1.5rem] py-[2rem]"
               style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.10)" }}
             >
               <div className="flex flex-col gap-y-2">
@@ -450,12 +454,12 @@ const InputField = () => {
               </div>
 
               {recipeDoingsImgFields.map((_, i) => (
-                <div className="flex items-center gap-x-7" key={i}>
-                  <div className="flex h-[30px] w-[30px] items-center justify-center rounded-[40px] bg-Secondary-50 text-title-18 text-Secondary-400">
+                <div className="flex items-center gap-x-[1rem]" key={i}>
+                  <div className="flex h-[1.875rem] w-[1.875rem] items-center justify-center rounded-[2.5rem] bg-Secondary-50 text-title-18 text-Secondary-400">
                     {i + 1}
                   </div>
                   <div
-                    className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-lg"
+                    className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-[0.06rem]"
                     style={{ borderRadius: "13.3px" }}
                     onClick={() => toggleImgModal(i)}
                   >
@@ -490,19 +494,23 @@ const InputField = () => {
                     />
                   </div>
                   <textarea
-                    className="h-[160px] w-[706px] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500 input-focus"
+                    className="w-[44.125rem]  h-[10rem] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500 input-focus"
                     placeholder="자세하게 적을수록 더욱 도움이 돼요!"
                     {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                   />
                   {/* 레시피 삭제 */}
-                  {recipeDoingsImgFields.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveRecipeDoingForm(i)}
-                  >
-                    <Image src={IconX} width={24} height={24} alt="삭제" />                  
-                  </button>
-                  )}
+                  {/* {recipeDoingsImgFields.length > 1 && ( */}
+                  <div className="x-[1.5rem]">
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveRecipeDoingForm(i)}
+                      style={{ visibility: recipeDoingsImgFields.length > 1 ? 'visible' : 'hidden' }}
+                    >
+                      <Image src={IconX} width={24} height={24} alt="삭제" />                  
+                    </button>
+                  </div>
+                  {/* )} */}
+                
                 </div>
               ))}
 
@@ -545,6 +553,7 @@ const InputField = () => {
           <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />         
           {/* 닫기 확인 모달 */}
           <CloseWirteConfirm closeWriteModal={closeWriteModal} setCloseWriteModal={setCloseWriteModal} />
+        </div>
         </div>
       </form>
     </FormProvider>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import GrayVar from "@images/myrecipe/grayVar.svg";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/authStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ModiDeleButtonProps {
   postId: string;
@@ -20,6 +21,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
   const [loginSessionId, setLoginSessionId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const getSessionId = async () => {
@@ -45,14 +47,16 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
       console.error(deleteError?.message);
       return;
     }
+    queryClient.invalidateQueries({ queryKey: ["recentPosts", postId] });
     router.push("/");
+    
   };
 
   return (
     <>
       {userId === loginSessionId && (
         <div className="flex flex-row">
-          <div className="flex flex-row gap-[10px] px-3 py-2">
+          <div className="flex flex-row gap-[0.62rem] px-[0.75rem] py-[0.5rem]">
             <Image src={Pen} alt="수정" width={20} height={20}></Image>
             <button className="text-body-14 text-Gray-500" onClick={handleModifyPost}>
               수정하기
@@ -61,7 +65,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
 
           <Image src={GrayVar} alt="회색바" />
 
-          <div className="flex flex-row gap-[10px] px-3 py-2">
+          <div className="flex flex-row gap-[0.62rem] px-3 py-2">
             <Image src={TrashCan} alt="삭제" width={20} height={20}></Image>
             <button className="p-2 text-body-14 text-SystemColor-Red" onClick={() => setIsDeleteModalOpen(true)}>
               삭제하기
