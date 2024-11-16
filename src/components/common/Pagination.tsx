@@ -5,10 +5,19 @@ interface PaginationProps {
   currentPage: number;
   pageSize: number;
   totalItems: number;
+  className?: string;
+  buttonClassName?: string;
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  pageSize,
+  totalItems,
+  className,
+  buttonClassName,
+  onPageChange
+}) => {
   const totalPages = Math.ceil(totalItems / pageSize);
   const maxVisiblePages = 5;
 
@@ -33,10 +42,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
   };
 
   return (
-    <div className="text-body-14 ssm:w-[336px] sm:w-[336px] sm:text-body-14 md:w-[438px] lg:w-[438px]">
+    <div className={`text-body-14 ${className}`}>
       {/* 이전 버튼 */}
       <div className="flex items-center justify-between">
-        <button onClick={() => handlePageClick(currentPage - 1)} disabled={currentPage === 1} className="sm:pr-10">
+        <button onClick={() => handlePageClick(currentPage - 1)} className={`${buttonClassName}`}>
           <LeftArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
 
@@ -58,11 +67,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
         })}
 
         {/* 다음 버튼 */}
-        <button
-          onClick={() => handlePageClick(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="sm:pl-10"
-        >
+        <button onClick={() => handlePageClick(currentPage + 1)} className={`${buttonClassName}`}>
           <RightArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
       </div>
