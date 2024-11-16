@@ -75,7 +75,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full lg:h-[480px]">
+      <div className="w-full ssm:h-[488px] md:h-[480px]">
         {posts.map((post) => (
           <div key={post.post_id} className="flex w-full items-end justify-between pb-4">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
@@ -94,19 +94,18 @@ const UserPostLists = ({ userId }: { userId: string }) => {
                 </div>
                 <h3 className="text-title-16">{post.recipe_title}</h3>
                 <div className="mt-3 flex flex-1 items-center gap-3">
-                  <div className="h-9 w-9 overflow-hidden rounded-full">
+                  <div className="relative overflow-hidden rounded-full ssm:h-7 ssm:w-7 md:h-10 md:w-10">
                     <Image
                       src={post.user.user_img || DefaultProfileImage}
                       alt={post.user.user_nickname}
-                      width={36}
-                      height={36}
-                      className="h-9 w-9 object-cover"
+                      fill
+                      className="h-full w-full object-cover object-center"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1 pr-3">
-                    <span className="text-title-14 text-Gray-900">{post.user.user_nickname}</span>
-                    <span className="Gray-900 text-xs">{post.user.user_introduce}</span>
+                    <span className="text-Gray-900 ssm:text-body-13 md:text-title-14">{post.user.user_nickname}</span>
+                    <span className="text-Gray-900 ssm:text-body-12">{post.user.user_introduce}</span>
                   </div>
                 </div>
               </div>
@@ -124,6 +123,8 @@ const UserPostLists = ({ userId }: { userId: string }) => {
         pageSize={pageSize}
         totalItems={totalPosts}
         onPageChange={(page) => setCurrentPage(page)}
+        className="min-w-[372px] gap-6 pt-6"
+        buttonClassName="px-10"
       />
     </div>
   );

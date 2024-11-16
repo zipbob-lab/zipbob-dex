@@ -168,7 +168,13 @@ const ScrapPage = () => {
             </div>
           </>
           <div className="flex items-center justify-center pt-7">
-            <Pagination currentPage={page} pageSize={8} totalItems={totalItems} onPageChange={handlePageChange} />
+            <Pagination
+              currentPage={page}
+              pageSize={8}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+              className="ssm:w-[336px] sm:w-[336px] sm:text-body-14 md:w-[438px] lg:w-[438px]"
+            />
           </div>
 
           {/* 삭제 확인 모달 */}

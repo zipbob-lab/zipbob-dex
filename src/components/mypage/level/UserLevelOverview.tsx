@@ -38,7 +38,7 @@ const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center gap-x-6 pt-6">
+    <div className="flex items-center justify-center gap-x-6 pt-4">
       {levelIcons.map((LevelIcon, index) => (
         <div
           key={index}

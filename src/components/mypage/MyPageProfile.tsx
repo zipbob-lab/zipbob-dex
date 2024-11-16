@@ -109,7 +109,7 @@ const MyPageProfile = () => {
 
   return (
     <div className="flex flex-col items-center justify-between">
-      <div className="flex flex-col items-center justify-center gap-6 rounded-2xl bg-[#FFF6DC] shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)] lg:w-[18.25rem] lg:p-8">
+      <div className="flex flex-col items-center justify-center gap-6 rounded-2xl bg-[#FFF6DC] p-12 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         {userData ? (
           <>
             <div className="h-28 w-28 overflow-hidden rounded-full">
@@ -122,20 +122,20 @@ const MyPageProfile = () => {
               />
             </div>
 
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center ssm:gap-[0.12rem] md:gap-2">
               {/* UserLevelEmoji 컴포넌트 */}
               <UserLevelEmoji userRank={userRank} />
-              <h3 className="lg:text-heading-20">{userData.user_nickname}</h3>
+              <h3 className="ssm:text-title-18 md:text-heading-20">{userData.user_nickname}</h3>
               <button onClick={() => setIsModalOpen(true)}>
-                <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
+                <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
               </button>
             </div>
 
             {/* UserRank 컴포넌트 */}
             <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
-            <p className="max-w-[14.3rem] text-body-14 text-Gray-700">{userData.user_introduce}</p>
+            <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">{userData.user_introduce}</p>
             <Link href="/myrecipewrite" className="flex items-center gap-2">
-              <div className="w-[14.25rem] rounded-2xl bg-Primary-300 px-3 py-4 text-center text-body-16 text-white">
+              <div className="rounded-2xl bg-Primary-300 text-center text-body-16 text-white ssm:min-w-[14.25rem] ssm:px-3 ssm:py-4">
                 나만의 레시피 올리기
               </div>
             </Link>
@@ -152,8 +152,8 @@ const MyPageProfile = () => {
           <p>프로필 정보가 없습니다.</p>
         )}
       </div>
-      <div className="mt-7 rounded-2xl bg-white p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
-        <span className="rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
+      <div className="mt-7 rounded-2xl bg-white p-6 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+        <span className="inline-block rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
           Level{" "}
           <span className="ml-1">
             {userData && typeof userData.user_rank === "number" ? userData.user_rank + 1 : ""}

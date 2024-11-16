@@ -68,7 +68,7 @@ const UserComment = ({ userId }: { userId: string }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full overflow-y-auto lg:h-[480px]">
+      <div className="w-full overflow-y-auto ssm:h-[488px] md:h-[480px]">
         {comments.map((comment) => (
           <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
             <div className="flex w-full flex-col justify-between pb-5">
@@ -116,6 +116,8 @@ const UserComment = ({ userId }: { userId: string }) => {
         pageSize={pageSize}
         totalItems={commentCount}
         onPageChange={(page) => setCurrentPage(page)}
+        className="min-w-[372px] gap-6 pt-6"
+        buttonClassName="px-10"
       />
     </div>
   );
