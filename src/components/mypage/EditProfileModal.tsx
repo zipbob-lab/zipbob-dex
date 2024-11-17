@@ -63,14 +63,14 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
 
   const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
-      <div className="relative flex min-w-[320px] flex-col items-center rounded-2xl bg-white p-8">
+      <div className="relative flex flex-col items-center rounded-2xl bg-white p-6 ssm:w-[288px] md:w-[332px]">
         {/* 모달 닫기 버튼 */}
         <button onClick={onClose} className="absolute right-5 top-5">
           <Image src={CloseX} width={20} height={20} alt="닫기" />
         </button>
 
         {/* 프로필 이미지 업로드 */}
-        <div className="relative mb-6 flex h-40 w-40 cursor-pointer items-center justify-center overflow-hidden rounded-full">
+        <div className="relative mt-8 flex h-[120px] w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-full">
           <ProfileImageUpload
             userId={userData.user_id}
             initialImageUrl={userData.user_img}
@@ -81,16 +81,16 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
         {/* 프로필 사진 위에 아이콘 표시 */}
         <Image
           src={ImageButton}
-          width={28}
-          height={28}
+          width={30}
+          height={30}
           alt="이미지 아이콘"
-          className="absolute right-1/3 top-36 z-40"
+          className="absolute right-1/3 top-[152px] z-40"
         />
 
         {/* 닉네임 및 자기소개 입력 */}
-        <div className="flex flex-col pb-8">
+        <div className="flex flex-col py-8">
           <div>
-            <p className="p-1 text-body-14 text-gray-500">닉네임</p>
+            <p className="p-1 text-body-14 text-Gray-500">닉네임</p>
             <input
               type="text"
               value={editedNickname}
@@ -101,7 +101,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
             {errors.nickname && <p className="mx-1 mb-1 text-body-14 text-red-500">{errors.nickname}</p>}
           </div>
           <div>
-            <p className="p-1 text-body-14 text-gray-500">자기소개</p>
+            <p className="p-1 text-body-14 text-Gray-500">자기소개</p>
             <textarea
               value={editedIntroduce}
               onChange={(e) => setEditedIntroduce(e.target.value)}

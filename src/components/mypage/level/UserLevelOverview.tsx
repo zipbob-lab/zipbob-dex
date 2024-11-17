@@ -5,10 +5,9 @@ import Level4 from "@images/levels/levelFourSalmon.svg";
 import Level5 from "@images/levels/levelFiveStew.svg";
 import Arrow from "@images/levels/orangeArrow.svg";
 
-import { updateUserLevel } from "@/utils/updateUserRank";
-import { useEffect, useState } from "react";
 import { supabase } from "@/supabase/supabase";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
 
 interface UserLevelOverviewProps {
   userId: string;
@@ -16,27 +15,46 @@ interface UserLevelOverviewProps {
 
 const levelIcons = [Level1, Level2, Level3, Level4, Level5];
 
+const fetchUserLevel = async (userId: string): Promise<number | null> => {
+  const { data: userData, error } = await supabase
+    .from("USER_TABLE")
+    .select("user_rank")
+    .eq("user_id", userId)
+    .single();
+
+  if (error) {
+    console.error("사용자 레벨 불러오기 실패", error.message);
+    return null;
+  }
+  return userData?.user_rank ?? null;
+};
+
 const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
-  const [userLevel, setUserLevel] = useState<number | null>(null);
+  const {
+    data: userLevel,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ["userLevel", userId],
+    queryFn: () => fetchUserLevel(userId),
+    enabled: !!userId
+  });
 
-  useEffect(() => {
-    const fetchUserLevel = async () => {
-      await updateUserLevel(userId);
-      const { data: userData, error } = await supabase
-        .from("USER_TABLE")
-        .select("user_rank")
-        .eq("user_id", userId)
-        .single();
+  if (isLoading) {
+    return (
+      <div className="flex justify-center">
+        <p>데이터를 불러오는 중 입니다.</p>
+      </div>
+    );
+  }
 
-      if (!error && userData) {
-        setUserLevel(userData.user_rank);
-      } else {
-        console.log("사용자 레벨 불러오기 실패", error?.message);
-      }
-    };
-
-    fetchUserLevel();
-  }, [userId]);
+  if (isError) {
+    return (
+      <div className="flex justify-center">
+        <p>데이터를 불러오는 중 문제가 발생했습니다. </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center gap-2 pt-4">
