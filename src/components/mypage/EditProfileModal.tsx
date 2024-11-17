@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
-import Pencil from "@images/penWhite.svg";
 import Image from "next/image";
 import CloseX from "@images/closeX.svg";
 import ImageButton from "@images/imageButton.svg";
-import DeleteButton from "@images/trashcan.svg";
 import { createPortal } from "react-dom";
 import ConfirmModal from "../common/modal/ConfirmModal";
 
@@ -63,7 +61,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
 
   const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
-      <div className="relative flex flex-col items-center rounded-2xl bg-white p-6 ssm:w-[288px] md:w-[332px]">
+      <div className="relative flex flex-col items-center rounded-2xl bg-white p-6 ssm:w-[288px] md:min-w-[332px]">
         {/* 모달 닫기 버튼 */}
         <button onClick={onClose} className="absolute right-5 top-5">
           <Image src={CloseX} width={20} height={20} alt="닫기" />
@@ -95,7 +93,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
               type="text"
               value={editedNickname}
               onChange={(e) => setEditedNickname(e.target.value)}
-              className="mb-3 w-[240px] rounded-2xl border p-3 text-body-14"
+              className="mb-3 w-full rounded-2xl border p-3 text-body-14"
               placeholder="닉네임을 입력하세요"
             />
             {errors.nickname && <p className="mx-1 mb-1 text-body-14 text-red-500">{errors.nickname}</p>}
@@ -105,30 +103,27 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
             <textarea
               value={editedIntroduce}
               onChange={(e) => setEditedIntroduce(e.target.value)}
-              className="min-h-[100px] w-[240px] resize-none rounded-2xl border p-3 text-body-14"
+              className="min-h-[100px] w-full resize-none rounded-2xl border p-3 text-body-14"
               placeholder="자기소개를 입력하세요(100자 이내)"
               maxLength={100}
             />
             {errors.introduce && <p className="m-1 text-body-14 text-red-500">{errors.introduce}</p>}
           </div>
-        </div>
-
-        {/* 저장 및 취소 버튼 */}
-        <div className="flex gap-4 text-body-16">
-          <button
-            onClick={handleSaveClick}
-            className="flex items-center gap-2 rounded-2xl bg-Primary-300 px-6 py-2 text-white"
-          >
-            <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
-            <span>변경</span>
-          </button>
-          <button
-            onClick={handleDeleteClick}
-            className="flex items-center gap-2 rounded-2xl border-[1px] border-Primary-300 px-6 py-2 text-Primary-300"
-          >
-            <Image src={DeleteButton} width={20} height={20} alt="쓰레기 아이콘" />
-            <span>삭제</span>
-          </button>
+          {/* 저장 및 취소 버튼 */}
+          <div className="mt-8 flex gap-5 text-body-16">
+            <button
+              onClick={handleSaveClick}
+              className="flex w-[121px] items-center justify-center gap-2 rounded-2xl bg-Primary-300 px-8 py-4 text-center text-white"
+            >
+              <span>변경</span>
+            </button>
+            <button
+              onClick={handleDeleteClick}
+              className="flex w-[121px] items-center justify-center gap-2 rounded-2xl border-[1px] border-Primary-300 px-8 py-4 text-Primary-300"
+            >
+              <span>삭제</span>
+            </button>
+          </div>
         </div>
 
         {isConfirmOpen && (

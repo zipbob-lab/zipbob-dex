@@ -139,8 +139,8 @@ const ScrapPage = () => {
               {filteredScraps.length === 0 ? (
                 <EmptyContent message="아직 스크랩한 레시피가 없어요!">
                   <ul className="text-body-16 text-Gray-500">
-                    <li>· 집밥도감만의 레시피를 스크랩해 보세요.</li>
-                    <li>· 집밥도감 유저들이 올린 레시피를 스크랩해 보세요.</li>
+                    <li>· 집밥도감의 레시피를 스크랩해 보세요.</li>
+                    <li>· 내 마음대로 폴더명을 지어보세요.</li>
                   </ul>
                 </EmptyContent>
               ) : (

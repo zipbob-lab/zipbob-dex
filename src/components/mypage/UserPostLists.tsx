@@ -66,7 +66,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
       <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">
         <EmptyContent message="아직 나만의 레시피가 없어요!">
           <ul className="text-body-16 text-Gray-500">
-            <li>· 마이프로필 카드에서 나만의 레시피를 클릭해 글을 남겨보세요.</li>
+            <li>· 꿀팁이 담긴 나만의 레시피를 남겨보세요.</li>
             <li>· 글을 남기면 경험치가 올라간답니다!</li>
           </ul>
         </EmptyContent>
