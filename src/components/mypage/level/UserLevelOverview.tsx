@@ -3,6 +3,7 @@ import Level2 from "@images/levels/levelTwoKimbab.svg";
 import Level3 from "@images/levels/levelThreePasta.svg";
 import Level4 from "@images/levels/levelFourSalmon.svg";
 import Level5 from "@images/levels/levelFiveStew.svg";
+import Arrow from "@images/levels/orangeArrow.svg";
 
 import { updateUserLevel } from "@/utils/updateUserRank";
 import { useEffect, useState } from "react";
@@ -38,22 +39,26 @@ const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center gap-x-6 pt-4">
+    <div className="flex items-center justify-center gap-2 pt-4">
       {levelIcons.map((LevelIcon, index) => (
-        <div
-          key={index}
-          className={"flex items-center justify-center"}
-          style={{
-            transform: index === userLevel ? "scale(1.25)" : "scale(1)",
-            filter: index !== userLevel ? "grayscale(100%)" : "none"
-          }}
-        >
-          <Image
-            src={LevelIcon.src}
-            alt={`레벨 ${index}`}
-            width={index === userLevel ? 48 : 32}
-            height={index === userLevel ? 48 : 32}
-          />
+        <div key={index} className="flex items-center">
+          <div
+            className="flex items-center justify-center"
+            style={{
+              transform: index === userLevel ? "scale(1.25)" : "scale(1)",
+              filter: index !== userLevel ? "grayscale(100%)" : "none"
+            }}
+          >
+            <Image
+              src={LevelIcon.src}
+              alt={`레벨 ${index}`}
+              width={index === userLevel ? 45 : 32}
+              height={index === userLevel ? 45 : 32}
+            />
+          </div>
+          {index < levelIcons.length - 1 && (
+            <Image src={Arrow.src} alt="화살표" width={16} height={16} className="ml-2" />
+          )}
         </div>
       ))}
     </div>

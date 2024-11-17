@@ -133,7 +133,10 @@ const MyPageProfile = () => {
 
             {/* UserRank 컴포넌트 */}
             <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
-            <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">{userData.user_introduce}</p>
+            {/* <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">{userData.user_introduce}</p> */}
+            <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">
+              {userData?.user_introduce || "등록된 자기소개가 없습니다."}
+            </p>
             <Link href="/myrecipewrite" className="flex items-center gap-2">
               <div className="rounded-2xl bg-Primary-300 text-center text-body-16 text-white ssm:min-w-[14.25rem] ssm:px-3 ssm:py-4">
                 나만의 레시피 올리기
@@ -152,7 +155,7 @@ const MyPageProfile = () => {
           <p>프로필 정보가 없습니다.</p>
         )}
       </div>
-      <div className="mt-7 rounded-2xl bg-white p-6 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+      <div className="mt-7 rounded-2xl bg-white p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         <span className="inline-block rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
           Level{" "}
           <span className="ml-1">

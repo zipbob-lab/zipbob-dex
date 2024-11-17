@@ -31,8 +31,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
   const validateFeilds = () => {
     const newErrors = { nickname: "", introduce: "" };
     if (!editedNickname.trim()) newErrors.nickname = "닉네임을 입력해주세요.";
-    if (!editedIntroduce.trim()) newErrors.introduce = "자기소개를 입력해주세요.";
-    if (editedIntroduce.length > 50) newErrors.introduce = "자기소개는 50자 이하로 작성해주세요";
+    if (editedIntroduce.length > 100) newErrors.introduce = "자기소개는 100자 이내로 작성해주세요";
 
     setErrors(newErrors);
     return !newErrors.nickname && !newErrors.introduce;
@@ -102,13 +101,13 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
             {errors.nickname && <p className="mx-1 mb-1 text-body-14 text-red-500">{errors.nickname}</p>}
           </div>
           <div>
-            <p className="p-1 text-body-14 text-gray-500">자기소개 (50자 이하)</p>
+            <p className="p-1 text-body-14 text-gray-500">자기소개</p>
             <textarea
               value={editedIntroduce}
               onChange={(e) => setEditedIntroduce(e.target.value)}
               className="min-h-[100px] w-[240px] resize-none rounded-2xl border p-3 text-body-14"
-              placeholder="자기소개를 입력하세요"
-              maxLength={50}
+              placeholder="자기소개를 입력하세요(100자 이내)"
+              maxLength={100}
             />
             {errors.introduce && <p className="m-1 text-body-14 text-red-500">{errors.introduce}</p>}
           </div>
