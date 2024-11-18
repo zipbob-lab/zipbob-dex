@@ -101,7 +101,7 @@ const SearchResult = () => {
   return (
     <div>
       {filteredRecipes.length > 0 && (
-        <div className="mx-auto flex max-w-[1024px] items-center justify-between py-10">
+        <div className="mx-auto flex w-full max-w-[1024px] items-center justify-between py-10 sm:max-w-[336px] md:max-w-[688px] lg:max-w-[1024px]">
           <p className="text-body-20 font-semibold">
             &quot;{searchText}&quot; 검색결과 {filteredRecipes.length}개
           </p>
@@ -116,7 +116,7 @@ const SearchResult = () => {
           <LoadingSpinner />
         ) : filteredRecipes.length > 0 ? (
           <div>
-            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-4 gap-y-7">
+            <ul className="mx-auto grid w-full max-w-[1024px] grid-cols-4 gap-4 sm:max-w-[336px] sm:grid-cols-2 md:max-w-[688px] md:grid-cols-4 lg:max-w-[1024px]">
               {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
@@ -138,11 +138,15 @@ const SearchResult = () => {
                 <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                   &quot;{searchText}&quot; 키워드와 일치하는 레시피가 없습니다.
                 </p>
-                <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 p-4">
+                <ul className="flex h-[9.5rem] w-[34.25rem] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 p-[1rem]">
                   <h1 className="mb-4 ml-8 self-start text-body-18 font-semibold text-Primary-300">검색 Tip!</h1>
-                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">레시피명을 다시 확인해 주세요!</li>
-                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">구체적인 키워드를 사용해보세요!</li>
-                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">
+                  <li className="ml-8 mt-[0.25rem] self-start text-body-16 text-Gray-500">
+                    레시피명을 다시 확인해 주세요!
+                  </li>
+                  <li className="ml-8 mt-[0.25rem] self-start text-body-16 text-Gray-500">
+                    구체적인 키워드를 사용해보세요!
+                  </li>
+                  <li className="ml-8 mt-[0.25rem] self-start text-body-16 text-Gray-500">
                     키워드를 조합해 레시피를 검색해보세요!
                   </li>
                 </ul>

@@ -65,8 +65,8 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
   };
 
   return (
-    <div className="flex h-[48px] w-[340px] items-center justify-between rounded-full border-2 border-Gray-200 p-2">
-      <button onClick={handleStartStop} className="mr-4 w-1/4">
+    <div className="flex h-[3rem] w-[21.25rem] items-center justify-between rounded-full border-2 border-Gray-200 p-[0.5rem]">
+      <button onClick={handleStartStop} className="mr-[1rem] w-1/4">
         {isRunning ? (
           <Image src={StopButton} width={32} height={32} alt="중지" className="h-full w-full" />
         ) : (
@@ -80,25 +80,25 @@ const Timer: React.FC<TimerProps> = memo(({ onClose }) => {
           value={String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, "0")}
           onChange={handleHoursChange}
           min="0"
-          className="w-[50px] appearance-none text-center text-heading-28"
+          className="w-[3.125rem] appearance-none text-center text-heading-28"
         />
-        <p className="mr-3 text-body-20">시</p>
+        <p className="mr-[0.75rem] text-body-20">시</p>
         <input
           type="number"
           value={String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, "0")}
           onChange={handleMinutesChange}
           min="0"
-          className="w-[50px] appearance-none text-center text-heading-28"
+          className="w-[3.125rem] appearance-none text-center text-heading-28"
         />
-        <p className="mr-3 text-body-20">분</p>
+        <p className="mr-[0.75rem] text-body-20">분</p>
         <input
           type="number"
           value={String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0")}
           onChange={handleSecondsChange}
           min="0"
-          className="w-[50px] appearance-none text-center text-heading-28"
+          className="w-[3.125rem] appearance-none text-center text-heading-28"
         />
-        <p className="mr-3 text-body-20">초</p>
+        <p className="mr-[0.75rem] text-body-20">초</p>
       </div>
 
       <button onClick={onClose} className="w-1/4">
