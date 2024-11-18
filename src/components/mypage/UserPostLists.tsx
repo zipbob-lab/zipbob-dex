@@ -92,7 +92,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
                   <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
                   <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
                 </div>
-                <h3 className="text-title-16">{post.recipe_title}</h3>
+                <h3 className="ssm:text-title-14 md:text-title-16">{post.recipe_title}</h3>
                 <div className="mt-3 flex flex-1 items-center gap-3">
                   <div className="relative overflow-hidden rounded-full ssm:h-7 ssm:w-7 md:h-10 md:w-10">
                     <Image

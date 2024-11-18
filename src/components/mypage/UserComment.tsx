@@ -97,9 +97,11 @@ const UserComment = ({ userId }: { userId: string }) => {
                         alt="레시피 난이도"
                       />
                     </div>
-                    <h3 className="text-title-16">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
+                    <h3 className="ssm:text-title-14 md:text-title-16">
+                      {comment.recipe?.recipe_title || "레시피 없음"}
+                    </h3>
                   </div>
-                  <p className="mt-2 text-body-15">
+                  <p className="mt-2 ssm:text-body-13 md:text-body-15">
                     {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
                   </p>
                   <p className="mt-auto text-right text-body-13 text-Gray-500">{formatDate(comment.created_at)}</p>

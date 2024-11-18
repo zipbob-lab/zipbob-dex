@@ -80,7 +80,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
           <button
             onClick={handleSaveClick}
             disabled={isSaving}
-            className={`absolute right-3 top-12 cursor-pointer ssm:top-11 ssm:text-body-14 md:text-body-16 ${
+            className={`absolute right-3 cursor-pointer ssm:top-11 ssm:text-body-14 md:top-12 md:text-body-16 ${
               folderName ? "text-Primary-300" : "text-Gray-300"
             }`}
           >
