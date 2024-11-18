@@ -5,15 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import RecipeCard2 from "./RecipeCard2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Recipe } from "@/types/Search";
 
 const RecommendRecipe = () => {
-  const fetchRandomRecipe = async () => {
-    const { data, error } = await browserClient
-      .from("MY_RECIPE_TABLE")
-      .select("*")
-      .not("recipe_seq", "is", null)
-      .order("recipe_seq", { ascending: false })
-      .limit(10);
+  const fetchRandomRecipe = async (): Promise<Recipe[]> => {
+    const { data, error } = await browserClient.rpc("random_recipes", { limit: 10 });
+    // .from("MY_RECIPE_TABLE")
+    // .select("*")
+    // .not("recipe_seq", "is", null)
+
+    // // .order("recipe_seq", { ascending: false })
+    // .limit(10);
 
     if (error) {
       console.error("추천 레시피를 불러오는 과정에서 에러 발생" + error);
