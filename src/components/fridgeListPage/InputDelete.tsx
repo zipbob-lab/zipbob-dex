@@ -62,7 +62,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
     <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
       <div className="mb-2 flex space-x-2 pl-11">
         <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
-        <p className="text-[18px] font-medium">없는 재료</p>
+        <p className="text-body-18 font-medium">없는 재료</p>
       </div>
       <div className="relative mb-2 ml-auto flex h-[48px] w-[452px] items-center rounded-[14px] border-2">
         <input
@@ -73,20 +73,20 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
           onCompositionStart={handleComposition}
           onCompositionEnd={handleComposition}
           placeholder="빼고 싶은 재료를 입력해요!"
-          className="h-full flex-1 rounded-full px-4 outline-none"
+          className="h-full flex-1 rounded-full px-4 text-body-16 outline-none"
         />
         <button
           type="button"
           onClick={addCategory}
-          className="h-full rounded-r-[12px] bg-[#ffbb8a] px-4 text-[16px] font-normal text-[#ffffff]"
+          className="h-full rounded-r-[12px] bg-Primary-200 px-4 text-body-16 text-white"
         >
           입력
         </button>
       </div>
       <div className="pl-11">
         {category.map((tag) => (
-          <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-[#dedcd7] px-2">
-            <span className="text-[16px]">{tag}</span>
+          <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-Gray-100 px-2">
+            <span className="text-body-16">{tag}</span>
             <button type="button" onClick={() => deleteTag(tag)} className="ml-1 flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>

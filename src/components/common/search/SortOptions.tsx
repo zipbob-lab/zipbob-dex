@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import Image from "next/image";
 import DownArrow from "@images/search/downArrow.svg";
@@ -30,22 +29,22 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-[32px] w-auto items-center justify-between rounded-3xl border-2 px-4 py-2 focus:border-stone-400 focus:outline-none"
+        className="flex h-[32px] w-auto items-center justify-between rounded-3xl border-2 border-Gray-300 px-4 py-2 focus:border-Gray-400 focus:outline-none"
       >
-        <span className="text-[14px] font-medium">
+        <span className="text-body-14 font-medium">
           {options.find((option) => option.value === sortOption)?.label || "정렬 옵션 선택"}
         </span>
-        <Image src={isOpen ? UpArrow : DownArrow} width={24} height={24} alt="선택 버튼" className="ml-8" />
+        <Image src={isOpen ? UpArrow : DownArrow} width={24} height={24} alt="선택 버튼" className="ml-2" />
       </button>
 
       {/* 드롭박스 */}
       {isOpen && (
-        <ul className="absolute z-10 mt-2 w-full rounded-2xl border-2 bg-white p-1 shadow-lg">
+        <ul className="absolute z-10 mt-2 w-full rounded-2xl border-2 border-Gray-300 bg-white p-1 shadow-lg">
           {options.map((option) => (
             <li
               key={option.value}
               onClick={() => handleOptionClick(option.value)}
-              className="cursor-pointer rounded-2xl px-4 py-2 text-[13px] hover:bg-stone-100"
+              className="cursor-pointer rounded-2xl px-4 py-2 text-body-13 hover:bg-Gray-50"
             >
               {option.label}
             </li>

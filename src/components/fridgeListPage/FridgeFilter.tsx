@@ -98,8 +98,8 @@ const TagFilter: React.FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-[1024px] p-4 py-[60px]">
-        <p className="text-[24px] font-semibold">냉장고를 탐험해 봅시다!</p>
-        <p className="mt-4 text-[18px] font-normal">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
+        <p className="text-heading-24">냉장고를 탐험해 봅시다!</p>
+        <p className="mt-4 text-body-18">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
         <div className="mt-12 flex">
           <CategoreAdd onAddCategory={setAddKeywords} />
           <CategoreDelete onDeleteCategory={setDeleteKeywords} />
@@ -107,9 +107,9 @@ const TagFilter: React.FC = () => {
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleSearch}
-            className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-[#ff9143]"
+            className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-Primary-300"
           >
-            <p className="text-[20px] font-normal text-white">검색</p>
+            <p className="text-body-20 text-white">검색</p>
           </button>
         </div>
         {showResults && (
@@ -117,7 +117,7 @@ const TagFilter: React.FC = () => {
             {filteredData.length > 0 ? (
               <>
                 <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
-                  <p className="text-[20px] font-semibold">검색 결과 {filteredData.length}개</p>
+                  <p className="text-body-20 font-semibold">검색 결과 {filteredData.length}개</p>
                   <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
                 <ul className="mx-auto grid max-w-[1024px] grid-cols-4 items-center gap-x-[16px] gap-y-[28px]">
@@ -138,15 +138,15 @@ const TagFilter: React.FC = () => {
               <div className="flex h-full items-center justify-center">
                 <div className="flex min-h-[40vh] flex-col items-center justify-center">
                   <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
-                  <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
+                  <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                     태그와 일치하는 레시피가 없습니다.
                   </p>
                   <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4">
-                    <h1 className="mb-4 ml-8 self-start text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
-                    <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
+                    <h1 className="mb-4 ml-8 self-start text-body-18 font-semibold text-Primary-300">검색 Tip!</h1>
+                    <li className="mb-1 ml-8 self-start text-body-16 text-stone-500">
                       입력한 재료를 다시 확인 해주세요!
                     </li>
-                    <li className="mb-1 ml-8 self-start text-[16px] text-stone-500">
+                    <li className="mb-1 ml-8 self-start text-body-16 text-stone-500">
                       넣고 싶은 재료와 빼고 싶은 재료가 중복될 경우 결과가 나오지 않습니다!
                     </li>
                   </ul>

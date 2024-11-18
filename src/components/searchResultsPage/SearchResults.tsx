@@ -5,7 +5,7 @@ import { Recipe } from "@/types/Search";
 import { useParams } from "next/navigation";
 import browserClient from "@/supabase/client";
 import RecipeCard from "@/components/mainPage/RecipeCard";
-import FilterOptions from "@/components/searchResultsPage/FilterOptions";
+import FilterOptions from "@/components/searchResultsPage/SearchOptions";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
@@ -101,8 +101,8 @@ const SearchResult = () => {
   return (
     <div>
       {filteredRecipes.length > 0 && (
-        <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[40px]">
-          <p className="text-[20px] font-semibold">
+        <div className="mx-auto flex max-w-[1024px] items-center justify-between py-10">
+          <p className="text-body-20 font-semibold">
             &quot;{searchText}&quot; 검색결과 {filteredRecipes.length}개
           </p>
           <div className="flex items-center space-x-4">
@@ -116,7 +116,7 @@ const SearchResult = () => {
           <LoadingSpinner />
         ) : filteredRecipes.length > 0 ? (
           <div>
-            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-[16px] gap-y-[28px]">
+            <ul className="mx-auto grid max-w-[1024px] grid-cols-4 gap-x-4 gap-y-7">
               {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
@@ -135,14 +135,14 @@ const SearchResult = () => {
             <div>
               <div className="flex min-h-[50vh] flex-col items-center justify-center">
                 <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
-                <p className="mb-10 w-auto whitespace-nowrap text-center text-[20px] font-semibold">
+                <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                   &quot;{searchText}&quot; 키워드와 일치하는 레시피가 없습니다.
                 </p>
-                <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4">
-                  <h1 className="mb-4 ml-8 self-start text-[18px] font-semibold text-[#ff9143]">검색 Tip!</h1>
-                  <li className="ml-8 mt-1 self-start text-[16px] text-stone-500">레시피명을 다시 확인해 주세요!</li>
-                  <li className="ml-8 mt-1 self-start text-[16px] text-stone-500">구체적인 키워드를 사용해보세요!</li>
-                  <li className="ml-8 mt-1 self-start text-[16px] text-stone-500">
+                <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 p-4">
+                  <h1 className="mb-4 ml-8 self-start text-body-18 font-semibold text-Primary-300">검색 Tip!</h1>
+                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">레시피명을 다시 확인해 주세요!</li>
+                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">구체적인 키워드를 사용해보세요!</li>
+                  <li className="ml-8 mt-1 self-start text-body-16 text-Gray-500">
                     키워드를 조합해 레시피를 검색해보세요!
                   </li>
                 </ul>
