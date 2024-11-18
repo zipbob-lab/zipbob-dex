@@ -44,7 +44,7 @@ const RecipeInfoFields = () => {
         />
       </div>
       {/* 요리 소개 */}
-      <div className="flex flex-col gap-x-[4rem] lg:flex-row gap-y-[0.5rem] md:gap-y-[0.75rem]">
+      <div className="flex flex-col gap-x-[4rem] gap-y-[0.5rem] md:gap-y-[0.75rem] lg:flex-row">
         <h1 className="flex w-[120px] items-center text-title-16 text-Gray-700 md:text-title-18">요리 소개</h1>
         <textarea
           className="input-focus h-[7.25rem] w-full resize-none rounded-2xl bg-Gray-50 px-4 py-3 text-body-14 text-Gray-500 md:text-body-16 lg:w-[33rem]"

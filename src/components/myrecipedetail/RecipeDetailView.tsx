@@ -70,9 +70,10 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
               src={data.recipe_img_done || DefaultImg}
               alt="완성 이미지"
               fill
+              sizes="20rem"
               style={{ objectFit: "cover", objectPosition: "center" }}
               className="rounded-lg"
-              loading="lazy"
+              priority
             />
           </div>
 
@@ -180,6 +181,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
                     }
                     alt={`매뉴얼 이미지 ${index + 1}`}
                     fill
+                    sizes="(min-width: 768px) 10rem, 7.5rem"
                     style={{ objectFit: "cover", objectPosition: "center" }}
                     className="rounded-lg"
                     loading="lazy"

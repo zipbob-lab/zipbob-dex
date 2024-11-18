@@ -373,7 +373,7 @@ const InputField = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         {/* 전체 컨테이너 */}
         <div className="relative flex max-w-[20.94rem] flex-col gap-y-[1.5rem] px-[1.25rem] py-[2rem] ssm:max-w-[27.5rem] ssm:gap-y-[2rem] sm:max-w-[27.56rem] sm:px-[1.25rem] sm:py-[2rem] md:max-w-[55.44rem] md:px-[2rem] md:py-[3rem] lg:max-w-[67.5rem] lg:overflow-hidden">
-          <div className="h-max-full flex flex-col gap-y-[2.5rem] overflow-y-auto lg:h-[42.75rem] [&::-webkit-scrollbar]:hidden">
+          <div className="h-max-full flex flex-col gap-y-[2.5rem] overflow-y-auto lg:h-[50.69rem] [&::-webkit-scrollbar]:hidden">
             {/* 헤더 영역 */}
             <div className="flex max-w-[33rem] flex-col gap-y-4 px-[0.75rem] md:max-w-[51.44rem] lg:max-w-[63.5rem]">
               <h1 className="text-heading-20 text-Gray-900 md:text-heading-28">나만의 레시피 등록하기</h1>
@@ -608,7 +608,7 @@ const InputField = () => {
               )}
             </div>
           </div>
-          <div className="sticky bottom-0">
+          <div className="z-500 sticky bottom-0">
             {/* 제출 버튼 */}
             <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />
             {/* 닫기 확인 모달 */}
