@@ -28,7 +28,7 @@ const AuthStatusBar = () => {
     <>
       {isLoggedIn ? (
         <div
-          className="relative h-[3rem] w-[3rem] cursor-pointer overflow-hidden rounded-full bg-[#d9d9d9]"
+          className="relative h-[2.3rem] w-[2.3rem] cursor-pointer overflow-hidden rounded-full bg-[#d9d9d9] md:h-[3rem] md:w-[3rem]"
           onClick={() => !isOpen && setIsOpen(true)}
         >
           {userProfile && (

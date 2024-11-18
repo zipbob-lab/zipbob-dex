@@ -63,7 +63,7 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex flex-col justify-between gap-6 md:flex-row md:gap-0">
       {posts?.map((post, index) => (
         <LikeCard key={post.id} post={post} userNickname={userNickname[index]} rank={index + 1} />
       ))}
