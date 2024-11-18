@@ -122,20 +122,16 @@ const TagFilter: React.FC = () => {
           <div className="mt-6">
             {filteredData.length > 0 ? (
               <>
-                {/* 검색 결과 및 정렬 옵션 */}
                 <div className="mx-auto flex items-center justify-between py-[4rem] ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
                   <p className="text-body-20 font-semibold">검색 결과 {filteredData.length}개</p>
                   <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
 
-                {/* 레시피 카드 그리드 */}
                 <ul className="mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
                   {currentData.map((recipe) => (
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-
-                {/* 페이지네이션 */}
                 <div className="mt-8 flex items-center justify-center">
                   <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                     <Pagination
@@ -155,13 +151,15 @@ const TagFilter: React.FC = () => {
                   <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                     태그와 일치하는 레시피가 없습니다.
                   </p>
-                  <ul className="flex h-[9.5rem] w-[34.25rem] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-[1rem]">
-                    <h1 className="mb-4 ml-8 self-start text-body-18 font-semibold text-Primary-300">검색 Tip!</h1>
+                  <ul className="flex h-[9.5rem] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-[1rem] ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
+                    <h1 className="mb-4 ml-8 self-start font-semibold text-Primary-300 ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">
+                      검색 Tip!
+                    </h1>
                     <li className="mb-1 ml-8 self-start text-body-16 text-stone-500">
-                      입력한 재료를 다시 확인 해주세요!
+                      입력한 재료를 다시 확인 해주세요.
                     </li>
                     <li className="mb-1 ml-8 self-start text-body-16 text-stone-500">
-                      넣고 싶은 재료와 빼고 싶은 재료가 중복될 경우 결과가 나오지 않습니다!
+                      넣고 싶은 재료와 빼고 싶은 재료가 중복되진 않았는지 확인해 주세요.
                     </li>
                   </ul>
                 </div>
