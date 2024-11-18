@@ -258,7 +258,7 @@ const Comments = ({ postId }: PostDataProps) => {
             </span>
             <button
               type="submit"
-              className="w-18 flex h-8 items-center justify-center rounded-[20px] bg-Primary-300 px-[1.25rem] py-[0.25rem] text-title-16 text-white md:text-title-18"
+              className="flex h-8 w-[4.25rem] items-center justify-center rounded-[20px] bg-Primary-300 px-[1.25rem] py-[0.25rem] text-title-16 text-white md:w-[4.5rem] md:text-title-18"
             >
               입력
             </button>

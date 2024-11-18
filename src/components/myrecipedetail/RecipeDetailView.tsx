@@ -77,7 +77,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
           </div>
 
           {/* 오른쪽 컨테이너 */}
-          <div className="flex flex-col justify-between gap-y-[0.75rem] md:h-[20rem] md:gap-y-[1.25rem]">
+          <div className="flex w-full flex-col justify-between gap-y-[0.75rem] md:h-[20rem] md:gap-y-[1.25rem]">
             <div className="flex w-full flex-grow flex-col gap-y-[0.5rem] md:gap-y-[0.75rem]">
               <div className="flex h-auto flex-row items-center justify-between lg:mt-2">
                 <div className="flex">
