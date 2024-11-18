@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useScrapStore } from "@/store/scrapStore";
 import { useScrapData } from "@/hooks/useScrapData";
 import RecipeCard from "@/components/mainPage/RecipeCard";
+import ScrapPageNav from "./scrapPageNav";
 import EmptyContent from "@/components/common/EmptyContent";
 import Pagination from "@/components/common/Pagination";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
@@ -44,11 +45,6 @@ const ScrapPage = () => {
       }
     }
   }, [userId, selectedFolder, page, setSelectedFolder, refetchScraps]);
-
-  // 편집 버튼 토글
-  const toggleEditMode = () => {
-    setIsEditMode((prev) => !prev);
-  };
 
   // 삭제 기능 + 삭제 재확인 모달 활성화
   const handleDeleteClick = (scrapId: string) => {
@@ -92,56 +88,14 @@ const ScrapPage = () => {
         <>
           {/* 폴더명 리스트 */}
           <>
-            <div className="flex items-center justify-between border-b-[1px] pt-2">
-              <nav
-                className="flex w-full overflow-x-auto whitespace-nowrap ssm:text-title-13 sm:text-title-14 [&::-webkit-scrollbar]:hidden"
-                style={{
-                  maxWidth: "90%"
-                }}
-              >
-                <button
-                  onClick={() => handleFolderClick("전체")}
-                  className={`relative flex flex-row items-center justify-center whitespace-nowrap px-2 pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
-                    selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
-                  }`}
-                >
-                  전체
-                  <span
-                    className={`ml-2 flex items-center justify-center rounded-full ssm:h-5 ssm:w-5 ssm:text-body-13 md:h-6 md:w-6 md:text-body-16 ${
-                      selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
-                    }`}
-                  >
-                    {folderScrapCounts["전체"] || 0}
-                  </span>
-                </button>
-                {existingFolders?.map((folder) => (
-                  <button
-                    key={folder}
-                    onClick={() => handleFolderClick(folder)}
-                    className={`relative flex flex-row items-center justify-center whitespace-nowrap px-2 pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
-                      selectedFolder === folder ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
-                    }`}
-                  >
-                    {folder}
-                    <span
-                      className={`ml-2 flex items-center justify-center rounded-full ssm:h-5 ssm:w-5 ssm:text-body-13 md:h-6 md:w-6 md:text-body-16 ${
-                        selectedFolder === folder ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
-                      }`}
-                    >
-                      {folderScrapCounts[folder] || 0}
-                    </span>
-                  </button>
-                ))}
-              </nav>
-              <button
-                onClick={toggleEditMode}
-                className={`ml-auto pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
-                  isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"
-                }`}
-              >
-                편집
-              </button>
-            </div>
+            <ScrapPageNav
+              selectedFolder={selectedFolder || "전체"}
+              folderScrapCounts={folderScrapCounts}
+              existingFolders={existingFolders}
+              handleFolderClick={handleFolderClick}
+              toggleEditMode={() => setIsEditMode((prev) => !prev)}
+              isEditMode={isEditMode}
+            />
 
             {/* 해당 폴더의 레시피 리스트 */}
             <div className="pt-6">
