@@ -53,6 +53,9 @@ const config: Config = {
       fontSize: {
         "main-54": ["54px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.27px" }],
         "main-30": ["30px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.15px" }],
+        "main-28": ["28px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.56px" }],
+        "main-24": ["24px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.48px" }],
+        "main-20": ["20px", { lineHeight: "120%", fontWeight: "400", letterSpacing: "-0.4px" }],
         "heading-32": ["32px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.16px" }],
         "heading-28": ["28px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.14px" }],
         "heading-24": ["24px", { lineHeight: "120%", fontWeight: "700", letterSpacing: "-0.12px" }],
@@ -62,39 +65,40 @@ const config: Config = {
         "title-20": ["20px", { lineHeight: "130%", fontWeight: "600" }],
         "title-18": ["18px", { lineHeight: "135%", fontWeight: "600" }],
         "title-16": ["16px", { lineHeight: "135%", fontWeight: "600" }],
-        "title-14": ["14px", { lineHeight: "125%", fontWeight: "600" }],
+        "title-14": ["14px", { lineHeight: "130%", fontWeight: "600" }],
         "title-13": ["13px", { lineHeight: "125%", fontWeight: "600" }],
         "body-20": ["20px", { lineHeight: "125%", fontWeight: "500" }],
         "body-18": ["18px", { lineHeight: "125%", fontWeight: "500" }],
         "body-16": ["16px", { lineHeight: "125%", fontWeight: "500" }],
         "body-15": ["15px", { lineHeight: "135%", fontWeight: "500" }],
-        "body-14": ["14px", { lineHeight: "135%", fontWeight: "500" }],
-        "body-13": ["13px", { lineHeight: "135%", fontWeight: "500" }],
+        "body-14": ["14px", { lineHeight: "130%", fontWeight: "500" }],
+        "body-13": ["13px", { lineHeight: "130%", fontWeight: "500" }],
         "body-12": ["12px", { lineHeight: "140%", fontWeight: "500" }],
         "caption-14": ["14px", { lineHeight: "135%", fontWeight: "300" }],
         "caption-12": ["12px", { lineHeight: "140%", fontWeight: "300" }],
-        "caption-11": ["11px", { lineHeight: "135%", fontWeight: "300" }],
-        "caption-10": ["10px", { lineHeight: "135%", fontWeight: "300" }],
+        "caption-11": ["11px", { lineHeight: "140%", fontWeight: "300" }],
+        "caption-10": ["10px", { lineHeight: "140%", fontWeight: "300" }],
         "r-body-18": ["18px", { lineHeight: "125%", fontWeight: "400" }],
         "r-body-16": ["16px", { lineHeight: "135%", fontWeight: "400" }],
         "r-body-14": ["14px", { lineHeight: "130%", fontWeight: "400" }],
-        "r-body-13": ["13px", { lineHeight: "135%", fontWeight: "400" }]
+        "r-body-13": ["13px", { lineHeight: "135%", fontWeight: "400" }],
+        "r-body-12": ["12px", { lineHeight: "135%", fontWeight: "400" }]
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)", "sans-serif"],
         yangjin: ["var(--font-yangjin)", "sans-serif"],
         wiggle: ["var(--font-wiggle)", "sans-serif"]
+      },
+      screens: {
+        ssm: "375px",
+        sm: "480px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1440px",
+        xxl: "1920px"
       }
-    },
-    screens: {
-      ssm: "375px",
-      sm: "480px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1920px"
     }
   },
-
   plugins: []
 };
 export default config;

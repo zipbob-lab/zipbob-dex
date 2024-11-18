@@ -43,15 +43,22 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-[3.75rem] py-3">
-      <nav className="flex items-center gap-8">
-        <Link href="/" className="relative h-[3.5rem] w-[7.25rem]">
+    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-[1.25rem] py-3 xl:px-[3.75rem]">
+      <nav className="flex items-center gap-4 md:gap-8">
+        <Link href="/" className="relative h-[2rem] w-[4.14rem] md:h-[3.5rem] md:w-[7.25rem]">
           <Image src={MainLogo} fill alt="메인 로고" />
         </Link>
-        <Link href="/fridge-list" className="px-3 py-2 text-body-16 text-Gray-900">
+        <Link
+          href="/fridge-list"
+          className="px-[0.5rem] py-[0.35rem] text-body-13 text-Gray-900 md:px-3 md:py-2 md:text-body-16"
+        >
           냉장고 탐험
         </Link>
-        <Link href="/scraps" onClick={handleScrapClick} className="px-3 py-2 text-body-16 text-Gray-900">
+        <Link
+          href="/scraps"
+          onClick={handleScrapClick}
+          className="px-[0.5rem] py-[0.25rem] text-body-13 text-Gray-900 md:px-3 md:py-2 md:text-body-16"
+        >
           스크랩한 레시피
         </Link>
       </nav>
