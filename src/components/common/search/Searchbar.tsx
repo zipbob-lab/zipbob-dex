@@ -114,10 +114,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
           <div className="flex items-center justify-between px-[1rem] py-[0.5rem]">
             <div className="flex items-center space-x-2">
               <h3 className="text-body-14 text-Gray-400">최근 검색어</h3>
-              <h3 className="hidden text-body-14 text-Gray-400 md:block lg:block">
-                *(최대 5개까지 저장할 수 있습니다.)
-              </h3>
-              {/* md 다음 단위에서 안사라짐 질문할것 */}
+              <h3 className="hidden text-body-14 text-Gray-400 md:block">*(최대 5개까지 저장할 수 있습니다.)</h3>
+              {/* 조건부 추가 메인페이지 */}
             </div>
             <button type="button" onClick={deleteKeywords} className="text-body-13 text-[#E80018] hover:bg-Gray-50">
               전체 삭제

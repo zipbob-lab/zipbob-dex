@@ -98,19 +98,21 @@ const TagFilter: React.FC = () => {
   return (
     <div>
       <div className="mx-auto max-w-[1024px] p-4 py-[60px]">
-        <p className="text-heading-24">냉장고를 탐험해 봅시다!</p>
-        <p className="mt-4 text-body-18">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
-        <div className="mt-12 flex">
-          <CategoreAdd onAddCategory={setAddKeywords} />
-          <CategoreDelete onDeleteCategory={setDeleteKeywords} />
-        </div>
-        <div className="mt-8 flex justify-center">
-          <button
-            onClick={handleSearch}
-            className="mt-16 flex h-[48px] w-[440px] items-center justify-center space-x-1 rounded-xl bg-Primary-300"
-          >
-            <p className="text-body-20 text-white">검색</p>
-          </button>
+        <div className="mx-auto w-full max-w-[64rem] sm:max-w-[20.9375rem] md:max-w-[50.125rem]">
+          <p className="text-heading-24">냉장고를 탐험해 봅시다!</p>
+          <p className="mt-[1rem] text-body-18">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
+          <div className="mt-[3rem] flex flex-col gap-[1rem] md:flex-row md:gap-0">
+            <CategoreAdd onAddCategory={setAddKeywords} />
+            <CategoreDelete onDeleteCategory={setDeleteKeywords} />
+          </div>
+          <div className="mt-[2rem] flex justify-center">
+            <button
+              onClick={handleSearch}
+              className="mt-[4rem] flex h-[3rem] w-full max-w-[27.5rem] items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300"
+            >
+              <p className="text-body-20 text-white">검색</p>
+            </button>
+          </div>
         </div>
         {showResults && (
           <div className="mt-6">

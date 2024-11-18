@@ -59,13 +59,16 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
-      <div className="mb-2 flex space-x-2">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="h-auto w-full max-w-[32rem] overflow-auto md:max-w-[23.625rem] lg:max-w-[28.25rem]"
+    >
+      <div className="mb-[0.5rem] flex space-x-[0.5rem]">
         <Image src={SpoomFork} width={20} height={20} alt="냉장고 재료" />
         <p className="text-body-18 font-medium">냉장고 재료</p>
       </div>
 
-      <div className="relative mb-2 flex h-[48px] w-[452px] items-center rounded-[14px] border-2">
+      <div className="relative mb-[0.5rem] flex h-[3rem] w-full items-center rounded-[0.875rem] border-2">
         <input
           type="text"
           value={categoryInput}
@@ -74,21 +77,25 @@ const CategoreAdd = ({ onAddCategory }: { onAddCategory: (keywords: string[]) =>
           onCompositionStart={handleComposition}
           onCompositionEnd={handleComposition}
           placeholder="넣고 싶은 재료를 입력해요!"
-          className="h-full flex-1 rounded-full px-4 text-body-16 outline-none"
+          className="h-full flex-1 rounded-full px-[1rem] text-body-16 outline-none"
         />
         <button
           type="button"
           onClick={addCategory}
-          className="h-full rounded-r-[12px] bg-Primary-200 px-4 text-body-16 text-white"
+          className="h-full rounded-r-[0.75rem] bg-Primary-200 px-[1rem] text-body-16 text-white"
         >
           입력
         </button>
       </div>
+
       <div>
         {category.map((tag) => (
-          <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-Secondary-25 px-2">
+          <div
+            key={tag}
+            className="mb-[0.5rem] mr-[0.5rem] inline-flex h-[2.25rem] items-center rounded-lg bg-Secondary-25 px-[0.5rem]"
+          >
             <span className="text-body-16">{tag}</span>
-            <button type="button" onClick={() => deleteTag(tag)} className="ml-1 flex items-center">
+            <button type="button" onClick={() => deleteTag(tag)} className="ml-[0.25rem] flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>
           </div>

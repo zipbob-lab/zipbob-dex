@@ -44,7 +44,7 @@ const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, setSortOption }) 
             <li
               key={option.value}
               onClick={() => handleOptionClick(option.value)}
-              className="cursor-pointer rounded-2xl px-[1rem] py-[0.5rem] text-body-13 hover:bg-Gray-50"
+              className="cursor-pointer rounded-2xl px-[1rem] py-[0.5rem] text-body-14 hover:bg-Gray-50"
             >
               {option.label}
             </li>
