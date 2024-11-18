@@ -94,7 +94,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
                 </div>
                 <h3 className="ssm:text-title-14 md:text-title-16">{post.recipe_title}</h3>
                 <div className="mt-3 flex flex-1 items-center gap-3">
-                  <div className="relative overflow-hidden rounded-full ssm:h-7 ssm:w-7 md:h-10 md:w-10">
+                  <div className="relative flex flex-shrink-0 overflow-hidden rounded-full ssm:h-7 ssm:w-7 md:h-10 md:w-10">
                     <Image
                       src={post.user.user_img || DefaultProfileImage}
                       alt={post.user.user_nickname}
