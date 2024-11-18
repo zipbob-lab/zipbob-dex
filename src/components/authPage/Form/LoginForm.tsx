@@ -2,8 +2,6 @@ import browserClient from "@/supabase/client";
 import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
-import WhitePen from "@images/penWhite.svg";
-import Image from "next/image";
 import Link from "next/link";
 
 const LoginForm = () => {
@@ -50,9 +48,8 @@ const LoginForm = () => {
           className="rounded-xl border border-Gray-100 px-4 py-3 text-body-16 text-Gray-500"
         />
       </div>
-      <button className="mt-8 flex w-full justify-center gap-2 rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB]">
-        <Image src={WhitePen} alt="로그인 버튼 이미지" />
-        <span className="mr-7">로그인</span>
+      <button className="mt-8 flex w-full justify-center rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB]">
+        <span>로그인</span>
       </button>
       <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium tracking-[0.5px]">
         회원가입
