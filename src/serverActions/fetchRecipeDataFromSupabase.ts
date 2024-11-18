@@ -94,7 +94,7 @@ export const fetchUserComments = async (userId: string, page = 1, pageSize = 100
 export const fetchRecipeByPostId = async (postId: string) => {
   const { data: recipe, error } = await supabase
     .from("MY_RECIPE_TABLE")
-    .select("recipe_title, recipe_img_done, recipe_level")
+    .select("recipe_title, recipe_img_done, recipe_level, recipe_type")
     .eq("post_id", postId)
     .single();
 

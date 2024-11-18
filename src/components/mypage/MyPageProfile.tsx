@@ -13,6 +13,7 @@ import DefaultImage from "@images/default-profile.svg";
 import UserLevelEmoji from "./level/UserLevelEmoji";
 import UserRank from "./level/UserLevel";
 import UserLevelOverview from "./level/UserLevelOverview";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 interface UserProfile {
   user_id: string;
@@ -99,39 +100,46 @@ const MyPageProfile = () => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <p>프로필을 로딩중입니다.</p>;
+  if (loading)
+    return (
+      <div className="w-full">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
-    <section className="flex flex-col items-center justify-center">
-      <div className="flex min-h-[23.3rem] min-w-[14.3rem] flex-col items-center justify-center gap-6 rounded-2xl bg-[#FFF6DC] p-8">
+    <div className="flex flex-col items-center justify-between">
+      <div className="flex flex-col items-center justify-center gap-6 rounded-2xl bg-[#FFF6DC] p-12 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         {userData ? (
           <>
-            <div className="mb-4 h-36 w-36 overflow-hidden rounded-full">
+            <div className="h-28 w-28 overflow-hidden rounded-full">
               <Image
                 src={userData.user_img || DefaultImage}
                 alt={userData.user_nickname}
-                width={160}
-                height={160}
+                width={112}
+                height={112}
                 className="h-full w-full object-cover object-center"
               />
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="flex items-center justify-center gap-3">
-                {/* UserLevelEmoji 컴포넌트 */}
-                <UserLevelEmoji userRank={userRank} />
-                <h3 className="text-xl font-semibold">{userData.user_nickname}</h3>
-                <button onClick={() => setIsModalOpen(true)} className="text-gray-500 hover:text-gray-700">
-                  <Image src={Pencil} width={24} height={24} alt="연필 아이콘" />
-                </button>
-              </div>
+            <div className="flex items-center justify-center ssm:gap-[0.12rem] md:gap-2">
+              {/* UserLevelEmoji 컴포넌트 */}
+              <UserLevelEmoji userRank={userRank} />
+              <h3 className="ssm:text-title-18 md:text-heading-20">{userData.user_nickname}</h3>
+              <button onClick={() => setIsModalOpen(true)}>
+                <Image src={Pencil} width={20} height={20} alt="연필 아이콘" />
+              </button>
             </div>
+
             {/* UserRank 컴포넌트 */}
             <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
-            <p className="mb-4 max-w-[14.3rem] text-sm">{userData.user_introduce}</p>
+            {/* <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">{userData.user_introduce}</p> */}
+            <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">
+              {userData?.user_introduce || "등록된 자기소개가 없습니다."}
+            </p>
             <Link href="/myrecipewrite" className="flex items-center gap-2">
-              <div className="flex w-48 items-center justify-center rounded-2xl bg-Primary-300 p-3 text-body-16 text-white">
-                <span className="inline-block">나만의 레시피 올리기</span>
+              <div className="rounded-2xl bg-Primary-300 text-center text-body-16 text-white ssm:min-w-[14.25rem] ssm:px-3 ssm:py-4">
+                나만의 레시피 올리기
               </div>
             </Link>
             {/* 프로필 수정 모달 */}
@@ -147,17 +155,17 @@ const MyPageProfile = () => {
           <p>프로필 정보가 없습니다.</p>
         )}
       </div>
-      <div className="mt-7 rounded-2xl bg-white p-4 shadow-md">
-        <span className="rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
+      <div className="mt-7 rounded-2xl bg-white p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+        <span className="inline-block rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
           Level{" "}
           <span className="ml-1">
             {userData && typeof userData.user_rank === "number" ? userData.user_rank + 1 : ""}
           </span>
         </span>
 
-        <div className="pt-4">{userData && <UserLevelOverview userId={userData?.user_id} />}</div>
+        {userData && <UserLevelOverview userId={userData?.user_id} />}
       </div>
-    </section>
+    </div>
   );
 };
 
