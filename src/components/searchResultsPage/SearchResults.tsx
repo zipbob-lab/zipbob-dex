@@ -5,7 +5,7 @@ import { Recipe } from "@/types/Search";
 import { useParams } from "next/navigation";
 import browserClient from "@/supabase/client";
 import RecipeCard from "@/components/mainPage/RecipeCard";
-import FilterOptions from "@/components/searchResultsPage/SearchOptions";
+// import FilterOptions from "@/components/searchResultsPage/SearchOptions";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
@@ -107,7 +107,7 @@ const SearchResult = () => {
           </p>
           <p className="block text-body-18 font-semibold md:hidden">검색결과 {filteredRecipes.length}개</p>
           <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-            <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} />
+            {/* <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} /> 검색 구분옵션 2024.11.19 사용중단 */}
             <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
           </div>
         </div>
@@ -148,7 +148,7 @@ const SearchResult = () => {
                     구체적인 키워드를 사용해보세요!
                   </li>
                   <li className="ml-8 mt-[0.25rem] self-start text-body-16 text-Gray-500">
-                    키워드를 조합해 레시피를 검색해보세요! 
+                    키워드를 조합해 레시피를 검색해보세요!
                   </li>
                 </ul>
               </div>
