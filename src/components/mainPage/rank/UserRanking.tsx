@@ -37,7 +37,7 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex flex-col justify-between gap-6 md:flex-row md:gap-0">
       {users?.map((user, index) => <UserCard key={user.user_id} user={user} rank={index + 1} />)}
     </div>
   );

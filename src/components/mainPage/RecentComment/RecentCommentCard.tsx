@@ -50,32 +50,42 @@ const RecentCommentCard = ({ comment }: RecentCommentCardProps) => {
   if (post) {
     return (
       <div className="flex rounded-2xl p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
-        <div className="relative h-[7.5rem] w-[7.5rem]">
+        <div className="relative h-[6.25rem] w-[6.25rem] md:h-[7.5rem] md:w-[7.5rem]">
           <Image
             src={post.recipe_img_done || DefaultImage}
             alt="레시피 사진"
             fill
-            sizes="7.5rem"
+            sizes="(min-width: 768px) 7.5rem, 6.25rem"
             className="cursor-pointer rounded-2xl object-cover"
             loading="lazy"
             onClick={() => router.push(`myrecipedetail/${post.post_id}`)}
           />
         </div>
-        <div className="ml-4 flex w-[calc(100%-8.5rem)] flex-col justify-between">
+        <div className="ml-4 flex w-[calc(100%-7.25rem)] flex-col justify-between md:w-[calc(100%-8.5rem)]">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <div className="flex">
-                <Image src={FireFilledIcon} alt="레시피 난이도" />
-                <Image src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
-                <Image src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon} alt="레시피 난이도" />
+              <div className="flex flex-shrink-0">
+                <Image src={FireFilledIcon} alt="레시피 난이도" className="h-4 w-4 xl:h-5 xl:w-5" />
+                <Image
+                  src={post.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-4 w-4 xl:h-5 xl:w-5"
+                />
+                <Image
+                  src={post.recipe_level === "상" ? FireFilledIcon : FireEmptyIcon}
+                  alt="레시피 난이도"
+                  className="h-4 w-4 xl:h-5 xl:w-5"
+                />
               </div>
-              <p className="text-title-16 text-Gray-900">{post.recipe_title}</p>
+              <p className="line-clamp-1 overflow-hidden text-title-16 text-Gray-900 xl:text-title-16">
+                {post.recipe_title}
+              </p>
             </div>
             <p className="text-r-body-15 line-clamp-2 overflow-hidden text-start text-Gray-900">{comment.comment}</p>
           </div>
-          <div className="flex justify-between text-body-13 text-Gray-300">
-            <p>{nickname}</p>
-            <p>{comment.created_at.slice(0, 10)}</p>
+          <div className="flex justify-between text-Gray-300">
+            <p className="text-body-13">{nickname}</p>
+            <p className="text-body-12">{comment.created_at.slice(0, 10)}</p>
           </div>
         </div>
       </div>
