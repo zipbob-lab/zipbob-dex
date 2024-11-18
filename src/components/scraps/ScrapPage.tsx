@@ -82,7 +82,7 @@ const ScrapPage = () => {
   }
 
   return (
-    <div className="mx-auto flex flex-col justify-center ssm:max-w-[336px] ssm:px-[1.125rem] ssm:py-8 sm:max-w-[336px] sm:py-8 md:max-w-[668px] md:py-8 lg:max-w-[1024px] lg:pb-16 lg:pt-8">
+    <div className="mx-auto flex flex-col justify-center ssm:max-w-[336px] ssm:py-8 sm:max-w-[336px] sm:py-8 md:max-w-[668px] md:py-8 lg:max-w-[1024px] lg:pb-16 lg:pt-8">
       <h1 className="pb-3 text-Gray-900 ssm:text-title-20 sm:text-heading-20 md:text-heading-24">스크랩한 레시피</h1>
 
       {/* 로딩 중일 때 화면 표시 */}
@@ -92,43 +92,52 @@ const ScrapPage = () => {
         <>
           {/* 폴더명 리스트 */}
           <>
-            <div className="flex gap-x-6 border-b-[1px] pt-2 ssm:gap-[0.125rem] ssm:text-title-13 sm:gap-3 sm:text-title-14">
-              <button
-                onClick={() => handleFolderClick("전체")}
-                className={`relative flex items-center justify-center px-2 pb-1 text-center ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
-                  selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
-                }`}
+            <div className="flex items-center justify-between border-b-[1px] pt-2">
+              <nav
+                className="flex w-full overflow-x-auto whitespace-nowrap ssm:text-title-13 sm:text-title-14 [&::-webkit-scrollbar]:hidden"
+                style={{
+                  maxWidth: "90%"
+                }}
               >
-                전체
-                <span
-                  className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 ssm:text-title-13 sm:h-5 sm:w-5 sm:text-title-14 ${
-                    selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
-                  }`}
-                >
-                  {folderScrapCounts["전체"] || 0}
-                </span>
-              </button>
-              {existingFolders?.map((folder) => (
                 <button
-                  key={folder}
-                  onClick={() => handleFolderClick(folder)}
-                  className={`relative flex items-center justify-center px-2 pb-1 text-center sm:text-title-14 md:text-title-16 ${
-                    selectedFolder === folder ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
+                  onClick={() => handleFolderClick("전체")}
+                  className={`relative flex flex-row items-center justify-center whitespace-nowrap px-2 pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
+                    selectedFolder === "전체" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
                   }`}
                 >
-                  {folder}
+                  전체
                   <span
-                    className={`ml-2 flex h-6 w-6 items-center justify-center rounded-full text-body-16 sm:h-5 sm:w-5 sm:text-title-14 ${
-                      selectedFolder === folder ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
+                    className={`ml-2 flex items-center justify-center rounded-full ssm:h-5 ssm:w-5 ssm:text-body-13 md:h-6 md:w-6 md:text-body-16 ${
+                      selectedFolder === "전체" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
                     }`}
                   >
-                    {folderScrapCounts[folder] || 0}
+                    {folderScrapCounts["전체"] || 0}
                   </span>
                 </button>
-              ))}
+                {existingFolders?.map((folder) => (
+                  <button
+                    key={folder}
+                    onClick={() => handleFolderClick(folder)}
+                    className={`relative flex flex-row items-center justify-center whitespace-nowrap px-2 pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
+                      selectedFolder === folder ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
+                    }`}
+                  >
+                    {folder}
+                    <span
+                      className={`ml-2 flex items-center justify-center rounded-full ssm:h-5 ssm:w-5 ssm:text-body-13 md:h-6 md:w-6 md:text-body-16 ${
+                        selectedFolder === folder ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
+                      }`}
+                    >
+                      {folderScrapCounts[folder] || 0}
+                    </span>
+                  </button>
+                ))}
+              </nav>
               <button
                 onClick={toggleEditMode}
-                className={`ml-auto pb-1 sm:text-title-14 lg:text-body-16 ${isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"}`}
+                className={`ml-auto pb-1 ssm:text-title-13 sm:text-title-14 md:text-title-16 ${
+                  isEditMode ? "text-body-16 text-Primary-300" : "text-Gray-500"
+                }`}
               >
                 편집
               </button>

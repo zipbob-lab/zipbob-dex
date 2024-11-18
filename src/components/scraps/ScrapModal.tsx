@@ -91,8 +91,7 @@ const ScrapModal: React.FC<ScrapModalProps> = ({
           {warningMessage && <p className="mb-2 text-Primary-300 ssm:text-sm">{warningMessage}</p>}
         </div>
 
-        {/* 기존 폴더 목록 */}
-        <div className={`max-h-[20.9rem] overflow-y-auto [&::-webkit-scrollbar]:hidden`}>
+        <div className="scroll-container overflow-y-auto ssm:max-h-[12rem] md:max-h-[18rem] [&::-webkit-scrollbar]:hidden">
           {existingFolders?.map((folder) => (
             <div key={folder} className="border-b">
               <button
