@@ -8,8 +8,6 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import AccountSet from "../SignUp/AccountSet";
 import UserInfoSet from "../SignUp/UserInfoSet";
-import Image from "next/image";
-import WhitePen from "@images/penWhite.svg";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -162,17 +160,16 @@ const SignUpForm = () => {
           watch={watch}
         />
       )}
-      <div className="mt-[8.625rem] flex justify-center">
+      <div className="mt-8 flex justify-center lg:mt-[8.25rem]">
         <button
           disabled={
             isNextForm ? !watch("nickname") : !watch("email") || !watch("password") || !watch("confirmPassword")
           }
           type="button"
-          className={`mt-8 flex w-full justify-center gap-2 rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
+          className={`flex w-full justify-center rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
-          <Image src={WhitePen} alt="로그인 버튼 이미지" />
-          <span className="mr-7">{isNextForm ? "회원가입" : "다음"}</span>
+          <span>{isNextForm ? "회원가입" : "다음"}</span>
         </button>
       </div>
     </form>

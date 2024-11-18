@@ -42,10 +42,10 @@ const HealthyRecipe = () => {
 
   return (
     <div className="rounded-[3.75rem] bg-Secondary-25 py-[1.5rem] md:w-full md:py-[2rem] xl:py-[6.25rem]">
-      <div className="mx-auto px-[1.25rem] text-center md:w-[43rem] md:px-0 xl:w-[64rem]">
-        <h2 className="text-main-20 font-wiggle text-[#834D27] xl:text-main-30">건강하고 맛있는 저칼로리 레시피</h2>
+      <div className="mx-auto px-0 text-center sm:px-[1.25rem] md:w-[43rem] md:px-0 xl:w-[64rem]">
+        <h2 className="font-wiggle text-main-20 text-[#834D27] xl:text-main-30">건강하고 맛있는 저칼로리 레시피</h2>
         <p className="mt-3 text-body-16 xl:mt-4 xl:text-body-18">집밥도감이 추천하는 건강한 레시피에 도전해 보세요!</p>
-        <div className="mt-[1.75rem] grid grid-cols-2 gap-x-[1rem] gap-y-[1.75rem] md:mt-[2rem] md:flex md:justify-center xl:mt-[3.75rem] xl:gap-[1rem]">
+        <div className="mt-[1.75rem] grid grid-cols-2 place-items-center gap-y-4 sm:gap-x-[1rem] sm:gap-y-[1.75rem] md:mt-[2rem] md:flex md:justify-center xl:mt-[3.75rem] xl:gap-[1rem]">
           {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
         <div className="mt-[1.75rem] flex items-center justify-center md:mt-[2rem] xl:mt-[3rem]">
