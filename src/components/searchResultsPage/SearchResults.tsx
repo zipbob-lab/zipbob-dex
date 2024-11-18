@@ -148,7 +148,7 @@ const SearchResult = () => {
                     구체적인 키워드를 사용해보세요!
                   </li>
                   <li className="ml-8 mt-[0.25rem] self-start text-body-16 text-Gray-500">
-                    키워드를 조합해 레시피를 검색해보세요!
+                    키워드를 조합해 레시피를 검색해보세요! 
                   </li>
                 </ul>
               </div>
