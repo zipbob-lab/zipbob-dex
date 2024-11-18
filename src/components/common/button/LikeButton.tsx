@@ -33,12 +33,6 @@ const LikeButton = ({ postId, size = 20 }: LikeButtonProps) => {
     getSessionId();
   }, []);
 
-  useEffect(() => {
-    if (loginSessionId) {
-      fetchLikeStatus(loginSessionId);
-    }
-  }, [loginSessionId]);
-
   const fetchLikeStatus = async (userId: string | null) => {
     // 로그인 시 내 좋아요 상태 가져오기
     if (userId) {
