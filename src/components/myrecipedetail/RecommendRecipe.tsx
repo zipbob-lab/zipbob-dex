@@ -9,7 +9,7 @@ import { Recipe } from "@/types/Search";
 
 const RecommendRecipe = () => {
   const fetchRandomRecipe = async (): Promise<Recipe[]> => {
-    const { data, error } = await browserClient.rpc("random_recipes", { limit: 10 });
+    const { data, error } = await browserClient.rpc("random_recipes", { limit_row: 10 });
     // .from("MY_RECIPE_TABLE")
     // .select("*")
     // .not("recipe_seq", "is", null)
