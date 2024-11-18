@@ -43,7 +43,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-[1.25rem] py-3 xl:px-[3.75rem]">
+    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-3 py-3 sm:px-[1.25rem] xl:px-[3.75rem]">
       <nav className="flex items-center gap-4 md:gap-8">
         <Link href="/" className="relative h-[2rem] w-[4.14rem] md:h-[3.5rem] md:w-[7.25rem]">
           <Image src={MainLogo} fill alt="메인 로고" />
