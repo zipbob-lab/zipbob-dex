@@ -25,10 +25,8 @@ const UserLevel: React.FC<UserLevelProps> = ({ userId, onRankChange }) => {
   const progressPercent: number = userExp % 100;
 
   return (
-    <div>
-      <div className="w-48 rounded-full bg-white">
-        <div className="h-2 rounded-full bg-Primary-300" style={{ width: `${progressPercent}%` }}></div>
-      </div>
+    <div className="h-3 w-full rounded-full bg-white">
+      <div className="h-3 rounded-full bg-Primary-300" style={{ width: `${progressPercent}%` }}></div>
     </div>
   );
 };

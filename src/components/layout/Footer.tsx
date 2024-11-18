@@ -1,10 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import MainLogoGray from "@images/mainLogoGray.svg";
 import GithubIcon from "@images/github.svg";
 import Link from "next/link";
 import ScrollTopButton from "../common/button/ScrollTopButton";
 
+import { usePathname } from "next/navigation";
+import Timer from "../Timer/Timer";
+
 const Footer = () => {
+  const pathname = usePathname();
+
   const githubLink = [
     "https://github.com/duddlfkd02",
     "https://github.com/star1024cd",
@@ -15,6 +22,7 @@ const Footer = () => {
 
   return (
     <>
+      {pathname.startsWith("/myrecipedetail") && <Timer />}
       <ScrollTopButton />
       <footer className="bg-Gray-50 px-[2.5rem] pb-[2rem] pt-[3rem]">
         <div className="mx-auto lg:w-[56rem] xl:w-[64rem]">

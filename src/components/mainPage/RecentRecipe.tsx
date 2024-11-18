@@ -48,8 +48,14 @@ const RecentRecipe = () => {
         <div className="mt-[1.75rem] grid grid-cols-2 place-items-center gap-y-4 sm:gap-x-[1rem] sm:gap-y-[1.75rem] md:mt-[2rem] md:flex md:justify-center xl:mt-[3.75rem] xl:gap-[1rem]">
           {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
-        <div className="mt-[1.75rem] md:mt-[2rem] xl:mt-[3rem]">
-          <Pagination currentPage={currentPage} pageSize={4} totalItems={40} onPageChange={setCurrentPage} />
+        <div className="mt-[1.75rem] flex items-center justify-center md:mt-[2rem] xl:mt-[3rem]">
+          <Pagination
+            currentPage={currentPage}
+            pageSize={4}
+            totalItems={40}
+            className="rounded-full bg-white px-5 py-3 ssm:w-[296px] sm:text-body-14 lg:w-[464px]"
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
