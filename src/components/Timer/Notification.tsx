@@ -1,10 +1,18 @@
-export const triggerNotification = () => {
+export const triggerNotification = async (setPopupMessage: (msg: string | null) => void) => {
   if (Notification.permission === "granted") {
     new Notification("타이머 종료", {
-      body: "타이머가 종료되었습니다!"
+      body: "타이머가 종료되었습니다!",
+      icon: "/images/mainLogo.svg"
     });
-  } else if (Notification.permission !== "denied") {
-    Notification.requestPermission();
+    setPopupMessage("타이머가 종료되었습니다!");
+  } else if (Notification.permission === "default") {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      new Notification("타이머 종료", {
+        body: "타이머가 종료되었습니다!"
+      });
+      setPopupMessage("타이머가 종료되었습니다!");
+    }
   }
 };
 
