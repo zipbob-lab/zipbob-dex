@@ -44,7 +44,7 @@ const Introduce = () => {
               나만의 특별한 레시피도 등록해 봐요!
             </p>
             <button
-              className="rounded-2xl bg-Primary-300 py-4 transition hover:bg-Primary-400 lg:w-[13.75rem] xl:w-[18.125rem]"
+              className="rounded-2xl bg-Primary-300 py-4 transition hover:bg-Primary-500 lg:w-[13.75rem] xl:w-[18.125rem]"
               onClick={() => {
                 if (isLoggedIn) {
                   router.push("/myrecipewrite");
