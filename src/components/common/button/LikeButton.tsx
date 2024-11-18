@@ -16,7 +16,7 @@ interface LikeButtonProps {
   size?: number;
 }
 
-const LikeButton = ({ postId,size = 20 }: LikeButtonProps) => {
+const LikeButton = ({ postId, size = 20 }: LikeButtonProps) => {
   const { userId } = useStore(useAuthStore);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -134,7 +134,7 @@ const LikeButton = ({ postId,size = 20 }: LikeButtonProps) => {
     <>
       <button
         onClick={(e) => handleToggleLikeButton(e)}
-        className="flex items-center justify-center text-body-12 text-Gray-500"
+        className="flex items-center justify-center px-[0.25rem] text-body-12 text-Gray-500"
       >
         <Image src={isLike ? LikeFilledIcon : LikeEmptyIcon} alt="좋아요버튼" width={size} height={size} /> {likeCount}
       </button>

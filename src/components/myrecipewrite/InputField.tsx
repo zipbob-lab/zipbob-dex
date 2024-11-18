@@ -371,10 +371,10 @@ const InputField = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-y-[2.5rem]">
-          <div className="flex max-w-[880px] flex-col gap-y-4 px-[0.75rem]">
-            <h1 className="text-heading-28 text-Gray-900">나만의 레시피 등록하기</h1>
-            <div className="flex flex-col text-body-16 text-Gray-600">
+        <div className="flex flex-col gap-y-[2.5rem] px-[1.25rem] py-[2rem] sm:max-w-[30.06rem] sm:px-[1.25rem] sm:py-[2rem] md:max-w-[55.44rem] md:px-[2rem] md:py-[3rem] lg:max-w-[67.5rem]">
+          <div className="flex max-w-[33rem] flex-col gap-y-4 px-[0.75rem] md:max-w-[51.44rem] lg:max-w-[63.5rem]">
+            <h1 className="text-heading-20 text-Gray-900 md:text-heading-28">나만의 레시피 등록하기</h1>
+            <div className="flex flex-col text-body-14 text-Gray-600 md:text-body-16">
               <span>다른 사람들에게 소개하고 싶은 나만의 레시피를 등록해요!</span>
               <span>특별하지 않아도 괜찮아요, 상세하게 적을 수록 다른 사람들이 쉽게 만들 수 있어요.</span>
             </div>
@@ -391,19 +391,56 @@ const InputField = () => {
                 style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.10)" }}
               >
                 <div className="flex flex-col gap-y-2">
-                  <h1 className="text-heading-24 text-Gray-900">레시피 정보 입력</h1>
-                  <span className="text-body-16 text-Gray-500">
-                    정보를 정확하게 입력하면 재료를 남기지 않을 수 있어요!
-                  </span>
+                  <h1 className="text-title-18 text-Gray-900 md:text-heading-24">레시피 정보 입력</h1>
+                  <div className="flex flex-col text-body-14 text-Gray-600 md:text-body-16">
+                    <span>나만의 레시피를 설명할 수 있는 정보를 입력해주세요! </span>
+                    <span>특징이 잘 드러나면 다른 사용자들이 내 레시피를 쉽게 이해할 수 있어요.</span>
+                  </div>
                 </div>
 
-                <div className="flex gap-x-[1rem]">
-                  <RecipeInfoFields />
-                  {/* 레시피 완성 이미지 */}
-                  <div className="flex justify-items-end">
+                <div className="flex flex-col gap-x-[1rem] gap-y-[2rem] lg:flex-row lg:gap-y-[0rem]">
+                  {/* 완성 이미지 ~lg */}
+                  <div className="flex items-center justify-center justify-items-end lg:hidden">
                     <div
-                      className="relative h-[240px] w-[240px] flex-shrink-0 overflow-hidden rounded-[1.5rem]"
-                      style={{ borderRadius: "20px" }}
+                      className="relative h-[11.5rem] w-[11.5rem] flex-shrink-0 overflow-hidden rounded-[1rem] md:h-[15rem] md:w-[15rem] md:rounded-[10%]"
+                      onClick={() => {
+                        if (recipeDoneImgView) {
+                          setImgModalIndex(-1);
+                        }
+                      }}
+                    >
+                      {recipeDoneImgView ? (
+                        <Image src={recipeDoneImgView} alt="완성 이미지" fill={true} style={{ objectFit: "cover" }} />
+                      ) : (
+                        <Image
+                          src={ImageUploadIcon}
+                          alt="기본 이미지"
+                          fill
+                          style={{ objectFit: "cover", objectPosition: "center" }}
+                        />
+                      )}
+                      <input
+                        type="file"
+                        {...rest}
+                        ref={(imgEl) => {
+                          ref(imgEl);
+                          doneImgRef.current = imgEl;
+                        }}
+                        onChange={(e) => {
+                          onChange(e);
+                          handleDoneImgFileSelect(e);
+                        }}
+                        className={`absolute inset-0 cursor-pointer opacity-0 ${recipeDoneImgView ? "pointer-events-none" : ""}`}
+                      />
+                    </div>
+                  </div>
+
+                  <RecipeInfoFields />
+
+                  {/* 레시피 완성 이미지 */}
+                  <div className="flex hidden w-full justify-items-end lg:inline-block">
+                    <div
+                      className="relative h-[11.5rem] w-[11.5rem] flex-shrink-0 overflow-hidden rounded-[1rem] md:h-[15rem] md:w-[15rem] md:rounded-[10%]"
                       onClick={() => {
                         if (recipeDoneImgView) {
                           setImgModalIndex(-1);
@@ -446,81 +483,100 @@ const InputField = () => {
                 className="flex w-full flex-col gap-y-10 rounded-3xl bg-white px-[1.5rem] py-[2rem]"
                 style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.10)" }}
               >
-                <div className="flex flex-col gap-y-2">
-                  <label className="text-heading-24 text-Gray-900">단계별 레시피 입력</label>
-                  <span className="text-body-18 text-Gray-500">
-                    레시피를 보고 요리하는 사용자들을 위해 단계별 레시피를 입력해주세요!
-                  </span>
+                <div className="flex w-full flex-col gap-y-2">
+                  <label className="text-title-18 text-Gray-900 md:text-heading-24">단계별 레시피 입력</label>
+                  <div className="text-body-14 text-Gray-500 md:text-body-16">
+                    <span>차근차근 따라할 수 있도록 자세히 작성해요. </span>
+                    <span>단계별 주의사항이나 팁도 함께 적으면 좋아요!</span>
+                  </div>
                 </div>
 
                 {recipeDoingsImgFields.map((_, i) => (
-                  <div className="flex items-center gap-x-[1rem]" key={i}>
-                    <div className="flex h-[1.875rem] w-[1.875rem] items-center justify-center rounded-[2.5rem] bg-Secondary-50 text-title-18 text-Secondary-400">
-                      {i + 1}
+                  <div className="flex w-full flex-col gap-y-[0.75rem] md:flex-row" key={i}>
+                    {/* ~MD */}
+                    <div className="block flex justify-between md:hidden">
+                      <div>
+                        <div className="flex h-[1.875rem] w-[1.875rem] items-center justify-center rounded-[2.5rem] bg-Secondary-50 text-title-18 text-Secondary-400">
+                          {i + 1}
+                        </div>
+                      </div>
+                      <div className="x-[1.5rem]">
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveRecipeDoingForm(i)}
+                          style={{ visibility: recipeDoingsImgFields.length > 1 ? "visible" : "hidden" }}
+                        >
+                          <Image src={IconX} className="x-[1.5rem] y-[1.5rem]" alt="삭제" />
+                        </button>
+                      </div>
                     </div>
-                    <div
-                      className="relative h-[160px] w-[160px] flex-shrink-0 overflow-hidden rounded-[0.06rem]"
-                      style={{ borderRadius: "13.3px" }}
-                      onClick={() => toggleImgModal(i)}
-                    >
-                      {recipeDoingImgViewArray[i] && recipeDoingImgViewArray[i] !== "/DEFAULT_IMAGE" ? (
+
+                    <div className="flex w-full flex-row items-center gap-x-[0.75rem] lg:gap-x-[1rem]">
+                      <div className="hidden md:block">
+                        <div className="flex h-[1.875rem] w-[1.875rem] items-center justify-center rounded-[2.5rem] bg-Secondary-50 text-title-18 text-Secondary-400">
+                          {i + 1}
+                        </div>
+                      </div>
+                      <div
+                        className="relative h-[5.5rem] w-[5.5rem] flex-shrink-0 overflow-hidden rounded-[0.5rem] sm:h-[7.5rem] sm:w-[7.5rem] sm:rounded-[0.75rem] md:h-[10rem] md:w-[10rem] md:rounded-[1rem]"
+                        style={{ borderRadius: "13.3px" }}
+                        onClick={() => toggleImgModal(i)}
+                      >
                         <Image
-                          src={recipeDoingImgViewArray[i]}
+                          src={
+                            recipeDoingImgViewArray[i] && recipeDoingImgViewArray[i] !== "/DEFAULT_IMAGE"
+                              ? recipeDoingImgViewArray[i]
+                              : ImageUploadIcon
+                          }
                           alt="매뉴얼 이미지"
                           fill
                           style={{ objectFit: "cover", objectPosition: "center" }}
                           className="rounded-lg"
                         />
-                      ) : (
-                        <Image
-                          src={ImageUploadIcon}
-                          alt="매뉴얼 기본 이미지"
-                          fill
-                          style={{ objectFit: "cover", objectPosition: "center" }}
-                          className="rounded-lg"
+                        <input
+                          type="file"
+                          id={`recipeImgDoing${i}`}
+                          {...methods.register(`recipeDoingImgs.${i}`, {
+                            onChange: (e) => handleDoingImgFileSelect(e, i)
+                          })}
+                          ref={(doingEl) => {
+                            methods.register(`recipeDoingImgs.${i}`).ref(doingEl);
+                            doingImgRefs.current[i] = doingEl;
+                          }}
+                          className={`absolute inset-0 cursor-pointer opacity-0 ${recipeDoingImgViewArray[i] ? "pointer-events-none" : ""}`}
                         />
-                      )}
-                      <input
-                        type="file"
-                        id={`recipeImgDoing${i}`}
-                        {...methods.register(`recipeDoingImgs.${i}`, {
-                          onChange: (e) => handleDoingImgFileSelect(e, i)
-                        })}
-                        ref={(doingEl) => {
-                          methods.register(`recipeDoingImgs.${i}`).ref(doingEl);
-                          doingImgRefs.current[i] = doingEl;
-                        }}
-                        className={`absolute inset-0 cursor-pointer opacity-0 ${recipeDoingImgViewArray[i] ? "pointer-events-none" : ""}`}
+                      </div>
+                      <textarea
+                        className="input-focus h-[5.625rem] w-[44.125rem] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-r-body-14 text-Gray-500 sm:h-[7.5rem] md:h-[10rem] md:text-body-16"
+                        placeholder="자세하게 적을수록 더욱 도움이 돼요!"
+                        {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
                       />
+                      {/* 레시피 삭제 */}
+                      <div className="x-[1.5rem] hidden md:block">
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveRecipeDoingForm(i)}
+                          style={{ visibility: recipeDoingsImgFields.length > 1 ? "visible" : "hidden" }}
+                        >
+                          <Image src={IconX} className="x-[1.5rem] y-[1.5rem]" alt="삭제" />
+                        </button>
+                      </div>
                     </div>
-                    <textarea
-                      className="input-focus h-[10rem] w-[44.125rem] resize-none rounded-[16px] bg-Gray-50 px-4 py-3 text-body-16 text-Gray-500"
-                      placeholder="자세하게 적을수록 더욱 도움이 돼요!"
-                      {...methods.register(`recipeDoingTexts.${i}.text`, { required: true })}
-                    />
-                    {/* 레시피 삭제 */}
-                    {/* {recipeDoingsImgFields.length > 1 && ( */}
-                    <div className="x-[1.5rem]">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveRecipeDoingForm(i)}
-                        style={{ visibility: recipeDoingsImgFields.length > 1 ? "visible" : "hidden" }}
-                      >
-                        <Image src={IconX} width={24} height={24} alt="삭제" />
-                      </button>
-                    </div>
-                    {/* )} */}
                   </div>
                 ))}
 
                 <div>
                   <button
                     type="button"
-                    className="flex w-[952px] items-center justify-center gap-2 rounded-[16px] bg-Primary-50 py-3"
+                    className="flex w-full items-center justify-center gap-2 rounded-[16px] bg-Primary-50 py-3"
                     onClick={handleAddRecipeDoingForm}
                   >
-                    <Image src={RecipeAddButton} alt="레시피 추가버튼" width={24} height={24} />
-                    <span className="text-title-18 text-Gray-900">단계 추가하기</span>
+                    <Image
+                      src={RecipeAddButton}
+                      alt="레시피 추가버튼"
+                      className="h-[1.25rem] w-[1.25rem] lg:h-[1.5rem] lg:w-[1.5rem]"
+                    />
+                    <span className="text-title-16 text-Gray-900 md:text-title-18">단계 추가하기</span>
                   </button>
                 </div>
               </div>
