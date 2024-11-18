@@ -116,7 +116,7 @@ const SearchResult = () => {
           <LoadingSpinner />
         ) : filteredRecipes.length > 0 ? (
           <div>
-            <ul className="mx-auto grid w-full max-w-[1024px] grid-cols-4 gap-4 sm:max-w-[336px] sm:grid-cols-2 md:max-w-[688px] md:grid-cols-4 lg:max-w-[1024px]">
+            <ul className="mx-auto grid w-full max-w-[1024px] grid-cols-4 gap-4">
               {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
