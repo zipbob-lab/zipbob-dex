@@ -5,15 +5,18 @@ import { fetchUserComments, fetchUserRecipesCount } from "@/serverActions/fetchR
 import React, { useEffect, useState } from "react";
 import UserPostLists from "./UserPostLists";
 import UserComment from "./UserComment";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const MyPostsCommentView = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"recipe" | "review">("recipe");
   const [recipeCount, setRecipeCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserId = async () => {
+      setIsLoading(true);
       const user = await fetchUserProfile();
       if (user) {
         setUserId(user.user_id);
@@ -27,41 +30,72 @@ const MyPostsCommentView = () => {
         setRecipeCount(recipesCount);
         setCommentCount(commentsData?.commentCount || 0);
       }
+      setIsLoading(false);
     };
     fetchUserId();
   }, []);
 
+  const handleTabChange = (tab: "recipe" | "review") => {
+    setIsLoading(true); // 탭 전환 시 로딩 상태 활성화
+    setActiveTab(tab);
+    setTimeout(() => setIsLoading(false), 300); // 임의로 로딩 지연 시간 추가 (비동기 로딩을 가정)
+  };
+
   if (!userId)
-    return <div className="flex w-full flex-col items-center justify-center gap-2 pt-6">잠시만 기다려 주세요</div>;
+    return (
+      <div className="opacity-0">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
-    <div>
-      <div className="flex w-full gap-6 border-b border-gray-100">
+    <div className="md:min-h-[568px]">
+      <div className="mb-6 flex w-full gap-6 border-b border-Gray-100">
         <button
-          onClick={() => setActiveTab("recipe")}
+          onClick={() => handleTabChange("recipe")}
           className={`${
-            activeTab === "recipe" ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-gray-500"
+            activeTab === "recipe" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
           } flex items-center gap-1 pb-2`}
         >
-          <span className="title-16">나만의 레시피</span>
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+          <span className={`text-title-16 ${activeTab === "recipe" ? "text-Primary-200" : "text-Gray-500"}`}>
+            나만의 레시피
+          </span>
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full ${
+              activeTab === "recipe" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
+            }`}
+          >
             {recipeCount}
           </span>
         </button>
         <button
-          onClick={() => setActiveTab("review")}
+          onClick={() => handleTabChange("review")}
           className={`${
-            activeTab === "review" ? "border-b-2 border-Primary-300 font-bold text-Primary-300" : "text-gray-500"
+            activeTab === "review" ? "border-b-2 border-Primary-300 text-Primary-300" : "text-Gray-500"
           } flex items-center gap-1 pb-2`}
         >
-          <span className="title-16">작성한 후기</span>
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-Primary-200 text-white">
+          <span className={`text-title-16 ${activeTab === "review" ? "text-Primary-200" : "text-Gray-500"}`}>
+            작성한 후기
+          </span>
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full ${
+              activeTab === "review" ? "bg-Primary-200 text-white" : "bg-Gray-500 text-white"
+            }`}
+          >
             {commentCount}
           </span>
         </button>
       </div>
 
-      {activeTab === "recipe" ? <UserPostLists userId={userId} /> : <UserComment userId={userId} />}
+      {isLoading ? (
+        <div className="flex justify-center">
+          <LoadingSpinner />
+        </div>
+      ) : activeTab === "recipe" ? (
+        <UserPostLists userId={userId} />
+      ) : (
+        <UserComment userId={userId} />
+      )}
     </div>
   );
 };
