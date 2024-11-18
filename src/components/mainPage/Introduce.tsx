@@ -41,7 +41,9 @@ const Introduce = () => {
             <p className="text-body-16 text-Gray-600 md:w-[16.3125rem] lg:w-[14.4rem] xl:w-[18.1rem] xl:text-body-20">
               다른 유저들이 공유한 레시피를 찾아 함께 만들어 보고,
               <br />
-              나만의 특별한 레시피도 등록해 봐요!
+              나만의 특별한 레시피도 등록해 봐요.
+              <br />
+              레시피에 댓글을 달면 경험치를 얻어 레벨업할 수 있어요!
             </p>
             <button
               className="rounded-2xl bg-Primary-300 py-4 transition hover:bg-Primary-500 lg:w-[13.75rem] xl:w-[18.125rem]"
