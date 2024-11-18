@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
-import SoopmFork from "@images/fridge/spoomFork.svg";
+import SoopmFork from "@images/fridge/forkSpoom.svg";
 
 const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
@@ -61,13 +61,13 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="h-auto w-full max-w-[32rem] overflow-auto md:max-w-[23.625rem] lg:max-w-[28.25rem]"
+      className="h-auto w-full max-w-[32rem] overflow-auto ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]"
     >
-      <div className="mb-[0.5rem] flex space-x-[0.5rem] pl-[2.75rem]">
+      <div className="mb-[0.5rem] flex space-x-[0.5rem]">
         <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
-        <p className="text-body-18 font-medium">없는 재료</p>
+        <p className="font-medium ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">냉장고 재료</p>
       </div>
-      <div className="relative mb-[0.5rem] ml-auto flex h-[3rem] w-full items-center rounded-[0.875rem] border-2">
+      <div className="relative ml-auto flex h-[3rem] w-full items-center rounded-[0.875rem] border-2">
         <input
           type="text"
           value={categoryInput}
@@ -86,7 +86,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
           입력
         </button>
       </div>
-      <div className="pl-[2.75rem]">
+      <div className="ssm:mt-[1rem] sm:mt-[1rem] md:mt-[1.25rem] lg:mt-[1.25rem]">
         {category.map((tag) => (
           <div
             key={tag}

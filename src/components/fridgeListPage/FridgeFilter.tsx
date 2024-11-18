@@ -5,7 +5,7 @@ import browserClient from "@/supabase/client";
 import CategoreAdd from "@/components/fridgeListPage/InputAdd";
 import CategoreDelete from "@/components/fridgeListPage/InputDelete";
 import { Recipe } from "@/types/Search";
-import RecipeCard from "@/components/mainPage/RecipeCard";
+import RecipeCard from "@/components/common/search/ListCard";
 import SortOptions from "@/components/common/search/SortOptions";
 import Pagination from "@/components/common/Pagination";
 
@@ -97,11 +97,15 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
-      <div className="mx-auto max-w-[1024px] p-4 py-[60px]">
-        <div className="mx-auto w-full max-w-[64rem] sm:max-w-[20.9375rem] md:max-w-[50.125rem]">
-          <p className="text-heading-24">냉장고를 탐험해 봅시다!</p>
-          <p className="mt-[1rem] text-body-18">재료들을 입력하면 맞춤 레시피를 추천해 드려요.</p>
-          <div className="mt-[3rem] flex flex-col gap-[1rem] md:flex-row md:gap-0">
+      <div className="mx-auto p-4 py-[3.75rem]">
+        <div className="mx-auto w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
+          <div className="gap-[0.5rem]">
+            <p className="text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
+            <p className="mt-[1rem] text-body-14 md:text-body-18 lg:text-body-18">
+              재료들을 입력하면 맞춤 레시피를 추천해 드려요.
+            </p>
+          </div>
+          <div className="mt-[3.25rem] flex flex-col gap-y-[1.5rem] md:flex-row md:justify-between">
             <CategoreAdd onAddCategory={setAddKeywords} />
             <CategoreDelete onDeleteCategory={setDeleteKeywords} />
           </div>
@@ -118,32 +122,40 @@ const TagFilter: React.FC = () => {
           <div className="mt-6">
             {filteredData.length > 0 ? (
               <>
-                <div className="mx-auto flex max-w-[1024px] items-center justify-between py-[100px]">
+                {/* 검색 결과 및 정렬 옵션 */}
+                <div className="mx-auto flex items-center justify-between py-[4rem] ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
                   <p className="text-body-20 font-semibold">검색 결과 {filteredData.length}개</p>
                   <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
-                <ul className="mx-auto grid max-w-[1024px] grid-cols-4 items-center gap-x-[16px] gap-y-[28px]">
+
+                {/* 레시피 카드 그리드 */}
+                <ul className="mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
                   {currentData.map((recipe) => (
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-                <div className="mb-8 mt-8">
-                  <Pagination
-                    currentPage={currentPage}
-                    pageSize={pageSize}
-                    totalItems={filteredData.length}
-                    onPageChange={handlePageChange}
-                  />
+
+                {/* 페이지네이션 */}
+                <div className="mt-8 flex items-center justify-center">
+                  <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
+                    <Pagination
+                      currentPage={currentPage}
+                      pageSize={pageSize}
+                      totalItems={filteredData.length}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
                 </div>
               </>
             ) : (
-              <div className="flex h-full items-center justify-center">
+              <div className="h-full">
+                <div className="mx-auto my-[2rem] border-t border-Gray-200 ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]"></div>
                 <div className="flex min-h-[40vh] flex-col items-center justify-center">
                   <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
                   <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                     태그와 일치하는 레시피가 없습니다.
                   </p>
-                  <ul className="flex h-[152px] w-[548px] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-4">
+                  <ul className="flex h-[9.5rem] w-[34.25rem] list-disc flex-col items-center justify-center rounded-2xl bg-stone-100 p-[1rem]">
                     <h1 className="mb-4 ml-8 self-start text-body-18 font-semibold text-Primary-300">검색 Tip!</h1>
                     <li className="mb-1 ml-8 self-start text-body-16 text-stone-500">
                       입력한 재료를 다시 확인 해주세요!
