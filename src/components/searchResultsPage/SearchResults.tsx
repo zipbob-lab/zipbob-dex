@@ -102,10 +102,7 @@ const SearchResult = () => {
     <div>
       {filteredRecipes.length > 0 && (
         <div className="mx-auto flex w-full max-w-[1024px] items-center justify-between py-10 sm:max-w-[336px] md:max-w-[688px] lg:max-w-[1024px]">
-          <p className="hidden text-body-18 font-semibold md:block">
-            &quot;{searchText}&quot; 검색결과 {filteredRecipes.length}개
-          </p>
-          <p className="block text-body-18 font-semibold md:hidden">검색결과 {filteredRecipes.length}개</p>
+          <p className="block text-body-18 font-semibold">검색결과 {filteredRecipes.length}개</p>
           <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">
             {/* <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} /> 검색 구분옵션 2024.11.19 사용중단 */}
             <SortOptions sortOption={sortOption} setSortOption={setSortOption} />

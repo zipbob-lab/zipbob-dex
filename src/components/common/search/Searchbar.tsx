@@ -83,7 +83,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
 
   return (
     <div
-      className={`relative mx-auto max-h-[3.25rem] w-full max-w-[40.5rem] ${className}`}
+      className={`relative mx-auto max-h-[3.25rem] w-full ${
+        mainSearchBar ? "max-w-[40.5rem]" : "md:max-w-[26.46875rem] lg:max-w-[40.5rem]"
+      } ${className}`}
       onMouseDown={(e) => e.stopPropagation()} // 드롭박스 닫히지 않도록 이벤트 적용 방지
     >
       <form onSubmit={handleSearchSubmit} className="relative">
@@ -114,7 +116,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
           <div className="flex items-center justify-between px-[1rem] py-[0.5rem]">
             <div className="flex items-center space-x-2">
               <h3 className="text-body-14 text-Gray-300">최근 검색어</h3>
-              {/* 조건부 추가 메인페이지 */}
             </div>
             <button type="button" onClick={deleteKeywords} className="text-body-13 text-Gray-300 hover:bg-Gray-50">
               전체 삭제
