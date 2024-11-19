@@ -18,11 +18,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  title = "스크랩한 레시피를 삭제하시겠어요?",
+  title = "레시피를 삭제하시겠어요?",
   confirmText = "삭제하기",
   cancelText = "취소하기",
-  confirmButtonClass = "bg-Primary-300 text-white",
-  cancelButtonClass = "border-Primary-300 text-Primary-300"
+  confirmButtonClass = "bg-Primary-300 text-white border-Primary-300",
+  cancelButtonClass = "border-Primary-300 text-Primary-300 "
 }) => {
   const [isBrowser, setIsBrowser] = useState(false);
 
@@ -32,10 +32,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
-      <div className="relative rounded-2xl bg-white px-10 py-8 md:min-w-[302px]">
+      <div className="w-[300px] rounded-2xl bg-white px-10 py-8">
         <h2 className="text-center text-title-20 text-Gray-900">{title}</h2>
         <p className="mb-5 mt-2 text-center text-body-14 text-Gray-500">삭제하면 복구할 수 없어요!</p>
-        <div className="mt-5 flex gap-3">
+        <div className="mt-5 flex w-full items-center justify-center gap-4">
           <button
             onClick={onClose}
             className={`min-w-[121px] rounded-2xl border-[1px] px-4 py-3 text-title-16 ${cancelButtonClass}`}
@@ -44,7 +44,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           </button>
           <button
             onClick={onConfirm}
-            className={`min-w-[121px] rounded-2xl px-4 py-3 text-title-16 ${confirmButtonClass}`}
+            className={`min-w-[121px] rounded-2xl border-[1px] px-4 py-3 text-title-16 ${confirmButtonClass}`}
           >
             {confirmText}
           </button>

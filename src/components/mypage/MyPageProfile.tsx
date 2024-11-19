@@ -108,7 +108,7 @@ const MyPageProfile = () => {
     );
 
   return (
-    <div className="flex flex-col items-center justify-between">
+    <div className="flex flex-col items-center gap-8">
       <div className="flex flex-col items-center justify-center gap-6 rounded-2xl bg-[#FFF6DC] p-12 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         {userData ? (
           <>
@@ -133,7 +133,6 @@ const MyPageProfile = () => {
 
             {/* UserRank 컴포넌트 */}
             <UserRank userId={userData.user_id} onRankChange={handleRankChange} />
-            {/* <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">{userData.user_introduce}</p> */}
             <p className="max-w-[14.3rem] text-Gray-700 ssm:text-body-12 md:text-body-14">
               {userData?.user_introduce || "등록된 자기소개가 없습니다."}
             </p>
@@ -155,7 +154,7 @@ const MyPageProfile = () => {
           <p>프로필 정보가 없습니다.</p>
         )}
       </div>
-      <div className="mt-7 rounded-2xl bg-white p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
+      <div className="rounded-2xl bg-white p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)]">
         <span className="inline-block rounded-full border-[1px] border-Primary-300 px-5 py-1 text-body-14 text-Primary-300">
           Level{" "}
           <span className="ml-1">

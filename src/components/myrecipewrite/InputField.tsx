@@ -15,8 +15,6 @@ import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
 import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
-// import Pencil from "@images/penWhite.svg";
-// import PencilOrange from "@images/penOrange.svg";
 import CloseWriteConfirm from "./CloseWriteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
 import IconX from "@images/myrecipe/iconX.svg";
@@ -192,13 +190,13 @@ const InputField = () => {
       const updatedFileArray = [...recipeDoingImgFileArray];
       updatedFileArray[index] = ImageUploadIcon;
       setRecipeDoingImgFileArray(updatedFileArray);
-      console.log("업데이트 파일 배열: ", updatedFileArray);
+      // console.log("업데이트 파일 배열: ", updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
       // 여기다가 기본 이미지 넣어야됨
       updatedViewArray[index] = "/DEFAULT_IMAGE";
       setRecipeDoingImgViewArray(updatedViewArray);
-      console.log("업데이트 뷰 배열: ", updatedViewArray);
+      // console.log("업데이트 뷰 배열: ", updatedViewArray);
     }
 
     setImgModalIndex(null);
@@ -320,7 +318,7 @@ const InputField = () => {
           console.error("업데이트 오류", updateError.message);
           return;
         }
-        console.log("업데이트 완료!");
+        // console.log("업데이트 완료!");
         queryClient.invalidateQueries({ queryKey: ["recipeWithUser", postId] });
 
         setImgModalIndex(null);
