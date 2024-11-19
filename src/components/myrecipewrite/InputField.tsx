@@ -15,8 +15,6 @@ import IngredientsFields from "./IngredientsFields";
 import ImageEditModal from "./ImageEditModal";
 import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
-// import Pencil from "@images/penWhite.svg";
-// import PencilOrange from "@images/penOrange.svg";
 import CloseWriteConfirm from "./CloseWriteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
 import IconX from "@images/myrecipe/iconX.svg";
