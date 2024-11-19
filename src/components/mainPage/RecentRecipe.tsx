@@ -29,7 +29,8 @@ const RecentRecipe = () => {
     isError: isPostError
   } = useQuery({
     queryKey: ["recentPosts", currentPage],
-    queryFn: fetchRecentPosts
+    queryFn: fetchRecentPosts,
+    staleTime: 0
   });
 
   if (isPostPending) {
@@ -42,10 +43,12 @@ const RecentRecipe = () => {
 
   return (
     <div className="rounded-[3.75rem] bg-Primary-50 py-[1.5rem] md:w-full md:py-[2rem] xl:py-[6.25rem]">
-      <div className="mx-auto px-0 text-center sm:px-[1.25rem] md:w-[43rem] md:px-0 xl:w-[64rem]">
+      <div className="mx-auto px-3 text-center md:w-[43rem] md:px-0 xl:w-[64rem]">
         <h2 className="font-wiggle text-main-20 text-[#834D27] xl:text-main-30">최근에 올라온 레시피</h2>
-        <p className="mt-3 text-body-16 xl:mt-4 xl:text-body-18">집밥도감의 유저들이 올려준 레시피에 도전해 보세요!</p>
-        <div className="mt-[1.75rem] grid grid-cols-2 place-items-center gap-y-4 sm:gap-x-[1rem] sm:gap-y-[1.75rem] md:mt-[2rem] md:flex md:justify-center xl:mt-[3.75rem] xl:gap-[1rem]">
+        <p className="mt-3 text-body-14 md:text-body-16 xl:mt-4 xl:text-body-18">
+          집밥도감 유저들이 올려준 레시피에 도전해 보세요!
+        </p>
+        <div className="mt-[1.75rem] grid grid-cols-2 place-items-center gap-x-3 gap-y-4 md:mt-[2rem] md:flex md:justify-center xl:mt-[3.75rem] xl:gap-[1rem]">
           {posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
         <div className="mt-[1.75rem] flex items-center justify-center md:mt-[2rem] xl:mt-[3rem]">

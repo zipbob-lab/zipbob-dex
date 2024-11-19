@@ -15,9 +15,11 @@ import { useAuthStore } from "@/store/authStore";
 import HamburgerMenuIcon from "@images/hamburgerMenu.svg";
 import HamburgerMenu from "../common/HamburgerMenu";
 import Search from "@images/search.svg";
+import MobileSearch from "../common/MobileSearch";
 
 const Header = () => {
   const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const { setIsLoggedIn, setUserId } = useStore(useAuthStore);
   const router = useRouter();
@@ -71,9 +73,10 @@ const Header = () => {
         <div className="cursor-pointer p-[0.39rem]" onClick={() => router.push("/")}>
           <Image src={MobileLogo} alt="집밥도감 로고" className="h-auto w-auto" />
         </div>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" onClick={() => setIsSearching(true)}>
           <Image src={Search} alt="검색 아이콘" className="h-auto w-auto" />
         </div>
+        {isSearching && <MobileSearch setIsSearching={setIsSearching} />}
         <HamburgerMenu isHamburgerMenuOpen={isHamburgerMenuOpen} setIsHamburgerMenuOpen={setIsHamburgerMenuOpen} />
       </header>
     </>

@@ -25,7 +25,8 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   } = useQuery({
     queryKey: ["userRanking"],
     queryFn: fetchUserRanking,
-    enabled: showUserRanking
+    enabled: showUserRanking,
+    staleTime: 0
   });
 
   if (isUserPending) {
