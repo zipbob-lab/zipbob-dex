@@ -77,15 +77,17 @@ const UserPostLists = ({ userId }: { userId: string }) => {
     <div className="flex flex-col items-center">
       <div className="w-full ssm:h-[488px] md:h-[480px]">
         {posts.map((post) => (
-          <div key={post.post_id} className="flex w-full items-end justify-between pb-4">
+          <div key={post.post_id} className="flex w-full items-end justify-between pb-5">
             <Link href={`/myrecipedetail/${post.post_id}`} className="flex flex-1">
-              <Image
-                src={post.recipe_img_done || DefaultFoodImage}
-                alt={post.recipe_title}
-                width={100}
-                height={100}
-                className="mr-5 h-[100px] w-[100px] rounded-md"
-              />
+              <div className="relative mr-5 h-[100px] w-[100px] rounded-md">
+                <Image
+                  src={post.recipe_img_done || DefaultFoodImage}
+                  alt={post.recipe_title}
+                  fill
+                  sizes="100"
+                  className="rounded-md"
+                />
+              </div>
               <div className="flex flex-col justify-start">
                 <div className="mb-1 flex">
                   <Image src={FireFilledIcon} alt="레시피 난이도" />
@@ -123,7 +125,7 @@ const UserPostLists = ({ userId }: { userId: string }) => {
         pageSize={pageSize}
         totalItems={totalPosts}
         onPageChange={(page) => setCurrentPage(page)}
-        className="min-w-[372px] gap-6 pt-6"
+        className="min-w-[372px] gap-6"
         buttonClassName="px-10"
       />
     </div>
