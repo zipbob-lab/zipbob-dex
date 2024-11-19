@@ -21,8 +21,9 @@ const CloseWriteConfirm = ({ closeWriteModal, setCloseWriteModal }: CloseWriteCo
               style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.20)" }}
             >
               <div className="flex flex-col items-center justify-center">
-                <div className="flex flex-col gap-y-[0.25rem] md:gap-y-[0.56rem]">
-                  <h1 className="text-title-18 md:text-title-20">레시피 작성을 그만두시겠어요?</h1>
+                <div className="flex flex-col gap-y-[0.25rem] md:gap-y-[0.5rem]">
+                  <h1 className="hidden text-title-18 md:block md:text-title-20">레시피 작성을 그만두시겠어요?</h1>
+                  <h1 className="block text-title-18 md:hidden md:text-title-20">이 페이지에서 나가시겠어요?</h1>
                   <span className="text-center text-r-body-14 text-Gray-500 md:text-body-14">
                     내용이 저장되지 않고 사라져요!
                   </span>

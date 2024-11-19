@@ -14,8 +14,10 @@ const DeleteConfirmModal = ({ isOpen, handleClose, handleDelete }: DeleteConfirm
         style={{ boxShadow: "0px 4px 20px 0px rgba(154, 130, 102, 0.20)" }}
       >
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-title-18 sm:block md:hidden md:text-title-20">정말로 삭제하시겠어요?</h1>
-          <h1 className="hidden text-title-18 md:block md:text-title-20">댓글을 정말로 삭제하시겠어요?</h1>
+          <div className="flex flex-col gap-y-[0.25rem] md:gap-y-[0.56rem]">
+            <h1 className="text-title-18 sm:block md:hidden md:text-title-20">정말로 삭제하시겠어요?</h1>
+            <h1 className="hidden text-title-18 md:block md:text-title-20">댓글을 정말로 삭제하시겠어요?</h1>
+          </div>
           <div className="mt-5 flex gap-3">
             <button
               className="flex w-[7.375rem] min-w-[120px] items-center justify-center gap-1 rounded-[0.75rem] border border-Primary-300 bg-white px-4 py-2 text-title-16 text-Primary-300 md:h-[3rem] md:w-[9.0625rem] md:rounded-[1rem]"
