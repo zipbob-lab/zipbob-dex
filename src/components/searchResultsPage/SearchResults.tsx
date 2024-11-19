@@ -100,7 +100,7 @@ const SearchResult = () => {
   return (
     <div>
       {filteredRecipes.length > 0 && (
-        <div className="mx-auto flex items-center justify-between py-[4rem] ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
+        <div className="mx-auto flex items-center justify-between py-16 ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
           <p className="text-body-20 font-semibold">검색 결과 {filteredRecipes.length}개</p>
           <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
         </div>
@@ -110,12 +110,12 @@ const SearchResult = () => {
           <LoadingSpinner />
         ) : filteredRecipes.length > 0 ? (
           <div>
-            <ul className="mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
+            <ul className="gap-w-[1rem] mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
               {currentData.map((recipe) => (
                 <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
             </ul>
-            <div className="mt-8 flex items-center justify-center">
+            <div className="mb-[2rem] mt-[1.5rem] flex items-center justify-center">
               <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                 <Pagination
                   currentPage={currentPage}
@@ -130,22 +130,18 @@ const SearchResult = () => {
           !loading && (
             <div>
               <div className="flex flex-col items-center justify-center">
-                <div className="mx-auto my-[2rem] border-t border-Gray-200"></div>
+                <div className="mx-auto my-8 border-t border-Gray-200"></div>
                 <Image src={NoneAlert} width={80} height={80} alt="경고" className="mb-6" />
                 <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                   &quot;{searchText}&quot;와 일치하는 레시피가 없습니다.
                 </p>
-                <ul className="mx-auto flex h-[9.5rem] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 px-[2rem] py-[1.25rem] ssm:w-[21rem] sm:w-[21rem] md:w-[34.3rem] lg:w-[34.3rem]">
-                  <h1 className="mb-[1rem] self-start font-semibold text-Primary-300 ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">
+                <ul className="h-38 mx-auto flex list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 px-8 py-5 ssm:w-[21rem] sm:w-[21rem] md:w-[34.3rem] lg:w-[34.3rem]">
+                  <h1 className="mb-4 self-start font-semibold text-Primary-300 ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">
                     검색 Tip!
                   </h1>
-                  <li className="ml-[1rem] mt-[0.25rem] self-start text-body-16 text-Gray-500">
-                    레시피명을 다시 확인해 주세요.
-                  </li>
-                  <li className="ml-[1rem] mt-[0.25rem] self-start text-body-16 text-Gray-500">
-                    구체적인 키워드를 사용해보세요.
-                  </li>
-                  <li className="ml-[1rem] mt-[0.25rem] self-start text-body-16 text-Gray-500">
+                  <li className="ml-4 mt-1 self-start text-body-16 text-Gray-500">레시피명을 다시 확인해 주세요.</li>
+                  <li className="ml-4 mt-1 self-start text-body-16 text-Gray-500">구체적인 키워드를 사용해보세요.</li>
+                  <li className="ml-4 mt-1 self-start text-body-16 text-Gray-500">
                     키워드를 조합해 레시피를 검색해보세요.
                   </li>
                 </ul>

@@ -97,7 +97,7 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
-      <div className="mx-auto p-4 py-[3.75rem]">
+      <div className="mx-auto">
         <div className="mx-auto w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
           <div className="gap-[0.5rem]">
             <p className="text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
@@ -126,12 +126,13 @@ const TagFilter: React.FC = () => {
                   <p className="text-body-20 font-semibold">검색 결과 {filteredData.length}개</p>
                   <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
-                <ul className="mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
+
+                <ul className="gap-w-[1rem] mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
                   {currentData.map((recipe) => (
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-                <div className="mt-8 flex items-center justify-center">
+                <div className="mb-[2rem] mt-[1.5rem] flex items-center justify-center">
                   <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                     <Pagination
                       currentPage={currentPage}
@@ -150,7 +151,7 @@ const TagFilter: React.FC = () => {
                   <p className="mb-10 w-auto whitespace-nowrap text-center text-body-20 font-semibold">
                     태그와 일치하는 레시피가 없습니다.
                   </p>
-                  <ul className="mx-auto flex h-[9.5rem] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 px-[2rem] py-[1.25rem] ssm:w-[21rem] sm:w-[21rem] md:w-[34.3rem] lg:w-[34.3rem]">
+                  <ul className="mx-auto flex h-[9.5rem] list-disc flex-col items-center justify-center rounded-2xl bg-Gray-50 px-[2rem] py-[1.25rem] ssm:w-[21rem] sm:w-[21rem] md:w-[34.3rem] lg:w-[34.rem]">
                     <h1 className="mb-[1rem] self-start font-semibold text-Primary-300 ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">
                       검색 Tip!
                     </h1>
