@@ -6,10 +6,12 @@ const RecipeWriteModal = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div
-        className="max-h-[80vh] w-full max-w-[1080px] overflow-y-auto rounded-lg bg-Gray-50 px-8 py-12"
+        className={`h-full w-full overflow-y-auto rounded-lg bg-[#fbfbfb] lg:max-h-[80vh] lg:max-w-[67.5rem] [&::-webkit-scrollbar]:hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        <MyRecipeWrite />
+        <div className="flex h-full w-full justify-center">
+          <MyRecipeWrite />
+        </div>
       </div>
     </div>
   );

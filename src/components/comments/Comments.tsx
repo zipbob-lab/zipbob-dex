@@ -11,7 +11,7 @@ import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
 import CommentDropBox from "./CommentDropBox";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
 import { getUserId } from "@/serverActions/profileAction";
-import DEFAULT_USER_IMG from "@images/default-profile.svg"
+import DEFAULT_USER_IMG from "@images/default-profile.svg";
 import LeftArrow from "@images/comment/leftArrow.svg";
 import RightArrow from "@images/comment/rightArrow.svg";
 import LeftArrowGray from "@images/comment/leftArrowGray.svg";
@@ -32,7 +32,6 @@ interface UserInfo {
   user_img: string;
   user_rank: number;
 }
-
 
 export interface CommentData {
   comment_id: string;
@@ -58,19 +57,17 @@ const Comments = ({ postId }: PostDataProps) => {
   const [totalComments, setTotalComments] = useState<number>(0); // 전체 댓글 수
   const commentsPerPage = 10; // 페이지 당 댓글 수
   const totalPages = Math.ceil(totalComments / commentsPerPage);
-  const [arrowColor, setArrowColor] = useState<boolean>(false)
+  const [arrowColor, setArrowColor] = useState<boolean>(false);
 
   // 댓글 폼 포커스
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isModiFocused, setIsModiFocused] = useState<boolean>(false);
 
-
-
   const {
     register,
     handleSubmit,
     watch,
-    reset,
+    reset
     // formState: { errors }
   } = useForm<CommentFormInput>({ mode: "onChange", defaultValues: { commentText: "" } });
 
@@ -92,12 +89,9 @@ const Comments = ({ postId }: PostDataProps) => {
 
   useEffect(() => {
     if (sessionId) {
-       fetchComments(currentPage);
+      fetchComments(currentPage);
     }
-    // setIsFocused(false);
-    // setIsModiFocused(false);
   }, [currentPage, sessionId]);
-  
 
   const fetchSessionId = async () => {
     const userId = await getUserId();
@@ -109,21 +103,20 @@ const Comments = ({ postId }: PostDataProps) => {
     return date.toISOString().split("T")[0];
   };
 
-  const fetchComments = async (currentPage:number) => {
+  const fetchComments = async (currentPage: number) => {
     const startRange = (currentPage - 1) * commentsPerPage;
     const endRange = startRange + commentsPerPage - 1;
 
     try {
-      const { commentData, totalComments } = await FetchCommentInfo({postId, startRange, endRange});
+      const { commentData, totalComments } = await FetchCommentInfo({ postId, startRange, endRange });
       setComments(commentData);
       setTotalComments(totalComments);
-
     } catch (error) {
       if (error instanceof Error) {
         console.error("댓글 불러오기 에러: ", error.message);
       } else {
-        console.error(String(error))
-      }      
+        console.error(String(error));
+      }
     }
   };
 
@@ -136,8 +129,11 @@ const Comments = ({ postId }: PostDataProps) => {
   // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
     const deleteOptions = {
-      postId,commentId,totalComments, setTotalComments
-    }
+      postId,
+      commentId,
+      totalComments,
+      setTotalComments
+    };
     await DeleteComment(deleteOptions);
     fetchComments(currentPage);
   };
@@ -211,10 +207,14 @@ const Comments = ({ postId }: PostDataProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-y-6 bg-[#FBFBFB]">
       {/* 댓글 제목 & 작성창 */}
-      <div className="flex flex-col gap-y-3">
+      <div className="flex flex-col gap-y-0 md:gap-y-[0.75rem]">
         <div className="flex flex-row gap-x-2 p-3">
-          <h1 className="flex items-end justify-center text-heading-24 text-Gray-900">집밥 탐험일지</h1>
-          <span className="flex w-[71px] items-end justify-start text-body-18 text-[#787878]">{totalComments}개</span>
+          <h1 className="flex items-end justify-center text-heading-20 text-Gray-900 md:text-heading-24">
+            집밥 탐험일지
+          </h1>
+          <span className="flex w-[71px] items-end justify-start text-body-14 text-[#787878] md:text-body-16 md:text-body-18">
+            {totalComments}개
+          </span>
         </div>
 
         {/* 댓글 작성창 */}
@@ -223,9 +223,9 @@ const Comments = ({ postId }: PostDataProps) => {
             isFocused ? "border-Primary-300" : "border-Gray-100"
           }`}
         >
-                    <div className="flex flex-col border-solid border-b-gray-800">
+          <div className="flex flex-col border-solid border-b-gray-800">
             <textarea
-              className={`h-20 w-full resize-none text-body-16 text-Gray-900 placeholder-Gray-500 focus:outline-none ${
+              className={`h-20 w-full resize-none text-body-14 text-Gray-900 placeholder-Gray-500 focus:outline-none md:text-body-16 ${
                 !sessionId ? "bg-white" : ""
               }`}
               disabled={!sessionId}
@@ -258,7 +258,7 @@ const Comments = ({ postId }: PostDataProps) => {
             </span>
             <button
               type="submit"
-              className="w-18 flex h-8 items-center justify-center rounded-[20px] bg-Primary-300 px-5 py-2 text-title-18 text-white"
+              className="flex h-8 w-[4.25rem] items-center justify-center rounded-[20px] bg-Primary-300 px-[1.25rem] py-[0.25rem] text-title-16 text-white md:w-[4.5rem] md:text-title-18"
             >
               입력
             </button>
@@ -271,12 +271,12 @@ const Comments = ({ postId }: PostDataProps) => {
         {comments.map((comment) => (
           <div key={comment.comment_id} className="flex flex-col">
             {/* 댓글 항목 */}
-            <div className="flex gap-x-3 p-4">
+            <div className="flex gap-x-[0.75rem] p-4">
               <div>
                 {/* 프로필 이미지 */}
                 <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full">
                   <Image
-                    src={comment.USER_TABLE.user_img||DEFAULT_USER_IMG}
+                    src={comment.USER_TABLE.user_img || DEFAULT_USER_IMG}
                     alt="프로필 이미지"
                     fill={true}
                     style={{ objectFit: "cover" }}
@@ -290,10 +290,13 @@ const Comments = ({ postId }: PostDataProps) => {
                       <span className="mr-2">
                         <UserLevelEmoji userRank={comment.USER_TABLE.user_rank} />
                       </span>
-                      <span className="mr-3 text-title-16 text-Gray-900">{comment.USER_TABLE.user_nickname}</span>
+                      <span className="mr-3 text-title-14 text-Gray-900 md:text-title-16">
+                        {comment.USER_TABLE.user_nickname}
+                      </span>
                       {comment.user_id === sessionId && (
-                        <div className="flex items-center justify-center rounded-[10px] border border-Primary-300 px-3 py-0.5 text-body-14 text-Primary-300">
-                          내가 작성한 댓글
+                        <div className="flex items-center justify-center rounded-[0.625rem] border border-Primary-300 px-3 py-0.5 text-body-14 text-Primary-300">
+                          <span className="sm:block md:hidden">내 댓글</span>
+                          <span className="hidden md:block">내가 작성한 댓글</span>
                         </div>
                       )}
                     </div>
@@ -319,7 +322,7 @@ const Comments = ({ postId }: PostDataProps) => {
                     >
                       <div className="flex flex-col border-solid border-b-gray-800">
                         <textarea
-                          className="h-20 w-full resize-none text-body-16 text-gray-500 placeholder-gray-500 focus:outline-none"
+                          className="h-20 w-full resize-none text-gray-500 placeholder-gray-500 focus:outline-none md:text-body-16"
                           placeholder="후기를 통해 요리를 인증하면 경험치를 받을 수 있어요."
                           {...modifyRegister(`modifyCommentText`, {
                             maxLength: {
@@ -347,7 +350,7 @@ const Comments = ({ postId }: PostDataProps) => {
                         </span>
                         <button
                           type="button"
-                          className="w-18 flex h-8 items-center justify-center rounded-[20px] bg-Primary-300 px-5 py-2 text-title-18 text-white"
+                          className="w-18 flex h-8 items-center justify-center rounded-[20px] bg-Primary-300 px-5 py-2 text-title-16 text-white md:text-title-18"
                           onClick={modifyHandleSubmit(onSubmitModify)}
                         >
                           입력
@@ -355,7 +358,7 @@ const Comments = ({ postId }: PostDataProps) => {
                       </div>
                     </div>
                   ) : (
-                    <span className="text-r-body-16 text-Gray-900">{comment.comment}</span>
+                    <span className="text-body-14 text-Gray-900 md:text-r-body-16">{comment.comment}</span>
                   )}
                 </div>
                 <div className="text-r-body-13 text-Gray-500">{formatDate(comment.created_at)}</div>
@@ -369,41 +372,38 @@ const Comments = ({ postId }: PostDataProps) => {
       </div>
 
       {/* 페이지 네이션 */}
-      <div className="flex items-center justify-center gap-6">
-
-  {/* 화살표 */}
-  {currentPage > 1 && (
-    <button
-      onClick={() => handlePageChange(currentPage - 1)}     
-      onMouseEnter={()=>setArrowColor(true)}
-      onMouseLeave={()=>setArrowColor(false)}
-    >
-     <Image src={arrowColor?LeftArrow:LeftArrowGray} alt="이전 화살표" />
-    </button>
-  )}
-      {/* 페이지 */}
+      <div className="flex items-center justify-center gap-x-[0.5rem] md:gap-x-[1.5rem]">
+        {/* 화살표 */}
+        {currentPage > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            onMouseEnter={() => setArrowColor(true)}
+            onMouseLeave={() => setArrowColor(false)}
+          >
+            <Image src={arrowColor ? LeftArrow : LeftArrowGray} alt="이전 화살표" />
+          </button>
+        )}
+        {/* 페이지 */}
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`text-caption-14 ${currentPage === index + 1 ? "rounded-[18px] h-[30px] w-[30px] bg-Primary-300 text-white" : "text-Primary-300"}`}
+            className={`text-caption-14 ${currentPage === index + 1 ? "h-[30px] w-[30px] rounded-[18px] bg-Primary-300 text-white" : "text-Primary-300"}`}
           >
             {index + 1}
           </button>
         ))}
 
-{/* 화살표 */}
-{currentPage < totalPages && (
-    <button
-      onClick={() => handlePageChange(currentPage + 1)}     
-      onMouseEnter={()=>setArrowColor(true)}
-      onMouseLeave={()=>setArrowColor(false)}
-    >
-      <Image src={arrowColor?RightArrow:RightArrowGray} alt="다음 화살표" />
-    </button>
-  )}
-
-        
+        {/* 화살표 */}
+        {currentPage < totalPages && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            onMouseEnter={() => setArrowColor(true)}
+            onMouseLeave={() => setArrowColor(false)}
+          >
+            <Image src={arrowColor ? RightArrow : RightArrowGray} alt="다음 화살표" />
+          </button>
+        )}
       </div>
     </form>
   );
