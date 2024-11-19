@@ -65,9 +65,12 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
     >
       <div className="mb-[0.5rem] flex space-x-[0.5rem]">
         <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
-        <p className="font-medium ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">냉장고 재료</p>
+        <p className="font-medium ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">없는 재료</p>
       </div>
-      <div className="relative ml-auto flex h-[3rem] w-full items-center rounded-[0.875rem] border-2">
+      <p className="mb-[0.5rem] text-Gray-500 ssm:text-body-12 sm:text-body-12 md:text-body-14 lg:text-body-14">
+        뺴고 싶은 재료를 하나씩 적고, 입력 버튼을 눌러요!
+      </p>
+      <div className="relative ml-auto flex w-full items-center rounded-[0.875rem] border-2 ssm:h-[2.5rem] sm:h-[2.5rem] md:h-[3rem] lg:h-[3rem]">
         <input
           type="text"
           value={categoryInput}
@@ -75,8 +78,8 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
           onKeyDown={handleKeyDown}
           onCompositionStart={handleComposition}
           onCompositionEnd={handleComposition}
-          placeholder="빼고 싶은 재료를 입력해요!"
-          className="h-full flex-1 rounded-full px-[1rem] text-body-16 outline-none"
+          placeholder="예) 크림"
+          className="h-full flex-1 rounded-full px-[1rem] outline-none ssm:text-body-14 sm:text-body-14 md:text-body-16 lg:text-body-16"
         />
         <button
           type="button"
@@ -92,7 +95,7 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
             key={tag}
             className="mb-[0.5rem] mr-[0.5rem] inline-flex h-[2.25rem] items-center rounded-lg bg-Gray-100 px-[0.5rem]"
           >
-            <span className="text-body-16">{tag}</span>
+            <span className="ssm:text-body-14 sm:text-body-14 md:text-body-16 lg:text-body-16">{tag}</span>
             <button type="button" onClick={() => deleteTag(tag)} className="ml-[0.25rem] flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>

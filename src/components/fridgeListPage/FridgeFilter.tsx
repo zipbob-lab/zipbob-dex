@@ -112,7 +112,7 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
-      <div className="mx-auto">
+      <div className="mx-auto py-[2rem]">
         <div className="mx-auto w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
           <div className="gap-[0.5rem]">
             <p className="text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
@@ -127,7 +127,7 @@ const TagFilter: React.FC = () => {
           <div className="mb-[5rem] mt-[5rem] flex justify-center">
             <button
               onClick={handleSearch}
-              className="flex h-[3rem] w-full max-w-[27.5rem] items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300"
+              className="flex h-[3rem] w-full items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300 ssm:max-w-[21.4rem] sm:max-w-[21.4rem] md:max-w-[27.5rem] lg:md:max-w-[27.5rem]"
             >
               <p className="text-body-20 text-white">검색</p>
             </button>
