@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { updateUserLevel } from "@/utils/updateUserRank";
-import { fetchUserProfile } from "@/serverActions/profileAction";
+import { useUserLevel } from "@/utils/updateUserRank";
+import React, { useEffect } from "react";
 
 interface UserLevelProps {
   userId: string;
@@ -8,21 +7,16 @@ interface UserLevelProps {
 }
 
 const UserLevel: React.FC<UserLevelProps> = ({ userId, onRankChange }) => {
-  const [userExp, setUserExp] = useState(0);
+  const { userData, checkAndUpdateRank, isLoading } = useUserLevel(userId);
 
   useEffect(() => {
-    const loadRankData = async () => {
-      await updateUserLevel(userId);
-      const updatedProfile = await fetchUserProfile();
-      if (updatedProfile) {
-        setUserExp(updatedProfile.user_exp);
-        onRankChange(updatedProfile.user_rank);
-      }
-    };
-    loadRankData();
-  }, [userId, onRankChange]);
+    if (!isLoading) {
+      checkAndUpdateRank();
+      onRankChange(userData?.user_rank || 0);
+    }
+  }, [userData, isLoading, checkAndUpdateRank, onRankChange]);
 
-  const progressPercent: number = userExp % 100;
+  const progressPercent = (userData?.user_exp ?? 0) % 100;
 
   return (
     <div className="h-3 w-full rounded-full bg-white">

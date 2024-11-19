@@ -15,7 +15,23 @@ const Timer: React.FC = memo(() => {
   const [inputSeconds, setInputSeconds] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [popupMessage, setPopupMessage] = useState<string | null>(null);
 
+  // Enter로 타이머 실행
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleStartStop();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isRunning, inputMinutes, inputSeconds]);
+
+  // 타이머 실행 로직 + 알림음 팝업
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
     if (isRunning && timeLeft > 0) {
@@ -25,14 +41,22 @@ const Timer: React.FC = memo(() => {
     } else if (timeLeft <= 0 && isRunning) {
       clearInterval(timer!);
       setIsRunning(false);
-      triggerNotification(); // 알림 호출
-      playSound(); // 소리 재생
+      triggerNotification(setPopupMessage);
+      playSound();
     }
 
     return () => {
       if (timer) clearInterval(timer);
     };
   }, [isRunning, timeLeft]);
+
+  // 팝업 메시지 호출 (5초 뒤에 사라짐)
+  useEffect(() => {
+    if (popupMessage) {
+      const timeout = setTimeout(() => setPopupMessage(null), 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [popupMessage]);
 
   const handleStartStop = () => {
     if (isRunning) {
@@ -58,6 +82,12 @@ const Timer: React.FC = memo(() => {
 
   return (
     <div className="fixed bottom-20 right-16 z-10">
+      {/* 팝업 메시지 호출 */}
+      {popupMessage && (
+        <div className="absolute right-0 top-[-50px] rounded-lg bg-Primary-300 p-3 text-white shadow-md">
+          {popupMessage}
+        </div>
+      )}
       {/* 타이머 아이콘 버튼 */}
       {!isVisible && (
         <button
@@ -85,6 +115,7 @@ const Timer: React.FC = memo(() => {
               value={String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, "0")}
               onChange={handleMinutesChange}
               min="0"
+              style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
               className="w-8 appearance-none text-center text-body-20"
             />
             <p className="text-body-16 text-Gray-400">분</p>
@@ -93,6 +124,7 @@ const Timer: React.FC = memo(() => {
               value={String(Math.floor((timeLeft / 1000) % 60)).padStart(2, "0")}
               onChange={handleSecondsChange}
               min="0"
+              style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
               className="w-8 appearance-none text-center text-body-20"
             />
             <p className="text-body-16 text-Gray-400">초</p>
