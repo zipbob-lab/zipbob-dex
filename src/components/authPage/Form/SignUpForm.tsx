@@ -8,13 +8,11 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import AccountSet from "../SignUp/AccountSet";
 import UserInfoSet from "../SignUp/UserInfoSet";
-import Image from "next/image";
-import WhitePen from "@images/penWhite.svg";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
-const passwordSchema = z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+const passwordSchema = z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/, {
   message: "영문, 숫자를 포함하여 8자 이상 입력해주세요."
 });
 
@@ -49,7 +47,8 @@ const SignUpForm = () => {
     formState: { errors },
     watch,
     getValues,
-    setValue
+    setValue,
+    trigger
   } = useForm({ mode: "onChange", resolver: zodResolver(combinedSchema) });
   const watchProfileImage = watch("profileImage");
 
@@ -67,6 +66,17 @@ const SignUpForm = () => {
       }
     }
   }, [watchProfileImage]);
+
+  useEffect(() => {
+    // password 또는 confirmPassword가 변경되면 confirmPassword를 다시 검증
+    const subscription = watch((_, { name }) => {
+      if (name === "password") {
+        trigger("confirmPassword");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, trigger]);
 
   const uploadImage = async (file: File) => {
     const fileExt = file.name.split(".").pop();
@@ -162,17 +172,23 @@ const SignUpForm = () => {
           watch={watch}
         />
       )}
-      <div className="mt-[8.625rem] flex justify-center">
+      <div className="mt-8 flex justify-center lg:mt-[8.25rem]">
         <button
           disabled={
-            isNextForm ? !watch("nickname") : !watch("email") || !watch("password") || !watch("confirmPassword")
+            isNextForm
+              ? !watch("nickname") || !!errors.nickname
+              : !watch("email") ||
+                !watch("password") ||
+                !watch("confirmPassword") ||
+                !!errors.email ||
+                !!errors.password ||
+                !!errors.confirmPassword
           }
           type="button"
-          className={`mt-8 flex w-full justify-center gap-2 rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
+          className={`flex w-full justify-center rounded-2xl ${(isNextForm ? watch("nickname") && !errors.nickname : watch("email") && watch("password") && watch("confirmPassword") && !errors.email && !errors.password && !errors.confirmPassword) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
-          <Image src={WhitePen} alt="로그인 버튼 이미지" />
-          <span className="mr-7">{isNextForm ? "회원가입" : "다음"}</span>
+          <span>{isNextForm ? "회원가입" : "다음"}</span>
         </button>
       </div>
     </form>

@@ -32,16 +32,20 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   const modalContent = (
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-[#D9D9D9] bg-opacity-50">
-      <div className="relative max-w-sm rounded-2xl bg-white px-10 py-8">
-        <h2 className="text-center text-lg text-title-20 text-Gray-900">{title}</h2>
+      <div className="relative rounded-2xl bg-white px-10 py-8 md:min-w-[302px]">
+        <h2 className="text-center text-title-20 text-Gray-900">{title}</h2>
+        <p className="mb-5 mt-2 text-center text-body-14 text-Gray-500">삭제하면 복구할 수 없어요!</p>
         <div className="mt-5 flex gap-3">
           <button
             onClick={onClose}
-            className={`min-w-36 rounded-2xl border-[1px] px-4 py-3 text-title-16 ${cancelButtonClass}`}
+            className={`min-w-[121px] rounded-2xl border-[1px] px-4 py-3 text-title-16 ${cancelButtonClass}`}
           >
             {cancelText}
           </button>
-          <button onClick={onConfirm} className={`min-w-36 rounded-2xl px-4 py-3 text-title-16 ${confirmButtonClass}`}>
+          <button
+            onClick={onConfirm}
+            className={`min-w-[121px] rounded-2xl px-4 py-3 text-title-16 ${confirmButtonClass}`}
+          >
             {confirmText}
           </button>
         </div>

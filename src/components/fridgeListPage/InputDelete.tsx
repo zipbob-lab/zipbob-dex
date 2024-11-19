@@ -1,14 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 import TagDelete from "@images/tagDelete.svg";
+import SoopmFork from "@images/fridge/forkSpoom.svg";
 
 const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: string[]) => void }) => {
   const [category, setCategory] = useState<string[]>([]);
   const [categoryInput, setCategoryInput] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
+
+  useEffect(() => {
+    const storedCategories = localStorage.getItem("deletedCategories");
+    if (storedCategories) {
+      const parsedCategories = JSON.parse(storedCategories);
+      setCategory(parsedCategories);
+      onDeleteCategory(parsedCategories);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("deletedCategories", JSON.stringify(category));
+  }, [category]);
 
   const handleComposition = (e: React.CompositionEvent<HTMLInputElement>) => {
     setIsComposing(e.type !== "compositionend");
@@ -45,11 +59,15 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="h-auto w-[512px] overflow-auto">
-      <div className="mb-3 pl-11">
-        <p className="text-[18px] font-medium">없는 재료</p>
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="h-auto w-full max-w-[32rem] overflow-auto ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]"
+    >
+      <div className="mb-[0.5rem] flex space-x-[0.5rem]">
+        <Image src={SoopmFork} width={20} height={20} alt="냉장고 재료" />
+        <p className="font-medium ssm:text-body-16 sm:text-body-16 md:text-body-18 lg:text-body-18">냉장고 재료</p>
       </div>
-      <div className="relative mb-2 ml-auto flex h-[48px] w-[452px] items-center rounded-xl border-2">
+      <div className="relative ml-auto flex h-[3rem] w-full items-center rounded-[0.875rem] border-2">
         <input
           type="text"
           value={categoryInput}
@@ -58,21 +76,24 @@ const CategoreDelete = ({ onDeleteCategory }: { onDeleteCategory: (keywords: str
           onCompositionStart={handleComposition}
           onCompositionEnd={handleComposition}
           placeholder="빼고 싶은 재료를 입력해요!"
-          className="h-full flex-1 rounded-full px-4 outline-none"
+          className="h-full flex-1 rounded-full px-[1rem] text-body-16 outline-none"
         />
         <button
           type="button"
           onClick={addCategory}
-          className="mr-4 h-[38px] rounded-full bg-white p-1 font-normal text-[#ff9143]"
+          className="h-full rounded-r-[0.75rem] bg-Primary-200 px-[1rem] text-body-16 text-white"
         >
           입력
         </button>
       </div>
-      <div className="pl-11">
+      <div className="ssm:mt-[1rem] sm:mt-[1rem] md:mt-[1.25rem] lg:mt-[1.25rem]">
         {category.map((tag) => (
-          <div key={tag} className="mb-2 mr-2 inline-flex h-[36px] items-center rounded-lg bg-[#dedcd7] px-2">
-            <span>{tag}</span>
-            <button type="button" onClick={() => deleteTag(tag)} className="ml-1 flex items-center">
+          <div
+            key={tag}
+            className="mb-[0.5rem] mr-[0.5rem] inline-flex h-[2.25rem] items-center rounded-lg bg-Gray-100 px-[0.5rem]"
+          >
+            <span className="text-body-16">{tag}</span>
+            <button type="button" onClick={() => deleteTag(tag)} className="ml-[0.25rem] flex items-center">
               <Image src={TagDelete} width={20} height={20} alt="삭제 버튼" />
             </button>
           </div>

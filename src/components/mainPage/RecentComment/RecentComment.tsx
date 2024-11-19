@@ -38,10 +38,12 @@ const RecentComment = () => {
   }
 
   return (
-    <div className="w-[1024px] py-[5rem] text-center">
-      <h2 className="font-wiggle text-main-30 text-[#834D27]">현재 다른 사람들이 도전하고 있는 레시피</h2>
-      <p className="mt-4 text-body-18 text-Gray-600">최근에 올라온 후기를 확인해 봐요!</p>
-      <div className="mt-[3.75rem] grid grid-cols-2 gap-x-4 gap-y-5">
+    <div className="w-[21rem] pb-[5.81rem] text-center md:w-[46rem] md:pb-[5.87rem] lg:pb-[2.87rem] xl:w-[64rem] xl:py-[5rem]">
+      <h2 className="font-wiggle text-main-20 text-[#834D27] md:text-main-30">
+        현재 다른 사람들이 도전하고 있는 레시피
+      </h2>
+      <p className="mt-3 text-body-16 text-Gray-600 md:mt-4 md:text-body-18">최근에 올라온 후기를 확인해 봐요!</p>
+      <div className="mt-[1.75rem] flex flex-col gap-4 md:mt-[2rem] md:grid md:grid-cols-2 md:gap-x-4 md:gap-y-5 xl:mt-[3.75rem]">
         {comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)}
       </div>
     </div>

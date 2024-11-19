@@ -1,13 +1,12 @@
+import React from "react";
+import { useUserLevel } from "@/utils/updateUserRank";
+import Image from "next/image";
 import Level1 from "@images/levels/levelOneEgg.svg";
 import Level2 from "@images/levels/levelTwoKimbab.svg";
 import Level3 from "@images/levels/levelThreePasta.svg";
 import Level4 from "@images/levels/levelFourSalmon.svg";
 import Level5 from "@images/levels/levelFiveStew.svg";
-
-import { updateUserLevel } from "@/utils/updateUserRank";
-import { useEffect, useState } from "react";
-import { supabase } from "@/supabase/supabase";
-import Image from "next/image";
+import Arrow from "@images/levels/orangeArrow.svg";
 
 interface UserLevelOverviewProps {
   userId: string;
@@ -16,44 +15,33 @@ interface UserLevelOverviewProps {
 const levelIcons = [Level1, Level2, Level3, Level4, Level5];
 
 const UserLevelOverview: React.FC<UserLevelOverviewProps> = ({ userId }) => {
-  const [userLevel, setUserLevel] = useState<number | null>(null);
+  const { userData, isLoading } = useUserLevel(userId);
 
-  useEffect(() => {
-    const fetchUserLevel = async () => {
-      await updateUserLevel(userId);
-      const { data: userData, error } = await supabase
-        .from("USER_TABLE")
-        .select("user_rank")
-        .eq("user_id", userId)
-        .single();
-
-      if (!error && userData) {
-        setUserLevel(userData.user_rank);
-      } else {
-        console.log("사용자 레벨 불러오기 실패", error?.message);
-      }
-    };
-
-    fetchUserLevel();
-  }, [userId]);
+  if (isLoading) {
+    return <p>데이터를 불러오는 중입니다...</p>;
+  }
 
   return (
-    <div className="flex items-center justify-center gap-6">
+    <div className="flex items-center justify-center gap-2 pt-4">
       {levelIcons.map((LevelIcon, index) => (
-        <div
-          key={index}
-          className={"flex items-center justify-center"}
-          style={{
-            transform: index === userLevel ? "scale(1.25)" : "scale(1)",
-            filter: index !== userLevel ? "grayscale(100%)" : "none" // 비활성화된 아이콘에 회색 효과
-          }}
-        >
-          <Image
-            src={LevelIcon.src}
-            alt={`레벨 ${index}`}
-            width={index === userLevel ? 48 : 32}
-            height={index === userLevel ? 48 : 32}
-          />
+        <div key={index} className="flex items-center">
+          <div
+            className="flex items-center justify-center"
+            style={{
+              transform: index === userData?.user_rank ? "scale(1.25)" : "scale(1)",
+              filter: index !== userData?.user_rank ? "grayscale(100%)" : "none"
+            }}
+          >
+            <Image
+              src={LevelIcon.src}
+              alt={`레벨 ${index}`}
+              width={index === userData?.user_rank ? 45 : 32}
+              height={index === userData?.user_rank ? 45 : 32}
+            />
+          </div>
+          {index < levelIcons.length - 1 && (
+            <Image src={Arrow.src} alt="화살표" width={16} height={16} className="ml-2" />
+          )}
         </div>
       ))}
     </div>

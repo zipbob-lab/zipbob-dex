@@ -3,7 +3,7 @@ import Level2 from "@images/levels/levelTwoKimbab.svg";
 import Level3 from "@images/levels/levelThreePasta.svg";
 import Level4 from "@images/levels/levelFourSalmon.svg";
 import Level5 from "@images/levels/levelFiveStew.svg";
-import Master from "@images/levels/hat.svg";
+import Master from "@images/levels/masterLevel.svg";
 import Image from "next/image";
 
 interface UserLevelEmojiProps {
@@ -24,7 +24,7 @@ const UserLevelEmoji: React.FC<UserLevelEmojiProps> = ({ userRank }) => {
       case 4:
         return Level5;
       default:
-        return null;
+        return Master;
     }
   };
 

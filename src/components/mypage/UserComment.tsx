@@ -8,6 +8,7 @@ import FireEmptyIcon from "@images/fireEmpty.svg";
 import type { UserComment } from "@/types/MyPage";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
 import { fetchUserComments, fetchRecipeByPostId } from "@/serverActions/fetchRecipeDataFromSupabase";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -18,9 +19,11 @@ const UserComment = ({ userId }: { userId: string }) => {
   const [comments, setComments] = useState<UserComment[] | null>(null);
   const [commentCount, setCommentCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const pageSize = 4; // 페이지당 댓글 수
 
   const loadCommentsWithRecipes = async (page: number) => {
+    setIsLoading(true);
     const { comments: commentsData, commentCount } = await fetchUserComments(userId, page, pageSize);
     setCommentCount(commentCount);
 
@@ -35,11 +38,20 @@ const UserComment = ({ userId }: { userId: string }) => {
     } else {
       setComments(null);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
     loadCommentsWithRecipes(currentPage);
   }, [userId, currentPage]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!comments || comments.length === 0) {
     return (
@@ -55,11 +67,11 @@ const UserComment = ({ userId }: { userId: string }) => {
   }
 
   return (
-    <div>
-      <div className="h-[560px] w-full overflow-y-auto">
+    <div className="flex flex-col items-center">
+      <div className="w-full overflow-y-auto ssm:h-[488px] md:h-[480px]">
         {comments.map((comment) => (
           <Link key={comment.post_id} href={`/myrecipedetail/${comment.post_id}`}>
-            <div className="flex w-full flex-col justify-between pt-4">
+            <div className="flex w-full flex-col justify-between pb-5">
               <div className="flex">
                 {comment.recipe ? (
                   <Image
@@ -67,14 +79,14 @@ const UserComment = ({ userId }: { userId: string }) => {
                     alt={comment.recipe.recipe_title}
                     width={100}
                     height={100}
-                    className="mr-4 h-24 w-24 rounded-md"
+                    className="mr-5 h-[100px] w-[100px] rounded-md"
                   />
                 ) : (
                   <p>댓글 정보를 찾을 수 없습니다</p>
                 )}
                 <div className="flex flex-1 flex-col">
-                  <div className="flex items-center gap-2">
-                    <div className="flex">
+                  <div className="flex gap-2">
+                    <div className="flex text-Gray-900">
                       <Image src={FireFilledIcon} alt="레시피 난이도" />
                       <Image
                         src={comment.recipe?.recipe_level !== "하" ? FireFilledIcon : FireEmptyIcon}
@@ -85,12 +97,14 @@ const UserComment = ({ userId }: { userId: string }) => {
                         alt="레시피 난이도"
                       />
                     </div>
-                    <h3 className="text-lg font-bold">{comment.recipe?.recipe_title || "레시피 없음"}</h3>
+                    <h3 className="ssm:text-title-14 md:text-title-16">
+                      {comment.recipe?.recipe_title || "레시피 없음"}
+                    </h3>
                   </div>
-                  <p className="mt-2">
+                  <p className="mt-2 ssm:text-body-13 md:text-body-15">
                     {comment.comment.length > 100 ? `${comment.comment.slice(0, 100)}...` : comment.comment}
                   </p>
-                  <p className="mt-auto text-right text-sm text-gray-500">{formatDate(comment.created_at)}</p>
+                  <p className="mt-auto text-right text-body-13 text-Gray-500">{formatDate(comment.created_at)}</p>
                 </div>
               </div>
             </div>
@@ -104,6 +118,8 @@ const UserComment = ({ userId }: { userId: string }) => {
         pageSize={pageSize}
         totalItems={commentCount}
         onPageChange={(page) => setCurrentPage(page)}
+        className="min-w-[372px] gap-6 pt-6"
+        buttonClassName="px-10"
       />
     </div>
   );

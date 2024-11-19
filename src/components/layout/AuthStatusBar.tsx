@@ -28,7 +28,7 @@ const AuthStatusBar = () => {
     <>
       {isLoggedIn ? (
         <div
-          className="relative h-[3rem] w-[3rem] cursor-pointer overflow-hidden rounded-full bg-[#d9d9d9]"
+          className="relative h-[3rem] w-[3rem] flex-shrink-0 cursor-pointer overflow-hidden rounded-full bg-[#d9d9d9]"
           onClick={() => !isOpen && setIsOpen(true)}
         >
           {userProfile && (
@@ -36,12 +36,12 @@ const AuthStatusBar = () => {
           )}
         </div>
       ) : (
-        <div className="flex">
-          <Link href="/sign-up" className="px-3 py-2 text-body-16 text-Gray-600">
+        <div className="flex flex-shrink-0">
+          <Link href="/sign-up" className="px-2 py-2 text-body-16 text-Gray-600 xl:px-3">
             회원가입
           </Link>
           <Image src={DivideIcon} alt="구분선" />
-          <Link href="/login" className="px-3 py-2 text-body-16 text-Gray-600">
+          <Link href="/login" className="px-2 py-2 text-body-16 text-Gray-600 xl:px-3">
             로그인
           </Link>
         </div>

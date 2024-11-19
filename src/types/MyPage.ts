@@ -6,6 +6,7 @@ export interface UserComment {
     recipe_title: string;
     recipe_img_done: string;
     recipe_level: string;
+    recipe_type: string;
   } | null;
 }
 
