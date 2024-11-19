@@ -44,7 +44,7 @@ export const fetchUserProfile = async (): Promise<{
   return data;
 };
 
-export const getUserNickname = async (id: string) => {
+export const getUserNickname = async (id: string | null) => {
   const { data, error } = await browserClient.from("USER_TABLE").select("user_nickname").eq("user_id", id);
 
   if (error) {
@@ -54,9 +54,10 @@ export const getUserNickname = async (id: string) => {
   return data[0].user_nickname;
 };
 
-export const useUserNickname = (userId: string) => {
+export const useUserNickname = (userId: string | null) => {
   return useQuery({
     queryKey: ["userNickname", userId],
-    queryFn: () => getUserNickname(userId)
+    queryFn: () => getUserNickname(userId),
+    enabled: !!userId
   });
 };

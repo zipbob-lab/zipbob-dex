@@ -12,7 +12,7 @@ import UserInfoSet from "../SignUp/UserInfoSet";
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
-const passwordSchema = z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+const passwordSchema = z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/, {
   message: "영문, 숫자를 포함하여 8자 이상 입력해주세요."
 });
 
@@ -47,7 +47,8 @@ const SignUpForm = () => {
     formState: { errors },
     watch,
     getValues,
-    setValue
+    setValue,
+    trigger
   } = useForm({ mode: "onChange", resolver: zodResolver(combinedSchema) });
   const watchProfileImage = watch("profileImage");
 
@@ -65,6 +66,17 @@ const SignUpForm = () => {
       }
     }
   }, [watchProfileImage]);
+
+  useEffect(() => {
+    // password 또는 confirmPassword가 변경되면 confirmPassword를 다시 검증
+    const subscription = watch((_, { name }) => {
+      if (name === "password") {
+        trigger("confirmPassword");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, trigger]);
 
   const uploadImage = async (file: File) => {
     const fileExt = file.name.split(".").pop();
@@ -163,10 +175,17 @@ const SignUpForm = () => {
       <div className="mt-8 flex justify-center lg:mt-[8.25rem]">
         <button
           disabled={
-            isNextForm ? !watch("nickname") : !watch("email") || !watch("password") || !watch("confirmPassword")
+            isNextForm
+              ? !watch("nickname") || !!errors.nickname
+              : !watch("email") ||
+                !watch("password") ||
+                !watch("confirmPassword") ||
+                !!errors.email ||
+                !!errors.password ||
+                !!errors.confirmPassword
           }
           type="button"
-          className={`flex w-full justify-center rounded-2xl ${(isNextForm ? watch("nickname") : watch("email") && watch("password") && watch("confirmPassword")) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
+          className={`flex w-full justify-center rounded-2xl ${(isNextForm ? watch("nickname") && !errors.nickname : watch("email") && watch("password") && watch("confirmPassword") && !errors.email && !errors.password && !errors.confirmPassword) ? "bg-Primary-300" : "bg-Primary-100"} py-3 text-title-16 text-[#FBFBFB]`}
           onClick={isNextForm ? handleSubmit(onSubmit) : onNextPage}
         >
           <span>{isNextForm ? "회원가입" : "다음"}</span>

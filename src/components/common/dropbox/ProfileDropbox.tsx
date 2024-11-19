@@ -31,7 +31,7 @@ const ProfileDropbox = () => {
   return (
     <nav
       ref={dropboxRef}
-      className="absolute right-5 min-w-[12rem] rounded-[1.25rem] border border-Gray-100 bg-white px-4 py-2"
+      className="absolute right-5 z-10 min-w-[12rem] rounded-[1.25rem] border border-Gray-100 bg-white px-4 py-2"
     >
       <ul className="flex flex-col gap-2">
         <li

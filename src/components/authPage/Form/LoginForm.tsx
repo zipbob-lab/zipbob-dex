@@ -48,7 +48,7 @@ const LoginForm = () => {
           className="rounded-xl border border-Gray-100 px-4 py-3 text-body-16 text-Gray-500"
         />
       </div>
-      <button className="mt-8 flex w-full justify-center rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB]">
+      <button className="mt-8 flex w-full justify-center rounded-2xl bg-Primary-300 py-3 text-title-16 text-[#FBFBFB] transition hover:bg-Primary-500">
         <span>로그인</span>
       </button>
       <Link href="/sign-up" className="mt-2 px-2 py-3 text-[0.875rem] font-medium tracking-[0.5px]">

@@ -8,14 +8,17 @@ import SearchBar from "@/components/common/search/Searchbar";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
-
+import MobileLogo from "@images/mobileLogo.svg";
 import LoginCheckModal from "../common/modal/LoginCheckModal";
-
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/authStore";
+import HamburgerMenuIcon from "@images/hamburgerMenu.svg";
+import HamburgerMenu from "../common/HamburgerMenu";
+import Search from "@images/search.svg";
 
 const Header = () => {
   const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const { setIsLoggedIn, setUserId } = useStore(useAuthStore);
   const router = useRouter();
   const pathname = usePathname();
@@ -43,30 +46,37 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-[#E5E5E5] px-3 py-3 sm:px-[1.25rem] xl:px-[3.75rem]">
-      <nav className="flex items-center gap-4 md:gap-8">
-        <Link href="/" className="relative h-[2rem] w-[4.14rem] md:h-[3.5rem] md:w-[7.25rem]">
-          <Image src={MainLogo} fill alt="메인 로고" />
-        </Link>
-        <Link
-          href="/fridge-list"
-          className="px-[0.5rem] py-[0.35rem] text-body-13 text-Gray-900 md:px-3 md:py-2 md:text-body-16"
-        >
-          냉장고 탐험
-        </Link>
-        <Link
-          href="/scraps"
-          onClick={handleScrapClick}
-          className="px-[0.5rem] py-[0.25rem] text-body-13 text-Gray-900 md:px-3 md:py-2 md:text-body-16"
-        >
-          스크랩한 레시피
-        </Link>
-      </nav>
-      {pathname !== "/" && <SearchBar className="mr-4 h-[48px] w-[648px]" />}
-      <AuthStatusBar />
-      {/* 로그인 모달 */}
-      {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
-    </header>
+    <>
+      <header className="hidden items-center justify-between border-b border-[#E5E5E5] px-3 py-3 md:flex xl:px-[3.75rem]">
+        <nav className="flex flex-shrink-0 items-center lg:gap-2 xl:gap-8">
+          <Link href="/" className="relative h-[3.5rem] w-[7.25rem]">
+            <Image src={MainLogo} fill alt="메인 로고" />
+          </Link>
+          <Link href="/fridge-list" className="px-2 py-2 text-body-16 text-Gray-900 xl:px-3">
+            냉장고 탐험
+          </Link>
+          <Link href="/scraps" onClick={handleScrapClick} className="px-2 py-2 text-body-16 text-Gray-900 xl:px-3">
+            스크랩한 레시피
+          </Link>
+        </nav>
+        {pathname !== "/" && <SearchBar className="mr-5" />}
+        <AuthStatusBar />
+        {/* 로그인 모달 */}
+        {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
+      </header>
+      <header className="flex items-center justify-between px-5 py-2 md:hidden">
+        <div className="flex cursor-pointer" onClick={() => setIsHamburgerMenuOpen(true)}>
+          <Image src={HamburgerMenuIcon} alt="햄버거 메뉴" className="h-auto w-auto" />
+        </div>
+        <div className="cursor-pointer p-[0.39rem]" onClick={() => router.push("/")}>
+          <Image src={MobileLogo} alt="집밥도감 로고" className="h-auto w-auto" />
+        </div>
+        <div className="cursor-pointer">
+          <Image src={Search} alt="검색 아이콘" className="h-auto w-auto" />
+        </div>
+        <HamburgerMenu isHamburgerMenuOpen={isHamburgerMenuOpen} setIsHamburgerMenuOpen={setIsHamburgerMenuOpen} />
+      </header>
+    </>
   );
 };
 
