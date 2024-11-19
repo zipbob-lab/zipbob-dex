@@ -12,9 +12,20 @@
   src: url("./fonts/WiggleHangeul.woff") format("woff");
 }
 
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("./fonts/PretendardVariable.woff2") format("woff");
+}
+
 :root {
   --font-yangjin: "Yangjin";
   --font-wiggle: "Wiggle";
+  --font-Pretendard: "Pretendard";
+}
+
+body,
+html {
+  font-synthesis: none;
 }
 
 @layer components {

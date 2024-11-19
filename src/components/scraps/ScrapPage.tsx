@@ -145,7 +145,7 @@ const ScrapPage = () => {
             isOpen={isDeleteModalOpen}
             onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={confirmDeleteScrap}
-            title="스크랩한 레시피를 삭제하시겠어요?"
+            title="레시피를 삭제하시겠어요?"
             confirmText="삭제하기"
             cancelText="취소하기"
           />
