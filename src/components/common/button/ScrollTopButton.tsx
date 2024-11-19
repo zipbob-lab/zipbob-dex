@@ -32,7 +32,7 @@ const ScrollTopButton = () => {
   return (
     <button
       onClick={handleGoToTop}
-      className="fixed bottom-6 right-16 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-colors duration-200 hover:bg-Primary-200"
+      className="fixed bottom-6 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-colors duration-200 hover:bg-Primary-200 ssm:right-4 md:right-16"
     >
       <Image src={ScrollUp} alt="위로 가는 화살표" />
     </button>
