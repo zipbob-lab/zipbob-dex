@@ -608,7 +608,7 @@ const InputField = () => {
               )}
             </div>
           </div>
-          <div className="z-500 sticky bottom-0">
+          <div className="lg:z-500 lg:sticky lg:bottom-0">
             {/* 제출 버튼 */}
             <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />
             {/* 닫기 확인 모달 */}
