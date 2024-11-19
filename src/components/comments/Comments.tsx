@@ -10,13 +10,14 @@ import CommentGrayLine from "@images/comment/commentGrayLine.svg";
 import CommentGrayLine2 from "@images/comment/commnetGrayLine2.svg";
 import CommentDropBox from "./CommentDropBox";
 import UserLevelEmoji from "../mypage/level/UserLevelEmoji";
-import { getUserId } from "@/serverActions/profileAction";
 import DEFAULT_USER_IMG from "@images/default-profile.svg";
 import LeftArrow from "@images/comment/leftArrow.svg";
 import RightArrow from "@images/comment/rightArrow.svg";
 import LeftArrowGray from "@images/comment/leftArrowGray.svg";
 import RightArrowGray from "@images/comment/rightArrowGray.svg";
 import { DeleteComment, FetchCommentInfo } from "./CommentHooks";
+import { useAuthStore } from "@/store/authStore";
+import { useStore } from "zustand";
 
 interface CommentFormInput {
   commentText: string;
@@ -62,6 +63,7 @@ const Comments = ({ postId }: PostDataProps) => {
   // 댓글 폼 포커스
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isModiFocused, setIsModiFocused] = useState<boolean>(false);
+  const { userId } = useStore(useAuthStore);
 
   const {
     register,
@@ -94,7 +96,6 @@ const Comments = ({ postId }: PostDataProps) => {
   }, [currentPage, sessionId]);
 
   const fetchSessionId = async () => {
-    const userId = await getUserId();
     setSessionId(userId); // userId가 null이 아닐 때만 설정
   };
 

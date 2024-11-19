@@ -17,7 +17,7 @@ import ImageUploadIcon from "@images/myrecipe/imageUpload.svg";
 import RecipeAddButton from "@images/myrecipe/recipeAddButton.svg";
 // import Pencil from "@images/penWhite.svg";
 // import PencilOrange from "@images/penOrange.svg";
-import CloseWirteConfirm from "./CloseWirteConfirm";
+import CloseWriteConfirm from "./CloseWriteConfirm";
 import { IFormInput } from "@/types/RecipeWriteFormType";
 import IconX from "@images/myrecipe/iconX.svg";
 import { useQueryClient } from "@tanstack/react-query";
@@ -608,11 +608,11 @@ const InputField = () => {
               )}
             </div>
           </div>
-          <div className="z-500 sticky bottom-0">
+          <div className="lg:z-500 lg:sticky lg:bottom-0">
             {/* 제출 버튼 */}
             <RecipeSubmitButton closeModal={() => setCloseWriteModal(true)} />
             {/* 닫기 확인 모달 */}
-            <CloseWirteConfirm closeWriteModal={closeWriteModal} setCloseWriteModal={setCloseWriteModal} />
+            <CloseWriteConfirm closeWriteModal={closeWriteModal} setCloseWriteModal={setCloseWriteModal} />
           </div>
         </div>
       </form>
