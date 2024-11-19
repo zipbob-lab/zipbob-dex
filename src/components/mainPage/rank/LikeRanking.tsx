@@ -37,7 +37,8 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   } = useQuery({
     queryKey: ["likeRankingPosts"],
     queryFn: fetchPosts,
-    enabled: !showUserRanking
+    enabled: !showUserRanking,
+    staleTime: 0
   });
 
   useEffect(() => {

@@ -24,7 +24,7 @@ const Footer = () => {
     <>
       {pathname.startsWith("/myrecipedetail") && <Timer />}
       <ScrollTopButton />
-      <footer className="bg-Gray-50 px-[2.5rem] pb-[2rem] pt-[3rem]">
+      <footer className="bg-Gray-50 px-5 py-3 md:px-10 md:py-6 xl:pt-[1.88rem]">
         <div className="mx-auto lg:w-[56rem] xl:w-[64rem]">
           <div className="flex items-center justify-between">
             <div className="relative hidden h-[3.5rem] w-[7.21875rem] lg:block">
@@ -38,19 +38,25 @@ const Footer = () => {
                     .fill(0)
                     .map((_, index) => (
                       <div className="flex items-center gap-4" key={index}>
-                        <Link href={githubLink[index]} target="_blank">
+                        <Link href={githubLink[index]} target="_blank" className="h-4 w-4">
                           <Image src={GithubIcon} alt="깃허브 아이콘" />
                         </Link>
-                        <p>{devName[index]}</p>
+                        <p className="text-body-12 text-Gray-700 md:text-body-14">{devName[index]}</p>
                       </div>
                     ))}
                 </div>
               </div>
               <div className="flex flex-col items-center md:flex-row">
                 <p className="text-Gray-400">Designer</p>
-                <div className="mt-4 flex flex-col gap-4 md:ml-12 md:mt-0 md:flex-row md:gap-10">
-                  <p>박예림</p>
-                  <p>임효연</p>
+                <div className="mt-4 flex flex-col gap-4 text-Gray-700 md:ml-12 md:mt-0 md:flex-row md:gap-10">
+                  <div className="flex gap-4">
+                    <p className="text-body-12 md:text-body-14">박예림</p>
+                    <p className="text-r-body-12 xl:text-body-14">pyrymm1258@gmail.com</p>
+                  </div>
+                  <div className="flex gap-4">
+                    <p className="text-body-12 md:text-body-14">임효연</p>
+                    <p className="text-r-body-12 xl:text-body-14">limsyrzchel@naver.com</p>
+                  </div>
                 </div>
               </div>
             </div>

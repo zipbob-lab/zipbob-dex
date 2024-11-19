@@ -26,7 +26,8 @@ const RecentComment = () => {
     isError: isCommentError
   } = useQuery({
     queryKey: ["recentComments"],
-    queryFn: fetchRecentComments
+    queryFn: fetchRecentComments,
+    staleTime: 0
   });
 
   if (isCommentPending) {
