@@ -20,7 +20,6 @@ const SearchResult = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
   const [sortOption, setSortOption] = useState<string>("likes");
-  const [filterOption, setFilterOption] = useState<string>("title+ingredients");
   const [loading, setLoading] = useState<boolean>(false);
   const [itemsPerPage, setItemsPerPage] = useState<number>(16);
 
@@ -69,30 +68,23 @@ const SearchResult = () => {
     }
     setLoading(false);
   };
+
   // 검색 키워드 필터
   const applyFilter = () => {
     let filteredData = recipes;
 
-    if (filterOption === "title") {
-      filteredData = recipes.filter((recipe) => recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase()));
-    } else if (filterOption === "ingredients") {
-      filteredData = recipes.filter((recipe) =>
-        recipe.recipe_ingredients.some((ingredient) =>
-          ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
-        )
+    // 필터 옵션 없이 title + ingredients에서만 검색
+    filteredData = recipes.filter((recipe) => {
+      const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
+      const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
+        ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
       );
-    } else if (filterOption === "title+ingredients") {
-      filteredData = recipes.filter((recipe) => {
-        const titleMatch = recipe.recipe_title.toLowerCase().includes(searchText.toLowerCase());
-        const ingredientsMatch = recipe.recipe_ingredients.some((ingredient) =>
-          ingredient.ingredient.toLowerCase().includes(searchText.toLowerCase())
-        );
-        return titleMatch || ingredientsMatch;
-      });
-    }
+      return titleMatch || ingredientsMatch;
+    });
 
     setFilteredRecipes(filteredData);
   };
+
   // 이펙트 분산 처리
   useEffect(() => {
     if (query) {
@@ -102,12 +94,13 @@ const SearchResult = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [recipes, filterOption]);
+  }, [recipes]);
 
   // 페이지 네이션
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentData: Recipe[] = filteredRecipes.slice(startIndex, endIndex);
