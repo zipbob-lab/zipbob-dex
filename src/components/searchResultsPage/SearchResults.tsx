@@ -16,19 +16,38 @@ const SearchResult = () => {
   const { query } = useParams();
   const searchText = decodeURI(query as string);
 
+  // 메인 상태 관리
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
   const [sortOption, setSortOption] = useState<string>("likes");
   const [filterOption, setFilterOption] = useState<string>("title+ingredients");
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
-  const itemsPerPage = 16;
+  const [itemsPerPage, setItemsPerPage] = useState<number>(16);
+
+  // 페이지 네이션 상태
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // 1024 경계 반응형
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth <= 1024) {
+        setItemsPerPage(8);
+      } else {
+        setItemsPerPage(16);
+      }
+    };
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
+    };
+  }, []);
 
   const fetchRecipes = async () => {
     setLoading(true);
-
+    // 데이터 페칭
     let request = browserClient.from("MY_RECIPE_TABLE").select("*");
-
+    // 정렬 옵션 필터
     if (sortOption === "likes") {
       request = request.order("like_count", { ascending: false });
     } else if (sortOption === "comment") {
@@ -50,7 +69,7 @@ const SearchResult = () => {
     }
     setLoading(false);
   };
-
+  // 검색 키워드 필터
   const applyFilter = () => {
     let filteredData = recipes;
 
@@ -74,7 +93,7 @@ const SearchResult = () => {
 
     setFilteredRecipes(filteredData);
   };
-
+  // 이펙트 분산 처리
   useEffect(() => {
     if (query) {
       fetchRecipes();
@@ -85,14 +104,13 @@ const SearchResult = () => {
     applyFilter();
   }, [recipes, filterOption]);
 
+  // 페이지 네이션
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentData: Recipe[] = filteredRecipes.slice(startIndex, endIndex);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

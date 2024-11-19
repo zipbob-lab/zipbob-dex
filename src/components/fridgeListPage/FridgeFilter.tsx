@@ -13,7 +13,7 @@ import Image from "next/image";
 import NoneAlert from "@images/noneAlert.svg";
 
 const TagFilter: React.FC = () => {
-  // 필터 메인 상태
+  // 메인 상태 관리
   const [data, setData] = useState<Recipe[]>([]);
   const [filteredData, setFilteredData] = useState<Recipe[]>([]);
   const [addKeywords, setAddKeywords] = useState<string[]>([]);
@@ -23,12 +23,29 @@ const TagFilter: React.FC = () => {
 
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 16;
+  const [pageSize, setPageSize] = useState(16); // 기본값 16
 
-  // 데이터 가져오기
+  // 1024 경계 반응형
+  useEffect(() => {
+    const updatePageSize = () => {
+      if (window.innerWidth <= 1024) {
+        setPageSize(8);
+      } else {
+        setPageSize(16);
+      }
+    };
+    updatePageSize();
+    window.addEventListener("resize", updatePageSize);
+    return () => {
+      window.removeEventListener("resize", updatePageSize);
+    };
+  }, []);
+
+  // 데이터 페칭
   useEffect(() => {
     const fetchData = async () => {
       let request = browserClient.from("MY_RECIPE_TABLE").select("*");
+      // 정렬 옵션 필터
       if (sortOption === "likes") {
         request = request.order("like_count", { ascending: false });
       } else if (sortOption === "commnet") {
@@ -75,7 +92,6 @@ const TagFilter: React.FC = () => {
         );
       });
     }
-
     setFilteredData(newFilteredData);
     setCurrentPage(1);
   };
@@ -90,7 +106,6 @@ const TagFilter: React.FC = () => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentData = filteredData.slice(startIndex, endIndex);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
