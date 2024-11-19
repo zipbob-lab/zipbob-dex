@@ -8,6 +8,7 @@ import { RecipeCardProps } from "@/types/main";
 import { useRouter } from "next/navigation";
 import LikeButton from "@/components/common/button/LikeButton";
 import ScrapButton from "@/components/common/button/ScrapButton";
+
 import TrashCanIcon from "@images/myrecipe/trashCan.svg";
 import DefaultImage from "@images/myrecipe/imageFile.svg";
 

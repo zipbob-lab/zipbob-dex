@@ -124,30 +124,30 @@ const TagFilter: React.FC = () => {
             <CategoreAdd onAddCategory={setAddKeywords} />
             <CategoreDelete onDeleteCategory={setDeleteKeywords} />
           </div>
-          <div className="mt-[2rem] flex justify-center">
+          <div className="mb-[5rem] mt-[5rem] flex justify-center">
             <button
               onClick={handleSearch}
-              className="mt-[4rem] flex h-[3rem] w-full max-w-[27.5rem] items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300"
+              className="flex h-[3rem] w-full max-w-[27.5rem] items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300"
             >
               <p className="text-body-20 text-white">검색</p>
             </button>
           </div>
         </div>
         {showResults && (
-          <div className="mt-6">
+          <div className="py-[2rem]">
             {filteredData.length > 0 ? (
               <>
-                <div className="mx-auto flex items-center justify-between py-[4rem] ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
+                <div className="mx-auto flex items-center justify-between ssm:mb-[1.5rem] ssm:max-w-[21rem] sm:mb-[1.5rem] sm:max-w-[21rem] md:mb-[1.5rem] md:max-w-[43rem] lg:mb-[1.5rem] lg:max-w-[64rem]">
                   <p className="text-body-20 font-semibold">검색 결과 {filteredData.length}개</p>
                   <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
                 </div>
 
-                <ul className="gap-w-[1rem] mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[50.1rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
+                <ul className="gap-w-[1rem] mx-auto grid max-w-[64rem] justify-items-center gap-y-[1.75rem] ssm:max-w-[21rem] ssm:grid-cols-2 sm:max-w-[21rem] sm:grid-cols-2 md:max-w-[43rem] md:grid-cols-4 lg:max-w-[64rem] lg:grid-cols-4">
                   {currentData.map((recipe) => (
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-                <div className="mb-[2rem] mt-[1.5rem] flex items-center justify-center">
+                <div className="mb-[2rem] flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
                   <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                     <Pagination
                       currentPage={currentPage}

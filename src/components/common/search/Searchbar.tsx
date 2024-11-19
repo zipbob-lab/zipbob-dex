@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import Image from "next/image";
-import MainSearch from "@images/mainSearch.svg";
-import Subsearch from "@images/subSearch.svg";
-import Delete from "@images/subDelete.svg";
+import MainSearch from "@images/search/mainSearch.svg";
+import Subsearch from "@images/search/subSearch.svg";
+import Delete from "@images/search/subDelete.svg";
 
 // 타입 지정
 interface KeyInterface {
@@ -97,7 +98,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
   return (
     <div
       className={`relative mx-auto max-h-[3.25rem] w-full ${
-        mainSearchBar ? "max-w-[40.5rem]" : "md:max-w-[26.46875rem] lg:max-w-[40.5rem]"
+        mainSearchBar ? "max-w-[40.5rem]" : "md:max-w-[20rem] lg:max-w-[32rem]"
       } ${className}`}
       onMouseDown={(e) => e.stopPropagation()}
     >
