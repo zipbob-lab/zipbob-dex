@@ -49,7 +49,7 @@ const RecipeCard2 = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardP
 
   return (
     <div
-      className="flex cursor-pointer flex-col gap-y-[0.5rem] w-[15.25rem] h-[20.125rem]"
+      className="flex h-[20.125rem] w-[15.25rem] cursor-pointer flex-col gap-y-[0.5rem]"
       onClick={() => router.push(`/myrecipedetail/${post.post_id}`)}
     >
       <div className="relative h-[15.25rem] w-[15.25rem] overflow-hidden">
@@ -66,9 +66,9 @@ const RecipeCard2 = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardP
       <p className="text-body-15">{post.recipe_title}</p>
       <div>
         {/* 닉네임 */}
-      <p className="text-Gray-500 text-body-13 mt-[0.25rem]">{nickname}</p>
+        <p className="mt-[0.25rem] text-body-13 text-Gray-500">{nickname}</p>
       </div>
-      
+
       <div className="flex justify-between">
         <div className="flex">
           <Image src={FireFilledIcon} alt="레시피 난이도" className="h-4 w-4" />
@@ -87,7 +87,7 @@ const RecipeCard2 = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardP
         {/* 편집 모드 아닐 때 -> LikeButton / ScrapButton 활성화 */}
         {!isEditMode ? (
           <div className="flex items-center gap-x-[0.38rem]" onClick={(e) => e.stopPropagation()}>
-            <LikeButton postId={post.post_id } size={16}/>
+            <LikeButton postId={post.post_id} size={16} />
             <ScrapButton postId={post.post_id} />
           </div>
         ) : (

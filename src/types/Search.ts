@@ -1,4 +1,6 @@
 export type Recipe = {
+  id: number;
+  recipe_seq: number;
   post_id: string; // Supabase의 post_id
   recipe_title: string; // 요리 제목
   recipe_ingredients: Ingredient[]; // 재료 리스트 (JSON 형태로 관리)
