@@ -48,7 +48,7 @@ const LoginCheckModal: React.FC<LoginModalProps> = ({ onClose }) => {
             닫기
           </button>
           <button
-            className="rounded-[0.75rem] flex w-[50%] items-center justify-center bg-orange-400 py-[0.5rem] text-title-16 text-white md:rounded-2xl md:px-[0.75rem] md:py-[1rem]"
+            className="flex w-[50%] items-center justify-center rounded-[0.75rem] bg-orange-400 py-[0.5rem] text-title-16 text-white md:rounded-2xl md:px-[0.75rem] md:py-[1rem]"
             onClick={() => router.push("/login")}
           >
             {/* <Image src={Pencil} width={20} height={20} alt="연필 아이콘" /> */}
