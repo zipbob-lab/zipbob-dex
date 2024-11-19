@@ -16,11 +16,11 @@ const Introduce = () => {
   return (
     <>
       <div className="mx-auto mt-[2rem] flex w-full flex-col-reverse items-center md:mt-[3.25rem] md:w-[46rem] md:flex-row md:justify-between lg:w-[58.75rem] xl:min-w-[85rem] xl:max-w-[93.75rem]">
-        <div className="flex w-[18.8rem] flex-col justify-center md:w-[23.1rem] lg:w-[29.2rem] xl:w-[41.3rem]">
-          <h2 className="font-wiggle text-[3rem] text-main-20 text-Primary-400 md:text-main-28 lg:text-main-30 xl:text-main-54">
+        <div className="flex w-[18.8rem] flex-col justify-center md:w-[23.0625rem] lg:w-[29.2rem] xl:w-[41.3rem]">
+          <h2 className="mt-10 font-wiggle text-[3rem] text-main-20 text-Primary-400 md:mt-0 md:text-main-28 lg:text-main-30 xl:text-main-54">
             더 맛있는 요리를 더 재미있게!
           </h2>
-          <p className="mb-[1.5rem] mt-[1.75rem] text-body-14 md:mb-[2rem] lg:w-[29.375rem] lg:text-body-18 xl:mb-[3.25rem] xl:mt-7 xl:w-[32.5rem] xl:text-body-20">
+          <p className="mb-[1.5rem] mt-[1.75rem] text-body-14 md:mb-[2rem] md:text-body-18 lg:w-[29.375rem] xl:mb-[3.25rem] xl:mt-7 xl:w-[32.5rem] xl:text-body-20">
             쉬운 레시피부터 어려운 레시피까지 다양하게 도전하며 레벨업해요. 즐거운 요리 경험이 당신을 기다리고있어요!
           </p>
           <SearchBar mainSearchBar={true} />
