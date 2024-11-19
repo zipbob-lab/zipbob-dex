@@ -5,15 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import RecipeCard2 from "./RecipeCard2";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Recipe } from "@/types/Search";
 
 const RecommendRecipe = () => {
-  const fetchRamdomRecipe = async () => {
-    const { data, error } = await browserClient
-      .from("MY_RECIPE_TABLE")
-      .select("*")
-      .not("recipe_seq", "is", null)
-      .order("recipe_seq", { ascending: false })
-      .limit(10);
+  const fetchRandomRecipe = async (): Promise<Recipe[]> => {
+    const { data, error } = await browserClient.rpc("random_recipes", { limit_row: 10 });
+    // .from("MY_RECIPE_TABLE")
+    // .select("*")
+    // .not("recipe_seq", "is", null)
+
+    // // .order("recipe_seq", { ascending: false })
+    // .limit(10);
 
     if (error) {
       console.error("추천 레시피를 불러오는 과정에서 에러 발생" + error);
@@ -28,7 +30,7 @@ const RecommendRecipe = () => {
     isError: isPostError
   } = useQuery({
     queryKey: ["randomRecipe"],
-    queryFn: fetchRamdomRecipe,
+    queryFn: fetchRandomRecipe,
     staleTime: 60
   });
 
@@ -41,9 +43,9 @@ const RecommendRecipe = () => {
   }
 
   return (
-    <div className="w-full rounded-[2.5rem] bg-transparent">
-      <h1 className="py-[0.75rem] text-heading-24 text-Gray-900">이 레시피는 어때요?</h1>
-      <div className="mt-[1rem] flex gap-[1rem]">
+    <div className="overflow-hidden bg-[#fbfbfb]">
+      <h1 className="py-[0.75rem] text-heading-20 text-Gray-900 md:text-heading-24">이 레시피는 어때요?</h1>
+      <div className="mt-[0.5rem] flex w-[1024px] gap-x-[1rem] md:mt-[1rem]">
         <Swiper spaceBetween={1} slidesPerView={4}>
           {posts?.map((post) => (
             <SwiperSlide key={post.id}>

@@ -49,7 +49,6 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
     }
     queryClient.invalidateQueries({ queryKey: ["recentPosts", postId] });
     router.push("/");
-    
   };
 
   return (
@@ -57,7 +56,7 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
       {userId === loginSessionId && (
         <div className="flex flex-row">
           <div className="flex flex-row gap-[0.62rem] px-[0.75rem] py-[0.5rem]">
-            <Image src={Pen} alt="수정" width={20} height={20}></Image>
+            <Image src={Pen} alt="수정" width={20} height={20} className="hidden md:block"></Image>
             <button className="text-body-14 text-Gray-500" onClick={handleModifyPost}>
               수정하기
             </button>
@@ -66,8 +65,8 @@ const ModifyDeletePost = ({ postId, userId }: ModiDeleButtonProps) => {
           <Image src={GrayVar} alt="회색바" />
 
           <div className="flex flex-row gap-[0.62rem] px-3 py-2">
-            <Image src={TrashCan} alt="삭제" width={20} height={20}></Image>
-            <button className="p-2 text-body-14 text-SystemColor-Red" onClick={() => setIsDeleteModalOpen(true)}>
+            <Image src={TrashCan} alt="삭제" width={20} height={20} className="hidden md:block"></Image>
+            <button className="text-body-14 text-SystemColor-Red" onClick={() => setIsDeleteModalOpen(true)}>
               삭제하기
             </button>
           </div>
