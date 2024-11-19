@@ -155,8 +155,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mainSearchBar = f
               onFocus={() => setIsDropdownVisible(true)}
               onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
               placeholder="메뉴나 재료 이름을 검색해보세요!"
-              className={`${
-                mainSearchBar ? "h-[3.25rem] border-Primary-300" : "h-[3rem] border-Gray-200"
+              className={`placeholder:text-body-14 placeholder:text-Gray-500 md:placeholder:text-body-18 ${
+                mainSearchBar ? "h-[2.5rem] border-Primary-300 md:h-[3.25rem]" : "h-[3rem] border-Gray-200"
               } w-full rounded-full border-2 px-[3rem] py-[0.5rem] pl-4 text-body-16 focus:outline-none ${
                 mainSearchBar ? "focus:border-Primary-300" : "focus:border-Gray-500"
               }`}
