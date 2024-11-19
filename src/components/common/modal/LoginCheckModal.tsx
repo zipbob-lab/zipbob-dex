@@ -28,7 +28,7 @@ const LoginCheckModal: React.FC<LoginModalProps> = ({ onClose }) => {
         onClick={handleModalClick}
       >
         <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col md:gap-y-[0.56rem]">
+          <div className="flex flex-col gap-y-[0.25rem] md:gap-y-[0.56rem]">
             <h1 className="text-title-18 md:text-title-20">로그인이 필요한 서비스예요!</h1>
             <span className="text-center text-r-body-14 text-Gray-500 md:text-body-14">
               간편하게 로그인하고 <br /> 좀 더 다양한 기능을 즐겨요
@@ -36,9 +36,9 @@ const LoginCheckModal: React.FC<LoginModalProps> = ({ onClose }) => {
           </div>
           {/* 버튼영역 */}
         </div>
-        <div className="mt-[1rem] flex w-full md:mt-[1.25rem] gap-x-[0.75rem]">
+        <div className="mt-[1rem] flex w-full gap-x-[0.75rem] md:mt-[1.25rem]">
           <button
-            className="flex w-[50%] items-center justify-center gap-1 rounded-2xl border border-Primary-300 bg-white py-[0.5rem] text-title-16 text-Primary-300 md:px-[0.75rem] md:py-[1rem]"
+            className="flex w-[50%] items-center justify-center rounded-[0.75rem] border border-Primary-300 bg-white py-[0.5rem] text-title-16 text-Primary-300 md:rounded-2xl md:px-[0.75rem] md:py-[1rem]"
             onClick={(e) => {
               e.preventDefault();
               onClose();
@@ -48,7 +48,7 @@ const LoginCheckModal: React.FC<LoginModalProps> = ({ onClose }) => {
             닫기
           </button>
           <button
-            className="flex w-[50%] items-center justify-center gap-1 rounded-2xl bg-orange-400 py-[0.5rem] text-title-16 text-white md:px-[0.75rem] md:py-[1rem]"
+            className="rounded-[0.75rem] flex w-[50%] items-center justify-center bg-orange-400 py-[0.5rem] text-title-16 text-white md:rounded-2xl md:px-[0.75rem] md:py-[1rem]"
             onClick={() => router.push("/login")}
           >
             {/* <Image src={Pencil} width={20} height={20} alt="연필 아이콘" /> */}
