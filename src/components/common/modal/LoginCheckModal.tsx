@@ -34,8 +34,8 @@ const LoginCheckModal: React.FC<LoginModalProps> = ({ onClose }) => {
               간편하게 로그인하고 <br /> 좀 더 다양한 기능을 즐겨요
             </span>
           </div>
-          {/* 버튼영역 */}
         </div>
+        {/* 버튼영역 */}
         <div className="mt-[1rem] flex w-full gap-x-[0.75rem] md:mt-[1.25rem]">
           <button
             className="flex w-[50%] items-center justify-center rounded-[0.75rem] border border-Primary-300 bg-white py-[0.5rem] text-title-16 text-Primary-300 md:rounded-2xl md:px-[0.75rem] md:py-[1rem]"
