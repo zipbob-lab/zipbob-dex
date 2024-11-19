@@ -7,7 +7,7 @@ interface CloseWriteConfirmProps {
   setCloseWriteModal: (isOpen: boolean) => void;
 }
 
-const CloseWirteConfirm = ({ closeWriteModal, setCloseWriteModal }: CloseWriteConfirmProps) => {
+const CloseWriteConfirm = ({ closeWriteModal, setCloseWriteModal }: CloseWriteConfirmProps) => {
   const router = useRouter();
   if (!closeWriteModal) return null;
 
@@ -25,13 +25,13 @@ const CloseWirteConfirm = ({ closeWriteModal, setCloseWriteModal }: CloseWriteCo
                 <span className="pt-2 text-center text-body-14 text-Gray-500">내용이 저장되지 않고 사라져요!</span>
                 <div className="mt-5 flex gap-3">
                   <button
-                    className="flex w-[9.0625rem] h-[3rem] items-center justify-center gap-1 rounded-2xl border border-Primary-300 bg-white px-[0.75rem] py-[1rem] text-title-16 text-Primary-300"
+                    className="flex h-[3rem] w-[9.0625rem] items-center justify-center gap-1 rounded-2xl border border-Primary-300 bg-white px-[0.75rem] py-[1rem] text-title-16 text-Primary-300"
                     onClick={() => setCloseWriteModal(false)}
                   >
                     돌아가기
                   </button>
                   <button
-                    className="flex w-[9.0625rem] h-[3rem] items-center justify-center gap-1 rounded-2xl bg-orange-400 px-[0.75rem] py-[1rem] text-title-16 text-white"
+                    className="flex h-[3rem] w-[9.0625rem] items-center justify-center gap-1 rounded-2xl bg-orange-400 px-[0.75rem] py-[1rem] text-title-16 text-white"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -51,4 +51,4 @@ const CloseWirteConfirm = ({ closeWriteModal, setCloseWriteModal }: CloseWriteCo
   );
 };
 
-export default CloseWirteConfirm;
+export default CloseWriteConfirm;
