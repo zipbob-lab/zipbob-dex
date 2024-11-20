@@ -126,7 +126,7 @@ const SearchResult = () => {
                 <RecipeCard key={recipe.post_id} post={recipe} />
               ))}
             </ul>
-            <div className="mb-[2rem] flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
+            <div className="flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
               <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                 <Pagination
                   currentPage={currentPage}
