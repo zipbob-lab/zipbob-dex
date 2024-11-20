@@ -6,9 +6,9 @@ import { getUserNickname } from "@/serverActions/profileAction";
 import LikeCard from "./LikeCard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
-type UserNicknames = {
+interface UserNicknames {
   [key: number]: string;
-};
+}
 
 const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   const [userNickname, setUserNickname] = useState<UserNicknames>({

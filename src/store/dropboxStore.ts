@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
-type DropboxState = {
+interface DropboxState {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-};
+}
 
 export const useDropboxStore = create<DropboxState>((set) => ({
   isOpen: false,

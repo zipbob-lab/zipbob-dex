@@ -1,7 +1,7 @@
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
 
-type UserCardProps = {
+interface UserCardProps {
   user: {
     user_exp: number;
     user_img: string;
@@ -9,7 +9,7 @@ type UserCardProps = {
     user_introduce: string;
   };
   rank: number;
-};
+}
 
 const UserCard = ({ user, rank }: UserCardProps) => {
   return (

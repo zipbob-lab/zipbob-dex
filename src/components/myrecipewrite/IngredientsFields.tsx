@@ -44,7 +44,6 @@ const IngredientsFields = () => {
             {...register(`ingredients.${i}.unit`, { required: true })}
             className="input-focus w-[20%] rounded-[1rem] bg-Gray-50 px-4 py-3 text-r-body-14 md:text-body-16"
           />
-          {/* {fields.length > 1 && ( */}
           <div className="x-[1.5rem] flex items-center justify-center">
             <button
               type="button"
@@ -54,7 +53,6 @@ const IngredientsFields = () => {
               <Image src={IconX} width={24} height={24} alt="삭제" />
             </button>
           </div>
-          {/* )} */}
         </div>
       ))}
 

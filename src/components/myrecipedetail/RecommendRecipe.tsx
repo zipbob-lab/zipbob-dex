@@ -10,13 +10,6 @@ import { Recipe } from "@/types/Search";
 const RecommendRecipe = () => {
   const fetchRandomRecipe = async (): Promise<Recipe[]> => {
     const { data, error } = await browserClient.rpc("random_recipes", { limit_row: 10 });
-    // .from("MY_RECIPE_TABLE")
-    // .select("*")
-    // .not("recipe_seq", "is", null)
-
-    // // .order("recipe_seq", { ascending: false })
-    // .limit(10);
-
     if (error) {
       console.error("추천 레시피를 불러오는 과정에서 에러 발생" + error);
     }

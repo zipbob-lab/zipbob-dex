@@ -167,7 +167,3 @@ const SearchResult = () => {
 };
 
 export default SearchResult;
-
-// 정렬옵션 제거로 인한 코드 리펙토링 필요
-// {/* <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0"></div> */}
-// {/* <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} /> 검색 구분옵션 2024.11.19 사용중단 */}
