@@ -41,7 +41,11 @@ const Timer: React.FC = memo(() => {
     } else if (timeLeft <= 0 && isRunning) {
       clearInterval(timer!);
       setIsRunning(false);
-      triggerNotification(setPopupMessage);
+      triggerNotification().then((type) => {
+        if (type === "popup") {
+          setPopupMessage("타이머가 종료되었습니다!");
+        }
+      });
       playSound();
     }
 

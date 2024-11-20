@@ -28,7 +28,7 @@ export const fetchUserProfile = async (): Promise<{
   } = await browserClient.auth.getUser();
 
   if (userError || !user) {
-    console.error("사용자 정보를 가져올 수 없거나 로그인 상태가 아닙니다:", userError?.message);
+    console.log("사용자 정보를 가져올 수 없거나 로그인 상태가 아닙니다:", userError?.message);
     return null;
   }
 

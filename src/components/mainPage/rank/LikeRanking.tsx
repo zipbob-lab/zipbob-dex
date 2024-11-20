@@ -4,6 +4,7 @@ import browserClient from "@/supabase/client";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import LikeCard from "./LikeCard";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 type UserNicknames = {
   [key: number]: string;
@@ -56,7 +57,7 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   }, [posts]);
 
   if (isPostPending) {
-    return <div>좋아요 랭킹을 가져오는중입니다</div>;
+    return <LoadingSpinner />;
   }
 
   if (isPostError) {
