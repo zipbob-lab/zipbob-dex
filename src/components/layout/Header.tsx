@@ -49,7 +49,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="hidden items-center justify-between border-b border-[#E5E5E5] px-3 py-3 md:flex xl:px-[3.75rem]">
+      <header className="fixed z-50 hidden w-full items-center justify-between border-b border-[#E5E5E5] bg-white px-3 py-3 md:flex xl:px-[3.75rem]">
         <nav className="flex flex-shrink-0 items-center lg:gap-2 xl:gap-8">
           <Link href="/" className="relative h-[3.5rem] w-[7.25rem]">
             <Image src={MainLogo} fill alt="메인 로고" />
@@ -66,7 +66,7 @@ const Header = () => {
         {/* 로그인 모달 */}
         {isLoginModal && <LoginCheckModal onClose={() => setIsLoginModal(false)} />}
       </header>
-      <header className="flex items-center justify-between px-5 py-2 md:hidden">
+      <header className="fixed z-50 flex w-full items-center justify-between bg-white px-5 py-2 md:hidden">
         <div className="flex cursor-pointer" onClick={() => setIsHamburgerMenuOpen(true)}>
           <Image src={HamburgerMenuIcon} alt="햄버거 메뉴" className="h-auto w-auto" />
         </div>

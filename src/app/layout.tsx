@@ -16,12 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <ReactQueryClientProvider>
     <html lang="ko" className={pretendard.variable}>
       <body className="font-pretendard">
         <Providers>{children}</Providers>
       </body>
     </html>
-    // </ReactQueryClientProvider>
   );
 }

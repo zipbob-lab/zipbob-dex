@@ -32,7 +32,7 @@ const Introduce = () => {
       <div className="relative w-full rounded-[3.75rem] bg-[#F7F7F7] py-[2.75rem] md:py-[2.81rem] xl:py-[4rem]">
         <div className="mx-auto flex flex-col items-center gap-[2rem] overflow-hidden md:flex-row md:justify-center xl:gap-[5.87rem]">
           <div className="relative h-[7.56rem] w-[15.5rem] md:h-[10.5rem] md:w-[21.5rem] lg:h-[15.6rem] lg:w-[32rem] xl:h-[19.5rem] xl:w-[40rem]">
-            <Image src={MainSvg2} alt="메인페이지 이미지2" />
+            <Image src={MainSvg2} priority fill alt="메인페이지 이미지2" />
           </div>
           <div className="flex w-[16.3rem] flex-col justify-center gap-6 lg:w-[18.1rem]">
             <h2 className="font-wiggle text-main-20 text-[#834D27] md:text-main-24 xl:text-main-30">

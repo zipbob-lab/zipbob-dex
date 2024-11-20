@@ -185,18 +185,14 @@ const InputField = () => {
       setRecipeDoneImgFile(undefined);
       setRecipeDoneImgView("");
     } else {
-      // setRecipeDoingImgFileArray((prev) => prev.map((file, i) => (i === index ? { file: undefined } : file)));
-      // setRecipeDoingImgViewArray((prev) => prev.map((view, i) => (i === index ? "" : view)));
       const updatedFileArray = [...recipeDoingImgFileArray];
       updatedFileArray[index] = ImageUploadIcon;
       setRecipeDoingImgFileArray(updatedFileArray);
-      // console.log("업데이트 파일 배열: ", updatedFileArray);
 
       const updatedViewArray = [...recipeDoingImgViewArray];
-      // 여기다가 기본 이미지 넣어야됨
+      // 기본이미지
       updatedViewArray[index] = "/DEFAULT_IMAGE";
       setRecipeDoingImgViewArray(updatedViewArray);
-      // console.log("업데이트 뷰 배열: ", updatedViewArray);
     }
 
     setImgModalIndex(null);

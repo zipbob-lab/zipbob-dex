@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Yangjin";
-  src: url("./fonts/YangJin.woff") format("woff");
-}
-
-@font-face {
   font-family: "Wiggle";
   src: url("./fonts/WiggleHangeul.woff") format("woff");
 }
@@ -18,7 +13,6 @@
 }
 
 :root {
-  --font-yangjin: "Yangjin";
   --font-wiggle: "Wiggle";
   --font-Pretendard: "Pretendard";
 }

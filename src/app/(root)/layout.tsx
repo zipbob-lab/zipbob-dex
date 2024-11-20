@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="relative grow">
+      <div className="relative mt-[3rem] grow md:mt-[5rem]">
         <ProfileDropbox />
         {children}
       </div>
