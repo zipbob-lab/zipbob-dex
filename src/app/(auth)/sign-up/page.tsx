@@ -1,4 +1,10 @@
 import SignUpForm from "@/components/authPage/Form/SignUpForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "회원가입 페이지",
+  description: "이메일로 간편하게 회원가입을 할 수 있습니다."
+};
 
 const SignupPage = () => {
   return (
