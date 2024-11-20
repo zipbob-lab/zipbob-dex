@@ -1,18 +1,14 @@
-export const triggerNotification = async (setPopupMessage: (msg: string | null) => void) => {
-  if (Notification.permission === "granted") {
+export const triggerNotification = async (): Promise<"popup" | "push"> => {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (!isMobile && Notification.permission === "granted") {
     new Notification("타이머 종료", {
       body: "타이머가 종료되었습니다!",
       icon: "/images/mainLogo.svg"
     });
-    setPopupMessage("타이머가 종료되었습니다!");
-  } else if (Notification.permission === "default") {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-      new Notification("타이머 종료", {
-        body: "타이머가 종료되었습니다!"
-      });
-      setPopupMessage("타이머가 종료되었습니다!");
-    }
+    return "push"; // 푸쉬 알림이 성공한 경우
+  } else {
+    return "popup"; // 토스트 알림이 필요한 경우
   }
 };
 
