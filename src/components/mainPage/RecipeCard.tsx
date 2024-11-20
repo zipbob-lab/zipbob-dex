@@ -59,7 +59,7 @@ const RecipeCard = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardPr
         {/* 편집 모드 아닐 때 -> LikeButton / ScrapButton 활성화 */}
         {!isEditMode ? (
           <div className="flex" onClick={(e) => e.stopPropagation()}>
-            <LikeButton postId={post.post_id} />
+            <LikeButton postId={post.post_id} size={16} />
             <ScrapButton postId={post.post_id} />
           </div>
         ) : (
