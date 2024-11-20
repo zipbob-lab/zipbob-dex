@@ -19,40 +19,47 @@ const MobileSearch = ({ setIsSearching }: MobileSearchprops) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
 
-  // 로컬 스토리지 검색어 불러오기
+  // 로컬 스토리지에서 검색어 불러오기
   useEffect(() => {
+    loadStoredKeywords();
+  }, []);
+
+  // 로컬 스토리지에서 검색어 불러오는 함수
+  const loadStoredKeywords = () => {
     if (typeof window !== "undefined") {
       const storedKeywords = localStorage.getItem("keywords");
       if (storedKeywords) {
         setKeywords(JSON.parse(storedKeywords));
       }
     }
-  }, []);
+  };
 
-  // keywords가 변경 시 로컬 스토리지 저장
-  useEffect(() => {
+  // 로컬 스토리지에 검색어 저장하는 함수
+  const saveKeywordsToLocalStorage = (updatedKeywords: KeyInterface[]) => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("keywords", JSON.stringify(keywords));
+      localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
     }
-  }, [keywords]);
+  };
 
   // 검색어 추가 (최대 5개 유지)
   const addKeyword = (text: string) => {
     const newKeyword = { id: Date.now(), text };
-    setKeywords((prevKeywords) => {
-      const updatedKeywords = [newKeyword, ...prevKeywords];
-      return updatedKeywords.slice(0, 5);
-    });
+    const updatedKeywords = [newKeyword, ...keywords].slice(0, 5);
+    setKeywords(updatedKeywords);
+    saveKeywordsToLocalStorage(updatedKeywords);
   };
 
   // 검색어 삭제
   const removeKeyword = (id: number) => {
-    setKeywords((prevKeywords) => prevKeywords.filter((keyword) => keyword.id !== id));
+    const updatedKeywords = keywords.filter((keyword) => keyword.id !== id);
+    setKeywords(updatedKeywords);
+    saveKeywordsToLocalStorage(updatedKeywords);
   };
 
   // 모든 검색어 삭제
   const deleteKeywords = () => {
     setKeywords([]);
+    saveKeywordsToLocalStorage([]);
   };
 
   // 검색어 변경 핸들러
@@ -64,15 +71,16 @@ const MobileSearch = ({ setIsSearching }: MobileSearchprops) => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim() === "") return;
-    router.push(`/searchResults/${searchValue}`);
     addKeyword(searchValue);
+    router.push(`/searchResults/${searchValue}`);
     setSearchValue("");
     setIsSearching(false);
   };
 
   // 저장된 검색어 클릭 시 페이지 이동 후 창 닫기
   const handleKeywordClick = (text: string) => {
-    router.push(`/searchResults/${text}`); // 페이지 이동
+    addKeyword(text);
+    router.push(`/searchResults/${text}`);
     setIsSearching(false);
   };
 
