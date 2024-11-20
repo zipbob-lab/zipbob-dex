@@ -74,13 +74,15 @@ const UserComment = ({ userId }: { userId: string }) => {
             <div className="flex w-full flex-col justify-between pb-5">
               <div className="flex">
                 {comment.recipe ? (
-                  <Image
-                    src={comment.recipe.recipe_img_done || DefaultImage}
-                    alt={comment.recipe.recipe_title}
-                    width={100}
-                    height={100}
-                    className="mr-5 h-[100px] w-[100px] rounded-md"
-                  />
+                  <div className="relative mr-5 h-[100px] w-[100px]">
+                    <Image
+                      src={comment.recipe.recipe_img_done || DefaultImage}
+                      alt={comment.recipe.recipe_title}
+                      fill
+                      sizes="100"
+                      className="rounded-md"
+                    />
+                  </div>
                 ) : (
                   <p>댓글 정보를 찾을 수 없습니다</p>
                 )}
@@ -118,7 +120,7 @@ const UserComment = ({ userId }: { userId: string }) => {
         pageSize={pageSize}
         totalItems={commentCount}
         onPageChange={(page) => setCurrentPage(page)}
-        className="min-w-[372px] gap-6 pt-6"
+        className="min-w-[372px] gap-6"
         buttonClassName="px-10"
       />
     </div>

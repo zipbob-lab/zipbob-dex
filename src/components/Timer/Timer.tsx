@@ -41,7 +41,11 @@ const Timer: React.FC = memo(() => {
     } else if (timeLeft <= 0 && isRunning) {
       clearInterval(timer!);
       setIsRunning(false);
-      triggerNotification(setPopupMessage);
+      triggerNotification().then((type) => {
+        if (type === "popup") {
+          setPopupMessage("타이머가 종료되었습니다!");
+        }
+      });
       playSound();
     }
 
@@ -81,7 +85,7 @@ const Timer: React.FC = memo(() => {
   };
 
   return (
-    <div className="fixed bottom-20 right-16 z-10">
+    <div className="fixed bottom-20 z-10 ssm:right-4 md:right-16">
       {/* 팝업 메시지 호출 */}
       {popupMessage && (
         <div className="absolute right-0 top-[-50px] rounded-lg bg-Primary-300 p-3 text-white shadow-md">

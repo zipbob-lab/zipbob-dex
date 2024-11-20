@@ -51,8 +51,8 @@ const LikeCard = ({ post, userNickname, rank }: LikeCardProps) => {
                 className="h-auto w-auto"
               />
             </div>
-            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-              <LikeButton postId={post?.post_id} />
+            <div className="flex" onClick={(e) => e.stopPropagation()}>
+              <LikeButton postId={post?.post_id} size={16} />
               <ScrapButton postId={post?.post_id} />
             </div>
           </div>

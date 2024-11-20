@@ -1,26 +1,15 @@
-"use client";
-
-// import React, { useState } from "react";
 import TagFilter from "@/components/fridgeListPage/FridgeFilter";
-// import Timer from "@/components/Timer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "냉장고 탐험",
+  description: "재료 조건을 통해 원하는 레시피를 찾아 볼수 있습니다."
+};
 
 const FridgeListPage = () => {
-  // const [modal, setModal] = useState(false);
-
-  // const handleTimerOpen = () => {
-  //   setModal(true);
-  // };
-
-  // const handleTimerClose = () => {
-  //   setModal(false);
-  // };
-
   return (
     <div>
       <TagFilter />
-      {/* 타이머 모달 기능 메인페이지 적용하기 */}
-      {/* <button onClick={handleTimerOpen}>타이머</button>
-      {modal && <Timer onClose={handleTimerClose} />} */}
     </div>
   );
 };

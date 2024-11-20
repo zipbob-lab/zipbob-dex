@@ -127,7 +127,7 @@ const TagFilter: React.FC = () => {
           <div className="mb-[5rem] mt-[5rem] flex justify-center">
             <button
               onClick={handleSearch}
-              className="flex h-[3rem] w-full max-w-[27.5rem] items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300"
+              className="flex h-[3rem] w-full items-center justify-center space-x-[0.25rem] rounded-xl bg-Primary-300 ssm:max-w-[21.4rem] sm:max-w-[21.4rem] md:max-w-[27.5rem] lg:md:max-w-[27.5rem]"
             >
               <p className="text-body-20 text-white">검색</p>
             </button>
@@ -147,7 +147,7 @@ const TagFilter: React.FC = () => {
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-                <div className="mb-[2rem] flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
+                <div className="flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
                   <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                     <Pagination
                       currentPage={currentPage}

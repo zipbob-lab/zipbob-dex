@@ -1,6 +1,12 @@
 import ProfileDropbox from "@/components/common/dropbox/ProfileDropbox";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "집밥도감",
+  description: "요리 초보 사용자들을 위한 레시피 안내 서비스"
+};
 
 export default function RootLayout({
   children,
