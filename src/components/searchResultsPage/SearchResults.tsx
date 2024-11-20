@@ -130,7 +130,7 @@ const SearchResult = () => {
     <div className="py-[2rem]">
       {filteredRecipes.length > 0 && (
         <div className="mx-auto flex items-center justify-between ssm:mb-[1.5rem] ssm:max-w-[21rem] sm:mb-[1.5rem] sm:max-w-[21rem] md:mb-[1.5rem] md:max-w-[43rem] lg:mb-[1.5rem] lg:max-w-[64rem]">
-          <p className="font-semibold ssm:text-body-20 sm:text-body-20 md:text-body-20 lg:text-body-20">
+          <p className="font-semibold ssm:text-body-18 sm:text-body-18 md:text-body-20 lg:text-body-20">
             검색 결과 {filteredRecipes.length}개
           </p>
           <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
