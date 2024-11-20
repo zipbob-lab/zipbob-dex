@@ -112,7 +112,7 @@ const TagFilter: React.FC = () => {
 
   return (
     <div>
-      <div className="mx-auto py-[2rem]">
+      <div className="mx-auto">
         <div className="mx-auto w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
           <div className="gap-[0.5rem]">
             <p className="text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
@@ -147,7 +147,7 @@ const TagFilter: React.FC = () => {
                     <RecipeCard key={recipe.post_id} post={recipe} />
                   ))}
                 </ul>
-                <div className="mb-[2rem] flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
+                <div className="flex items-center justify-center ssm:mt-[1.25rem] sm:mt-[1.25rem] md:mt-[1.5rem] lg:mt-[1.75rem]">
                   <div className="w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[22.6rem] lg:max-w-[27.3rem]">
                     <Pagination
                       currentPage={currentPage}
