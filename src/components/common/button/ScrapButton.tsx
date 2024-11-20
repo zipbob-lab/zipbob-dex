@@ -10,7 +10,7 @@ import scrapEmpty from "@images/scrapEmpty.svg";
 import scrapFill from "@images/scrapFill.svg";
 import LoginCheckModal from "../modal/LoginCheckModal";
 
-const ScrapButton = ({ postId }: { postId: string }) => {
+const ScrapButton = ({ postId, size = 16 }: { postId: string; size?: number }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isScrapped, setIsScrapped] = useState(false);
@@ -74,7 +74,7 @@ const ScrapButton = ({ postId }: { postId: string }) => {
   return (
     <>
       <button className="flex cursor-pointer items-center px-[0.25rem]" onClick={handleMarkClick}>
-        <Image src={isScrapped ? scrapFill : scrapEmpty} alt="스크랩 버튼" width={16} height={16} />
+        <Image src={isScrapped ? scrapFill : scrapEmpty} alt="스크랩 버튼" width={size} height={size} />
         <span className="flex items-center text-body-12 text-Gray-500">{scrapCount || 0}</span>
       </button>
 
