@@ -135,7 +135,7 @@ const RecipeDetailView = ({ postId }: RecipeDetailViewProps) => {
               {/* 좋아요/스크랩 버튼 */}
               <div className="mr-1 flex flex-row items-center gap-x-[0.75rem] md:gap-x-[0.5rem]">
                 <LikeButton postId={postId} />
-                <ScrapButton postId={postId} />
+                <ScrapButton postId={postId} size={20} />
               </div>
             </div>
           </div>
