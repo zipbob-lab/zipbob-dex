@@ -2,6 +2,7 @@ import { supabase } from "@/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { UserRankingProps } from "@/types/main";
 import UserCard from "./UserCard";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   const fetchUserRanking = async () => {
@@ -30,7 +31,7 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   });
 
   if (isUserPending) {
-    return <div>유저 랭킹을 가져오는중입니다</div>;
+    return <LoadingSpinner />;
   }
 
   if (isUserError) {

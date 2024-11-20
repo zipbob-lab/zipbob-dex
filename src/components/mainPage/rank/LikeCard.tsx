@@ -52,7 +52,7 @@ const LikeCard = ({ post, userNickname, rank }: LikeCardProps) => {
               />
             </div>
             <div className="flex" onClick={(e) => e.stopPropagation()}>
-              <LikeButton postId={post?.post_id} />
+              <LikeButton postId={post?.post_id} size={16} />
               <ScrapButton postId={post?.post_id} />
             </div>
           </div>
