@@ -115,7 +115,7 @@ const TagFilter: React.FC = () => {
       <div className="mx-auto">
         <div className="mx-auto w-full ssm:max-w-[21rem] sm:max-w-[21rem] md:max-w-[50.1rem] lg:max-w-[64rem]">
           <div className="gap-[0.5rem]">
-            <p className="text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
+            <p className="mt-[2rem] text-heading-20 md:text-heading-24 lg:text-heading-24">냉장고를 탐험해 봅시다!</p>
             <p className="mt-[1rem] text-body-14 md:text-body-18 lg:text-body-18">
               재료들을 입력하면 맞춤 레시피를 추천해 드려요.
             </p>

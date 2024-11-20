@@ -1,4 +1,4 @@
-export type Recipe = {
+export interface Recipe {
   id: number;
   recipe_seq: number;
   post_id: string; // Supabase의 post_id
@@ -20,7 +20,7 @@ export type Recipe = {
 
   like_count: number; // 누적 좋아요 기능 카운트
   scrap_count: number; //  누적 스크랩 횟수 카운트
-};
+}
 
 interface Ingredient {
   ingredient: string;

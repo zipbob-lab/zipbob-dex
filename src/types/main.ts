@@ -1,22 +1,22 @@
-export type UserRankingProps = {
+export interface UserRankingProps {
   showUserRanking: boolean;
-};
+}
 
-export type PostRank = {
+export interface PostRank {
   post_count: number;
   post_id: string;
-};
+}
 
-export type RecentCommentCardProps = {
+export interface RecentCommentCardProps {
   comment: {
     comment: string;
     post_id: string;
     user_id: string;
     created_at: string;
   };
-};
+}
 
-export type RecipeCardProps = {
+export interface RecipeCardProps {
   post: {
     post_id: string;
     recipe_img_done: string;
@@ -26,4 +26,4 @@ export type RecipeCardProps = {
     recipe_level: string;
     user_id: string;
   };
-};
+}

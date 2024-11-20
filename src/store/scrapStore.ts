@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ScrapStore = {
+interface ScrapStore {
   userId: string | null;
   setUserId: (id: string | null) => void;
   folderName: string;
@@ -11,7 +11,7 @@ type ScrapStore = {
   setExistingFolders: (folders: string[]) => void;
   selectedFolder: string | null | undefined;
   setSelectedFolder: (folder: string | null | undefined) => void;
-};
+}
 
 export const useScrapStore = create<ScrapStore>((set) => ({
   userId: null,

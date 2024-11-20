@@ -1,7 +1,7 @@
-type RankingHatProps = {
+interface RankingHatProps {
   fillColor: string;
   size: number;
-};
+}
 
 const RankingHat = ({ fillColor, size }: RankingHatProps) => {
   return (

@@ -55,5 +55,3 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filterOption, setFilterOp
 };
 
 export default FilterOptions;
-
-// 검색 구분옵션 2024.11.19 사용중단

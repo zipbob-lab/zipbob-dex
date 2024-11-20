@@ -3,8 +3,6 @@
 import { useState } from "react";
 import UserRanking from "./UserRanking";
 import LikeRanking from "./LikeRanking";
-// import Carrots from "@images/carrot.svg";
-// import Image from "next/image";
 
 const Ranking = () => {
   const [showUserRanking, setShowUserRanking] = useState(false);
@@ -40,9 +38,6 @@ const Ranking = () => {
           )}
         </div>
       </div>
-      {/* <div className="absolute -bottom-16 left-0">
-        <Image src={Carrots} alt="당근 아이콘" />
-      </div> */}
     </div>
   );
 };
