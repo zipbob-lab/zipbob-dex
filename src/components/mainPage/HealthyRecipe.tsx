@@ -45,7 +45,9 @@ const HealthyRecipe = () => {
         <p className="mt-3 text-body-14 md:text-body-16 xl:mt-4 xl:text-body-18">
           집밥도감이 추천하는 건강한 레시피에 도전해 보세요!
         </p>
-        <div className="mt-[1.75rem] grid grid-cols-2 place-items-center gap-x-3 gap-y-4 md:mt-[2rem] md:flex md:justify-between xl:mt-[3.75rem] xl:gap-[1rem]">
+        <div
+          className={`${isPostPending ? "justify-center" : "justify-between"} mt-[1.75rem] grid grid-cols-2 place-items-center gap-x-3 gap-y-4 md:mt-[2rem] md:flex xl:mt-[3.75rem] xl:gap-[1rem]`}
+        >
           {isPostPending ? <LoadingSpinner /> : posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
         <div className="mt-[1.75rem] flex items-center justify-center md:mt-[2rem] xl:mt-[3rem]">
