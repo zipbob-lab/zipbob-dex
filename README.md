@@ -115,7 +115,7 @@
  
  - 로그인/회원가입 페이지, 메인페이지
    - supabase를 이용한 소셜로그인, 일반로그인 기능
-   - 메인페이지(헤더, 푸터) 제작
+   - 메인페이지 + 헤더, 푸터 제작
 </details>
 
 <details>
@@ -124,6 +124,188 @@
  - 검색 결과 페이지, 냉장고 탐험 페이지
    - 레시피 메뉴나 재료 검색 기능
    - 있는 재료와 없는 재료를 검색해서 레시피 찾기 기능
+</details>
+<br/>
+
+## 📂 프로젝트 구조
+
+<details>
+<summary>폴더 구조</summary>
+ 
+```
+src
+ ┣ app
+ ┃ ┣ (auth)
+ ┃ ┃ ┣ login
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┗ sign-up
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┣ (root)
+ ┃ ┃ ┣ @modal
+ ┃ ┃ ┃ ┣ (.)myrecipewrite
+ ┃ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┃ ┗ default.tsx
+ ┃ ┃ ┣ fridge-list
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ mypages
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ myrecipedetail
+ ┃ ┃ ┃ ┗ [id]
+ ┃ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ myrecipewrite
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ scraps
+ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ searchResults
+ ┃ ┃ ┃ ┗ [query]
+ ┃ ┃ ┃ ┃ ┗ page.tsx
+ ┃ ┃ ┣ layout.tsx
+ ┃ ┃ ┗ page.tsx
+ ┃ ┣ api
+ ┃ ┃ ┣ fetchRecipeData.ts
+ ┃ ┃ ┣ fetchRecipeDbData.ts
+ ┃ ┃ ┣ fetchSupabaseFetch.ts
+ ┃ ┃ ┗ saveRecipeDataSupabase.ts
+ ┃ ┣ auth
+ ┃ ┃ ┗ callback
+ ┃ ┃ ┃ ┗ route.ts
+ ┃ ┣ fonts
+ ┃ ┃ ┣ PretendardVariable.woff2
+ ┃ ┃ ┗ WiggleHangeul.woff
+ ┃ ┣ favicon.ico
+ ┃ ┣ globals.css
+ ┃ ┣ layout.tsx
+ ┃ ┗ providers.tsx
+ ┣ components
+ ┃ ┣ Timer
+ ┃ ┃ ┣ Notification.tsx
+ ┃ ┃ ┗ Timer.tsx
+ ┃ ┣ authPage
+ ┃ ┃ ┣ Form
+ ┃ ┃ ┃ ┣ LoginForm.tsx
+ ┃ ┃ ┃ ┗ SignUpForm.tsx
+ ┃ ┃ ┣ SignUp
+ ┃ ┃ ┃ ┣ AccountSet.tsx
+ ┃ ┃ ┃ ┗ UserInfoSet.tsx
+ ┃ ┃ ┣ InputField.tsx
+ ┃ ┃ ┗ LoginContent.tsx
+ ┃ ┣ comments
+ ┃ ┃ ┣ CommentDropBox.tsx
+ ┃ ┃ ┣ CommentExp.ts
+ ┃ ┃ ┣ CommentHooks.ts
+ ┃ ┃ ┣ Comments.tsx
+ ┃ ┃ ┗ DeleteConfirmModal.tsx
+ ┃ ┣ common
+ ┃ ┃ ┣ button
+ ┃ ┃ ┃ ┣ GithubButton.tsx
+ ┃ ┃ ┃ ┣ GoogleButton.tsx
+ ┃ ┃ ┃ ┣ KakaoButton.tsx
+ ┃ ┃ ┃ ┣ LikeButton.tsx
+ ┃ ┃ ┃ ┣ RecipeWriteButton.tsx
+ ┃ ┃ ┃ ┣ ScrapButton.tsx
+ ┃ ┃ ┃ ┗ ScrollTopButton.tsx
+ ┃ ┃ ┣ cards
+ ┃ ┃ ┣ dropbox
+ ┃ ┃ ┃ ┗ ProfileDropbox.tsx
+ ┃ ┃ ┣ modal
+ ┃ ┃ ┃ ┣ ConfirmModal.tsx
+ ┃ ┃ ┃ ┗ LoginCheckModal.tsx
+ ┃ ┃ ┣ search
+ ┃ ┃ ┃ ┣ ListCard.tsx
+ ┃ ┃ ┃ ┣ Searchbar.tsx
+ ┃ ┃ ┃ ┗ SortOptions.tsx
+ ┃ ┃ ┣ EmptyContent.tsx
+ ┃ ┃ ┣ HamburgerMenu.tsx
+ ┃ ┃ ┣ LoadingSpinner.tsx
+ ┃ ┃ ┣ MobileSearch.tsx
+ ┃ ┃ ┗ Pagination.tsx
+ ┃ ┣ fridgeListPage
+ ┃ ┃ ┣ FridgeFilter.tsx
+ ┃ ┃ ┣ InputAdd.tsx
+ ┃ ┃ ┗ InputDelete.tsx
+ ┃ ┣ layout
+ ┃ ┃ ┣ AuthStatusBar.tsx
+ ┃ ┃ ┣ Footer.tsx
+ ┃ ┃ ┗ Header.tsx
+ ┃ ┣ mainPage
+ ┃ ┃ ┣ RecentComment
+ ┃ ┃ ┃ ┣ RecentComment.tsx
+ ┃ ┃ ┃ ┗ RecentCommentCard.tsx
+ ┃ ┃ ┣ rank
+ ┃ ┃ ┃ ┣ LikeCard.tsx
+ ┃ ┃ ┃ ┣ LikeRanking.tsx
+ ┃ ┃ ┃ ┣ Ranking.tsx
+ ┃ ┃ ┃ ┣ UserCard.tsx
+ ┃ ┃ ┃ ┗ UserRanking.tsx
+ ┃ ┃ ┣ HealthyRecipe.tsx
+ ┃ ┃ ┣ Introduce.tsx
+ ┃ ┃ ┣ RecentRecipe.tsx
+ ┃ ┃ ┗ RecipeCard.tsx
+ ┃ ┣ mypage
+ ┃ ┃ ┣ level
+ ┃ ┃ ┃ ┣ UserLevel.tsx
+ ┃ ┃ ┃ ┣ UserLevelEmoji.tsx
+ ┃ ┃ ┃ ┗ UserLevelOverview.tsx
+ ┃ ┃ ┣ EditProfileModal.tsx
+ ┃ ┃ ┣ MyPageProfile.tsx
+ ┃ ┃ ┣ MyPostsCommentView.tsx
+ ┃ ┃ ┣ ProfileImageUpload.tsx
+ ┃ ┃ ┣ UserComment.tsx
+ ┃ ┃ ┗ UserPostLists.tsx
+ ┃ ┣ myrecipedetail
+ ┃ ┃ ┣ ModifyDeletePost.tsx
+ ┃ ┃ ┣ RecipeCard2.tsx
+ ┃ ┃ ┣ RecipeDetailView.tsx
+ ┃ ┃ ┣ RecommendRecipe.tsx
+ ┃ ┃ ┗ fetchRecipeWithUserInfo.tsx
+ ┃ ┣ myrecipewrite
+ ┃ ┃ ┣ CloseWriteConfirm.tsx
+ ┃ ┃ ┣ ImageEditModal.tsx
+ ┃ ┃ ┣ IngredientsFields.tsx
+ ┃ ┃ ┣ InputField.tsx
+ ┃ ┃ ┣ RecipeInfoFields.tsx
+ ┃ ┃ ┗ RecipeSubmitButton.tsx
+ ┃ ┣ scraps
+ ┃ ┃ ┣ CustomToast.tsx
+ ┃ ┃ ┣ ScrapModal.tsx
+ ┃ ┃ ┣ ScrapPage.tsx
+ ┃ ┃ ┗ scrapPageNav.tsx
+ ┃ ┣ searchResultsPage
+ ┃ ┃ ┣ SearchOptions.tsx
+ ┃ ┃ ┗ SearchResults.tsx
+ ┃ ┗ ReactQueryClientProvider.tsx
+ ┣ hooks
+ ┃ ┗ useScrapData.ts
+ ┣ libs
+ ┃ ┗ reactQueryClient.ts
+ ┣ serverActions
+ ┃ ┣ fetchRecipeDataFromSupabase.ts
+ ┃ ┣ profileAction.ts
+ ┃ ┗ scrapActions.ts
+ ┣ store
+ ┃ ┣ authStore.ts
+ ┃ ┣ dropboxStore.ts
+ ┃ ┗ scrapStore.ts
+ ┣ styles
+ ┃ ┗ reset.css
+ ┣ supabase
+ ┃ ┣ client.ts
+ ┃ ┣ middleware.ts
+ ┃ ┣ server.ts
+ ┃ ┗ supabase.ts
+ ┣ types
+ ┃ ┣ MyPage.ts
+ ┃ ┣ RecipeMethodEnum.ts
+ ┃ ┣ RecipeTypeEnum.ts
+ ┃ ┣ RecipeWriteFormType.ts
+ ┃ ┣ Scraps.ts
+ ┃ ┣ Search.ts
+ ┃ ┣ auth.ts
+ ┃ ┗ main.ts
+ ┗ utils
+ ┃ ┣ updateUserRank.ts
+ ┃ ┗ uploadProfileImage.ts
+```
 </details>
 <br/>
 
