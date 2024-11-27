@@ -27,3 +27,26 @@ export interface RecipeCardProps {
     user_id: string;
   };
 }
+
+export interface UserCardProps {
+  user: {
+    user_exp: number;
+    user_img: string;
+    user_nickname: string;
+    user_introduce: string;
+  };
+  rank: number;
+}
+
+export interface UserNicknames {
+  [key: number]: string;
+}
+
+export interface LikeCardProps extends RecipeCardProps {
+  userNickname: string;
+  rank: number;
+}
+
+export interface RankingCardSkeletonProps {
+  rank: number;
+}
