@@ -2,7 +2,7 @@ import { supabase } from "@/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { UserRankingProps } from "@/types/main";
 import UserCard from "./UserCard";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import UserCardSkeleton from "./UserCardSkeleton";
 
 const UserRanking = ({ showUserRanking }: UserRankingProps) => {
   const fetchUserRanking = async () => {
@@ -30,17 +30,17 @@ const UserRanking = ({ showUserRanking }: UserRankingProps) => {
     staleTime: 0
   });
 
-  if (isUserPending) {
-    return <LoadingSpinner />;
-  }
-
   if (isUserError) {
     return <div>유저 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
   }
 
   return (
     <div className="flex flex-col justify-between gap-6 md:flex-row md:gap-0">
-      {users?.map((user, index) => <UserCard key={user.user_id} user={user} rank={index + 1} />)}
+      {isUserPending
+        ? Array(3)
+            .fill(0)
+            .map((_, index) => <UserCardSkeleton key={index} rank={index + 1} />)
+        : users?.map((user, index) => <UserCard key={user.user_id} user={user} rank={index + 1} />)}
     </div>
   );
 };

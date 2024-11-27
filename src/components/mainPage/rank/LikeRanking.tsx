@@ -1,14 +1,10 @@
-import { UserRankingProps } from "@/types/main";
+import { UserNicknames, UserRankingProps } from "@/types/main";
 import { useQuery } from "@tanstack/react-query";
 import browserClient from "@/supabase/client";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import LikeCard from "./LikeCard";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
-
-interface UserNicknames {
-  [key: number]: string;
-}
+import LikeCardSkeleton from "./LikeCardSkeleton";
 
 const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
   const [userNickname, setUserNickname] = useState<UserNicknames>({
@@ -56,19 +52,19 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
     fetchUserNicknames();
   }, [posts]);
 
-  if (isPostPending) {
-    return <LoadingSpinner />;
-  }
-
   if (isPostError) {
     return <div>좋아요 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
   }
 
   return (
     <div className="flex flex-col justify-between gap-6 md:flex-row md:gap-0">
-      {posts?.map((post, index) => (
-        <LikeCard key={post.id} post={post} userNickname={userNickname[index]} rank={index + 1} />
-      ))}
+      {isPostPending
+        ? Array(3)
+            .fill(0)
+            .map((_, index) => <LikeCardSkeleton key={index} rank={index + 1} />)
+        : posts?.map((post, index) => (
+            <LikeCard key={post.id} post={post} userNickname={userNickname[index]} rank={index + 1} />
+          ))}
     </div>
   );
 };

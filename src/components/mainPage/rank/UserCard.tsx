@@ -1,15 +1,6 @@
 import Image from "next/image";
 import DefaultImage from "@images/default-profile.svg";
-
-interface UserCardProps {
-  user: {
-    user_exp: number;
-    user_img: string;
-    user_nickname: string;
-    user_introduce: string;
-  };
-  rank: number;
-}
+import { UserCardProps } from "@/types/main";
 
 const UserCard = ({ user, rank }: UserCardProps) => {
   return (
@@ -19,7 +10,7 @@ const UserCard = ({ user, rank }: UserCardProps) => {
       >
         <p className="mt-1 font-wiggle text-[1.125rem] leading-[120%] text-white">{rank}위</p>
       </div>
-      <div className="flex max-w-[17rem] flex-col gap-[0.9rem] rounded-[1.25rem] p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)] md:max-w-[14.5rem] xl:max-w-[20rem]">
+      <div className="flex max-w-[17rem] flex-col gap-[0.755rem] rounded-[1.25rem] p-4 shadow-[0px_4px_20px_0px_rgba(154,130,102,0.1)] md:max-w-[14.5rem] xl:max-w-[20rem] xl:gap-[0.9rem]">
         <div className="relative h-[15rem] w-[15rem] md:h-[12.5rem] md:w-[12.5rem] xl:h-[18rem] xl:w-[18rem]">
           <Image
             src={user.user_img || DefaultImage}

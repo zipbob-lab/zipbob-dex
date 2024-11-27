@@ -3,7 +3,7 @@
 import browserClient from "@/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import RecentCommentCard from "./RecentCommentCard";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import RecentCommentCardSkeleton from "./RecentCommentCardSkeleton";
 
 const RecentComment = () => {
   const fetchRecentComments = async () => {
@@ -42,11 +42,11 @@ const RecentComment = () => {
       </h2>
       <p className="mt-3 text-body-16 text-Gray-600 md:mt-4 md:text-body-18">최근에 올라온 후기를 확인해 봐요!</p>
       <div className="mt-[1.75rem] flex flex-col gap-4 md:mt-[2rem] md:grid md:grid-cols-2 md:gap-x-4 md:gap-y-5 xl:mt-[3.75rem]">
-        {isCommentPending ? (
-          <LoadingSpinner />
-        ) : (
-          comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)
-        )}
+        {isCommentPending
+          ? Array(6)
+              .fill(0)
+              .map((_, index) => <RecentCommentCardSkeleton key={index} />)
+          : comments?.map((comment) => <RecentCommentCard key={comment.id} comment={comment} />)}
       </div>
     </div>
   );
