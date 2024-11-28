@@ -1,47 +1,21 @@
-import { UserNicknames, UserRankingProps } from "@/types/main";
-import { useQuery } from "@tanstack/react-query";
-import browserClient from "@/supabase/client";
+import { LikeRankingProps, UserNicknames } from "@/types/main";
 import { useEffect, useState } from "react";
 import { getUserNickname } from "@/serverActions/profileAction";
 import LikeCard from "./LikeCard";
 import LikeCardSkeleton from "./LikeCardSkeleton";
 
-const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
+const LikeRanking = ({ likeRanking }: { likeRanking: LikeRankingProps[] }) => {
+  console.log(likeRanking);
   const [userNickname, setUserNickname] = useState<UserNicknames>({
     0: "",
     1: "",
     2: ""
   });
 
-  const fetchPosts = async () => {
-    const { data, error } = await browserClient
-      .from("MY_RECIPE_TABLE")
-      .select("*")
-      .order("like_count", { ascending: false })
-      .limit(3);
-
-    if (error) {
-      console.error("게시글을 불러오는 과정에서 에러 발생" + error);
-    }
-
-    return data;
-  };
-
-  const {
-    data: posts,
-    isPending: isPostPending,
-    isError: isPostError
-  } = useQuery({
-    queryKey: ["likeRankingPosts"],
-    queryFn: fetchPosts,
-    enabled: !showUserRanking,
-    staleTime: 0
-  });
-
   useEffect(() => {
     const fetchUserNicknames = async () => {
-      if (!posts) return;
-      const userNicknames = await Promise.all(posts.slice(0, 3).map((post) => getUserNickname(post.user_id)));
+      if (!likeRanking) return;
+      const userNicknames = await Promise.all(likeRanking.slice(0, 3).map((post) => getUserNickname(post.user_id)));
       setUserNickname(
         userNicknames.reduce((acc, nickname, index) => {
           acc[index] = nickname;
@@ -50,19 +24,15 @@ const LikeRanking = ({ showUserRanking }: UserRankingProps) => {
       );
     };
     fetchUserNicknames();
-  }, [posts]);
-
-  if (isPostError) {
-    return <div>좋아요 랭킹을 가져오는 도중 에러가 발생했습니다</div>;
-  }
+  }, [likeRanking]);
 
   return (
     <div className="flex flex-col justify-between gap-6 md:flex-row md:gap-0">
-      {isPostPending
+      {!likeRanking
         ? Array(3)
             .fill(0)
             .map((_, index) => <LikeCardSkeleton key={index} rank={index + 1} />)
-        : posts?.map((post, index) => (
+        : likeRanking?.map((post, index) => (
             <LikeCard key={post.id} post={post} userNickname={userNickname[index]} rank={index + 1} />
           ))}
     </div>
