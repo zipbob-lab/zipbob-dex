@@ -1,13 +1,11 @@
-import { createClient } from "@/supabase/server";
+import { supabase } from "@/supabase/supabase";
 import Ranking from "./Ranking";
-
-const serverClient = createClient();
 
 export const revalidate = 60; // 60초마다 ISR
 
 // 서버에서 UserRanking 데이터 페칭
 const fetchUserRanking = async () => {
-  const { data, error } = await serverClient
+  const { data, error } = await supabase
     .from("USER_TABLE")
     .select("user_id, user_img, user_nickname, user_introduce")
     .order("user_exp", { ascending: false })
@@ -19,7 +17,7 @@ const fetchUserRanking = async () => {
 
 // 서버에서 LikeRanking 데이터 페칭
 const fetchLikeRanking = async () => {
-  const { data, error } = await serverClient
+  const { data, error } = await supabase
     .from("MY_RECIPE_TABLE")
     .select("id, post_id, recipe_img_done, recipe_title, recipe_level, user_id")
     .order("like_count", { ascending: false })
