@@ -1,5 +1,8 @@
 export interface UserRankingProps {
-  showUserRanking: boolean;
+  user_id: string;
+  user_img: string;
+  user_nickname: string;
+  user_introduce: string;
 }
 
 export interface PostRank {
@@ -21,9 +24,38 @@ export interface RecipeCardProps {
     post_id: string;
     recipe_img_done: string;
     recipe_title: string;
-    like_count: number;
-    scrap_count: number;
     recipe_level: string;
     user_id: string;
   };
+}
+
+export interface UserCardProps {
+  user: {
+    user_img: string;
+    user_nickname: string;
+    user_introduce: string;
+  };
+  rank: number;
+}
+
+export interface UserNicknames {
+  [key: number]: string;
+}
+
+export interface LikeCardProps extends RecipeCardProps {
+  userNickname: string;
+  rank: number;
+}
+
+export interface RankingCardSkeletonProps {
+  rank: number;
+}
+
+export interface LikeRankingProps {
+  id: number;
+  post_id: string;
+  recipe_img_done: string;
+  recipe_title: string;
+  recipe_level: string;
+  user_id: string;
 }

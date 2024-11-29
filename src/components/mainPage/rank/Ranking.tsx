@@ -3,8 +3,15 @@
 import { useState } from "react";
 import UserRanking from "./UserRanking";
 import LikeRanking from "./LikeRanking";
+import { LikeRankingProps, UserRankingProps } from "@/types/main";
 
-const Ranking = () => {
+const Ranking = ({
+  userRanking,
+  likeRanking
+}: {
+  userRanking: UserRankingProps[];
+  likeRanking: LikeRankingProps[];
+}) => {
   const [showUserRanking, setShowUserRanking] = useState(false);
 
   return (
@@ -31,11 +38,7 @@ const Ranking = () => {
           </button>
         </div>
         <div className="z-10 mt-[3rem] w-[17rem] md:mt-[3.75rem] md:w-[46rem] xl:w-[64rem]">
-          {showUserRanking ? (
-            <UserRanking showUserRanking={showUserRanking} />
-          ) : (
-            <LikeRanking showUserRanking={showUserRanking} />
-          )}
+          {showUserRanking ? <UserRanking userRanking={userRanking} /> : <LikeRanking likeRanking={likeRanking} />}
         </div>
       </div>
     </div>

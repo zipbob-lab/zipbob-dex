@@ -4,12 +4,7 @@ import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import LikeButton from "@/components/common/button/LikeButton";
 import ScrapButton from "@/components/common/button/ScrapButton";
-import { RecipeCardProps } from "@/types/main";
-
-interface LikeCardProps extends RecipeCardProps {
-  userNickname: string;
-  rank: number;
-}
+import { LikeCardProps } from "@/types/main";
 
 const LikeCard = ({ post, userNickname, rank }: LikeCardProps) => {
   const router = useRouter();
@@ -35,9 +30,11 @@ const LikeCard = ({ post, userNickname, rank }: LikeCardProps) => {
           />
         </div>
         <div>
-          <p className="text-title-16 text-Gray-900 xl:text-title-18">{post?.recipe_title}</p>
-          <p className="mt-1 h-[1.05rem] text-body-12 text-Gray-500 xl:h-[1.1375] xl:text-body-14">{userNickname}</p>
-          <div className="mt-3 flex justify-between">
+          <p className="h-[1.349375rem] text-title-16 text-Gray-900 xl:h-[1.51875rem] xl:text-title-18">
+            {post?.recipe_title}
+          </p>
+          <p className="mt-1 h-[1.05rem] text-body-12 text-Gray-500 xl:h-[1.1375rem] xl:text-body-14">{userNickname}</p>
+          <div className="mt-[0.663rem] flex h-[1.05rem] justify-between xl:h-5">
             <div className="flex">
               <Image src={FireFilledIcon} alt="레시피 난이도" className="h-auto w-auto" />
               <Image

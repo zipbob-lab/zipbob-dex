@@ -1,6 +1,6 @@
 import HealthyRecipe from "@/components/mainPage/HealthyRecipe";
 import Introduce from "@/components/mainPage/Introduce";
-import Ranking from "@/components/mainPage/rank/Ranking";
+import RankingPage from "@/components/mainPage/rank/RankingPage";
 import RecentComment from "@/components/mainPage/RecentComment/RecentComment";
 import RecentRecipe from "@/components/mainPage/RecentRecipe";
 
@@ -11,7 +11,7 @@ export default async function Home() {
         <Introduce />
       </div>
       <div className="mx-auto mt-[3rem] flex flex-col items-center gap-[3rem] md:mt-[1.75rem] md:gap-[3.25rem] xl:gap-[5rem]">
-        <Ranking />
+        <RankingPage />
         <HealthyRecipe />
         <RecentRecipe />
         <RecentComment />
