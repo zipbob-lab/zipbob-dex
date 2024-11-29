@@ -5,7 +5,6 @@ import LikeCard from "./LikeCard";
 import LikeCardSkeleton from "./LikeCardSkeleton";
 
 const LikeRanking = ({ likeRanking }: { likeRanking: LikeRankingProps[] }) => {
-  console.log(likeRanking);
   const [userNickname, setUserNickname] = useState<UserNicknames>({
     0: "",
     1: "",
