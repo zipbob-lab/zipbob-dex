@@ -25,6 +25,7 @@ const Introduce = () => {
            (min-width: 1024px) 19.18756rem, 
            (min-width: 1440px) 33rem, 
            18.7rem"
+            priority
             fill
             alt="메인페이지 이미지1"
           />

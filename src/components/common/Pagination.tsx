@@ -45,7 +45,11 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className={`text-body-14 ${className}`}>
       {/* 이전 버튼 */}
       <div className="flex items-center justify-between">
-        <button onClick={() => handlePageClick(currentPage - 1)} className={`${buttonClassName}`}>
+        <button
+          aria-label="이전 페이지"
+          onClick={() => handlePageClick(currentPage - 1)}
+          className={`${buttonClassName}`}
+        >
           <LeftArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
 
@@ -67,7 +71,11 @@ const Pagination: React.FC<PaginationProps> = ({
         })}
 
         {/* 다음 버튼 */}
-        <button onClick={() => handlePageClick(currentPage + 1)} className={`${buttonClassName}`}>
+        <button
+          aria-label="다음 페이지"
+          onClick={() => handlePageClick(currentPage + 1)}
+          className={`${buttonClassName}`}
+        >
           <RightArrow className="cursor-pointer stroke-[#C4C3BE] hover:stroke-Primary-300" />
         </button>
       </div>
