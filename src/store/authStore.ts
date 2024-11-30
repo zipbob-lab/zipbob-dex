@@ -2,13 +2,13 @@ import browserClient from "@/supabase/client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type AuthState = {
+interface AuthState {
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
   userId: string | null;
   setUserId: (userId: string) => void;
   logout: () => Promise<void>;
-};
+}
 
 export const useAuthStore = create<AuthState>()(
   persist(

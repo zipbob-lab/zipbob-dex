@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import RecipeCard from "./RecipeCard";
 import { useState } from "react";
 import Pagination from "../common/Pagination";
-import LoadingSpinner from "../common/LoadingSpinner";
+import RecipeCardSkeleton from "./RecipeCardSkeleton";
 
 const RecentRecipe = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +48,11 @@ const RecentRecipe = () => {
         <div
           className={`${isPostPending ? "justify-center" : "justify-between"} mt-[1.75rem] grid grid-cols-2 place-items-center gap-x-3 gap-y-4 md:mt-[2rem] md:flex xl:mt-[3.75rem] xl:gap-[1rem]`}
         >
-          {isPostPending ? <LoadingSpinner /> : posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
+          {isPostPending
+            ? Array(4)
+                .fill(0)
+                .map((_, index) => <RecipeCardSkeleton key={index} />)
+            : posts?.map((post) => <RecipeCard key={post.id} post={post} />)}
         </div>
         <div className="mt-[1.75rem] flex items-center justify-center md:mt-[2rem] xl:mt-[3rem]">
           <Pagination

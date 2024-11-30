@@ -23,7 +23,7 @@ const SearchResult = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [itemsPerPage, setItemsPerPage] = useState<number>(16);
 
-  // 페이지 네이션 상태
+  // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // 1024 경계 반응형
@@ -44,15 +44,12 @@ const SearchResult = () => {
 
   const fetchRecipes = async () => {
     setLoading(true);
-    // 데이터 페칭
+    // supabase fatching
     let request = browserClient.from("MY_RECIPE_TABLE").select("*");
-    // 정렬 옵션 필터
     if (sortOption === "likes") {
       request = request.order("like_count", { ascending: false });
     } else if (sortOption === "comment") {
       request = request.order("comment_count", { ascending: false });
-    } else if (sortOption === "level") {
-      request = request.order("recipe_level", { ascending: false });
     } else if (sortOption === "scraps") {
       request = request.order("scrap_count", { ascending: false });
     }
@@ -62,8 +59,29 @@ const SearchResult = () => {
     if (error) {
       console.error("에러", error);
     } else {
-      setRecipes(data as Recipe[]);
-      setFilteredRecipes(data as Recipe[]);
+      if (sortOption === "level") {
+        // '하', '중', '상'을 직접 비교하여 정렬
+        const sortedData = data?.sort((a, b) => {
+          if (a.recipe_level === b.recipe_level) {
+            return 0;
+          }
+          if (a.recipe_level === "상") {
+            return -1;
+          }
+          if (b.recipe_level === "상") {
+            return 1;
+          }
+          if (a.recipe_level === "중") {
+            return -1;
+          }
+          return 1;
+        });
+        setRecipes(sortedData as Recipe[]);
+        setFilteredRecipes(sortedData as Recipe[]);
+      } else {
+        setRecipes(data as Recipe[]);
+        setFilteredRecipes(data as Recipe[]);
+      }
       setCurrentPage(1);
     }
     setLoading(false);
@@ -85,7 +103,7 @@ const SearchResult = () => {
     setFilteredRecipes(filteredData);
   };
 
-  // 이펙트 분산 처리
+  // useEffect 분산 처리
   useEffect(() => {
     if (query) {
       fetchRecipes();
@@ -112,7 +130,9 @@ const SearchResult = () => {
     <div className="py-[2rem]">
       {filteredRecipes.length > 0 && (
         <div className="mx-auto flex items-center justify-between ssm:mb-[1.5rem] ssm:max-w-[21rem] sm:mb-[1.5rem] sm:max-w-[21rem] md:mb-[1.5rem] md:max-w-[43rem] lg:mb-[1.5rem] lg:max-w-[64rem]">
-          <p className="text-body-20 font-semibold">검색 결과 {filteredRecipes.length}개</p>
+          <p className="font-semibold ssm:text-body-18 sm:text-body-18 md:text-body-20 lg:text-body-20">
+            검색 결과 {filteredRecipes.length}개
+          </p>
           <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
         </div>
       )}
@@ -167,7 +187,3 @@ const SearchResult = () => {
 };
 
 export default SearchResult;
-
-// 정렬옵션 제거로 인한 코드 리펙토링 필요
-// {/* <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0"></div> */}
-// {/* <FilterOptions filterOption={filterOption} setFilterOption={setFilterOption} /> 검색 구분옵션 2024.11.19 사용중단 */}

@@ -1,8 +1,8 @@
 "use client";
 
-import { getUserNickname } from "@/serverActions/profileAction";
+import { useUserNickname } from "@/serverActions/profileAction";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import FireFilledIcon from "@images/fireFilled.svg";
 import FireEmptyIcon from "@images/fireEmpty.svg";
 import browserClient from "@/supabase/client";
@@ -22,16 +22,11 @@ interface ExtendedRecipeCardProps extends RecipeCardProps {
 
 const RecipeCard2 = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardProps) => {
   const { userId } = useStore(useAuthStore);
-  const [nickname, setNickname] = useState("");
+  const { data: nickname } = useUserNickname(post.user_id);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (post.user_id) {
-        const userProfile = await getUserNickname(post.user_id);
-        setNickname(userProfile);
-      }
-    };
+    if (!userId) return;
     const fetchIsUserLiked = async () => {
       const { error } = await browserClient
         .from("LIKE_TABLE")
@@ -42,10 +37,9 @@ const RecipeCard2 = ({ post, isEditMode = false, onDelete }: ExtendedRecipeCardP
         throw error;
       }
     };
-    fetchUserProfile();
     fetchIsUserLiked();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId]);
 
   return (
     <div
