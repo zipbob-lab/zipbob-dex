@@ -90,10 +90,8 @@ const Comments = ({ postId }: PostDataProps) => {
   }, []);
 
   useEffect(() => {
-    if (sessionId) {
-      fetchComments(currentPage);
-    }
-  }, [currentPage, sessionId]);
+    fetchComments(currentPage);
+  }, [currentPage]);
 
   const fetchSessionId = async () => {
     setSessionId(userId); // userId가 null이 아닐 때만 설정
