@@ -14,6 +14,8 @@ import UserLevelEmoji from "./level/UserLevelEmoji";
 import UserRank from "./level/UserLevel";
 import UserLevelOverview from "./level/UserLevelOverview";
 import LoadingSpinner from "../common/LoadingSpinner";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 interface UserProfile {
   user_id: string;
@@ -25,11 +27,19 @@ interface UserProfile {
 }
 
 const MyPageProfile = () => {
+  const router = useRouter();
+  const { isLoggedIn } = useAuthStore();
   const [userData, setUserData] = useState<UserProfile | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userRank, setUserRank] = useState(0);
+
   useEffect(() => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
+      router.replace("/login");
+    }
+
     const loadUserProfile = async () => {
       const profileData = await fetchUserProfile();
       if (profileData) {
@@ -38,6 +48,7 @@ const MyPageProfile = () => {
       setLoading(false);
     };
     loadUserProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRankChange = (rank: number) => {
