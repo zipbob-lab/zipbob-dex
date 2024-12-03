@@ -219,54 +219,32 @@ const InputField = () => {
         return `${Date.now()}_${Math.random().toString(36).slice(2, 13)}.${fileExtension}`;
       };
 
+      // 매뉴얼 이미지 업로드 & 수정
       const recipeDoingImgUrls: string[] = [];
       for (let i = 0; i < recipeDoingImgViewArray.length; i++) {
-        if (isModifyMode) {
-          // 수정 모드일 때
-          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
+        const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
 
-          if (recipeDoingImgFile instanceof File) {
-            // 새로 업로드된 파일이 있는 경우
-            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
-            const { error: imgError } = await supabase.storage
-              .from("zipbob_storage")
-              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
+        // 새로 업로드된 파일이 있는 경우
+        if (recipeDoingImgFile instanceof File) {
+          const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
+          const { error: imgError } = await supabase.storage
+            .from("zipbob_storage")
+            .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
 
-            if (imgError) {
-              alert("매뉴얼 이미지 업로드 실패");
-              console.error(imgError.message);
-              return;
-            }
-
-            const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
-            recipeDoingImgUrls.push(recipeDoingImgUrl);
-          } else if (recipeDoingImgViewArray[i]) {
-            // 기존 이미지 URL이 있는 경우
-            recipeDoingImgUrls.push(recipeDoingImgViewArray[i]);
-          } else {
-            // 이미지가 없는 경우 빈 문자열
-            recipeDoingImgUrls.push("");
+          if (imgError) {
+            alert("매뉴얼 이미지 업로드 실패");
+            console.error(imgError.message);
+            return;
           }
+
+          const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
+          recipeDoingImgUrls.push(recipeDoingImgUrl);
+        } else if (isModifyMode && recipeDoingImgViewArray[i]) {
+          // 수정 모드일 때 & 기존 이미지 URL이 있는 경우
+          recipeDoingImgUrls.push(recipeDoingImgViewArray[i]);
         } else {
-          // 작성 모드일 때
-          const recipeDoingImgFile = recipeDoingImgFileArray[i]?.file;
-          if (recipeDoingImgFile instanceof File) {
-            const imgDoingName = makeUniqueFileName(recipeDoingImgFile);
-            const { error: imgError } = await supabase.storage
-              .from("zipbob_storage")
-              .upload(`recipeDoingImgFolder/${imgDoingName}`, recipeDoingImgFile);
-
-            if (imgError) {
-              alert("매뉴얼 이미지 업로드 실패");
-              console.error(imgError.message);
-              return;
-            }
-
-            const recipeDoingImgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/zipbob_storage/recipeDoingImgFolder/${imgDoingName}`;
-            recipeDoingImgUrls.push(recipeDoingImgUrl);
-          } else {
-            recipeDoingImgUrls.push(""); // 파일이 없는 경우 빈 문자열
-          }
+          recipeDoingImgUrls.push("");
+          // 파일이 없는 경우 빈 문자열
         }
       }
 
@@ -314,7 +292,7 @@ const InputField = () => {
           console.error("업데이트 오류", updateError.message);
           return;
         }
-        // console.log("업데이트 완료!");
+        alert("수정 완료");
         queryClient.invalidateQueries({ queryKey: ["recipeWithUser", postId] });
 
         setImgModalIndex(null);
@@ -350,12 +328,12 @@ const InputField = () => {
         }
       }
 
-      // alert("레시피 작성이 완료되었습니다!");
+      alert("레시피 작성이 완료되었습니다!");
       router.back();
       // 작성 게시글로 이동
       setTimeout(() => {
         router.push(`/myrecipedetail/${newPostId}`);
-      }, 5);
+      }, 3);
     } catch (error) {
       console.error("레시피 작성 오류", error);
       alert("레시피 작성 중 문제가 발생했습니다.");
@@ -396,7 +374,7 @@ const InputField = () => {
                   </div>
 
                   <div className="flex flex-col gap-x-[1rem] gap-y-[2rem] lg:flex-row lg:gap-y-[0rem]">
-                    {/* 완성 이미지 ~lg */}
+                    {/* 레시피 완성 이미지 ~lg */}
                     <div className="flex items-center justify-center justify-items-end lg:hidden">
                       <div
                         className="relative h-[11.5rem] w-[11.5rem] flex-shrink-0 overflow-hidden rounded-[1rem] md:h-[15rem] md:w-[15rem] md:rounded-[10%]"
