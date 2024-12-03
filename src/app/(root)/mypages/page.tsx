@@ -1,3 +1,4 @@
+import AuthRequiredPage from "@/components/common/AuthRequiredPage";
 import MyPageProfile from "@/components/mypage/MyPageProfile";
 import MyPostsCommentView from "@/components/mypage/MyPostsCommentView";
 
@@ -10,16 +11,18 @@ export const metadata: Metadata = {
 
 const MyPage = () => {
   return (
-    <div className="m-auto flex flex-col gap-6 py-[2rem] ssm:max-w-[337px] sm:max-w-[336px] md:max-w-[688px] lg:max-w-[1024px] lg:pb-[10.70rem]">
-      <h1 className="ssm:text-heading-20 md:text-heading-24 lg:text-heading-28">마이페이지</h1>
-      <div className="flex gap-12 ssm:flex-col md:flex-row md:gap-6 lg:flex-row lg:gap-20">
-        <MyPageProfile />
+    <AuthRequiredPage>
+      <div className="m-auto flex flex-col gap-6 py-[2rem] ssm:max-w-[337px] sm:max-w-[336px] md:max-w-[688px] lg:max-w-[1024px] lg:pb-[10.70rem]">
+        <h1 className="ssm:text-heading-20 md:text-heading-24 lg:text-heading-28">마이페이지</h1>
+        <div className="flex gap-12 ssm:flex-col md:flex-row md:gap-6 lg:flex-row lg:gap-20">
+          <MyPageProfile />
 
-        <div className="lg:flex-1">
-          <MyPostsCommentView />
+          <div className="lg:flex-1">
+            <MyPostsCommentView />
+          </div>
         </div>
       </div>
-    </div>
+    </AuthRequiredPage>
   );
 };
 
