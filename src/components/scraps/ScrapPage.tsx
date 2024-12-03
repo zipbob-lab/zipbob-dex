@@ -9,12 +9,8 @@ import EmptyContent from "@/components/common/EmptyContent";
 import Pagination from "@/components/common/Pagination";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
 
 const ScrapPage = () => {
-  const { isLoggedIn } = useAuthStore();
-  const router = useRouter();
   const { selectedFolder, userId, setSelectedFolder } = useScrapStore();
   const {
     folderScrapCounts,
@@ -31,14 +27,6 @@ const ScrapPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [scrapToDelete, setScrapToDelete] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      alert("로그인이 필요한 페이지입니다. 로그인 페이지로 이동합니다.");
-      router.replace("/login");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // 데이터 로딩 상태 관리
   useEffect(() => {

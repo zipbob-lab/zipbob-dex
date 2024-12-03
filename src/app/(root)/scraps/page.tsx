@@ -1,3 +1,4 @@
+import AuthRequiredPage from "@/components/common/AuthRequiredPage";
 import ScrapPage from "@/components/scraps/ScrapPage";
 import { Metadata } from "next";
 
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 const Scraps = () => {
   return (
     <div>
-      <ScrapPage />
+      <AuthRequiredPage>
+        <ScrapPage />
+      </AuthRequiredPage>
     </div>
   );
 };
