@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | undefined;
   setIsLoggedIn: (loggedIn: boolean) => void;
   userId: string | null;
   setUserId: (userId: string) => void;
@@ -13,7 +13,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      isLoggedIn: false,
+      isLoggedIn: undefined,
       userId: null,
       setIsLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
       setUserId: (id) => set({ userId: id }),
