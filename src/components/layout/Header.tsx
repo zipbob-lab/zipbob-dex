@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { getUserId } from "@/serverActions/profileAction";
 import MobileLogo from "@images/mobileLogo.svg";
 import LoginCheckModal from "../common/modal/LoginCheckModal";
-import { useStore } from "zustand";
 import { useAuthStore } from "@/store/authStore";
 import HamburgerMenuIcon from "@images/hamburgerMenu.svg";
 import HamburgerMenu from "../common/HamburgerMenu";
@@ -21,7 +20,7 @@ const Header = () => {
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
-  const { setIsLoggedIn, setUserId } = useStore(useAuthStore);
+  const { setIsLoggedIn, setUserId } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -31,6 +30,9 @@ const Header = () => {
       if (userId) {
         setIsLoggedIn(true);
         setUserId(userId);
+      } else {
+        setIsLoggedIn(false);
+        setUserId("");
       }
     };
     getUser();
